@@ -1,713 +1,1266 @@
-// 100 ta Chiqindilarni Tafakkur Qilib Saralash O'yini
-// Asoschi: Akobir | Akosh Eco
+// =========================================================================
+// MUKAMMAL CHIQINDI SARALASH TIZIMI (Eco Sorting Pro Engine)
+// Asoschi: Akobir | Akosh Eco Platform
+// 120 ta Chiqindi Bazasi, Fisher-Yates, Adaptive Weighting, Pointer Events
+// Drag-and-Drop, Click-to-Place, 1-9 Klaviaturasi, Imtihon va Mashq Rejimi,
+// Qopqon Chiqindilar va Chuqur Natija Tahlili
+// =========================================================================
 
-const ALL_100_WASTES = [
-  // 1. Aralash qadoqlar
-  { id: 1, name: "Tetra Pak (sut, sharbat paketi)", cat: "U", icon: "🧃", hint: "Maxsus qabul punkti bo'lmasa, aralash material bo'lgani uchun 'U' (Utilizatsiya)ga tashlanadi." },
-  { id: 2, name: "Yog'li pitsa qutisi", cat: "U", icon: "🍕", hint: "Yog' tekkan qog'ozni qayta ishlab bo'lmaydi, shuning uchun 'U' (Utilizatsiya)." },
-  { id: 3, name: "Chips paketi (metalllashgan plyonka)", cat: "U", icon: "🥔", hint: "Ko'p qatlamli folga va plastmassa birikmasi qayta ishlanmaydi ('U')." },
-  { id: 4, name: "Qahva kapsulasi", cat: "U", icon: "☕", hint: "Maxsus qabul bo'lmasa, qahva quyqasi va plastik aralashmasi 'U'ga ketadi." },
-  { id: 5, name: "Bir martalik qahva stakani (ichi plyonkali)", cat: "U", icon: "🥤", hint: "Ichidagi polietilen qoplama sababli oddiy qog'oz kabi erimaydi ('U')." },
-  { id: 6, name: "Kassa cheki (termo qog'oz)", cat: "U", icon: "🧾", hint: "Termo-qog'oz tarkibida zaharli Bisfenol-A bo'lgani uchun makulaturaga qo'shilmaydi ('U')." },
-  { id: 7, name: "Skotch lenta", cat: "U", icon: "🩹", hint: "Yelimli sintetik lenta qayta ishlanmaydi ('U')." },
-  { id: 8, name: "Pufakchali o'ram plyonkasi", cat: "plastik", icon: "🫧", hint: "Polietilen (LDPE) plyonka toifasiga kiradi va plastik sifatida qayta ishlanadi." },
-  { id: 9, name: "Penoplast (ko'pik) qadoq", cat: "U", icon: "📦", hint: "Ko'pirtirilgan polistirol maxsus punkt bo'lmasa 'U' hisoblanadi." },
-  { id: 10, name: "Konfet qog'ozi", cat: "U", icon: "🍬", hint: "Metallangan plyonka qayta ishlanmaydi ('U')." },
-  { id: 11, name: "Yuvilgan konserva bankasi", cat: "metall", icon: "🥫", hint: "Tozalangan tunuka bankalar metallga topshiriladi." },
-  { id: 12, name: "Bo'sh aerozol balon", cat: "metall", icon: "🧴", hint: "To'liq bo'shatilgan va teshilmagan holatda metall hisoblanadi." },
+(function () {
+  'use strict';
 
-  // 2. Xavfli chiqindilar
-  { id: 13, name: "Batareyka (barmoq batareya)", cat: "xavfli", icon: "🔋", hint: "Og'ir metallar va ishqor tutuvchi xavfli chiqindi." },
-  { id: 14, name: "Avtomobil akkumulyatori", cat: "xavfli", icon: "🪫", hint: "Qo'rg'oshin va sulfat kislotali II sinf xavfli chiqindi." },
-  { id: 15, name: "Lyuminessent lampa (uzun truba)", cat: "xavfli", icon: "💡", hint: "Tarkibida simob bug'i borligi sababli I sinf xavfli chiqindi." },
-  { id: 16, name: "Energiya tejovchi spiral lampa", cat: "xavfli", icon: "🏮", hint: "Simob tutadi, alohida maxsus xavfli qutiga topshiriladi." },
-  { id: 17, name: "Simobli tibbiy termometr", cat: "xavfli", icon: "🌡️", hint: "Simob o'ta zaharli metall bo'lib, eng yuqori xavfli toifaga kiradi." },
-  { id: 18, name: "Muddati o'tgan dori vositalari", cat: "xavfli", icon: "💊", hint: "Toksik dori qoldiqlari suv va tuproqni zaharlaydi (Xavfli/G-sinf)." },
-  { id: 19, name: "Bo'yoq qoldig'i va bankasi", cat: "xavfli", icon: "🎨", hint: "Kimyoviy erituvchilar va pigmentlar xavfli chiqindi." },
-  { id: 20, name: "Erituvchi (Rastvoritel / Aseton)", cat: "xavfli", icon: "🧪", hint: "Oson yonuvchi va uchuvchi toksik suyuqlik (Xavfli)." },
-  { id: 21, name: "Mashina motor moyi", cat: "xavfli", icon: "🛢️", hint: "Og'ir uglevodorodlar tabiatda 10 yillab parchalanmaydi (Xavfli)." },
-  { id: 22, name: "Pestitsid va zaharli ximikat idishi", cat: "xavfli", icon: "☠️", hint: "Qishloq xo'jaligi pestitsidlari o'ta xavfli kimyoviy moddadir." },
-  { id: 23, name: "Tirnoq lak va suyuqligi", cat: "xavfli", icon: "💅", hint: "Kimyoviy zaharli polimerlar (Xavfli)." },
-  { id: 24, name: "Bir martalik gaz balloncha", cat: "xavfli", icon: "🔥", hint: "Portlash va yong'in xavfi yuqori bo'lgan xavfli chiqindi." },
-  { id: 25, name: "Sintetik yelim (Kley) qoldig'i", cat: "xavfli", icon: "🧲", hint: "Sintetik kimyoviy polimerlar xavfli chiqindilar sarasiga kiradi." },
-  { id: 26, name: "Avtomobil antifrizi (Tosol)", cat: "xavfli", icon: "🚗", hint: "Etilenglikol o'ta zaharli kimyoviy moddadir (Xavfli)." },
-  { id: 27, name: "Xlorli dezinfeksiya vositasi", cat: "xavfli", icon: "🧼", hint: "Konsentrlangan agressiv xlor birikmalari (Xavfli)." },
+  // O'yin konfiguratsiyasi va sessiya holati
+  const EcoSortingState = {
+    mode: 'exam', // 'exam' (yakunda tekshirish) yoki 'practice' (darhol izoh)
+    difficulty: 'all', // 'all', 'easy', 'medium', 'hard'
+    timerEnabled: false,
+    timerTotal: 90, // Qiyin/Imtihon rejimida 90 soniya umumiy vaqt
+    timerRemaining: 90,
+    timerInterval: null,
+    isTimerRunning: false,
 
-  // 3. Elektronika (E-waste)
-  { id: 28, name: "Eski smartfon / telefon", cat: "elektronika", icon: "📱", hint: "Elektron platalar va chiplar (E-waste)." },
-  { id: 29, name: "Zaryadlovchi kabel (USB / Type-C)", cat: "elektronika", icon: "🔌", hint: "Mis simlar va elektron ulagichlar (Elektronika)." },
-  { id: 30, name: "Quloqchin (Naushnik)", cat: "elektronika", icon: "🎧", hint: "Kichik dinamiklar va mikrosxemalar (Elektronika)." },
-  { id: 31, name: "Powerbank (Portativ litiy batareya)", cat: "elektronika", icon: "🔋", hint: "Litiy-ion batareya va boshqaruv platasi (Elektronika/Xavfli)." },
-  { id: 32, name: "Printer kartridji", cat: "elektronika", icon: "🖨️", hint: "Toner kukuni va chip tutuvchi elektron qism." },
-  { id: 33, name: "Kompyuter klaviaturasi", cat: "elektronika", icon: "⌨️", hint: "Klaviatura membranasi va kontrolleri (Elektronika)." },
-  { id: 34, name: "Kompyuter sichqonchasi", cat: "elektronika", icon: "🖱️", hint: "Optik datchik va plata (Elektronika)." },
-  { id: 35, name: "Flesh-xotira (USB fleshka)", cat: "elektronika", icon: "💾", hint: "NAND flesh chipi (Elektronika)." },
-  { id: 36, name: "Mikroto'lqinli pech", cat: "elektronika", icon: "📻", hint: "Magnetron va transformator tutgan maishiy elektronika." },
-  { id: 37, name: "Elektr choynak", cat: "elektronika", icon: "🫖", hint: "Elektr isitgich (TEN) va avtomatika (Elektronika)." },
-  { id: 38, name: "Soch quritgich (Fen)", cat: "elektronika", icon: "💨", hint: "Elektr motor va spiral (Elektronika)." },
-  { id: 39, name: "LED bayram garlandasi", cat: "elektronika", icon: "✨", hint: "Yorug'lik diodlari va simlar (Elektronika)." },
-  { id: 40, name: "Noutbuk litiy batareyasi", cat: "elektronika", icon: "💻", hint: "Qayta ishlanadigan litiy batareya bloki (Elektronika)." },
+    // Raund elementlari (10 ta balanslashtirilgan chiqindi)
+    activeItems: [],
+    // Foydalanuvchi joylagan joylar: { [itemId]: categoryKey }
+    placements: {},
+    // Natijalar
+    results: null,
+    selectedItemId: null, // Click-to-place yoki klaviatura uchun
+    startTime: 0,
+    endTime: 0,
+    isFinished: false,
 
-  // 4. Shisha va keramika
-  { id: 41, name: "Shisha banka (qopqoqsiz)", cat: "shisha", icon: "🫙", hint: "Cheksiz marta eritib qayta ishlanadigan toza shisha." },
-  { id: 42, name: "Sinuq deraza oynasi", cat: "U", icon: "🪟", hint: "Deraza oynasida maxsus plyonka va qo'shimchalar bor, oddiy shisha pechida erimaydi ('U')." },
-  { id: 43, name: "Chinni likopcha / piyola", cat: "U", icon: "🍽️", hint: "Chinni va keramika shisha emas, erish harorati juda yuqori ('U')." },
-  { id: 44, name: "Sopol ko'za / idish", cat: "U", icon: "🏺", hint: "Kuygan loy (keramika) qayta erimaydi ('U')." },
-  { id: 45, name: "Pyrex o'tga chidamli shisha idish", cat: "U", icon: "🍲", hint: "Issiqlikka chidamli borosilikat shisha oddiy idishlar bilan birga erimaydi ('U')." },
-  { id: 46, name: "Cho'g'lanma lampochka (Ilich chirog'i)", cat: "U", icon: "💡", hint: "Yupqa shisha va volfram simi aralashgan, qayta ishlanmaydi ('U')." },
-  { id: 47, name: "Dori shishachasi (yuvilgan)", cat: "shisha", icon: "🧴", hint: "Yuvib tozalangan dorivor shisha idishlar shishaga topshiriladi." },
-  { id: 48, name: "Atir flakoni (purkagichi ajratilgan)", cat: "shisha", icon: "🌸", hint: "Purkagich mexanizmi olingan shisha idish (Shisha)." },
-  { id: 49, name: "Akvarium shishasi", cat: "U", icon: "🐠", hint: "Chidamli armaturalangan shisha va germetik silikon aralashmasi ('U')." },
-  { id: 50, name: "Ko'zoynak oynasi (linza)", cat: "U", icon: "👓", hint: "Optik qoplamali linzalar qayta ishlanmaydi ('U')." },
+    // Pointer drag holati
+    dragActive: false,
+    dragItemId: null,
+    dragGhostEl: null,
+    dragCandidateBinKey: null,
+    touchStartX: 0,
+    touchStartY: 0
+  };
 
-  // 5. Qog'oz va karton
-  { id: 51, name: "Gazeta", cat: "qogoz", icon: "📰", hint: "Ikkilamchi xomashyo sifatidagi toza makulatura (Qog'oz)." },
-  { id: 52, name: "Yog'li salfetka", cat: "U", icon: "🧻", hint: "Yog' va namlik bilan ifloslangan qog'oz qayta ishlanmaydi ('U')." },
-  { id: 53, name: "Toza karton quti", cat: "qogoz", icon: "📦", hint: "Qimmatli qadoqlash xomashyosi (Qog'oz/Karton)." },
-  { id: 54, name: "Ho'l yoki ifloslangan qog'oz", cat: "U", icon: "📄", hint: "Parchalangan va mog'orlagan qog'oz tolasi yaroqsiz ('U')." },
-  { id: 55, name: "Laminatsiyalangan yaltiroq qog'oz", cat: "U", icon: "📑", hint: "Ustidagi yupqa plastik plyonka sababli erimaydi ('U')." },
-  { id: 56, name: "Kalka qog'oz", cat: "U", icon: "📋", hint: "Maxsus kimyoviy ishlov berilgan qog'oz ('U')." },
-  { id: 57, name: "Yelimli stiker qog'ozi", cat: "U", icon: "🏷️", hint: "Yelimi ko'p bo'lgani uchun qog'oz ishlab chiqarish uskunalarini buzadi ('U')." },
-  { id: 58, name: "Tuxum katagi (qolip karton)", cat: "qogoz", icon: "🥚", hint: "Pulpa karton toifasidagi qog'oz xomashyosi." },
-  { id: 59, name: "Gigiyenik (hojatxona) qog'ozi", cat: "U", icon: "🧻", hint: "Sanitariya qoidalariga ko'ra poligon utilizatsiyasiga ketadi ('U')." },
-  { id: 60, name: "Kitob yoki daftar (temir simi olingan)", cat: "qogoz", icon: "📚", hint: "Toza sellyuloza qog'oz xomashyosi." },
+  window.EcoSortingState = EcoSortingState;
 
-  // 6. Plastik
-  { id: 61, name: "PET ichimlik shishasi", cat: "plastik", icon: "🍾", hint: "Eng ko'p qayta ishlanadigan 1-toifali plastik (PET)." },
-  { id: 62, name: "Shampun idishi (HDPE)", cat: "plastik", icon: "🧴", hint: "Yuqori zichlikdagi 2-raqamli qayta ishlanadigan plastik (HDPE)." },
-  { id: 63, name: "Plastik paket (yupqa xalta)", cat: "plastik", icon: "🛍️", hint: "LDPE polimer plyonkasi (Plastik)." },
-  { id: 64, name: "Bir martalik toza idish (PP/PS)", cat: "plastik", icon: "🍽️", hint: "Yuvilgan toza plastik idishlar plastik fraksiyasiga ketadi." },
-  { id: 65, name: "Soch cho'tkasi", cat: "U", icon: "🪮", hint: "Aralash qattiq polimerlar va cho'tkalar qayta ishlanmaydi ('U')." },
-  { id: 66, name: "Ruchka va qalam qobig'i", cat: "U", icon: "🖊️", hint: "Siyoh qoldiqlari va metall prujinali aralash plastik ('U')." },
-  { id: 67, name: "Plastik bolalar o'yinchog'i", cat: "U", icon: "🧸", hint: "Tarkibida har xil noma'lum plastmassa birikmalari bor ('U')." },
-  { id: 68, name: "Plastik quvur bo'lagi (PVC)", cat: "plastik", icon: "🪠", hint: "Sanoat polimerlari qayta ishlanadi (Plastik)." },
-  { id: 69, name: "Tish cho'tkasi", cat: "U", icon: "🪥", hint: "Rezina va neylon tolalari ajralmaydigan aralash buyum ('U')." },
-  { id: 70, name: "Maishiy kimyo kanistri (yuvilgan)", cat: "plastik", icon: "🛢️", hint: "Zich HDPE plastmassa idishi." },
-  { id: 71, name: "Bir martalik tibbiy niqob", cat: "U", icon: "😷", hint: "Spunbond sintetik tolasi qayta ishlanmaydi ('U')." },
-  { id: 72, name: "Plastik butilka qopqog'i (HDPE)", cat: "plastik", icon: "🔘", hint: "Qimmatbaho polietilen qopqoq (Plastik)." },
-
-  // 7. Metall
-  { id: 73, name: "Alyuminiy ichimlik bankasi", cat: "metall", icon: "🥤", hint: "Eng qimmatbaho qayta ishlanuvchi rangli metall (alyuminiy)." },
-  { id: 74, name: "Toza oshxona folgasi", cat: "metall", icon: "✨", hint: "Toza yupqa alyuminiy qatlam (Metall)." },
-  { id: 75, name: "Yog' va ovqat tekkan iflos folga", cat: "U", icon: "🥟", hint: "Qattiq ifloslangan folga metall pechida yonib ketadi ('U')." },
-  { id: 76, name: "Mix, vint va gayka", cat: "metall", icon: "🔩", hint: "Temir qora metall parchasi." },
-  { id: 77, name: "Eski alyuminiy kastryulka", cat: "metall", icon: "🍲", hint: "Qayta eritish uchun ikkilamchi metall." },
-  { id: 78, name: "Eski eshik kaliti", cat: "metall", icon: "🗝️", hint: "Latun yoki po'lat qotishmasi (Metall)." },
-  { id: 79, name: "Po'lat yoki mis sim", cat: "metall", icon: "➰", hint: "Qimmatli rangli yoki qora metall (Metall)." },
-  { id: 80, name: "Bo'sh metall sprey idishi", cat: "metall", icon: "💨", hint: "To'liq bosimi chiqarilgan quruq metall korpus." },
-
-  // 8. Organik
-  { id: 81, name: "Meva-sabzavot po'sti (kartoshka, sabzi)", cat: "organik", icon: "🥕", hint: "Biogaz va kompost uchun a'lo organik xomashyo." },
-  { id: 82, name: "Sintetik to'rli choy paketi", cat: "U", icon: "🫖", hint: "Choy to'rida polimer plastmassa bo'lgani sababli kompostda chirimaydi ('U')." },
-  { id: 83, name: "Tuxum po'chog'i", cat: "organik", icon: "🥚", hint: "Kalsiyga boy tabiiy organik modda." },
-  { id: 84, name: "Qahva quyqasi (kofe qoldig'i)", cat: "organik", icon: "☕", hint: "O'simliklar uchun ajoyib bio-o'g'it (Organik)." },
-  { id: 85, name: "Pishgan go'sht va suyak qoldiqlari", cat: "organik", icon: "🍗", hint: "Biogaz stansiyalari uchun yuqori metan beruvchi organik chiqindi." },
-  { id: 86, name: "Pishgan ovqat sarqiti", cat: "organik", icon: "🍛", hint: "Anaerob parchalanish uchun organik chiqindi." },
-  { id: 87, name: "Xazon va qirqilgan maysazor o'ti", cat: "organik", icon: "🍂", hint: "Kompostlash uchun qimmatli yashil va jigarrang biooksid." },
-  { id: 88, name: "So'ligan gul va xona o'simliklari", cat: "organik", icon: "🥀", hint: "Tabiiy o'simlik qoldig'i (Organik)." },
-  { id: 89, name: "Banan yoki olmadagi kichik stiker", cat: "U", icon: "🏷️", hint: "Stiker sintetik yelim va plastmassadan tayyorlanadi ('U')." },
-  { id: 90, name: "Uy hayvonlari axlati", cat: "U", icon: "🐾", hint: "Patogen parazitlar bo'lgani uchun umumiy kompostga tashlanmaydi ('U')." },
-
-  // 9. Tekstil va hajmli chiqindilar
-  { id: 91, name: "Yaroqli eski kiyim (toza ko'ylak)", cat: "tekstil", icon: "👕", hint: "Kiyishga yaroqli kiyimlar xayriya yoki ikkilamchi kiyim punktiga topshiriladi." },
-  { id: 92, name: "Yirtilgan latta kiyim", cat: "tekstil", icon: "🩳", hint: "Ip va tola olish uchun qayta ishlanadigan tekstil." },
-  { id: 93, name: "Eski poyabzal / krossovka", cat: "tekstil", icon: "👟", hint: "Rezina va charm tolalari kombinatsiyasi (Tekstil/Maxsus)." },
-  { id: 94, name: "Yirtiq paypoq", cat: "tekstil", icon: "🧦", hint: "Paxta va sintetika tolasi (Tekstil)." },
-  { id: 95, name: "Eski prujinali matras", cat: "tekstil", icon: "🛏️", hint: "Hajmli matras maxsus tekstil va metall yechish punktiga ketadi." },
-  { id: 96, name: "Eski pol gilami", cat: "tekstil", icon: "🧶", hint: "Hajmli tekstil chiqindisi." },
-  { id: 97, name: "Patli eski yostiq", cat: "tekstil", icon: "🪶", hint: "To'qimachilik tolasi (Tekstil)." },
-  { id: 98, name: "Qurilish g'ishti va suvoq qoldiqlari", cat: "U", icon: "🧱", hint: "Maishiy qutilarga tashlanmaydi, faqat maxsus qurilish konteyneriga ('U')." },
-  { id: 99, name: "Bolalar bir martalik tagligi (Pampers)", cat: "U", icon: "👶", hint: "Gelmeyuvchi polimer va gigiyenik ifloslanish sababli poligon chiqindisi ('U')." },
-  { id: 100, name: "Sigaret qoldig'i (Bekob)", cat: "U", icon: "🚬", hint: "Filtrida plastmassa (atsetilsellyuloza) va zaharli smola bo'lgan poligon chiqindisi ('U')." }
-];
-
-// O'yin toifalari
-const CATEGORIES_MAP = [
-  { key: "plastik", name: "Plastik", color: "amber", icon: "🧴", btnClass: "border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/25 text-amber-300" },
-  { key: "qogoz", name: "Qog'oz & Karton", color: "blue", icon: "📦", btnClass: "border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/25 text-blue-300" },
-  { key: "shisha", name: "Shisha idish", color: "emerald", icon: "🍾", btnClass: "border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/25 text-emerald-300" },
-  { key: "metall", name: "Metall", color: "cyan", icon: "🥫", btnClass: "border-cyan-500/40 bg-cyan-500/10 hover:bg-cyan-500/25 text-cyan-300" },
-  { key: "organik", name: "Organik", color: "yellow", icon: "🍌", btnClass: "border-yellow-700/50 bg-yellow-900/20 hover:bg-yellow-900/35 text-amber-200" },
-  { key: "xavfli", name: "Xavfli chiqindi", color: "rose", icon: "🔋", btnClass: "border-rose-500/40 bg-rose-500/10 hover:bg-rose-500/25 text-rose-300" },
-  { key: "elektronika", name: "Elektronika (E-waste)", color: "purple", icon: "📱", btnClass: "border-purple-500/40 bg-purple-500/10 hover:bg-purple-500/25 text-purple-300" },
-  { key: "tekstil", name: "Tekstil / Kiyim", color: "pink", icon: "👕", btnClass: "border-pink-500/40 bg-pink-500/10 hover:bg-pink-500/25 text-pink-300" },
-  { key: "U", name: "U (Utilizatsiya / Chiqit)", color: "slate", icon: "🗑️", btnClass: "border-slate-500/50 bg-slate-800/80 hover:bg-slate-700 text-slate-200" }
-];
-
-// O'yin holati (25 ta savollik raund va 10s taymer)
-let currentSortingContainer = null;
-let gameSession = {
-  activeBatch: [],
-  currentIndex: 0,
-  score: 0,
-  correctCount: 0,
-  wrongCount: 0,
-  results: [],
-  isFinished: false,
-  questionTimer: 10,
-  timerInterval: null,
-  isAnsweringLocked: false
-};
-
-function stopSortingGameTimer() {
-  if (gameSession.timerInterval) {
-    clearInterval(gameSession.timerInterval);
-    gameSession.timerInterval = null;
-  }
-  if (window.ecoAudio && typeof window.ecoAudio.stopCountdownSound === 'function') {
-    window.ecoAudio.stopCountdownSound();
-  }
-}
-window.stopSortingGameTimer = stopSortingGameTimer;
-window.gameSession = gameSession;
-
-function initSortingGame() {
-  const container = document.getElementById('sorting-game-container');
-  if (!container) return;
-  currentSortingContainer = container;
-  renderSortingGameUI(container);
-}
-
-function getActiveSortingContainer() {
-  const dynamic = document.getElementById('game-dynamic-content');
-  if (dynamic && dynamic.offsetParent !== null && dynamic.querySelector('#session-playfield')) {
-    return dynamic;
-  }
-  const sortingCont = document.getElementById('sorting-game-container');
-  if (sortingCont && sortingCont.offsetParent !== null && sortingCont.querySelector('#session-playfield')) {
-    return sortingCont;
-  }
-  return currentSortingContainer || dynamic || sortingCont || document;
-}
-
-function getSortingScopeEl(id) {
-  const active = getActiveSortingContainer();
-  if (active && active.querySelector) {
-    const el = active.querySelector('#' + id);
-    if (el) return el;
-  }
-  if (currentSortingContainer && currentSortingContainer.querySelector) {
-    const el = currentSortingContainer.querySelector('#' + id);
-    if (el) return el;
-  }
-  return document.getElementById(id);
-}
-
-function updateSessionProgressUI() {
-  const total = (gameSession.activeBatch && gameSession.activeBatch.length) ? gameSession.activeBatch.length : 25;
-  const curr = Math.min(gameSession.currentIndex + 1, total);
-  document.querySelectorAll('#session-progress').forEach(el => el.textContent = `${curr} / ${total}`);
-  document.querySelectorAll('#session-score').forEach(el => el.textContent = `${gameSession.score} XP`);
-}
-
-function renderSortingGameUI(container) {
-  if (container) currentSortingContainer = container;
-  const target = currentSortingContainer || document.getElementById('sorting-game-container') || document.getElementById('game-dynamic-content');
-  if (!target) return;
-
-  target.innerHTML = `
-    <div class="bg-slate-900 border border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
-      
-      <!-- Top Session Header -->
-      <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
-        <div class="flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-500/30">
-            <i class="fa-solid fa-recycle animate-spin-slow"></i>
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h3 class="text-xl font-black text-white">Chiqindilarni Tafakkur Qilib Saralash</h3>
-              <span class="text-[10px] uppercase font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">
-                100 ta Chiqindi Bazasi
-              </span>
-            </div>
-            <p class="text-xs text-slate-400">Har bir savol uchun <strong>${(window.ECO_CONFIG && window.ECO_CONFIG.sortingTimer) || 10} soniya vaqt</strong> beriladi! Qaysi qutiga tashlanishini tanlang.</p>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <div class="bg-slate-950 px-4 py-2 rounded-xl border border-slate-800 text-center">
-            <span class="text-[10px] text-slate-400 uppercase font-semibold block">Jarayon</span>
-            <span id="session-progress" class="text-lg font-black text-emerald-400">0 / 25</span>
-          </div>
-          <div class="bg-slate-950 px-4 py-2 rounded-xl border border-slate-800 text-center">
-            <span class="text-[10px] text-slate-400 uppercase font-semibold block">To'plangan Ball</span>
-            <span id="session-score" class="text-lg font-black text-amber-400">0 XP</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Main Playfield -->
-      <div id="session-playfield">
-        <!-- Start screen -->
-        <div id="session-start-screen" class="text-center py-10 max-w-lg mx-auto">
-          <div class="w-20 h-20 mx-auto mb-4 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-4xl shadow-xl shadow-emerald-500/10">
-            ♻️
-          </div>
-          <h4 class="text-2xl font-black text-white mb-2">${(window.ECO_CONFIG && window.ECO_CONFIG.sortingBatchSize) || 25} ta Tasodifiy Chiqindi Raundi</h4>
-          <p class="text-xs text-slate-300 leading-relaxed mb-6">
-            100 xil real hayotiy chiqindilar ichidan <strong>25 tasi random</strong> tarzda beriladi.<br/>
-            Har bir savolga <strong>10 soniya vaqt</strong> ajratiladi. Javob tanlashingiz bilan to'g'ri/xato ekanligi ko'rsatilib, avtomatik keyingi savolga o'tiladi!
-          </p>
-
-          <button onclick="startNew25Session()" class="px-8 py-3.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black rounded-2xl shadow-xl shadow-emerald-500/20 text-sm transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2.5 mx-auto cursor-pointer">
-            <i class="fa-solid fa-play"></i>
-            <span>Raundni Boshlash (${(window.ECO_CONFIG && window.ECO_CONFIG.sortingTimer) || 10}s Taymer bilan)</span>
-          </button>
-        </div>
-
-        <!-- Question Card (Hidden initially) -->
-        <div id="session-question-card" class="hidden">
-          
-          <!-- Question Timer & Counter Header -->
-          <div class="max-w-xl mx-auto mb-4">
-            <div class="flex items-center justify-between mb-2 px-1">
-              <span id="card-item-counter" class="text-xs uppercase font-extrabold text-emerald-400 tracking-wider">
-                Chiqindi 1 / 25
-              </span>
-              <div class="flex items-center gap-2">
-                <button onclick="EcoPauseEngine.togglePause()" type="button" class="eco-pause-btn flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-800/90 hover:bg-slate-700 text-amber-300 border border-amber-500/40 transition-all active:scale-95 cursor-pointer shadow-sm">
-                  <i class="fa-solid fa-pause text-[10px]"></i>
-                  <span>Pauza</span>
-                </button>
-                <div id="card-timer-badge" class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
-                  <i class="fa-solid fa-stopwatch animate-pulse"></i>
-                  <span>Vaqt: <strong id="card-timer-seconds">10</strong>s</span>
-                </div>
-              </div>
-            </div>
-            <!-- Dynamic 10s progress bar -->
-            <div class="w-full bg-slate-950 rounded-full h-2.5 overflow-hidden border border-slate-800 p-0.5 shadow-inner">
-              <div id="card-timer-bar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-100 ease-linear" style="width: 100%;"></div>
-            </div>
-          </div>
-
-          <!-- Central Waste Item Card -->
-          <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-6 text-center max-w-xl mx-auto mb-6 shadow-inner relative">
-            <div id="sorting-card-anim" class="mb-3"></div>
-            <div id="card-item-icon" class="text-6xl mb-3 filter drop-shadow-md transition-transform duration-200">📦</div>
-            <h4 id="card-item-name" class="text-2xl font-black text-white mt-1 mb-2">Chiqindi nomi</h4>
-            <div id="card-feedback" class="text-xs text-slate-400 italic min-h-[24px] flex items-center justify-center">
-              Ushbu chiqindi qaysi toifaga kiradi? Tegishli qutini tanlang:
-            </div>
-          </div>
-
-          <!-- 9 Sorting Category Buttons -->
-          <div id="categories-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 max-w-3xl mx-auto">
-            ${CATEGORIES_MAP.map(cat => `
-              <button onclick="submitCategoryAnswer('${cat.key}', this)" data-cat-key="${cat.key}" class="category-choice-btn eco-smooth-float p-4 rounded-xl border ${cat.btnClass} transition-all duration-200 flex items-center gap-3 text-left group cursor-pointer active:scale-95 shadow-lg hover:-translate-y-1.5 hover:shadow-xl">
-                <span class="text-2xl eco-icon-levitate group-hover:scale-125 transition-transform shrink-0">${cat.icon}</span>
-                <div>
-                  <div class="font-bold text-xs group-hover:underline">${cat.name}</div>
-                  <span class="text-[10px] opacity-75">${cat.key === 'U' ? 'Qayta ishlanmaydi' : 'Qayta ishlanadi'}</span>
-                </div>
-              </button>
-            `).join('')}
-          </div>
-        </div>
-
-        <!-- Final Summary Screen (Hidden initially) -->
-        <div id="session-summary-screen" class="hidden"></div>
-      </div>
-
-    </div>
-  `;
-}
-
-// 25 ta tasodifiy chiqindili yangi raundni boshlash
-function startNew25Session() {
-  stopSortingGameTimer();
-  if (window.EcoPauseEngine) window.EcoPauseEngine.resetTimeouts();
-
-  // Tasodifiy 100 tadan 25 tasini saralab olish (Fisher-Yates shuffle)
-  const batchSize = (window.ECO_CONFIG && window.ECO_CONFIG.sortingBatchSize) ? window.ECO_CONFIG.sortingBatchSize : 25;
-  const shuffled = [...ALL_100_WASTES].sort(() => 0.5 - Math.random());
-  gameSession.activeBatch = shuffled.slice(0, batchSize);
-  gameSession.currentIndex = 0;
-  gameSession.score = 0;
-  gameSession.correctCount = 0;
-  gameSession.wrongCount = 0;
-  gameSession.results = [];
-  gameSession.isFinished = false;
-  gameSession.isAnsweringLocked = false;
-
-  document.querySelectorAll('#session-start-screen').forEach(el => el.classList.add('hidden'));
-  document.querySelectorAll('#session-summary-screen').forEach(el => el.classList.add('hidden'));
-  document.querySelectorAll('#session-question-card').forEach(el => el.classList.remove('hidden'));
-
-  updateSessionProgressUI();
-  displayCurrentItem();
-
-  if (window.ecoAudio) window.ecoAudio.playClick();
-}
-
-function displayCurrentItem() {
-  const item = gameSession.activeBatch[gameSession.currentIndex];
-  if (!item) return;
-
-  gameSession.isAnsweringLocked = false;
-
-  const counterText = `Chiqindi ${gameSession.currentIndex + 1} / ${(gameSession.activeBatch ? gameSession.activeBatch.length : 25)}`;
-  document.querySelectorAll('#card-item-icon').forEach(el => el.textContent = item.icon);
-  document.querySelectorAll('#card-item-name').forEach(el => el.textContent = item.name);
-  document.querySelectorAll('#card-item-counter').forEach(el => el.textContent = counterText);
-  document.querySelectorAll('#card-feedback').forEach(el => {
-    el.className = "text-xs text-slate-400 italic min-h-[24px] flex items-center justify-center";
-    el.textContent = "Ushbu chiqindi qaysi toifaga kiradi? Tanlang:";
-  });
-
-  const animContainers = document.querySelectorAll('#sorting-card-anim');
-  if (animContainers.length && window.Eco2DAnimator && typeof window.Eco2DAnimator.getSortingConveyorHtml === 'function') {
-    const animHtml = window.Eco2DAnimator.getSortingConveyorHtml(item);
-    animContainers.forEach(el => el.innerHTML = animHtml);
-  }
-
-  // Barcha tugmalarni asl holatiga qaytarish
-  resetCategoryButtonsUI();
-
-  // 20 soniyalik taymerni ishga tushirish!
-  startQuestionTimer();
-}
-
-function resetCategoryButtonsUI() {
-  const root = getActiveSortingContainer() || document;
-  const buttons = root.querySelectorAll('.category-choice-btn');
-  buttons.forEach(btn => {
-    btn.disabled = false;
-    btn.classList.remove(
-      'ring-4', 'ring-2', 'ring-emerald-400', 'ring-rose-500', 
-      'bg-emerald-600/40', 'bg-rose-600/40', 'opacity-30', 
-      'scale-105', 'scale-[1.02]'
-    );
-  });
-}
-
-function highlightCategoryButtons(correctCatKey, chosenCatKey) {
-  const root = getActiveSortingContainer() || document;
-  const buttons = root.querySelectorAll('.category-choice-btn');
-  buttons.forEach(btn => {
-    btn.disabled = true;
-    const key = btn.getAttribute('data-cat-key');
-    if (key === correctCatKey) {
-      // To'g'ri toifa - yashil belgilash
-      btn.classList.add('ring-4', 'ring-emerald-400', 'bg-emerald-600/40', 'scale-[1.02]');
-    } else if (key === chosenCatKey) {
-      // Foydalanuvchi noto'g'ri tanlagan toifa - qizil belgilash
-      btn.classList.add('ring-4', 'ring-rose-500', 'bg-rose-600/40');
-    } else {
-      btn.classList.add('opacity-30');
+  // -----------------------------------------------------------------------
+  // 1. FISHER-YATES ARALASHTIRISH ALGORITMI
+  // -----------------------------------------------------------------------
+  function fisherYatesShuffle(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
     }
-  });
-}
+    return arr;
+  }
 
-// 10 soniyalik taymer mexanizmi
-function startQuestionTimer(customRemaining) {
-  stopSortingGameTimer();
-  
-  const totalSeconds = (window.ECO_CONFIG && window.ECO_CONFIG.sortingTimer) ? window.ECO_CONFIG.sortingTimer : 10;
-  const initialRemaining = (typeof customRemaining === 'number' && customRemaining > 0) ? customRemaining : totalSeconds;
-  gameSession.remainingSeconds = initialRemaining;
-  const startTime = Date.now();
-  updateTimerUI(Math.ceil(initialRemaining), (initialRemaining / totalSeconds) * 100);
+  // -----------------------------------------------------------------------
+  // 2. ADAPTIVE & BALANCED ITEM SELECTOR (Muvozanatli va Moslashuvchan Tanlash)
+  // -----------------------------------------------------------------------
+  function selectBalancedRoundItems(options = {}) {
+    const db = window.ECO_WASTE_DATABASE || [];
+    if (!db || db.length === 0) return [];
 
-  if (window.EcoPauseEngine) {
-    window.EcoPauseEngine.registerGame({
-      type: 'sorting',
-      pause: () => { stopSortingGameTimer(); },
-      resume: () => { startQuestionTimer(gameSession.remainingSeconds); },
-      restart: () => { startNew25Session(); },
-      getCurrentStats: () => ({
-        counter: `Chiqindi ${gameSession.currentIndex + 1} / ${(gameSession.activeBatch ? gameSession.activeBatch.length : 25)}`,
-        score: `${gameSession.score} XP`
-      })
+    const totalCount = options.count || 10;
+    const filterDifficulty = options.difficulty || 'all';
+
+    // 1) Qiyinlik bo'yicha saralash
+    let pool = db;
+    if (filterDifficulty !== 'all') {
+      pool = db.filter(item => item.difficulty === filterDifficulty);
+      if (pool.length < totalCount) pool = db; // Zaxira
+    }
+
+    // 2) Recency penalty (oxirgi 2-3 o'yinda chiqqan rasmlar kamroq tushsin)
+    let recentIds = [];
+    try {
+      recentIds = JSON.parse(localStorage.getItem('ECO_RECENT_SORT_IDS') || '[]');
+    } catch (e) { recentIds = []; }
+
+    // 3) Moslashuvchan tanlash: foydalanuvchi ko'p xato qilgan toifalar (weak categories)
+    let weakCategories = {};
+    try {
+      weakCategories = JSON.parse(localStorage.getItem('ECO_WEAK_CATEGORIES') || '{}');
+    } catch (e) { weakCategories = {}; }
+
+    // Toifalarni guruhlash
+    const byCategory = {};
+    pool.forEach(item => {
+      if (!byCategory[item.cat]) byCategory[item.cat] = [];
+      byCategory[item.cat].push(item);
     });
-  }
 
-  gameSession.timerInterval = setInterval(() => {
-    if (window.EcoPauseEngine && window.EcoPauseEngine.isGamePaused()) return;
+    const categoryKeys = Object.keys(byCategory);
 
-    const elapsedSeconds = (Date.now() - startTime) / 1000;
-    const remainingTime = Math.max(0, initialRemaining - elapsedSeconds);
-    gameSession.remainingSeconds = remainingTime;
-    const remainingDisplay = Math.ceil(remainingTime);
-    const percent = Math.max(0, (remainingTime / totalSeconds) * 100);
+    // Zaif toifalarni saralash (eng ko'p xato qilinganlari yuqorida)
+    const sortedCategories = [...categoryKeys].sort((a, b) => {
+      const errA = weakCategories[a] || 0;
+      const errB = weakCategories[b] || 0;
+      return errB - errA;
+    });
 
-    updateTimerUI(remainingDisplay, percent);
-    if (window.ecoAudio && typeof window.ecoAudio.updateCountdownSound === 'function') {
-      window.ecoAudio.updateCountdownSound(remainingTime, totalSeconds);
+    const chosenItems = [];
+    const usedCategoriesCount = {};
+
+    // Qopqon (Trap) chiqindilardan kamida 2-3 ta qo'shish
+    const traps = pool.filter(i => i.isTrap && !recentIds.slice(-15).includes(i.id));
+    const shuffledTraps = fisherYatesShuffle(traps.length > 0 ? traps : pool.filter(i => i.isTrap));
+    const trapCount = Math.min(shuffledTraps.length, 3);
+    for (let i = 0; i < trapCount; i++) {
+      const it = shuffledTraps[i];
+      if (it && !chosenItems.some(c => c.id === it.id)) {
+        chosenItems.push(it);
+        usedCategoriesCount[it.cat] = (usedCategoriesCount[it.cat] || 0) + 1;
+      }
     }
 
-    if (remainingTime <= 0) {
-      stopSortingGameTimer();
-      handleQuestionTimeout();
-    }
-  }, 80);
-}
-
-function updateTimerUI(seconds, percent) {
-  document.querySelectorAll('#card-timer-seconds').forEach(el => el.textContent = seconds);
-  document.querySelectorAll('#card-timer-bar').forEach(timerBar => {
-    timerBar.style.width = `${percent}%`;
-    if (seconds <= 3) {
-      timerBar.className = "h-full bg-rose-500 transition-all duration-100 ease-linear rounded-full";
-    } else if (seconds <= 6) {
-      timerBar.className = "h-full bg-amber-500 transition-all duration-100 ease-linear rounded-full";
-    } else {
-      timerBar.className = "h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-100 ease-linear rounded-full";
-    }
-  });
-  document.querySelectorAll('#card-timer-badge').forEach(timerBadge => {
-    if (seconds <= 3) {
-      timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-400 border border-rose-500/40 animate-pulse";
-    } else if (seconds <= 6) {
-      timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-400 border border-amber-500/40";
-    } else {
-      timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
-    }
-  });
-}
-
-// Vaqt tugaganda avtomatik xato deb hisoblab keyingisiga o'tish
-function handleQuestionTimeout() {
-  if (gameSession.isAnsweringLocked || gameSession.isFinished) return;
-  gameSession.isAnsweringLocked = true;
-  if (window.ecoAudio && typeof window.ecoAudio.playTimeoutBuzzer === 'function') {
-    window.ecoAudio.playTimeoutBuzzer();
-  }
-
-  const currentItem = gameSession.activeBatch[gameSession.currentIndex];
-  if (!currentItem) return;
-
-  const correctCatObj = CATEGORIES_MAP.find(c => c.key === currentItem.cat);
-  const correctName = correctCatObj ? correctCatObj.name : currentItem.cat;
-
-  gameSession.wrongCount++;
-  if (window.ecoAudio) window.ecoAudio.playError();
-
-  // To'g'ri toifani ko'rsatib qo'yish
-  highlightCategoryButtons(currentItem.cat, null);
-
-  const feedbackEl = getSortingScopeEl('card-feedback');
-  if (feedbackEl) {
-    feedbackEl.className = "text-xs text-rose-400 font-bold min-h-[24px] flex items-center justify-center animate-pulse";
-    feedbackEl.innerHTML = `<i class="fa-solid fa-clock mr-1.5"></i> Vaqt tugadi (10s)! To'g'ri toifa: «${correctName}». ${currentItem.hint}`;
-  }
-
-  gameSession.results.push({
-    item: currentItem,
-    userChoice: "timeout",
-    isCorrect: false,
-    correctName: correctName,
-    isTimeout: true
-  });
-
-  updateSessionProgressUI();
-
-  // AVTO-PAUZA: 2 ta savol belgilanmasa o'yin avtomatik to'xtatiladi
-  if (window.EcoPauseEngine && window.EcoPauseEngine.recordTimeout()) {
-    window.EcoPauseEngine.triggerAutoPause({
-      onContinue: () => {
-        gameSession.currentIndex++;
-        if (gameSession.currentIndex >= gameSession.activeBatch.length) {
-          finish25Session();
-        } else {
-          displayCurrentItem();
+    // Zaif toifalardan alohida 1-2 ta kiritish
+    for (const cat of sortedCategories) {
+      if (chosenItems.length >= totalCount) break;
+      if ((weakCategories[cat] || 0) > 0 && (!usedCategoriesCount[cat] || usedCategoriesCount[cat] < 2)) {
+        const catCandidates = byCategory[cat].filter(it => !chosenItems.some(c => c.id === it.id));
+        if (catCandidates.length > 0) {
+          const fresh = catCandidates.filter(it => !recentIds.includes(it.id));
+          const pick = fresh.length > 0 ? fresh[Math.floor(Math.random() * fresh.length)] : catCandidates[0];
+          chosenItems.push(pick);
+          usedCategoriesCount[pick.cat] = (usedCategoriesCount[pick.cat] || 0) + 1;
         }
       }
-    });
-    return;
+    }
+
+    // Qolgan toifalardan muvozanatli to'ldirish (kamida 5-6 toifa, bitta toifadan max 3 ta)
+    const remainingCats = fisherYatesShuffle(categoryKeys);
+    let catIndex = 0;
+
+    while (chosenItems.length < totalCount && catIndex < remainingCats.length * 4) {
+      const cat = remainingCats[catIndex % remainingCats.length];
+      catIndex++;
+
+      if ((usedCategoriesCount[cat] || 0) >= 3) continue; // Bitta toifadan ko'pi bilan 3 ta!
+
+      const available = (byCategory[cat] || []).filter(it => !chosenItems.some(c => c.id === it.id));
+      if (available.length === 0) continue;
+
+      // Recency bo'yicha saralash
+      const freshItems = available.filter(it => !recentIds.includes(it.id));
+      const chosenCandidate = freshItems.length > 0
+        ? freshItems[Math.floor(Math.random() * freshItems.length)]
+        : available[Math.floor(Math.random() * available.length)];
+
+      chosenItems.push(chosenCandidate);
+      usedCategoriesCount[cat] = (usedCategoriesCount[cat] || 0) + 1;
+    }
+
+    // Agar 10 taga yetmay qolsa, qolgan hamma pool'dan to'ldiramiz
+    if (chosenItems.length < totalCount) {
+      const leftover = pool.filter(it => !chosenItems.some(c => c.id === it.id));
+      const shuffledLeftover = fisherYatesShuffle(leftover);
+      for (const item of shuffledLeftover) {
+        if (chosenItems.length >= totalCount) break;
+        chosenItems.push(item);
+      }
+    }
+
+    // Yakuniy tartib ham Fisher-Yates orqali to'liq aralashtiriladi (toifalar ketma-ket tushmasin!)
+    const finalShuffled = fisherYatesShuffle(chosenItems);
+
+    // Oxirgi o'ynalganlar ro'yxatini yangilash (oxirgi 30 ta)
+    const newRecentIds = [...recentIds, ...finalShuffled.map(i => i.id)].slice(-30);
+    try {
+      localStorage.setItem('ECO_RECENT_SORT_IDS', JSON.stringify(newRecentIds));
+    } catch (e) {}
+
+    return finalShuffled;
   }
 
-  // Keyingi savolga tezkor o'tish (380ms)
-  setTimeout(() => {
-    gameSession.currentIndex++;
-    if (gameSession.currentIndex >= gameSession.activeBatch.length) {
-      finish25Session();
-    } else {
-      displayCurrentItem();
+  // -----------------------------------------------------------------------
+  // 3. TAYMER BOSHQARUVI (90 soniya & Sound Acceleration)
+  // -----------------------------------------------------------------------
+  function stopSortingGameTimer() {
+    if (EcoSortingState.timerInterval) {
+      clearInterval(EcoSortingState.timerInterval);
+      EcoSortingState.timerInterval = null;
     }
-  }, 380);
-}
+    EcoSortingState.isTimerRunning = false;
+    if (window.ecoAudio && typeof window.ecoAudio.stopCountdownSound === 'function') {
+      window.ecoAudio.stopCountdownSound();
+    }
+  }
+  window.stopSortingGameTimer = stopSortingGameTimer;
 
-// Foydalanuvchi javob belgilaganda: xato bo'lsa xato, to'g'ri bo'lsa to'g'ri ko'rsatish va keyingisiga o'tqazish
-function submitCategoryAnswer(selectedCategory, clickedBtnElement) {
-  if (gameSession.isAnsweringLocked || gameSession.isFinished) return;
-  if (window.EcoPauseEngine && window.EcoPauseEngine.isGamePaused()) return;
-  if (window.EcoPauseEngine) window.EcoPauseEngine.recordUserAnswer();
-  gameSession.isAnsweringLocked = true;
+  function startSortingGameTimer(seconds) {
+    stopSortingGameTimer();
+    const total = seconds || EcoSortingState.timerTotal || 90;
+    EcoSortingState.timerRemaining = total;
+    EcoSortingState.isTimerRunning = true;
+    const startTime = Date.now();
 
-  // Taymerni zudlik bilan to'xtatish!
-  stopSortingGameTimer();
+    updateSortingTimerUI(total, 100);
 
-  const currentItem = gameSession.activeBatch[gameSession.currentIndex];
-  if (!currentItem) return;
-
-  const isCorrect = selectedCategory === currentItem.cat;
-
-  const correctCatObj = CATEGORIES_MAP.find(c => c.key === currentItem.cat);
-  const correctName = correctCatObj ? correctCatObj.name : currentItem.cat;
-
-  // Tugmalarni topish (clickedBtnElement mavjud bo'lsa darhol o'zi olinadi)
-  const root = getActiveSortingContainer() || document;
-  const clickedBtn = clickedBtnElement || root.querySelector(`.category-choice-btn[data-cat-key="${selectedCategory}"]`) || document.querySelector(`.category-choice-btn[data-cat-key="${selectedCategory}"]`);
-  const correctBtn = root.querySelector(`.category-choice-btn[data-cat-key="${currentItem.cat}"]`) || document.querySelector(`.category-choice-btn[data-cat-key="${currentItem.cat}"]`);
-
-  // Tugmalarda vizual yashil/qizil belgilash
-  highlightCategoryButtons(currentItem.cat, selectedCategory);
-
-  if (isCorrect) {
-    gameSession.correctCount++;
-    const itemXP = 10;
-    gameSession.score += itemXP;
-
-    if (window.ecoAudio) window.ecoAudio.playSuccess();
-    if (window.addPlayerXP) window.addPlayerXP(itemXP);
-
-    // PAQLDOQ (FIREWORKS & CONFETTI) PORTLASHI
-    if (window.EcoFxEngine) {
-      const rect = clickedBtn ? clickedBtn.getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight / 2, width: 0, height: 0 };
-      window.EcoFxEngine.triggerPaqldoq(rect.left + rect.width / 2, rect.top + rect.height / 2, itemXP);
+    // Pause Engine registratsiyasi
+    if (window.EcoPauseEngine) {
+      window.EcoPauseEngine.registerGame({
+        type: 'sorting-pro',
+        pause: () => { stopSortingGameTimer(); },
+        resume: () => { startSortingGameTimer(EcoSortingState.timerRemaining); },
+        restart: () => { startNewSortingRound(); },
+        getCurrentStats: () => ({
+          counter: `Joylandi: ${Object.keys(EcoSortingState.placements).length} / ${EcoSortingState.activeItems.length}`,
+          score: `Rejim: ${EcoSortingState.mode === 'exam' ? 'Imtihon' : 'Mashq'}`
+        })
+      });
     }
 
-    document.querySelectorAll('#card-feedback').forEach(feedbackEl => {
-      feedbackEl.className = "text-xs text-emerald-400 font-bold min-h-[24px] flex items-center justify-center animate-bounce";
-      feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check mr-1.5 text-sm"></i> To'g'ri! ${currentItem.hint} (+${itemXP} XP)`;
-    });
+    EcoSortingState.timerInterval = setInterval(() => {
+      if (window.EcoPauseEngine && window.EcoPauseEngine.isGamePaused()) return;
 
-    gameSession.results.push({
-      item: currentItem,
-      userChoice: selectedCategory,
-      isCorrect: true
-    });
-  } else {
-    gameSession.wrongCount++;
-    if (window.ecoAudio) window.ecoAudio.playError();
+      const elapsed = (Date.now() - startTime) / 1000;
+      const remaining = Math.max(0, total - elapsed);
+      EcoSortingState.timerRemaining = remaining;
+      const displaySec = Math.ceil(remaining);
+      const percent = Math.max(0, (remaining / total) * 100);
 
-    // XATO JAVOBDA: SEYSMIK SILKINISH, QIZIL VINETKA
-    if (window.EcoFxEngine) {
-      window.EcoFxEngine.triggerWrongFeedback(clickedBtn, correctBtn, root.querySelector('#session-playfield') || document.getElementById('session-playfield'));
-    }
+      updateSortingTimerUI(displaySec, percent);
 
-    document.querySelectorAll('#card-feedback').forEach(feedbackEl => {
-      feedbackEl.className = "text-xs text-rose-400 font-bold min-h-[24px] flex items-center justify-center";
-      feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1.5 text-sm"></i> Noto'g'ri! To'g'ri toifa: «${correctName}». ${currentItem.hint}`;
-    });
+      // Vaqt tezlashganda audio effekti
+      if (window.ecoAudio && typeof window.ecoAudio.updateCountdownSound === 'function') {
+        window.ecoAudio.updateCountdownSound(remaining, total);
+      }
 
-    gameSession.results.push({
-      item: currentItem,
-      userChoice: selectedCategory,
-      isCorrect: false,
-      correctName: correctName
-    });
+      if (remaining <= 0) {
+        stopSortingGameTimer();
+        if (window.ecoAudio && typeof window.ecoAudio.playTimeoutBuzzer === 'function') {
+          window.ecoAudio.playTimeoutBuzzer();
+        }
+        // Vaqt tugaganda avtomatik natija tekshiriladi
+        submitExamResults(true);
+      }
+    }, 100);
   }
 
-  updateSessionProgressUI();
+  function updateSortingTimerUI(seconds, percent) {
+    const secEl = document.getElementById('sorting-timer-seconds');
+    const barEl = document.getElementById('sorting-timer-bar');
+    const badgeEl = document.getElementById('sorting-timer-badge');
 
-  // Chaqqon, tezkor va silliq avtomatik keyingisiga o'tish (380ms) - qotib qolish yo'q!
-  setTimeout(() => {
-    gameSession.currentIndex++;
-    if (gameSession.currentIndex >= gameSession.activeBatch.length) {
-      finish25Session();
-    } else {
-      displayCurrentItem();
+    if (secEl) secEl.textContent = `${seconds}s`;
+    if (barEl) {
+      barEl.style.width = `${percent}%`;
+      if (seconds <= 10) {
+        barEl.className = 'h-full bg-rose-500 rounded-full transition-all duration-100 ease-linear animate-pulse';
+      } else if (seconds <= 25) {
+        barEl.className = 'h-full bg-amber-500 rounded-full transition-all duration-100 ease-linear';
+      } else {
+        barEl.className = 'h-full bg-gradient-to-r from-emerald-500 to-cyan-400 rounded-full transition-all duration-100 ease-linear';
+      }
     }
-  }, 380);
-}
-
-function finish25Session() {
-  stopSortingGameTimer();
-  gameSession.isFinished = true;
-  if (window.ecoAudio) window.ecoAudio.playLevelUp();
-
-  // Bonus for high score
-  let bonusXP = 0;
-  if (gameSession.correctCount >= 20) {
-    bonusXP = 50;
-    if (window.addPlayerXP) window.addPlayerXP(bonusXP);
+    if (badgeEl) {
+      if (seconds <= 10) {
+        badgeEl.className = 'flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-400 border border-rose-500/50 animate-pulse';
+      } else if (seconds <= 25) {
+        badgeEl.className = 'flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-400 border border-amber-500/50';
+      } else {
+        badgeEl.className = 'flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40';
+      }
+    }
   }
 
-  document.querySelectorAll('#session-question-card').forEach(el => el.classList.add('hidden'));
-  const summary = getSortingScopeEl('session-summary-screen');
-  document.querySelectorAll('#session-summary-screen').forEach(el => el.classList.remove('hidden'));
-  if (summary) {
-    summary.classList.remove('hidden');
+  // -----------------------------------------------------------------------
+  // 4. ASOSIY INTERFEYSNI RENDER QILISH
+  // -----------------------------------------------------------------------
+  function initSortingGame() {
+    const container = document.getElementById('sorting-game-container');
+    if (container) {
+      renderSortingGameUI(container);
+    }
+  }
+  window.initSortingGame = initSortingGame;
 
-    const accuracy = Math.round((gameSession.correctCount / 25) * 100);
+  function renderSortingGameUI(container) {
+    const target = container || document.getElementById('sorting-game-container') || document.getElementById('game-dynamic-content');
+    if (!target) return;
 
-    summary.innerHTML = `
-      <div class="text-center py-6 animate-fade-in max-w-2xl mx-auto">
-        <div class="w-20 h-20 mx-auto mb-4 rounded-3xl ${accuracy >= 80 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-400 border border-amber-500/40'} flex items-center justify-center text-4xl shadow-xl">
-          ${accuracy >= 80 ? '🏆' : '📊'}
-        </div>
-
-        <h3 class="text-3xl font-black text-white mb-1">Raund Yakunlandi!</h3>
-        <p class="text-xs text-slate-400 mb-6">25 ta tasodifiy chiqindini saralash bo'yicha to'liq hisobotingiz:</p>
-
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-3 gap-3 mb-6">
-          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-            <span class="text-[10px] text-slate-500 uppercase font-bold block">To'g'ri javoblar</span>
-            <span class="text-2xl font-black text-emerald-400">${gameSession.correctCount} / 25</span>
-          </div>
-
-          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-            <span class="text-[10px] text-slate-500 uppercase font-bold block">Aniqlik darajasi</span>
-            <span class="text-2xl font-black ${accuracy >= 80 ? 'text-emerald-400' : 'text-amber-400'}">${accuracy}%</span>
-          </div>
-
-          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-            <span class="text-[10px] text-slate-500 uppercase font-bold block">Jami Ball / XP</span>
-            <span class="text-2xl font-black text-amber-400">+${gameSession.score + bonusXP} XP</span>
-          </div>
-        </div>
-
-        ${bonusXP > 0 ? `
-          <div class="p-3 bg-amber-500/15 border border-amber-500/30 rounded-xl text-xs font-bold text-amber-300 mb-6 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-star"></i> A'lo natija uchun +50 XP bonus qo'shildi! Liderlar reytingida yuqoriladingiz!
-          </div>
-        ` : ''}
-
-        <!-- Mistakes Breakdown (Xatolar Tahlili) -->
-        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 text-left mb-6">
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2">
-            <i class="fa-solid fa-list-check text-cyan-400"></i>
-            Xatolar tahlili va o'rganilgan darslar:
-          </h4>
-
-          ${gameSession.wrongCount === 0 
-            ? '<p class="text-xs text-emerald-400 font-bold">🎉 Qoyilmaqom! Birorta ham xatoga yo\'l qo\'ymadingiz. 100% toza ekologik tafakkur!</p>'
-            : `
-              <div class="space-y-2.5 max-h-56 overflow-y-auto custom-scrollbar pr-2 text-xs">
-                ${gameSession.results.filter(r => !r.isCorrect).map(w => `
-                  <div class="p-2.5 bg-slate-900 border border-rose-500/20 rounded-xl">
-                    <div class="flex items-center justify-between text-white font-bold mb-1">
-                      <span>${w.item.icon} ${w.item.name}</span>
-                      <span class="text-emerald-400 text-[11px] bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
-                        To'g'ri: ${w.correctName}
-                      </span>
-                    </div>
-                    <p class="text-[11px] text-slate-400">${w.item.hint}</p>
-                  </div>
-                `).join('')}
+    target.innerHTML = `
+      <div id="eco-sorting-app" class="bg-slate-900 border border-emerald-500/30 rounded-3xl p-4 sm:p-7 shadow-2xl relative select-none">
+        
+        <!-- Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-5 pb-4 border-b border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-500/40 shadow-lg shadow-emerald-500/10 shrink-0">
+              ♻️
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="text-xl font-black text-white tracking-wide">Tafakkur Bilan Chiqindilarni Saralash</h3>
+                <span class="text-[10px] uppercase font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full">
+                  120 ta Chiqindi Bazasi
+                </span>
+                <span id="active-mode-tag" class="text-[10px] uppercase font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2 py-0.5 rounded-full">
+                  Imtihon Rejimi
+                </span>
               </div>
-            `
-          }
+              <p class="text-xs text-slate-400 mt-0.5">
+                Chiqindilarni qo'l bilan tegishli rangli konteynerga sudrang yoki bosing. "Tekshirish" bosilguncha javobni o'zgartirish mumkin!
+              </p>
+            </div>
+          </div>
+
+          <!-- Quick Stats / Controls -->
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="EcoSortingEngine.showStartModal()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-gear text-amber-400"></i>
+              <span>Rejim</span>
+            </button>
+            <button onclick="EcoSortingEngine.restartRound()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-rotate-right text-emerald-400"></i>
+              <span>Yangi 10 talik</span>
+            </button>
+            <div class="bg-slate-950 px-3.5 py-1.5 rounded-xl border border-slate-800 text-center">
+              <span class="text-[9px] text-slate-500 uppercase font-black block">Joylandi</span>
+              <span id="sorting-placed-counter" class="text-sm font-black text-emerald-400">0 / 10</span>
+            </div>
+          </div>
         </div>
 
-        <!-- Action buttons -->
-        <div class="flex flex-wrap justify-center gap-3">
-          <button onclick="startNew25Session()" class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black rounded-xl text-xs transition-all shadow-lg shadow-emerald-500/20 flex items-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-rotate-right"></i>
-            <span>Keyingi 25 ta Tasodifiy Chiqindini Saralash</span>
-          </button>
+        <!-- Timer & Pause Header (Faqat taymer yoniq bo'lsa) -->
+        <div id="sorting-timer-row" class="hidden mb-4">
+          <div class="flex items-center justify-between gap-3 mb-1.5">
+            <span class="text-xs font-extrabold uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-stopwatch text-cyan-400"></i>
+              Vaqt chegarasi (90s)
+            </span>
+            <div class="flex items-center gap-2">
+              <button onclick="EcoPauseEngine.togglePause()" type="button" class="eco-pause-btn flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-800/90 hover:bg-slate-700 text-amber-300 border border-amber-500/40 transition-all active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-pause text-[10px]"></i>
+                <span>Pauza</span>
+              </button>
+              <div id="sorting-timer-badge" class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                <i class="fa-solid fa-clock"></i>
+                <span id="sorting-timer-seconds">90s</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800 p-0.5">
+            <div id="sorting-timer-bar" class="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 rounded-full transition-all duration-100 ease-linear" style="width: 100%;"></div>
+          </div>
+        </div>
 
-          <button onclick="switchMainTab('teacher-tab')" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold rounded-xl text-xs transition-all flex items-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-trophy"></i>
-            <span>Liderlar Jadvalini Ko'rish</span>
-          </button>
+        <!-- 9 Ta Konteyner Paneli (Drop Targets) -->
+        <div class="mb-5">
+          <div class="flex items-center justify-between mb-2 px-1">
+            <span class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
+              <i class="fa-solid fa-boxes-stacked text-emerald-400"></i>
+              Saralash Konteynerlari (Qutilar)
+            </span>
+            <span class="text-[11px] text-slate-500 hidden sm:inline">
+              💡 Klaviatura: Chiqindini tanlang va <strong>1-9</strong> raqamlarini bosing
+            </span>
+          </div>
+
+          <div id="sorting-bins-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2.5 sm:gap-3.5">
+            <!-- Dinamik ravishda render qilinadi -->
+          </div>
+        </div>
+
+        <!-- Chiqindilar qatori (Tray / Dock - 10 ta element) -->
+        <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-4 sm:p-5 relative shadow-inner">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-black uppercase text-amber-400 tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-hand-pointer animate-bounce"></i>
+                Saralanishi kerak bo'lgan chiqindilar (10 ta)
+              </span>
+              <span class="text-[10px] text-slate-500 hidden md:inline">
+                (Sudrang yoki ustiga bosing, so'ng konteynerni tanlang)
+              </span>
+            </div>
+            <span id="tray-remaining-count" class="text-xs font-bold text-slate-400">10 ta qoldi</span>
+          </div>
+
+          <div id="sorting-tray-items" class="flex flex-wrap gap-3 min-h-[120px] items-center justify-center p-2 rounded-xl border border-dashed border-slate-800 bg-slate-900/50">
+            <!-- 10 ta chiqindi kartochkalari shu yerda joylashadi -->
+          </div>
+        </div>
+
+        <!-- Pastki "Tekshirish" va Boshqaruv Paneli -->
+        <div class="mt-5 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+          <div class="text-xs text-slate-400 flex items-center gap-2">
+            <span id="sorting-status-hint" class="font-medium">
+              Chiqindilarni tegishli qutiga joylang. Hammasi tugagach "Tekshirish" tugmasi ochiladi.
+            </span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button id="verify-sorting-btn" onclick="EcoSortingEngine.verifyRound()" disabled class="px-7 py-3 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-slate-950 font-black rounded-xl text-sm transition-all transform shadow-lg shadow-emerald-500/20 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95">
+              <i class="fa-solid fa-check-double"></i>
+              <span>Tekshirish & Yakuniy Natija</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Yakuniy Natija Ekrani (Modal / Overlay) -->
+        <div id="sorting-result-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
+          <div id="sorting-result-content" class="bg-slate-900 border border-emerald-500/40 rounded-3xl max-w-2xl w-full p-5 sm:p-8 shadow-2xl relative animate-fade-in my-auto max-h-[92vh] overflow-y-auto custom-scrollbar">
+            <!-- Natijalar render qilinadi -->
+          </div>
+        </div>
+
+        <!-- Rejim Tanlash Oynasi (Modal) -->
+        <div id="sorting-config-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+          <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl animate-fade-in">
+            <h4 class="text-xl font-black text-white mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-emerald-400"></i>
+              O'yin Rejimini Sozlash
+            </h4>
+            <p class="text-xs text-slate-400 mb-5">
+              O'zingizga qulay rejim va qiyinlik darajasini tanlang:
+            </p>
+
+            <!-- Rejim: Imtihon vs Mashq -->
+            <div class="space-y-3 mb-5">
+              <label onclick="EcoSortingEngine.setMode('exam')" class="flex items-center justify-between p-3.5 rounded-xl border border-slate-700 hover:border-emerald-500/60 bg-slate-950/60 cursor-pointer transition-all">
+                <div>
+                  <div class="font-bold text-sm text-white flex items-center gap-2">
+                    <span>🏆 Imtihon Rejimi</span>
+                    <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-black">Asosiy (+100 XP)</span>
+                  </div>
+                  <div class="text-xs text-slate-400 mt-0.5">10 ta rasm sudrab joylanadi, natija faqat oxirida tekshiriladi.</div>
+                </div>
+                <input type="radio" name="sorting-mode-choice" value="exam" ${EcoSortingState.mode === 'exam' ? 'checked' : ''} class="w-4 h-4 accent-emerald-500">
+              </label>
+
+              <label onclick="EcoSortingEngine.setMode('practice')" class="flex items-center justify-between p-3.5 rounded-xl border border-slate-700 hover:border-cyan-500/60 bg-slate-950/60 cursor-pointer transition-all">
+                <div>
+                  <div class="font-bold text-sm text-white flex items-center gap-2">
+                    <span>🎓 Mashq Rejimi</span>
+                    <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-black">Ta'limiy (+50 XP)</span>
+                  </div>
+                  <div class="text-xs text-slate-400 mt-0.5">Har bir tashlanganda darhol to'g'ri/xato izohi ko'rsatiladi.</div>
+                </div>
+                <input type="radio" name="sorting-mode-choice" value="practice" ${EcoSortingState.mode === 'practice' ? 'checked' : ''} class="w-4 h-4 accent-cyan-500">
+              </label>
+            </div>
+
+            <!-- Taymer parametri -->
+            <div class="p-3.5 rounded-xl border border-slate-700 bg-slate-950/60 mb-6 flex items-center justify-between">
+              <div>
+                <span class="text-sm font-bold text-white block">⏱️ 90 Soniyalik Taymer</span>
+                <span class="text-xs text-slate-400">O'yinni vaqt poygasi sifatida o'ynash</span>
+              </div>
+              <input type="checkbox" id="sorting-timer-toggle" onchange="EcoSortingEngine.toggleTimerOption(this.checked)" ${EcoSortingState.timerEnabled ? 'checked' : ''} class="w-5 h-5 accent-emerald-500 cursor-pointer">
+            </div>
+
+            <div class="flex gap-2 justify-end">
+              <button onclick="EcoSortingEngine.hideStartModal()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all cursor-pointer">
+                Yopish
+              </button>
+              <button onclick="EcoSortingEngine.applyConfigAndStart()" class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs transition-all shadow-lg shadow-emerald-500/20 cursor-pointer">
+                O'yinni Boshlash
+              </button>
+            </div>
+          </div>
         </div>
 
       </div>
     `;
+
+    renderBins();
+    startNewSortingRound();
+    setupKeyboardShortcuts();
   }
-}
+  window.renderSortingGameUI = renderSortingGameUI;
+
+  // -----------------------------------------------------------------------
+  // 5. 9 TA KONTEYNERNI RENDER QILISH VA DROP HUDUDLARI
+  // -----------------------------------------------------------------------
+  function renderBins() {
+    const binsGrid = document.getElementById('sorting-bins-grid');
+    if (!binsGrid) return;
+
+    const categories = window.ECO_CATEGORIES || [
+      { key: "plastik", name: "Plastik", color: "amber", icon: "🧴", btnClass: "border-amber-500/50 bg-amber-500/10 text-amber-300", binBg: "bg-amber-950/30 border-amber-500/40" },
+      { key: "qogoz", name: "Qog'oz & Karton", color: "blue", icon: "📦", btnClass: "border-blue-500/50 bg-blue-500/10 text-blue-300", binBg: "bg-blue-950/30 border-blue-500/40" },
+      { key: "shisha", name: "Shisha idish", color: "emerald", icon: "🍾", btnClass: "border-emerald-500/50 bg-emerald-500/10 text-emerald-300", binBg: "bg-emerald-950/30 border-emerald-500/40" },
+      { key: "metall", name: "Metall", color: "cyan", icon: "🥫", btnClass: "border-cyan-500/50 bg-cyan-500/10 text-cyan-300", binBg: "bg-cyan-950/30 border-cyan-500/40" },
+      { key: "organik", name: "Organik", color: "yellow", icon: "🍌", btnClass: "border-yellow-700/50 bg-yellow-900/20 text-amber-200", binBg: "bg-yellow-950/30 border-yellow-700/40" },
+      { key: "xavfli", name: "Xavfli chiqindi", color: "rose", icon: "🔋", btnClass: "border-rose-500/50 bg-rose-500/10 text-rose-300", binBg: "bg-rose-950/30 border-rose-500/40" },
+      { key: "elektronika", name: "Elektronika (E-waste)", color: "purple", icon: "📱", btnClass: "border-purple-500/50 bg-purple-500/10 text-purple-300", binBg: "bg-purple-950/30 border-purple-500/40" },
+      { key: "tekstil", name: "Tekstil / Kiyim", color: "pink", icon: "👕", btnClass: "border-pink-500/50 bg-pink-500/10 text-pink-300", binBg: "bg-pink-950/30 border-pink-500/40" },
+      { key: "U", name: "U (Utilizatsiya)", color: "slate", icon: "🗑️", btnClass: "border-slate-500/60 bg-slate-800/80 text-slate-200", binBg: "bg-slate-900/80 border-slate-600/50" }
+    ];
+
+    binsGrid.innerHTML = categories.map((cat, idx) => {
+      const shortcutNum = idx + 1; // 1 dan 9 gacha
+      return `
+        <div 
+          id="sorting-bin-${cat.key}" 
+          data-bin-key="${cat.key}" 
+          onclick="EcoSortingEngine.handleBinClick('${cat.key}')"
+          class="sorting-drop-bin ${cat.binBg} border-2 rounded-2xl p-3 sm:p-3.5 transition-all duration-200 flex flex-col justify-between min-h-[110px] sm:min-h-[125px] relative group cursor-pointer hover:shadow-lg hover:-translate-y-0.5"
+        >
+          <!-- Top Bin Header -->
+          <div class="flex items-center justify-between gap-1 mb-1.5">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="text-xl sm:text-2xl shrink-0 transition-transform group-hover:scale-110">${cat.icon}</span>
+              <div class="truncate">
+                <span class="text-xs sm:text-sm font-black text-white block truncate">${cat.name}</span>
+                <span class="text-[9px] text-slate-400 block">${cat.key === 'U' ? 'Qayta ishlanmaydi' : 'Qayta ishlanadi'}</span>
+              </div>
+            </div>
+            <span class="w-5 h-5 rounded-md bg-slate-950/80 border border-slate-700/80 text-slate-400 text-[10px] font-black flex items-center justify-center shrink-0">
+              ${shortcutNum}
+            </span>
+          </div>
+
+          <!-- Bin Slot Badges (Joylashtirilgan elementlar kichik nishonlari) -->
+          <div id="bin-items-slot-${cat.key}" class="flex flex-wrap gap-1 items-center min-h-[30px] p-1 rounded-lg bg-slate-950/60 border border-slate-800/80">
+            <span class="text-[10px] text-slate-500 italic px-1 bin-empty-label">Bo'sh</span>
+          </div>
+
+          <!-- Bottom Bin Count -->
+          <div class="flex items-center justify-between text-[10px] font-bold text-slate-400 mt-1 pt-1 border-t border-slate-800/60">
+            <span class="bin-counter-text">0 ta chiqindi</span>
+            <span class="text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity text-[10px]">Tashlash 📥</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // -----------------------------------------------------------------------
+  // 6. YANGI RAUND BOSHLASH (10 ta Balanslashtirilgan Chiqindi)
+  // -----------------------------------------------------------------------
+  function startNewSortingRound() {
+    stopSortingGameTimer();
+    EcoSortingState.placements = {};
+    EcoSortingState.results = null;
+    EcoSortingState.selectedItemId = null;
+    EcoSortingState.isFinished = false;
+    EcoSortingState.startTime = Date.now();
+
+    // 10 ta chiqindini Fisher-Yates + Adaptive + Balans qoidalari bilan tanlash
+    EcoSortingState.activeItems = selectBalancedRoundItems({
+      count: 10,
+      difficulty: EcoSortingState.difficulty
+    });
+
+    // Trayni render qilish
+    renderTrayItems();
+    updateBinsContentUI();
+    updatePlacedCountUI();
+
+    // Taymerni boshlash (agar yoniq bo'lsa)
+    const timerRow = document.getElementById('sorting-timer-row');
+    if (EcoSortingState.timerEnabled) {
+      if (timerRow) timerRow.classList.remove('hidden');
+      startSortingGameTimer(EcoSortingState.timerTotal);
+    } else {
+      if (timerRow) timerRow.classList.add('hidden');
+    }
+
+    if (window.ecoAudio) window.ecoAudio.playClick();
+  }
+
+  // -----------------------------------------------------------------------
+  // 7. TRAYDAGI 10 TA CHIQINDI KARTOCHKALARINI RENDER QILISH
+  // -----------------------------------------------------------------------
+  function renderTrayItems() {
+    const tray = document.getElementById('sorting-tray-items');
+    if (!tray) return;
+
+    // Hali konteynerga joylanmagan chiqindilar
+    const unplacedItems = EcoSortingState.activeItems.filter(
+      item => !EcoSortingState.placements[item.id]
+    );
+
+    const remainingCountEl = document.getElementById('tray-remaining-count');
+    if (remainingCountEl) {
+      remainingCountEl.textContent = `${unplacedItems.length} ta qoldi`;
+    }
+
+    if (unplacedItems.length === 0) {
+      tray.innerHTML = `
+        <div class="py-6 text-center animate-fade-in text-emerald-400 font-bold text-xs flex flex-col items-center gap-2 w-full">
+          <i class="fa-solid fa-circle-check text-3xl animate-bounce"></i>
+          <span>Barcha 10 ta chiqindi konteynerlarga joylandi!</span>
+          <span class="text-slate-400 text-[11px]">Agar xohlasangiz qutilardagi elementlarni bosib qaytarib olishingiz mumkin. Tayyor bo'lsangiz <strong>"Tekshirish"</strong> tugmasini bosing!</span>
+        </div>
+      `;
+      return;
+    }
+
+    tray.innerHTML = unplacedItems.map(item => {
+      const isSelected = EcoSortingState.selectedItemId === item.id;
+      const isTrap = item.isTrap;
+      return `
+        <div 
+          id="waste-card-${item.id}"
+          data-item-id="${item.id}"
+          class="waste-draggable-card bg-slate-900 border ${isSelected ? 'ring-4 ring-cyan-400 border-cyan-400 scale-105' : 'border-slate-700/80 hover:border-emerald-400'} rounded-2xl p-2.5 sm:p-3 w-[140px] sm:w-[155px] flex flex-col items-center justify-between text-center transition-all duration-150 cursor-grab active:cursor-grabbing hover:shadow-xl relative group shadow-md"
+          style="touch-action: none;"
+          onpointerdown="EcoSortingEngine.handlePointerDown(event, ${item.id})"
+          onclick="EcoSortingEngine.handleCardClick(event, ${item.id})"
+        >
+          <!-- Trap / Difficulty badge -->
+          <div class="w-full flex items-center justify-between gap-1 mb-1">
+            <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-slate-950 text-slate-400 border border-slate-800">
+              ${item.difficulty.toUpperCase()}
+            </span>
+            ${isTrap ? `
+              <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40">
+                ⚠️ DIQQAT
+              </span>
+            ` : ''}
+          </div>
+
+          <!-- Image with Fallback Emoji -->
+          <div class="w-16 h-16 sm:w-20 sm:h-20 my-1 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-center p-1 overflow-hidden relative group-hover:scale-105 transition-transform">
+            <img 
+              src="${item.image}" 
+              alt="${item.name}" 
+              class="w-full h-full object-contain filter drop-shadow-md"
+              loading="lazy"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            />
+            <div class="hidden w-full h-full text-3xl sm:text-4xl items-center justify-center">
+              ${item.icon}
+            </div>
+          </div>
+
+          <!-- Name -->
+          <span class="text-xs font-extrabold text-white line-clamp-2 leading-tight min-h-[32px] flex items-center justify-center">
+            ${item.name}
+          </span>
+
+          <!-- Grab hint -->
+          <div class="mt-1 text-[9px] font-bold text-slate-500 group-hover:text-emerald-400 transition-colors flex items-center gap-1">
+            <i class="fa-solid fa-arrows-up-down-left-right text-[8px]"></i>
+            <span>Sudrang / Bosing</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // -----------------------------------------------------------------------
+  // 8. KONTEYNERLARNING ICHIDAGI ELEMENTLARNI YANGILASH
+  // -----------------------------------------------------------------------
+  function updateBinsContentUI() {
+    const categories = window.ECO_CATEGORIES || [];
+    categories.forEach(cat => {
+      const slotEl = document.getElementById(`bin-items-slot-${cat.key}`);
+      const binEl = document.getElementById(`sorting-bin-${cat.key}`);
+      if (!slotEl || !binEl) return;
+
+      // Ushbu qutiga tushgan chiqindilar
+      const placedInThisBin = EcoSortingState.activeItems.filter(
+        item => EcoSortingState.placements[item.id] === cat.key
+      );
+
+      const counterTextEl = binEl.querySelector('.bin-counter-text');
+      if (counterTextEl) {
+        counterTextEl.textContent = `${placedInThisBin.length} ta chiqindi`;
+      }
+
+      if (placedInThisBin.length === 0) {
+        slotEl.innerHTML = `<span class="text-[10px] text-slate-500 italic px-1 bin-empty-label">Bo'sh</span>`;
+      } else {
+        slotEl.innerHTML = placedInThisBin.map(it => `
+          <button 
+            type="button"
+            onclick="event.stopPropagation(); EcoSortingEngine.removeFromBin(${it.id})"
+            title="${it.name} (Qaytarib olish uchun bosing)"
+            class="px-2 py-1 rounded-md bg-slate-900 hover:bg-rose-950/80 text-white hover:text-rose-300 border border-slate-700 hover:border-rose-500/60 text-[10px] font-bold flex items-center gap-1 transition-all group/item shadow-sm cursor-pointer"
+          >
+            <span>${it.icon}</span>
+            <span class="max-w-[70px] truncate">${it.name}</span>
+            <i class="fa-solid fa-xmark text-[9px] text-slate-400 group-hover/item:text-rose-400"></i>
+          </button>
+        `).join('');
+      }
+    });
+  }
+
+  function updatePlacedCountUI() {
+    const total = EcoSortingState.activeItems.length || 10;
+    const placed = Object.keys(EcoSortingState.placements).length;
+
+    const counter = document.getElementById('sorting-placed-counter');
+    if (counter) counter.textContent = `${placed} / ${total}`;
+
+    const verifyBtn = document.getElementById('verify-sorting-btn');
+    const statusHint = document.getElementById('sorting-status-hint');
+
+    if (placed >= total) {
+      if (verifyBtn) {
+        verifyBtn.disabled = false;
+        verifyBtn.className = "px-7 py-3 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 text-slate-950 font-black rounded-xl text-sm transition-all transform shadow-xl shadow-emerald-500/30 flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95 animate-pulse";
+      }
+      if (statusHint) {
+        statusHint.innerHTML = `<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i> Barcha 10 ta chiqindi saralandi! Natijani tekshirishga tayyor.</span>`;
+      }
+    } else {
+      if (verifyBtn) {
+        verifyBtn.disabled = true;
+        verifyBtn.className = "px-7 py-3 bg-slate-800 text-slate-500 font-bold rounded-xl text-sm transition-all flex items-center gap-2 opacity-50 cursor-not-allowed";
+      }
+      if (statusHint) {
+        statusHint.innerHTML = `<span>Yana <strong>${total - placed} ta</strong> chiqindini qutilarga joylang.</span>`;
+      }
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // 9. POINTER EVENTS DRAG-AND-DROP ENGINE (Mouse, Finger Touch, Stylus)
+  // -----------------------------------------------------------------------
+  function handlePointerDown(e, itemId) {
+    if (e.button !== 0 && e.pointerType === 'mouse') return; // Faqat chap tugma
+
+    const card = document.getElementById(`waste-card-${itemId}`);
+    if (!card) return;
+
+    EcoSortingState.dragActive = true;
+    EcoSortingState.dragItemId = itemId;
+    EcoSortingState.touchStartX = e.clientX;
+    EcoSortingState.touchStartY = e.clientY;
+
+    // Pointer capture
+    try {
+      card.setPointerCapture(e.pointerId);
+    } catch (err) {}
+
+    // Ghost/Clone sudrash elementini yaratish
+    const rect = card.getBoundingClientRect();
+    const ghost = card.cloneNode(true);
+    ghost.id = 'waste-drag-ghost';
+    ghost.style.position = 'fixed';
+    ghost.style.left = `${rect.left}px`;
+    ghost.style.top = `${rect.top}px`;
+    ghost.style.width = `${rect.width}px`;
+    ghost.style.height = `${rect.height}px`;
+    ghost.style.zIndex = '9999';
+    ghost.style.pointerEvents = 'none';
+    ghost.style.transform = 'scale(1.08) rotate(3deg)';
+    ghost.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.7)';
+    ghost.style.opacity = '0.95';
+    ghost.style.transition = 'transform 0.08s ease';
+    document.body.appendChild(ghost);
+    EcoSortingState.dragGhostEl = ghost;
+
+    card.style.opacity = '0.35';
+
+    // Global harakat va qo'yib yuborish tinglovchilari
+    const onMove = (moveEvt) => handlePointerMove(moveEvt);
+    const onUp = (upEvt) => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onUp);
+      handlePointerUp(upEvt, itemId, card);
+    };
+
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
+  }
+
+  function handlePointerMove(e) {
+    if (!EcoSortingState.dragActive || !EcoSortingState.dragGhostEl) return;
+
+    const ghost = EcoSortingState.dragGhostEl;
+    const ghostWidth = ghost.offsetWidth || 140;
+    const ghostHeight = ghost.offsetHeight || 120;
+
+    ghost.style.left = `${e.clientX - ghostWidth / 2}px`;
+    ghost.style.top = `${e.clientY - ghostHeight / 2}px`;
+
+    // Sichqoncha/barmoq ostidagi konteynerni magnit effekti bilan aniqlash
+    const elementsUnder = document.elementsFromPoint(e.clientX, e.clientY) || [];
+    let foundBinKey = null;
+
+    for (const el of elementsUnder) {
+      const binEl = el.closest ? el.closest('.sorting-drop-bin') : null;
+      if (binEl && binEl.dataset.binKey) {
+        foundBinKey = binEl.dataset.binKey;
+        break;
+      }
+    }
+
+    // Barcha binlarning nurini yangilash
+    document.querySelectorAll('.sorting-drop-bin').forEach(bin => {
+      const key = bin.dataset.binKey;
+      if (key === foundBinKey) {
+        bin.classList.add('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'shadow-emerald-500/30', 'bg-emerald-950/40');
+      } else {
+        bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'shadow-emerald-500/30', 'bg-emerald-950/40');
+      }
+    });
+
+    EcoSortingState.dragCandidateBinKey = foundBinKey;
+  }
+
+  function handlePointerUp(e, itemId, originalCard) {
+    if (!EcoSortingState.dragActive) return;
+    EcoSortingState.dragActive = false;
+
+    // Nur va vizual belgilarni tozalash
+    document.querySelectorAll('.sorting-drop-bin').forEach(bin => {
+      bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'shadow-emerald-500/30', 'bg-emerald-950/40');
+    });
+
+    if (EcoSortingState.dragGhostEl) {
+      EcoSortingState.dragGhostEl.remove();
+      EcoSortingState.dragGhostEl = null;
+    }
+
+    if (originalCard) {
+      originalCard.style.opacity = '1';
+    }
+
+    const candidateBin = EcoSortingState.dragCandidateBinKey;
+    EcoSortingState.dragCandidateBinKey = null;
+
+    if (candidateBin) {
+      // Konteyner ustiga tushdi!
+      placeItemInBin(itemId, candidateBin);
+    } else {
+      // Konteynerdan tashqariga tushdi — kartochka o'z joyiga silliq qaytadi
+      if (originalCard) {
+        originalCard.classList.add('animate-shake');
+        setTimeout(() => originalCard.classList.remove('animate-shake'), 400);
+      }
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // 10. CLICK-TO-PLACE & KLAVIATURA BOSHQARUVI (Accessibility)
+  // -----------------------------------------------------------------------
+  function handleCardClick(e, itemId) {
+    if (EcoSortingState.dragActive) return;
+
+    if (EcoSortingState.selectedItemId === itemId) {
+      EcoSortingState.selectedItemId = null;
+    } else {
+      EcoSortingState.selectedItemId = itemId;
+      if (window.ecoAudio) window.ecoAudio.playClick();
+    }
+    renderTrayItems();
+  }
+
+  function handleBinClick(binKey) {
+    if (!EcoSortingState.selectedItemId) return;
+    placeItemInBin(EcoSortingState.selectedItemId, binKey);
+  }
+
+  function placeItemInBin(itemId, binKey) {
+    const item = EcoSortingState.activeItems.find(i => i.id === itemId);
+    if (!item) return;
+
+    EcoSortingState.placements[itemId] = binKey;
+    EcoSortingState.selectedItemId = null;
+
+    if (window.ecoAudio) window.ecoAudio.playClick();
+
+    // Mashq rejimida bo'lsa darhol to'g'ri/xato ekanligini aytib turish
+    if (EcoSortingState.mode === 'practice') {
+      const isCorrect = item.cat === binKey;
+      if (isCorrect) {
+        if (window.ecoAudio) window.ecoAudio.playSuccess();
+        if (window.showToast) window.showToast(`✅ To'g'ri! ${item.name} «${binKey.toUpperCase()}» toifasiga kiradi.`);
+      } else {
+        if (window.ecoAudio) window.ecoAudio.playError();
+        if (window.showToast) window.showToast(`❌ Xato! ${item.hint || item.explanation}`);
+      }
+    }
+
+    renderTrayItems();
+    updateBinsContentUI();
+    updatePlacedCountUI();
+  }
+
+  function removeFromBin(itemId) {
+    delete EcoSortingState.placements[itemId];
+    EcoSortingState.selectedItemId = null;
+    if (window.ecoAudio) window.ecoAudio.playClick();
+
+    renderTrayItems();
+    updateBinsContentUI();
+    updatePlacedCountUI();
+  }
+
+  function setupKeyboardShortcuts() {
+    window.addEventListener('keydown', (e) => {
+      // 1 dan 9 gacha raqamlar
+      if (e.key >= '1' && e.key <= '9') {
+        const categories = window.ECO_CATEGORIES || [];
+        const idx = parseInt(e.key, 10) - 1;
+        const targetCat = categories[idx];
+
+        if (targetCat && EcoSortingState.selectedItemId) {
+          e.preventDefault();
+          placeItemInBin(EcoSortingState.selectedItemId, targetCat.key);
+        }
+      }
+      // Escape bosilsa tanlangan kartochkani bekor qilish
+      if (e.key === 'Escape') {
+        EcoSortingState.selectedItemId = null;
+        renderTrayItems();
+      }
+    });
+  }
+
+  // -----------------------------------------------------------------------
+  // 11. YAKUNIY NATIJANI TEKSHIRISH VA CHUQUR TAHLIL (Exam Result Screen)
+  // -----------------------------------------------------------------------
+  function verifyRound() {
+    submitExamResults(false);
+  }
+
+  function submitExamResults(isTimeout = false) {
+    stopSortingGameTimer();
+    EcoSortingState.isFinished = true;
+    EcoSortingState.endTime = Date.now();
+
+    const elapsedSeconds = Math.max(1, Math.round((EcoSortingState.endTime - EcoSortingState.startTime) / 1000));
+    const items = EcoSortingState.activeItems;
+    const categories = window.ECO_CATEGORIES || [];
+
+    let correctCount = 0;
+    const categoryStats = {};
+    const detailedList = [];
+
+    // Zaif toifalarni saqlab borish uchun obyekt
+    let storedWeakCats = {};
+    try {
+      storedWeakCats = JSON.parse(localStorage.getItem('ECO_WEAK_CATEGORIES') || '{}');
+    } catch (e) {}
+
+    items.forEach(item => {
+      const chosenCatKey = EcoSortingState.placements[item.id] || 'unplaced';
+      const isCorrect = chosenCatKey === item.cat;
+
+      if (!categoryStats[item.cat]) {
+        categoryStats[item.cat] = { total: 0, correct: 0, catName: item.cat };
+        const foundCat = categories.find(c => c.key === item.cat);
+        if (foundCat) categoryStats[item.cat].catName = foundCat.name;
+      }
+      categoryStats[item.cat].total++;
+
+      if (isCorrect) {
+        correctCount++;
+        categoryStats[item.cat].correct++;
+      } else {
+        // Xato qilgan toifani saqlash (Adaptive Selection uchun!)
+        storedWeakCats[item.cat] = (storedWeakCats[item.cat] || 0) + 1;
+      }
+
+      const correctCatObj = categories.find(c => c.key === item.cat);
+      const chosenCatObj = categories.find(c => c.key === chosenCatKey);
+
+      detailedList.push({
+        item: item,
+        chosenKey: chosenCatKey,
+        chosenName: chosenCatObj ? chosenCatObj.name : 'Joylashtirilmadi',
+        correctKey: item.cat,
+        correctName: correctCatObj ? correctCatObj.name : item.cat,
+        isCorrect: isCorrect
+      });
+    });
+
+    try {
+      localStorage.setItem('ECO_WEAK_CATEGORIES', JSON.stringify(storedWeakCats));
+    } catch (e) {}
+
+    const totalCount = items.length || 10;
+    const accuracy = Math.round((correctCount / totalCount) * 100);
+
+    // Ball va XP hisoblash (Anti-spam / Diminishing Returns hisobi bilan)
+    let baseXP = correctCount * 10;
+    let perfectionBonus = (correctCount === totalCount) ? 50 : 0;
+    let earnedXP = baseXP + perfectionBonus;
+    let earnedCoins = Math.floor(earnedXP / 2);
+
+    // Kunlik o'yinlar sonini hisoblash
+    let dailyPlayCount = 1;
+    try {
+      const today = new Date().toISOString().slice(0, 10);
+      const lastDate = localStorage.getItem('ECO_SORT_LAST_DATE');
+      if (lastDate === today) {
+        dailyPlayCount = parseInt(localStorage.getItem('ECO_SORT_DAILY_COUNT') || '1', 10) + 1;
+      } else {
+        localStorage.setItem('ECO_SORT_LAST_DATE', today);
+        dailyPlayCount = 1;
+      }
+      localStorage.setItem('ECO_SORT_DAILY_COUNT', dailyPlayCount.toString());
+    } catch (e) {}
+
+    // Agar kuniga 5 tadan ko'p o'ynasa kamayib boruvchi XP
+    if (dailyPlayCount > 5) {
+      earnedXP = Math.max(5, Math.floor(earnedXP * 0.7));
+      earnedCoins = Math.floor(earnedXP / 2);
+    }
+
+    // Profilga ball qo'shish
+    if (window.addPlayerXP) {
+      window.addPlayerXP(earnedXP);
+    }
+
+    // Unvonni aniqlash
+    let titleBadge = "🌱 Yangi boshlovchi";
+    let titleColor = "text-slate-300";
+    if (correctCount === 10) {
+      titleBadge = "👑 Eko-ustoz";
+      titleColor = "text-amber-400";
+    } else if (correctCount >= 7) {
+      titleBadge = "🥈 Saralash ustasi";
+      titleColor = "text-emerald-400";
+    } else if (correctCount >= 4) {
+      titleBadge = "🥉 O'rganuvchi";
+      titleColor = "text-cyan-400";
+    }
+
+    // Audio va Paqldoq
+    if (correctCount >= 7) {
+      if (window.ecoAudio) window.ecoAudio.playLevelUp();
+      if (window.EcoFxEngine) {
+        window.EcoFxEngine.triggerPaqldoq(window.innerWidth / 2, window.innerHeight / 3, earnedXP);
+      }
+    } else {
+      if (window.ecoAudio) window.ecoAudio.playError();
+    }
+
+    // Natija oynasini render qilish
+    renderResultModalUI({
+      totalCount,
+      correctCount,
+      accuracy,
+      elapsedSeconds,
+      earnedXP,
+      earnedCoins,
+      titleBadge,
+      titleColor,
+      categoryStats,
+      detailedList,
+      isTimeout
+    });
+  }
+
+  function renderResultModalUI(stats) {
+    const modal = document.getElementById('sorting-result-modal');
+    const content = document.getElementById('sorting-result-content');
+    if (!modal || !content) return;
+
+    modal.classList.remove('hidden');
+
+    // Zaif toifalarni topish (xatosi bo'lganlar)
+    const weakList = Object.entries(stats.categoryStats).filter(([k, v]) => v.correct < v.total);
+
+    content.innerHTML = `
+      <!-- Top Title & Badge -->
+      <div class="text-center pb-4 mb-4 border-b border-slate-800">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 mb-3 text-xs font-black ${stats.titleColor}">
+          <span>${stats.titleBadge}</span>
+        </div>
+        <h3 class="text-2xl sm:text-3xl font-black text-white">
+          ${stats.isTimeout ? '⏱️ Vaqt Tugadi! Yakuniy Natija' : '🎉 Saralash Yakunlandi!'}
+        </h3>
+        <p class="text-xs text-slate-400 mt-1">10 ta chiqindini tafakkur qilib saralash bo'yicha hisobot:</p>
+      </div>
+
+      <!-- Katta Ball va Ko'rsatkichlar Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5 text-center">
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+          <span class="text-[10px] text-slate-500 uppercase font-black block">To'g'ri / Jami</span>
+          <span class="text-2xl font-black text-emerald-400">${stats.correctCount} / ${stats.totalCount}</span>
+        </div>
+
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+          <span class="text-[10px] text-slate-500 uppercase font-black block">Aniqlik</span>
+          <span class="text-2xl font-black ${stats.accuracy >= 70 ? 'text-emerald-400' : 'text-amber-400'}">${stats.accuracy}%</span>
+        </div>
+
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+          <span class="text-[10px] text-slate-500 uppercase font-black block">Sarflangan Vaqt</span>
+          <span class="text-2xl font-black text-cyan-400">${stats.elapsedSeconds}s</span>
+        </div>
+
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+          <span class="text-[10px] text-slate-500 uppercase font-black block">Mukofot XP</span>
+          <span class="text-2xl font-black text-amber-400">+${stats.earnedXP} XP</span>
+        </div>
+      </div>
+
+      <!-- Toifalar bo'yicha statistika (Zaif toifalarni ajratib ko'rsatish) -->
+      <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3.5 mb-5">
+        <h5 class="text-xs font-black uppercase tracking-wider text-slate-300 mb-2 flex items-center justify-between">
+          <span>Toifalar bo'yicha tahlil:</span>
+          ${weakList.length > 0 ? `<span class="text-[10px] text-rose-400 font-bold">⚠️ ${weakList.length} ta toifada xato bor</span>` : `<span class="text-[10px] text-emerald-400 font-bold">✅ Barcha toifalar 100% to'g'ri!</span>`}
+        </h5>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+          ${Object.entries(stats.categoryStats).map(([k, st]) => {
+            const isPerfect = st.correct === st.total;
+            return `
+              <div class="p-2 rounded-xl bg-slate-900 border ${isPerfect ? 'border-emerald-500/30' : 'border-rose-500/40'} flex items-center justify-between">
+                <span class="font-bold text-slate-300 truncate">${st.catName}:</span>
+                <span class="font-black ${isPerfect ? 'text-emerald-400' : 'text-rose-400'}">${st.correct} / ${st.total}</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- Har bir rasm uchun qator (Rasm, Siz tanlagan, To'g'ri, ✅/❌, Chuqur Izoh) -->
+      <div class="mb-5">
+        <h5 class="text-xs font-black uppercase tracking-wider text-slate-300 mb-2.5 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-cyan-400"></i>
+          10 ta Chiqindining Batafsil Tahlili va Qoidalari:
+        </h5>
+
+        <div class="space-y-2.5 max-h-64 overflow-y-auto custom-scrollbar pr-1.5">
+          ${stats.detailedList.map((row, idx) => `
+            <div class="p-3 rounded-xl bg-slate-950 border ${row.isCorrect ? 'border-emerald-500/30' : 'border-rose-500/40'} flex flex-col gap-1.5 text-xs">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 font-bold text-white">
+                  <span class="text-lg">${row.item.icon}</span>
+                  <span>${idx + 1}. ${row.item.name}</span>
+                </div>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-black ${row.isCorrect ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-rose-500/20 text-rose-300 border border-rose-500/40'}">
+                  ${row.isCorrect ? '✅ TO\'G\'RI' : '❌ XATO'}
+                </span>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-3 text-[11px] text-slate-400">
+                <span>Sizning tanlovingiz: <strong class="${row.isCorrect ? 'text-emerald-400' : 'text-rose-400'}">${row.chosenName}</strong></span>
+                ${!row.isCorrect ? `<span>To'g'ri konteyner: <strong class="text-emerald-400">${row.correctName}</strong></span>` : ''}
+              </div>
+
+              <!-- Chuqur ilmiy izoh -->
+              <p class="text-[11px] text-slate-300 bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                💡 <strong>Qoida:</strong> ${row.item.explanation}
+              </p>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-2.5 pt-3 border-t border-slate-800">
+        ${stats.correctCount < stats.totalCount ? `
+          <button onclick="EcoSortingEngine.retryOnlyMistakes()" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black rounded-xl text-xs transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20 cursor-pointer">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Faqat Xatolarni Qayta Mashq Qilish (${stats.totalCount - stats.correctCount} ta)</span>
+          </button>
+        ` : ''}
+
+        <button onclick="EcoSortingEngine.closeResultAndRestart()" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs transition-all flex items-center gap-2 shadow-lg shadow-emerald-500/20 cursor-pointer">
+          <i class="fa-solid fa-rotate-right"></i>
+          <span>Yangi 10 talik O'yin</span>
+        </button>
+
+        <button onclick="EcoSortingEngine.closeResultModal(); switchMainTab('teacher-tab');" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold rounded-xl text-xs transition-all flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-trophy"></i>
+          <span>Liderlar Jadvali</span>
+        </button>
+      </div>
+    `;
+  }
+
+  function closeResultModal() {
+    const modal = document.getElementById('sorting-result-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function closeResultAndRestart() {
+    closeResultModal();
+    startNewSortingRound();
+  }
+
+  // Faqat xato qilingan elementlarni qayta mashq qilish rejimi
+  function retryOnlyMistakes() {
+    closeResultModal();
+    const mistakes = EcoSortingState.activeItems.filter(
+      item => EcoSortingState.placements[item.id] !== item.cat
+    );
+
+    if (mistakes.length === 0) {
+      startNewSortingRound();
+      return;
+    }
+
+    EcoSortingState.placements = {};
+    EcoSortingState.results = null;
+    EcoSortingState.isFinished = false;
+    EcoSortingState.selectedItemId = null;
+    EcoSortingState.startTime = Date.now();
+    EcoSortingState.activeItems = fisherYatesShuffle(mistakes);
+
+    renderTrayItems();
+    updateBinsContentUI();
+    updatePlacedCountUI();
+
+    if (window.showToast) {
+      window.showToast(`🎯 Faqat xato qilingan ${mistakes.length} ta chiqindi yuklandi!`);
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // 12. SOZLAMALAR VA MODAL BOSHQARUVI
+  // -----------------------------------------------------------------------
+  function showStartModal() {
+    const modal = document.getElementById('sorting-config-modal');
+    if (modal) modal.classList.remove('hidden');
+  }
+
+  function hideStartModal() {
+    const modal = document.getElementById('sorting-config-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function setMode(modeName) {
+    EcoSortingState.mode = modeName;
+    const modeTag = document.getElementById('active-mode-tag');
+    if (modeTag) {
+      if (modeName === 'exam') {
+        modeTag.className = "text-[10px] uppercase font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2 py-0.5 rounded-full";
+        modeTag.textContent = "Imtihon Rejimi";
+      } else {
+        modeTag.className = "text-[10px] uppercase font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full";
+        modeTag.textContent = "Mashq Rejimi";
+      }
+    }
+  }
+
+  function toggleTimerOption(enabled) {
+    EcoSortingState.timerEnabled = enabled;
+  }
+
+  function applyConfigAndStart() {
+    hideStartModal();
+    startNewSortingRound();
+  }
+
+  // Public API
+  window.EcoSortingEngine = {
+    init: initSortingGame,
+    startNewRound: startNewSortingRound,
+    restartRound: startNewSortingRound,
+    handlePointerDown,
+    handleCardClick,
+    handleBinClick,
+    removeFromBin,
+    verifyRound,
+    showStartModal,
+    hideStartModal,
+    setMode,
+    toggleTimerOption,
+    applyConfigAndStart,
+    closeResultModal,
+    closeResultAndRestart,
+    retryOnlyMistakes
+  };
+
+  // Eski API nomlarini saqlab qolish (moslik uchun)
+  window.startNew25Session = startNewSortingRound;
+
+})();
