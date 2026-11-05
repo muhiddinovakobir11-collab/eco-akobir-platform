@@ -1,23 +1,24 @@
 /**
  * ============================================================================
- * 24-O'YIN: CHIQINDI LABORATORIYASI (10 QUTI & DRAG-AND-DROP SANDBOX)
+ * 24-O'YIN: CHIQINDI LABORATORIYASI (MUKAMMAL 10-20 QUTI DRAG-AND-DROP SANDBOX)
  * ============================================================================
  * Asoschi: Akobir | EcoAkobir Platformasi
+ * 200 TA TO'LIQ CHIQINDI BAZASI & HAR BIR CHIQINDI UCHUN LOKAL VEKTORLI SVG
  * 
- * 7 TA ASOSIY TALAB TO'LIQ DASTURLANGAN:
- * 1. 10 ta muvozanatli chiqindi maxsus lagonda (Dock/Tray) chiqadi.
- * 2. 9 ta rangli qutiga qo'l/sichqoncha bilan erkin sudrash (Pointer Events).
- * 3. Qutiga solingan buyumni qaytarib olish yoki boshqasiga o'tkazish mumkin.
- * 4. Natija faqat oxirida: 10 tasi to'lgach "Tekshirish" tugmasi ochiladi.
- * 5. Fisher-Yates aralashtirish, Recency Penalty va Moslashuvchan Ta'lim (Weak Categories).
- * 6. "Qopqon" chiqindilar (Tetra Pak, Kassa cheki, Powerbank, Choy paketi, Pyrex) va 90s taymer.
- * 7. Imtihon vs Mashq rejimlari va 10/10 "Eko-ustoz" ta'limiy hisoboti.
+ * Imkoniyatlar:
+ * 1. 200 ta boy chiqindi bazasi (waste-database.js) bilan 100% integratsiya.
+ * 2. Har bir chiqindiga o'zining individual SVG rasmi yoki maxsus boy emojisi (hech qanday generic ♻️ emas!).
+ * 3. 3 xil hajm: 10 talik (Standart), 15 talik (Kengaytirilgan), 20 talik (Katta Imtihon).
+ * 4. Qulay ergonomik dizayn: Chiqindilar lagoni (Dock) TEPADA, 9 ta quti PASTDAGI keng 3x3 to'rda!
+ * 5. Universal boshqaruv: HTML5 Native Drag & Drop + Pointer Events + Click-to-Place + 1-9 Klaviaturasi.
+ * 6. "Qopqon" chiqindilar (Tetra Pak, Kassa cheki, Powerbank, Choy paketi, Pyrex va b.) tahlili.
+ * 7. Chuqur ilmiy natija ekrani (Eko-ustoz unvoni, zaif toifalar va qayta mashq qilish).
  */
 
 (function () {
   'use strict';
 
-  // Injected CSS for drag ghost and bin magnetic glow
+  // Drag ghost va magnit hover stillari
   (function injectStyles() {
     if (document.getElementById('waste-drag-lab-styles')) return;
     const s = document.createElement('style');
@@ -27,12 +28,12 @@
         position: fixed;
         pointer-events: none;
         z-index: 9999;
-        transform: translate(-50%, -50%) scale(1.12) rotate(3deg);
+        transform: translate(-50%, -50%) scale(1.1);
         filter: drop-shadow(0 20px 25px rgba(0,0,0,0.6));
         transition: transform 0.05s ease-out;
       }
       .bin-magnetic-hover {
-        transform: scale(1.04);
+        transform: scale(1.03) !important;
         box-shadow: 0 0 25px 5px rgba(16, 185, 129, 0.45) !important;
         border-color: #34d399 !important;
       }
@@ -40,46 +41,75 @@
         touch-action: none;
         user-select: none;
       }
+      @keyframes labPulseGlow {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+        50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      }
+      .lab-card-selected {
+        animation: labPulseGlow 1.5s infinite;
+      }
     `;
     document.head.appendChild(s);
   })();
 
   const BINS = [
-    { key: "plastik", name: "Plastik", color: "#f59e0b", border: "border-amber-500", bg: "bg-amber-500/10", icon: "🧴", num: 1 },
-    { key: "qogoz", name: "Qog'oz & Karton", color: "#3b82f6", border: "border-blue-500", bg: "bg-blue-500/10", icon: "📦", num: 2 },
-    { key: "shisha", name: "Shisha idish", color: "#10b981", border: "border-emerald-500", bg: "bg-emerald-500/10", icon: "🍾", num: 3 },
-    { key: "organik", name: "Organik chiqindi", color: "#d97706", border: "border-yellow-600", bg: "bg-yellow-600/10", icon: "🍌", num: 4 },
-    { key: "metall", name: "Metall quti", color: "#06b6d4", border: "border-cyan-500", bg: "bg-cyan-500/10", icon: "🥫", num: 5 },
-    { key: "xavfli", name: "Xavfli chiqindi", color: "#f43f5e", border: "border-rose-500", bg: "bg-rose-500/10", icon: "🔋", num: 6 },
-    { key: "elektronika", name: "Elektronika (E-waste)", color: "#a855f7", border: "border-purple-500", bg: "bg-purple-500/10", icon: "📱", num: 7 },
-    { key: "tekstil", name: "Tekstil / Kiyim", color: "#ec4899", border: "border-pink-500", bg: "bg-pink-500/10", icon: "👕", num: 8 },
-    { key: "utilizatsiya", name: "Utilizatsiya (Qayta ishlanmaydi)", color: "#64748b", border: "border-slate-500", bg: "bg-slate-500/10", icon: "🗑️", num: 9 }
+    { key: "plastik", name: "Plastik", color: "#f59e0b", border: "border-amber-500/50", bg: "bg-amber-950/30", icon: "🧴", desc: "Qayta ishlanadi" },
+    { key: "qogoz", name: "Qog'oz & Karton", color: "#3b82f6", border: "border-blue-500/50", bg: "bg-blue-950/30", icon: "📦", desc: "Qayta ishlanadi" },
+    { key: "shisha", name: "Shisha idish", color: "#10b981", border: "border-emerald-500/50", bg: "bg-emerald-950/30", icon: "🍾", desc: "Qayta ishlanadi" },
+    { key: "metall", name: "Metall quti", color: "#06b6d4", border: "border-cyan-500/50", bg: "bg-cyan-950/30", icon: "🥫", desc: "Qayta ishlanadi" },
+    { key: "organik", name: "Organik chiqindi", color: "#d97706", border: "border-yellow-600/50", bg: "bg-yellow-950/30", icon: "🍌", desc: "Kompost qilinadi" },
+    { key: "xavfli", name: "Xavfli chiqindi", color: "#f43f5e", border: "border-rose-500/50", bg: "bg-rose-950/30", icon: "🔋", desc: "Zararsizlantiriladi" },
+    { key: "elektronika", name: "Elektronika (E-waste)", color: "#a855f7", border: "border-purple-500/50", bg: "bg-purple-950/30", icon: "📱", desc: "Maxsus utilizatsiya" },
+    { key: "tekstil", name: "Tekstil / Kiyim", color: "#ec4899", border: "border-pink-500/50", bg: "bg-pink-950/30", icon: "👕", desc: "Ikkilamchi ip" },
+    { key: "utilizatsiya", name: "Utilizatsiya (Qayta ishlanmaydi)", color: "#64748b", border: "border-slate-600/50", bg: "bg-slate-900/80", icon: "🗑️", desc: "Maxsus poligon" }
   ];
 
   const EcoWasteDragLab = {
-    // Holat ma'lumotlari
-    mode: 'exam', // 'exam' (faqat oxirida tekshirish) yoki 'practice' (darhol izoh)
+    mode: 'exam', // 'exam' yoki 'practice'
+    roundSize: 10, // 10, 15 yoki 20
     timerEnabled: false,
     timerSeconds: 90,
     timerRemaining: 90,
     timerInterval: null,
-    
-    activeItems: [], // 10 ta chiqindi
-    placements: {},  // { [itemId]: binKey }
-    selectedItemId: null, // Click-to-place va 1-9 klaviaturasi uchun
+
+    activeItems: [],
+    placements: {},
+    selectedItemId: null,
     startTime: 0,
     endTime: 0,
     isFinished: false,
 
-    // Pointer Drag holati
     isDragging: false,
     dragItemId: null,
     ghostEl: null,
     currentHoveredBinKey: null,
 
-    // 1. Initsializatsiya va Interfeysni chizish
+    // Toifani to'g'ri normallashtirish (200 ta bazaga to'liq mos keladi)
+    getItemCategory(item) {
+      if (!item) return 'utilizatsiya';
+      const raw = (item.cat || item.categoryKey || item.category || '').toLowerCase().trim();
+      if (raw === 'u' || raw.includes('utiliz') || raw.includes('qayta ishlanmaydi')) return 'utilizatsiya';
+      if (raw.includes('plast')) return 'plastik';
+      if (raw.includes('qog') || raw.includes('kart')) return 'qogoz';
+      if (raw.includes('shish')) return 'shisha';
+      if (raw.includes('met')) return 'metall';
+      if (raw.includes('organ')) return 'organik';
+      if (raw.includes('xavf')) return 'xavfli';
+      if (raw.includes('elektron')) return 'elektronika';
+      if (raw.includes('tekst') || raw.includes('kiyim')) return 'tekstil';
+      return 'utilizatsiya';
+    },
+
+    isItemMatchBin(item, binKey) {
+      const itemCat = this.getItemCategory(item);
+      const bKey = (binKey || '').toLowerCase().trim();
+      if ((itemCat === 'utilizatsiya' || itemCat === 'u') && (bKey === 'utilizatsiya' || bKey === 'u')) return true;
+      return itemCat === bKey;
+    },
+
+    // 1. Initsializatsiya va Asosiy Interfeysni chizish
     renderUI(container) {
-      const target = container || document.getElementById('game-dynamic-content');
+      const target = container || document.getElementById('game-dynamic-content') || document.getElementById('sorting-game-container');
       if (!target) return;
 
       this.stopTimer();
@@ -97,89 +127,97 @@
                 <div class="flex items-center gap-2 flex-wrap">
                   <h3 class="text-xl font-black text-white tracking-wide">Chiqindi Laboratoriyasi (Drag & Drop)</h3>
                   <span class="text-[10px] uppercase font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full">
-                    24-O'yin • 10 Quti Sandbox
+                    200 TA CHIQINDI BAZASI
                   </span>
                   <span id="lab-mode-tag" class="text-[10px] uppercase font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full">
                     ${this.mode === 'exam' ? '🏆 Imtihon Rejimi' : '🎓 Mashq Rejimi'}
                   </span>
                 </div>
                 <p class="text-xs text-slate-400 mt-0.5">
-                  10 ta chiqindini 9 ta qutiga sudrab joylang yoki bosing. "Tekshirish" bosilguncha javoblarni erkin o'zgartira olasiz!
+                  Chiqindilarni 9 ta rangli qutiga sudrab joylang yoki bosing. "Tekshirish" bosilguncha javoblarni erkin o'zgartirish mumkin!
                 </p>
               </div>
             </div>
 
             <!-- Header Quick Controls -->
             <div class="flex items-center gap-2 flex-wrap">
-              <button onclick="EcoWasteDragLab.openSettingsModal()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold border border-slate-700 transition-colors cursor-pointer flex items-center gap-1.5">
-                <i class="fa-solid fa-sliders text-amber-400"></i>
-                <span>Rejim / Taymer</span>
-              </button>
-
-              <button onclick="EcoWasteDragLab.startNewRound()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold border border-slate-700 transition-colors cursor-pointer flex items-center gap-1.5">
-                <i class="fa-solid fa-arrows-rotate text-emerald-400"></i>
-                <span>Qayta aralashtirish</span>
-              </button>
-
-              <div class="bg-slate-950 px-3.5 py-1.5 rounded-xl border border-slate-800 text-center min-w-[70px]">
-                <span class="text-[9px] text-slate-500 uppercase font-black block">Joylandi</span>
-                <span id="lab-placed-count" class="text-xs font-black text-amber-400">0 / 10</span>
+              <!-- Hajm tanlash (10, 15, 20) -->
+              <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800 text-[11px] font-bold">
+                <button onclick="EcoWasteDragLab.setRoundSize(10)" class="px-2.5 py-1 rounded-lg ${this.roundSize === 10 ? 'bg-emerald-500 text-slate-950 font-black' : 'text-slate-400 hover:text-white'} transition-all cursor-pointer">10 ta</button>
+                <button onclick="EcoWasteDragLab.setRoundSize(15)" class="px-2.5 py-1 rounded-lg ${this.roundSize === 15 ? 'bg-emerald-500 text-slate-950 font-black' : 'text-slate-400 hover:text-white'} transition-all cursor-pointer">15 ta</button>
+                <button onclick="EcoWasteDragLab.setRoundSize(20)" class="px-2.5 py-1 rounded-lg ${this.roundSize === 20 ? 'bg-emerald-500 text-slate-950 font-black' : 'text-slate-400 hover:text-white'} transition-all cursor-pointer">20 ta</button>
               </div>
 
-              <div id="lab-timer-badge" class="${this.timerEnabled ? 'flex' : 'hidden'} items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-xl border border-rose-500/40 font-mono text-xs text-rose-400">
+              <button onclick="EcoWasteDragLab.openSettingsModal()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border border-slate-700">
+                <i class="fa-solid fa-sliders text-amber-400"></i>
+                <span>Rejim</span>
+              </button>
+
+              <button onclick="EcoWasteDragLab.startNewRound()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border border-slate-700">
+                <i class="fa-solid fa-arrows-rotate text-emerald-400"></i>
+                <span>Yangi Partiya</span>
+              </button>
+
+              <div class="bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-center min-w-[70px]">
+                <span class="text-[9px] text-slate-500 uppercase font-black block">Joylandi</span>
+                <span id="lab-placed-count" class="text-xs font-black text-amber-400">0 / ${this.roundSize}</span>
+              </div>
+
+              <div id="lab-timer-badge" class="${this.timerEnabled ? 'flex' : 'hidden'} items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-xs font-black text-rose-400">
                 <i class="fa-solid fa-stopwatch animate-pulse"></i>
                 <span id="lab-timer-num">90s</span>
               </div>
             </div>
           </div>
 
-          <!-- ASOSIY MAYDON: 9 TA RANG-BARANG KONTEYNERLAR GORIZONTAL TO'RI -->
-          <div class="mb-6">
-            <div class="flex items-center justify-between mb-2">
+          <!-- 1. TEPADA: SARALANISHI KERAK BO'LGAN CHIQINDILAR (DOCK / TRAY) -->
+          <div class="bg-slate-950/95 border-2 border-emerald-500/30 rounded-2xl p-3 sm:p-4 mb-5 shadow-xl">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <i class="fa-solid fa-hand-pointer text-emerald-400 animate-bounce"></i>
+                  Saralanishi kerak bo'lgan chiqindilar (${this.roundSize} ta):
+                </span>
+                <span id="lab-dock-remaining-badge" class="text-[10px] text-emerald-300 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/40 font-black">
+                  ${this.roundSize} ta qoldi
+                </span>
+              </div>
+
+              <span class="text-[11px] text-slate-400 font-medium hidden md:inline">
+                💡 Maslahat: Chiqindini sudrang yoki <b>ustiga bosing</b>, keyin qutini tanlang!
+              </span>
+            </div>
+
+            <!-- Chiqindi kartochkalari (Dock) -->
+            <div id="lab-dock-tray" class="flex flex-wrap gap-2.5 min-h-[130px] items-center justify-center p-2 rounded-xl border border-dashed border-slate-700/80 bg-slate-900/60">
+              <!-- Rendered by renderDock() -->
+            </div>
+          </div>
+
+          <!-- 2. PASTDA: 9 TA RANGLI KONTEYNER (KENG 3x3 TO'R) -->
+          <div class="mb-5">
+            <div class="flex items-center justify-between mb-2 px-1">
               <span class="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <i class="fa-solid fa-trash-can text-emerald-400"></i> 9 Ta Rangli Konteyner (Drop Hududi):
+                <i class="fa-solid fa-boxes-stacked text-emerald-400"></i>
+                Saralash Konteynerlari (9 ta rangli quti):
               </span>
               <span class="text-[11px] text-slate-500 hidden sm:inline font-medium">
                 * Klaviatura orqali tezkor joylash uchun <b>1 – 9</b> raqamlarini bosing
               </span>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-2.5" id="lab-bins-grid">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2.5 sm:gap-3" id="lab-bins-grid">
               <!-- Rendered by renderBins() -->
             </div>
           </div>
 
-          <!-- PASTKI MAYDON: 10 TA MUVOZANATLI CHIQINDILAR LAGONI (DOCK / TRAY) -->
-          <div class="bg-slate-950/90 border-2 border-slate-800 rounded-2xl p-4 relative">
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-black text-emerald-400 uppercase tracking-wider">
-                  📦 Saralash Kutayotgan Chiqindilar (Dock / Tray):
-                </span>
-                <span class="text-[10px] text-slate-400 bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800 font-bold" id="lab-dock-remaining-badge">
-                  10 ta qoldi
-                </span>
-              </div>
-
-              <!-- Click-to-place Yo'riqnoma -->
-              <span class="text-[11px] text-slate-400 font-medium hidden md:inline">
-                💡 Maslahat: Chiqindini sudrang yoki <b>ustiga bosing</b>, keyin qutini bosing!
-              </span>
-            </div>
-
-            <!-- 10 ta chiqindi kartochkalari qatori -->
-            <div id="lab-dock-tray" class="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-2.5 min-h-[145px] items-stretch">
-              <!-- Rendered by renderDock() -->
-            </div>
-          </div>
-
-          <!-- YAKUNIY TEKSHIRISH TUGMASI (Dastlab xira, 10 tasi to'lgach chaqnab ochiladi) -->
-          <div class="mt-6 flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-800">
+          <!-- 3. YAKUNIY TEKSHIRISH TUGMASI -->
+          <div class="mt-4 flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-800">
             <div class="text-xs text-slate-400">
-              <span id="lab-hint-text">Barcha 10 ta chiqindini qutilarga joylang, so'ngra tekshirish tugmasi faollashadi.</span>
+              <span id="lab-hint-text">Barcha chiqindilarni qutilarga joylang, so'ngra tekshirish tugmasi faollashadi.</span>
             </div>
 
-            <button id="lab-verify-btn" onclick="EcoWasteDragLab.verifyRound()" disabled class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-slate-800 text-slate-500 font-black text-sm tracking-wide transition-all duration-300 flex items-center justify-center gap-2 cursor-not-allowed">
+            <button id="lab-verify-btn" onclick="EcoWasteDragLab.verifyRound()" disabled class="w-full sm:w-auto px-7 py-3 rounded-xl bg-slate-800 text-slate-500 font-black text-sm flex items-center justify-center gap-2 transition-all cursor-not-allowed opacity-50">
               <i class="fa-solid fa-circle-check"></i>
               <span>Natijani Tekshirish</span>
             </button>
@@ -189,7 +227,7 @@
 
         <!-- REJIM VA SOZLAMA MODALI -->
         <div id="lab-settings-modal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
-          <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl animate-scale-in">
+          <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl animate-fade-in">
             <h4 class="text-lg font-black text-white mb-2 flex items-center gap-2">
               <i class="fa-solid fa-sliders text-amber-400"></i> Laboratoriya Sozlamalari
             </h4>
@@ -198,63 +236,73 @@
             </p>
 
             <div class="space-y-3 mb-5">
-              <label onclick="EcoWasteDragLab.setMode('exam')" class="flex items-center justify-between p-3.5 rounded-2xl border ${this.mode === 'exam' ? 'border-emerald-500 bg-emerald-500/10' : 'border-slate-800 bg-slate-950'} cursor-pointer transition-all">
+              <label onclick="EcoWasteDragLab.setMode('exam')" class="flex items-center justify-between p-3 rounded-xl border border-slate-700 bg-slate-950/60 hover:border-emerald-500/60 cursor-pointer transition-all">
                 <div>
-                  <div class="font-bold text-xs text-white flex items-center gap-2">
+                  <div class="font-bold text-sm text-white flex items-center gap-2">
                     <span>🏆 Imtihon Rejimi</span>
-                    <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-black">Asosiy (+100 XP)</span>
+                    <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-black">Asosiy (+100 XP)</span>
                   </div>
-                  <div class="text-[11px] text-slate-400 mt-0.5">10 ta rasm to'liq joylangach, faqat yakunda tekshiriladi.</div>
+                  <div class="text-xs text-slate-400 mt-0.5">Natija faqat oxirida tekshiriladi.</div>
                 </div>
-                <input type="radio" name="lab-mode" value="exam" ${this.mode === 'exam' ? 'checked' : ''} class="accent-emerald-500">
+                <input type="radio" name="lab-mode-input" value="exam" ${this.mode === 'exam' ? 'checked' : ''} class="w-4 h-4 accent-emerald-500">
               </label>
 
-              <label onclick="EcoWasteDragLab.setMode('practice')" class="flex items-center justify-between p-3.5 rounded-2xl border ${this.mode === 'practice' ? 'border-cyan-500 bg-cyan-500/10' : 'border-slate-800 bg-slate-950'} cursor-pointer transition-all">
+              <label onclick="EcoWasteDragLab.setMode('practice')" class="flex items-center justify-between p-3 rounded-xl border border-slate-700 bg-slate-950/60 hover:border-cyan-500/60 cursor-pointer transition-all">
                 <div>
-                  <div class="font-bold text-xs text-white flex items-center gap-2">
+                  <div class="font-bold text-sm text-white flex items-center gap-2">
                     <span>🎓 Mashq Rejimi</span>
-                    <span class="text-[9px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-black">Ta'limiy (+50 XP)</span>
+                    <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-black">Ta'limiy (+50 XP)</span>
                   </div>
-                  <div class="text-[11px] text-slate-400 mt-0.5">Har bir qutiga tashlanganda o'sha zahotiyoq to'g'ri/xato izohi chiqadi.</div>
+                  <div class="text-xs text-slate-400 mt-0.5">Har bir tashlanganda darhol to'g'ri/xato izohi ko'rsatiladi.</div>
                 </div>
-                <input type="radio" name="lab-mode" value="practice" ${this.mode === 'practice' ? 'checked' : ''} class="accent-cyan-500">
+                <input type="radio" name="lab-mode-input" value="practice" ${this.mode === 'practice' ? 'checked' : ''} class="w-4 h-4 accent-cyan-500">
               </label>
             </div>
 
-            <!-- 90s Taymer -->
-            <div class="p-3.5 rounded-2xl border border-slate-800 bg-slate-950 mb-6 flex items-center justify-between">
+            <!-- Taymer tanlash -->
+            <div class="p-3.5 rounded-xl border border-slate-700 bg-slate-950/60 mb-6 flex items-center justify-between">
               <div>
-                <span class="text-xs font-bold text-white block">⏱️ 90 Soniyalik Vaqt Chegarasi</span>
-                <span class="text-[11px] text-slate-400">Vaqt kamayganda audio tezlashadi</span>
+                <span class="text-sm font-bold text-white block">⏱️ 90 Soniyalik Taymer</span>
+                <span class="text-xs text-slate-400">Vaqt poygasi sifatida o'ynash</span>
               </div>
-              <input type="checkbox" id="lab-timer-check" onchange="EcoWasteDragLab.toggleTimer(this.checked)" ${this.timerEnabled ? 'checked' : ''} class="w-5 h-5 accent-emerald-500 cursor-pointer">
+              <input type="checkbox" id="lab-timer-check" onchange="EcoWasteDragLab.toggleTimerOption(this.checked)" ${this.timerEnabled ? 'checked' : ''} class="w-5 h-5 accent-emerald-500 cursor-pointer">
             </div>
 
-            <div class="flex justify-end gap-2">
+            <div class="flex gap-2 justify-end">
               <button onclick="EcoWasteDragLab.closeSettingsModal()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all cursor-pointer">
-                Tayyor
+                Yopish
+              </button>
+              <button onclick="EcoWasteDragLab.closeSettingsModal(); EcoWasteDragLab.startNewRound();" class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs transition-all shadow-lg shadow-emerald-500/20 cursor-pointer">
+                O'yinni Boshlash
               </button>
             </div>
           </div>
         </div>
 
-        <!-- YAKUNIY CHUQUR TAHLIL MODALI -->
-        <div id="lab-results-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-          <!-- Rendered by renderResultsModal() -->
+        <!-- NATIJA MODALI -->
+        <div id="lab-results-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
+          <div id="lab-results-content" class="bg-slate-900 border border-emerald-500/40 rounded-3xl max-w-2xl w-full p-5 sm:p-8 shadow-2xl relative animate-fade-in my-auto max-h-[92vh] overflow-y-auto custom-scrollbar">
+            <!-- Rendered by renderResultModal() -->
+          </div>
         </div>
       `;
 
-      this.renderBins();
+      this.setupKeyboard();
       this.startNewRound();
-      this.bindKeyboard();
     },
 
-    // 2. 9 ta Qutini chizish
+    setRoundSize(size) {
+      this.roundSize = size;
+      this.renderUI();
+    },
+
+    // 2. 9 ta Rangli Konteynerni chizish
     renderBins() {
       const grid = document.getElementById('lab-bins-grid');
       if (!grid) return;
 
-      grid.innerHTML = BINS.map(b => {
+      grid.innerHTML = BINS.map((b, idx) => {
+        const shortcut = idx + 1;
         const placedInThisBin = this.activeItems.filter(item => this.placements[item.id] === b.key);
 
         return `
@@ -262,54 +310,61 @@
             id="lab-bin-${b.key}"
             data-bin-key="${b.key}"
             onclick="EcoWasteDragLab.handleBinClick('${b.key}')"
-            class="lab-drop-bin relative rounded-2xl ${b.bg} border-2 ${b.border} p-3 flex flex-col justify-between min-h-[140px] sm:min-h-[155px] transition-all duration-200 cursor-pointer hover:border-white/80 group">
-            
-            <!-- Yuqori qator: Raqam nishoni va Ikonka -->
-            <div class="flex items-center justify-between">
-              <span class="w-5 h-5 rounded-md bg-slate-900 border border-slate-700 flex items-center justify-center text-[10px] font-black text-slate-300 group-hover:text-white">
-                ${b.num}
+            ondragover="EcoWasteDragLab.handleNativeDragOver(event, '${b.key}')"
+            ondragleave="EcoWasteDragLab.handleNativeDragLeave(event, '${b.key}')"
+            ondrop="EcoWasteDragLab.handleNativeDrop(event, '${b.key}')"
+            class="lab-drop-bin relative rounded-2xl ${b.bg} border-2 ${b.border} p-2.5 sm:p-3 transition-all duration-200 flex flex-col justify-between min-h-[100px] sm:min-h-[115px] cursor-pointer hover:shadow-xl hover:-translate-y-0.5 select-none group"
+          >
+            <!-- Top Bin Header -->
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <div class="flex items-center gap-1.5 min-w-0">
+                <span class="text-xl sm:text-2xl shrink-0 transition-transform group-hover:scale-110">${b.icon}</span>
+                <div class="truncate">
+                  <h5 class="text-xs sm:text-sm font-black text-white leading-tight truncate">${b.name}</h5>
+                  <span class="text-[9px] text-slate-400 block">${b.desc}</span>
+                </div>
+              </div>
+              <span class="w-5 h-5 rounded-md bg-slate-950/80 border border-slate-700/80 text-slate-300 text-[10px] font-black flex items-center justify-center shrink-0">
+                ${shortcut}
               </span>
-              <span class="text-xl group-hover:scale-110 transition-transform">${b.icon}</span>
             </div>
 
-            <!-- Quti nomi -->
-            <div class="my-1.5">
-              <h5 class="text-[11px] font-black text-white leading-tight line-clamp-2">${b.name}</h5>
-            </div>
-
-            <!-- Qutiga tushgan chiqindilar ko'rinishi (Badges) -->
-            <div class="min-h-[46px] bg-slate-950/80 rounded-xl p-1.5 border border-slate-800/80 flex flex-wrap gap-1 content-start overflow-hidden" id="lab-bin-items-${b.key}">
+            <!-- Qutiga tushgan chiqindilar ko'rinishi -->
+            <div class="min-h-[28px] bg-slate-950/80 rounded-xl p-1 border border-slate-800/80 flex flex-wrap gap-1 items-center">
               ${placedInThisBin.length === 0 ? `
-                <span class="text-[9px] text-slate-500 font-medium italic block p-0.5">Bo'sh</span>
+                <span class="text-[10px] text-slate-500 font-medium italic px-1">Bo'sh</span>
               ` : placedInThisBin.map(it => `
-                <span 
+                <span
                   onclick="event.stopPropagation(); EcoWasteDragLab.removeFromBin(${it.id})"
                   title="${it.name} (Qaytarib olish uchun bosing)"
-                  class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-rose-400 text-[10px] font-bold text-slate-200 hover:text-rose-300 cursor-pointer shadow-sm group/pill transition-all">
-                  <span>${it.emoji || '♻️'}</span>
-                  <span class="max-w-[50px] truncate text-[9px]">${it.name}</span>
+                  class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-slate-900 border border-slate-700 text-white text-[10px] font-bold group/pill hover:bg-rose-950 hover:text-rose-300 hover:border-rose-500/60 transition-all cursor-pointer shadow-sm"
+                >
+                  <span>${it.icon || it.emoji || '📦'}</span>
+                  <span class="max-w-[65px] truncate text-[9px]">${it.name}</span>
                   <i class="fa-solid fa-xmark text-[8px] text-slate-400 group-hover/pill:text-rose-400"></i>
                 </span>
               `).join('')}
             </div>
 
-            <!-- Joylanganlar sanagichi -->
-            <div class="text-right mt-1">
-              <span class="text-[9px] font-mono font-bold text-slate-400">${placedInThisBin.length} ta buyum</span>
+            <!-- Joylanganlar sanagichi & Drop hint -->
+            <div class="flex items-center justify-between text-[10px] font-bold text-slate-400 mt-1 pt-1 border-t border-slate-800/60">
+              <span class="font-mono">${placedInThisBin.length} ta chiqindi</span>
+              <span class="text-emerald-400 text-[10px] font-extrabold flex items-center gap-0.5">
+                <span>📥 Tashlash</span>
+              </span>
             </div>
           </div>
         `;
       }).join('');
     },
 
-    // 3. Pastki Lagonni (Dock/Tray) chizish
+    // 3. Tepada Lagonni (Dock/Tray) chizish — HAR BIR CHIQINDI UCHUN INDIVIDUAL RASM!
     renderDock() {
       const dock = document.getElementById('lab-dock-tray');
       if (!dock) return;
 
       const unplacedItems = this.activeItems.filter(item => !this.placements[item.id]);
 
-      // Sanagichni yangilash
       const remainingBadge = document.getElementById('lab-dock-remaining-badge');
       if (remainingBadge) {
         remainingBadge.textContent = `${unplacedItems.length} ta qoldi`;
@@ -317,11 +372,11 @@
 
       if (unplacedItems.length === 0) {
         dock.innerHTML = `
-          <div class="col-span-full py-8 text-center">
-            <div class="text-3xl animate-bounce mb-2">🎉</div>
-            <h5 class="text-sm font-black text-emerald-400">Barcha 10 ta chiqindi qutilarga joylandi!</h5>
-            <p class="text-xs text-slate-400 mt-1">
-              Endi quyidagi <b>"Natijani Tekshirish"</b> tugmasini bosing yoki xohlasangiz qutilardagi buyumlarni bosib qaytarib oling.
+          <div class="py-5 text-center animate-fade-in text-emerald-400 font-bold text-xs flex flex-col items-center gap-2 w-full">
+            <div class="text-3xl animate-bounce">🎉</div>
+            <h5 class="text-sm font-black text-emerald-400">Barcha ${this.roundSize} ta chiqindi qutilarga joylandi!</h5>
+            <p class="text-xs text-slate-300">
+              Endi quyidagi <b>"Natijani Tekshirish"</b> tugmasini bosing yoki xohlasangiz qutilardagi buyumlarni qayta almashtiring.
             </p>
           </div>
         `;
@@ -331,59 +386,79 @@
       dock.innerHTML = unplacedItems.map(item => {
         const isSelected = this.selectedItemId === item.id;
         const isTrap = !!item.isTrap;
+        const imgSrc = item.svg ? null : (item.image || `images/waste/${item.slug}.svg`);
 
         return `
           <div 
             id="lab-item-${item.id}"
             data-item-id="${item.id}"
+            draggable="true"
+            ondragstart="EcoWasteDragLab.handleNativeDragStart(event, ${item.id})"
+            ondragend="EcoWasteDragLab.handleNativeDragEnd(event)"
             onpointerdown="EcoWasteDragLab.handlePointerDown(event, ${item.id})"
             onclick="EcoWasteDragLab.handleCardClick(${item.id})"
-            class="tray-card-touch relative rounded-2xl bg-slate-900 border-2 ${isSelected ? 'border-emerald-400 ring-2 ring-emerald-400/40 scale-105' : 'border-slate-800 hover:border-emerald-500/50'} p-2.5 flex flex-col items-center justify-between text-center cursor-grab active:cursor-grabbing transition-all duration-200 shadow-md hover:shadow-xl group">
-            
-            <!-- Trap nishoni (Agar qopqon bo'lsa) -->
-            ${isTrap ? `
-              <span class="absolute -top-2 -right-1 text-[8px] font-black uppercase px-1.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/50 shadow-sm animate-pulse">
-                Qopqon!
+            class="tray-card-touch relative rounded-2xl bg-slate-900 border-2 ${isSelected ? 'border-emerald-400 ring-4 ring-emerald-400 bg-emerald-950/60 lab-card-selected scale-105' : 'border-slate-700 hover:border-emerald-400'} p-2.5 w-[130px] sm:w-[145px] flex flex-col items-center justify-between text-center transition-all duration-200 cursor-pointer hover:shadow-2xl hover:-translate-y-1 group select-none shadow-md"
+          >
+            <!-- Trap / Difficulty badge -->
+            <div class="w-full flex items-center justify-between gap-1 mb-1 relative z-10">
+              <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-slate-950 text-slate-400 border border-slate-800">
+                ${(item.difficulty || 'orta').toUpperCase()}
               </span>
-            ` : ''}
+              ${isTrap ? `
+                <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 animate-pulse">
+                  ⚠️ QOPQON
+                </span>
+              ` : `
+                <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  +10 XP
+                </span>
+              `}
+            </div>
 
-            <!-- Chiqindi Vektorli SVG yoki Emoji -->
-            <div class="w-14 h-14 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center p-1.5 mb-1.5 shadow-inner">
+            <!-- Haqiqiy individual Vektorli Rasm (SVG) -->
+            <div class="w-14 h-14 my-1 flex items-center justify-center relative z-10 pointer-events-none select-none">
               ${item.svg ? `
-                <div class="w-full h-full flex items-center justify-center overflow-hidden">
+                <div class="w-full h-full flex items-center justify-center transition-transform group-hover:scale-110 drop-shadow-md">
                   ${item.svg}
                 </div>
               ` : `
-                <span class="text-2xl">${item.emoji || '♻️'}</span>
+                <img 
+                  src="${imgSrc}" 
+                  alt="${item.name}" 
+                  draggable="false"
+                  class="w-14 h-14 object-contain transition-transform group-hover:scale-110 drop-shadow-md select-none pointer-events-none"
+                  onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\\'text-3xl animate-bounce\\'>${item.icon || item.emoji || '📦'}</span>';"
+                />
               `}
             </div>
 
             <!-- Chiqindi Nomi -->
-            <h6 class="text-[11px] font-black text-white leading-tight line-clamp-2 group-hover:text-emerald-300 transition-colors">
+            <h6 class="text-xs font-black text-white leading-tight min-h-[30px] flex items-center justify-center line-clamp-2 group-hover:text-emerald-300 transition-colors z-10">
               ${item.name}
             </h6>
 
-            <!-- Qiyinlik nishoni -->
-            <span class="text-[8px] font-mono font-bold mt-1 px-1.5 py-0.5 rounded bg-slate-950 text-slate-400">
-              ${item.difficulty === 'hard' ? '🔴 Qiyin' : (item.difficulty === 'medium' ? '🟡 O\'rta' : '🟢 Oson')}
-            </span>
+            <!-- Action hint -->
+            <div class="mt-1 text-[9px] font-bold ${isSelected ? 'text-emerald-400' : 'text-slate-400'} group-hover:text-emerald-300 transition-colors flex items-center gap-1 z-10">
+              <i class="fa-solid ${isSelected ? 'fa-arrow-down' : 'fa-hand-pointer'} text-[9px]"></i>
+              <span>${isSelected ? "Qutini bosing!" : "Bosing / Sudrang"}</span>
+            </div>
           </div>
         `;
       }).join('');
     },
 
-    // 4. Yangi Raund Boshlash (Fisher-Yates, Recency Penalty, Category Balance & Adaptive Weighting)
-    startNewRound(mistakesOnly = false) {
-      this.isFinished = false;
+    // 4. Yangi partiya boshlash
+    startNewRound() {
       this.placements = {};
       this.selectedItemId = null;
+      this.isFinished = false;
       this.startTime = Date.now();
-      this.stopTimer();
 
-      if (mistakesOnly && Array.isArray(this._lastMistakes) && this._lastMistakes.length > 0) {
+      if (this._lastMistakes && this._lastMistakes.length > 0) {
         this.activeItems = [...this._lastMistakes];
+        this._lastMistakes = null;
       } else {
-        this.activeItems = this.selectBalanced10Items();
+        this.activeItems = this.selectBalancedItems(this.roundSize);
       }
 
       this.updatePlacedCountUI();
@@ -399,14 +474,13 @@
       }
     },
 
-    // 5. Muvozanatli 10 ta chiqindini tanlash algoritmi
-    selectBalanced10Items() {
+    // 5. Muvozanatli Chiqindilarni tanlash (200 ta bazadan to'liq)
+    selectBalancedItems(count = 10) {
       const db = window.ECO_WASTE_DATABASE || [];
       if (!Array.isArray(db) || db.length === 0) {
-        return this.getFallbackItems();
+        return this.getFallbackItems().slice(0, count);
       }
 
-      // LocalStorage'dan o'tgan o'yinlarda chiqqan ID'lar va zaif toifalarni olish
       let recentIds = [];
       let weakCategories = [];
       try {
@@ -417,25 +491,24 @@
         weakCategories = [];
       }
 
-      // Toifalar bo'yicha guruhlash
+      // Toifalar bo'yicha guruhlash (9 ta toifaga to'g'ri ajratiladi)
       const byCategory = {};
       db.forEach(item => {
-        const cat = item.categoryKey || item.category || 'utilizatsiya';
+        const cat = this.getItemCategory(item);
         if (!byCategory[cat]) byCategory[cat] = [];
         byCategory[cat].push(item);
       });
 
       const categories = Object.keys(byCategory);
-      // Fisher-Yates aralashtirish
       const shuffledCategories = this.fisherYates(categories);
 
       const chosen = [];
       const usedIds = new Set();
       const categoryCounts = {};
 
-      // 1-Qadam: Agar talabada zaif toifalar bo'lsa, ularga 1-2 ta o'rin ajratamiz (Moslashuvchan Ta'lim)
+      // 1-bosqich: Zaif toifalar (Moslashuvchan Ta'lim)
       if (weakCategories.length > 0) {
-        weakCategories.slice(0, 2).forEach(wCat => {
+        weakCategories.slice(0, 3).forEach(wCat => {
           if (byCategory[wCat] && byCategory[wCat].length > 0) {
             const pool = byCategory[wCat].filter(i => !recentIds.includes(i.id));
             const pickFrom = pool.length > 0 ? pool : byCategory[wCat];
@@ -449,9 +522,9 @@
         });
       }
 
-      // 2-Qadam: Kamida 5-6 xil toifadan chiqishi va bitta toifadan ko'pi bilan 3 ta bo'lishini ta'minlash
+      // 2-bosqich: Barcha toifalardan kamida 1 tadan kiritish
       for (const cat of shuffledCategories) {
-        if (chosen.length >= 10) break;
+        if (chosen.length >= count) break;
         if (!categoryCounts[cat]) {
           const pool = byCategory[cat].filter(i => !recentIds.includes(i.id) && !usedIds.has(i.id));
           const pickFrom = pool.length > 0 ? pool : byCategory[cat].filter(i => !usedIds.has(i.id));
@@ -464,33 +537,42 @@
         }
       }
 
-      // 3-Qadam: Qolgan o'rinlarni 10 tagacha to'ldirish (bitta toifadan max 3 ta)
+      // 3-bosqich: Qolgan o'rinlarni to'ldirish
+      const maxPerCat = Math.max(2, Math.ceil(count / 4));
       const allRemaining = db.filter(i => !usedIds.has(i.id));
       const shuffledRemaining = this.fisherYates(allRemaining);
 
       for (const item of shuffledRemaining) {
-        if (chosen.length >= 10) break;
-        const cat = item.categoryKey || item.category || 'utilizatsiya';
-        if ((categoryCounts[cat] || 0) < 3) {
+        if (chosen.length >= count) break;
+        const cat = this.getItemCategory(item);
+        if ((categoryCounts[cat] || 0) < maxPerCat) {
           chosen.push(item);
           usedIds.add(item.id);
           categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
         }
       }
 
-      // Fisher-Yates bilan tartibni to'liq tasodifiy qilish (toifalar guruhlanib kelmasligi uchun)
+      // Agar hali ham yetmagan bo'lsa, istalgan boshqa chiqindilar bilan to'ldirish
+      if (chosen.length < count) {
+        for (const item of shuffledRemaining) {
+          if (chosen.length >= count) break;
+          if (!usedIds.has(item.id)) {
+            chosen.push(item);
+            usedIds.add(item.id);
+          }
+        }
+      }
+
       const finalItems = this.fisherYates(chosen);
 
-      // Recency penalty: yangi chiqqan ID'larni saqlab qo'yish
       try {
-        const updatedRecent = [...finalItems.map(i => i.id), ...recentIds].slice(0, 30);
+        const updatedRecent = [...finalItems.map(i => i.id), ...recentIds].slice(0, 40);
         localStorage.setItem('ECO_RECENT_SORT_IDS', JSON.stringify(updatedRecent));
       } catch (e) {}
 
       return finalItems;
     },
 
-    // Beg'ubor Fisher-Yates algoritmi
     fisherYates(arr) {
       const copy = [...arr];
       for (let i = copy.length - 1; i > 0; i--) {
@@ -502,51 +584,115 @@
 
     getFallbackItems() {
       return [
-        { id: 101, name: "PET Plastik Butilka", categoryKey: "plastik", difficulty: "oson", emoji: "🧴", explanation: "Oddiy PET shishalar tozalab plastik konteyneriga topshiriladi." },
-        { id: 102, name: "Eski Gazeta & Jurnal", categoryKey: "qogoz", difficulty: "oson", emoji: "📰", explanation: "Toza qog'oz va gazetalar ikkilamchi karton ishlab chiqarish uchun ketadi." },
-        { id: 103, name: "Banan Po'stlog'i", categoryKey: "organik", difficulty: "oson", emoji: "🍌", explanation: "Organik qoldiqlar kompost qilinadi." },
-        { id: 104, name: "Tetra Pak Sharbat Qutisi", categoryKey: "utilizatsiya", difficulty: "qiyin", isTrap: true, emoji: "🧃", explanation: "Tetra Pak ichida polietilen va alyuminiy qatlam bor, shuning uchun oddiy qog'ozga tashlanmaydi!" },
-        { id: 105, name: "Kassa Cheki (Termo)", categoryKey: "utilizatsiya", difficulty: "qiyin", isTrap: true, emoji: "🧾", explanation: "Termo-chekda zaharli Bisfenol-A bor, qog'oz bilan qayta ishlanmaydi!" },
-        { id: 106, name: "Powerbank (Litiy)", categoryKey: "elektronika", difficulty: "qiyin", isTrap: true, emoji: "🔋", explanation: "Oddiy batareya emas, elektron plata va litiy bor, E-waste ga topshiriladi!" },
-        { id: 107, name: "Alyuminiy Ichimlik Bankasi", categoryKey: "metall", difficulty: "oson", emoji: "🥫", explanation: "Alyuminiy cheksiz marta 95% energiya tejalgan holda qayta ishlanadi." },
-        { id: 108, name: "Shisha Dori Flakoni", categoryKey: "shisha", difficulty: "orta", emoji: "🍾", explanation: "Shisha xomashyosi alohida eritiladi." },
-        { id: 109, name: "Paxtali Eski Futbolka", categoryKey: "tekstil", difficulty: "orta", emoji: "👕", explanation: "Tekstil chiqindilari tola sifatida qayta ishlanadi." },
-        { id: 110, name: "Ishlatilgan Batareyka", categoryKey: "xavfli", difficulty: "oson", emoji: "🔋", explanation: "Batareyadagi og'ir metallar tuproqni zaharlaydi, xavfli chiqindiga topshiriladi." }
+        { id: 101, slug: "pet-bottle", name: "PET Plastik Butilka", cat: "plastik", difficulty: "oson", icon: "🧴", explanation: "Oddiy PET shishalar plastik konteyneriga topshiriladi." },
+        { id: 102, slug: "old-newspaper", name: "Eski Gazeta & Jurnal", cat: "qogoz", difficulty: "oson", icon: "📰", explanation: "Toza qog'oz ikkilamchi karton ishlab chiqarish uchun ketadi." },
+        { id: 103, slug: "banana-peel", name: "Banan Po'stlog'i", cat: "organik", difficulty: "oson", icon: "🍌", explanation: "Organik qoldiqlar kompost qilinadi." },
+        { id: 104, slug: "tetra-pak", name: "Tetra Pak Sharbat Qutisi", cat: "U", difficulty: "qiyin", isTrap: true, icon: "🧃", explanation: "Tetra Pak ichida polietilen va alyuminiy qatlam bor, shuning uchun 'U'!" },
+        { id: 105, slug: "cash-receipt", name: "Kassa Cheki (Termo)", cat: "U", difficulty: "qiyin", isTrap: true, icon: "🧾", explanation: "Termo-chekda zaharli Bisfenol-A bor, qog'oz bilan qayta ishlanmaydi!" },
+        { id: 106, slug: "powerbank", name: "Powerbank (Litiy)", cat: "elektronika", difficulty: "qiyin", isTrap: true, icon: "🔋", explanation: "Elektron plata va litiy akkumulyator bor, E-waste ga topshiriladi!" },
+        { id: 107, slug: "aluminum-can", name: "Alyuminiy Ichimlik Bankasi", cat: "metall", difficulty: "oson", icon: "🥫", explanation: "Alyuminiy cheksiz marta 95% energiya tejalgan holda qayta ishlanadi." },
+        { id: 108, slug: "glass-bottle", name: "Shisha Dori Flakoni", cat: "shisha", difficulty: "orta", icon: "🍾", explanation: "Shisha idishlar yuvilib shisha konteyneriga topshiriladi." },
+        { id: 109, slug: "old-tshirt", name: "Paxtali Eski Futbolka", cat: "tekstil", difficulty: "orta", icon: "👕", explanation: "Toza kiyim-kechaklar tekstil konteyneriga topshiriladi." },
+        { id: 110, slug: "used-battery", name: "Ishlatilgan Batareyka", cat: "xavfli", difficulty: "oson", icon: "🔋", explanation: "Zaharli og'ir metallar bor, faqat xavfli chiqindi qutisiga tashlanadi." }
       ];
     },
 
-    // 6. Universal Pointer Drag mexanikasi (Sichqoncha, Barmoq, Stilus)
+    // 6. Native HTML5 Drag & Drop (Desktop kompyuterlar uchun)
+    handleNativeDragStart(e, itemId) {
+      if (this.isFinished) return;
+      this.isDragging = true;
+      this.dragItemId = itemId;
+      this.selectedItemId = itemId;
+      if (e.dataTransfer) {
+        e.dataTransfer.setData('text/plain', String(itemId));
+        e.dataTransfer.effectAllowed = 'move';
+      }
+      const card = document.getElementById(`lab-item-${itemId}`);
+      if (card) card.style.opacity = '0.35';
+    },
+
+    handleNativeDragOver(e, binKey) {
+      e.preventDefault();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+      const bin = document.getElementById(`lab-bin-${binKey}`);
+      if (bin) bin.classList.add('bin-magnetic-hover');
+    },
+
+    handleNativeDragLeave(e, binKey) {
+      const bin = document.getElementById(`lab-bin-${binKey}`);
+      if (bin) bin.classList.remove('bin-magnetic-hover');
+    },
+
+    handleNativeDrop(e, binKey) {
+      e.preventDefault();
+      this.clearBinHoverEffects();
+      let itemId = this.dragItemId;
+      if (!itemId && e.dataTransfer) {
+        const raw = e.dataTransfer.getData('text/plain');
+        if (raw) itemId = parseInt(raw, 10);
+      }
+      if (itemId) {
+        this.placeItemIntoBin(itemId, binKey);
+      }
+      this.isDragging = false;
+      this.dragItemId = null;
+    },
+
+    handleNativeDragEnd(e) {
+      this.isDragging = false;
+      this.dragItemId = null;
+      this.clearBinHoverEffects();
+      document.querySelectorAll('.tray-card-touch').forEach(c => {
+        c.style.opacity = '1';
+      });
+    },
+
+    // 7. Pointer Events Drag (Touch va barmoq uchun)
     handlePointerDown(e, itemId) {
       if (this.isFinished) return;
-      // Faqat asosiy tugma yoki teginish
       if (e.button !== undefined && e.button !== 0) return;
 
       const cardEl = document.getElementById(`lab-item-${itemId}`);
       if (!cardEl) return;
 
-      this.isDragging = true;
-      this.dragItemId = itemId;
-      this.selectedItemId = itemId;
+      try { cardEl.setPointerCapture(e.pointerId); } catch (err) {}
+
+      let startX = e.clientX;
+      let startY = e.clientY;
+      let hasMoved = false;
 
       const item = this.activeItems.find(i => i.id === itemId);
 
-      // Ghost element yaratish
-      this.ghostEl = document.createElement('div');
-      this.ghostEl.className = 'drag-ghost-active rounded-2xl bg-slate-900 border-2 border-emerald-400 p-3 flex items-center gap-2 shadow-2xl';
-      this.ghostEl.innerHTML = `
-        <span class="text-2xl">${item ? (item.emoji || '♻️') : '♻️'}</span>
-        <span class="text-xs font-black text-white">${item ? item.name : ''}</span>
-      `;
-      document.body.appendChild(this.ghostEl);
-      this.updateGhostPos(e.clientX, e.clientY);
-
       const moveHandler = (moveEvent) => {
-        if (!this.isDragging || !this.ghostEl) return;
-        this.updateGhostPos(moveEvent.clientX, moveEvent.clientY);
-        this.checkHoveredBin(moveEvent.clientX, moveEvent.clientY);
+        const dx = moveEvent.clientX - startX;
+        const dy = moveEvent.clientY - startY;
+
+        if (!hasMoved && Math.hypot(dx, dy) > 6) {
+          hasMoved = true;
+          this.isDragging = true;
+          this.dragItemId = itemId;
+          this.selectedItemId = itemId;
+
+          this.ghostEl = document.createElement('div');
+          this.ghostEl.className = 'drag-ghost-active rounded-2xl bg-slate-900 border-2 border-emerald-400 p-2.5 flex items-center gap-2 shadow-2xl';
+          this.ghostEl.innerHTML = `
+            <span class="text-2xl">${item ? (item.icon || item.emoji || '📦') : '📦'}</span>
+            <span class="text-xs font-black text-white">${item ? item.name : ''}</span>
+          `;
+          document.body.appendChild(this.ghostEl);
+          cardEl.style.opacity = '0.35';
+        }
+
+        if (hasMoved && this.ghostEl) {
+          this.ghostEl.style.left = `${moveEvent.clientX}px`;
+          this.ghostEl.style.top = `${moveEvent.clientY}px`;
+          this.checkHoveredBin(moveEvent.clientX, moveEvent.clientY);
+        }
       };
 
       const upHandler = (upEvent) => {
+        try { cardEl.releasePointerCapture(upEvent.pointerId); } catch (err) {}
+
         window.removeEventListener('pointermove', moveHandler);
         window.removeEventListener('pointerup', upHandler);
         window.removeEventListener('pointercancel', upHandler);
@@ -555,14 +701,26 @@
           this.ghostEl.remove();
           this.ghostEl = null;
         }
+        cardEl.style.opacity = '1';
 
-        if (this.currentHoveredBinKey) {
-          // Konteyner ustiga tushdi!
-          this.placeItemIntoBin(this.dragItemId, this.currentHoveredBinKey);
+        if (hasMoved) {
+          this.isDragging = false;
+          let candidate = this.currentHoveredBinKey;
+          if (!candidate && upEvent.clientX !== undefined) {
+            candidate = this.getBinUnderPoint(upEvent.clientX, upEvent.clientY);
+          }
+          if (candidate) {
+            this.placeItemIntoBin(itemId, candidate);
+          } else {
+            cardEl.classList.add('animate-shake');
+            setTimeout(() => cardEl.classList.remove('animate-shake'), 400);
+          }
+        } else {
+          this.isDragging = false;
+          this.handleCardClick(itemId);
         }
 
         this.clearBinHoverEffects();
-        this.isDragging = false;
         this.dragItemId = null;
         this.currentHoveredBinKey = null;
       };
@@ -572,27 +730,26 @@
       window.addEventListener('pointercancel', upHandler);
     },
 
-    updateGhostPos(x, y) {
-      if (this.ghostEl) {
-        this.ghostEl.style.left = `${x}px`;
-        this.ghostEl.style.top = `${y}px`;
-      }
-    },
-
-    checkHoveredBin(x, y) {
-      const bins = document.querySelectorAll('.lab-drop-bin');
+    getBinUnderPoint(x, y) {
       let foundKey = null;
-
-      bins.forEach(bin => {
+      document.querySelectorAll('.lab-drop-bin').forEach(bin => {
         const rect = bin.getBoundingClientRect();
         if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
           foundKey = bin.getAttribute('data-bin-key');
+        }
+      });
+      return foundKey;
+    },
+
+    checkHoveredBin(x, y) {
+      const foundKey = this.getBinUnderPoint(x, y);
+      document.querySelectorAll('.lab-drop-bin').forEach(bin => {
+        if (bin.getAttribute('data-bin-key') === foundKey) {
           bin.classList.add('bin-magnetic-hover');
         } else {
           bin.classList.remove('bin-magnetic-hover');
         }
       });
-
       this.currentHoveredBinKey = foundKey;
     },
 
@@ -602,123 +759,147 @@
       });
     },
 
-    // 7. Click-to-Place (Telefonda kartani bosib, so'ng qutini bosish)
+    // 8. Click-to-Place (Tanlab qutini bosish)
     handleCardClick(itemId) {
-      if (this.isFinished || this.isDragging) return;
+      if (this.isFinished) return;
 
       if (this.selectedItemId === itemId) {
-        this.selectedItemId = null; // Bekor qilish
+        this.selectedItemId = null;
       } else {
         this.selectedItemId = itemId;
       }
 
       this.renderDock();
+      this.updateBinsHighlightForSelection();
+
       if (window.ecoAudio && typeof window.ecoAudio.playClick === 'function') {
         window.ecoAudio.playClick();
       }
     },
 
-    handleBinClick(binKey) {
-      if (this.isFinished) return;
-
-      if (this.selectedItemId) {
-        this.placeItemIntoBin(this.selectedItemId, binKey);
-        this.selectedItemId = null;
-      }
+    updateBinsHighlightForSelection() {
+      const hasSelection = !!this.selectedItemId;
+      document.querySelectorAll('.lab-drop-bin').forEach(bin => {
+        if (hasSelection) {
+          bin.classList.add('ring-2', 'ring-emerald-400', 'animate-pulse');
+        } else {
+          bin.classList.remove('ring-2', 'ring-emerald-400', 'animate-pulse');
+        }
+      });
     },
 
-    // 8. Qutiga joylash va erkin qaytarib olish
+    handleBinClick(binKey) {
+      if (!this.selectedItemId) {
+        if (window.showToast) window.showToast("Avval yuqoridagi chiqindilardan birini bosing, so'ng qutini tanlang!");
+        return;
+      }
+      this.placeItemIntoBin(this.selectedItemId, binKey);
+    },
+
+    // 9. Chiqindini Qutiga Joylash
     placeItemIntoBin(itemId, binKey) {
       const item = this.activeItems.find(i => i.id === itemId);
       if (!item) return;
 
       this.placements[itemId] = binKey;
+      this.selectedItemId = null;
 
-      // Mashq rejimida darhol tekshirish va tovush berish
-      if (this.mode === 'practice') {
-        const isCorrect = binKey === (item.categoryKey || item.category || 'utilizatsiya');
-        if (isCorrect) {
-          if (window.ecoAudio && typeof window.ecoAudio.playCorrect === 'function') window.ecoAudio.playCorrect();
-        } else {
-          if (window.ecoAudio && typeof window.ecoAudio.playWrong === 'function') window.ecoAudio.playWrong();
-          alert(`⚠️ Mashq Rejimi Maslahati:\n"${item.name}" bu qutiga kirmaydi!\nSababi: ${item.explanation}`);
-        }
-      } else {
-        if (window.ecoAudio && typeof window.ecoAudio.playClick === 'function') window.ecoAudio.playClick();
+      if (window.ecoAudio && typeof window.ecoAudio.playClick === 'function') {
+        window.ecoAudio.playClick();
       }
 
-      this.renderBins();
+      // Mashq rejimida darhol tekshirib aytish
+      if (this.mode === 'practice') {
+        const isMatch = this.isItemMatchBin(item, binKey);
+        if (isMatch) {
+          if (window.ecoAudio && typeof window.ecoAudio.playSuccess === 'function') window.ecoAudio.playSuccess();
+          if (window.showToast) window.showToast(`✅ To'g'ri! ${item.name} to'g'ri joylandi.`);
+        } else {
+          if (window.ecoAudio && typeof window.ecoAudio.playError === 'function') window.ecoAudio.playError();
+          if (window.showToast) window.showToast(`❌ Xato! ${item.explanation || "Bu qutiga tushmaydi"}`);
+        }
+      }
+
       this.renderDock();
+      this.renderBins();
       this.updatePlacedCountUI();
+      this.updateBinsHighlightForSelection();
     },
 
     removeFromBin(itemId) {
-      if (this.isFinished) return;
       delete this.placements[itemId];
-      this.renderBins();
+      this.selectedItemId = null;
+      if (window.ecoAudio && typeof window.ecoAudio.playClick === 'function') {
+        window.ecoAudio.playClick();
+      }
       this.renderDock();
+      this.renderBins();
       this.updatePlacedCountUI();
-      if (window.ecoAudio && typeof window.ecoAudio.playClick === 'function') window.ecoAudio.playClick();
+      this.updateBinsHighlightForSelection();
     },
 
     updatePlacedCountUI() {
       const placedCount = Object.keys(this.placements).length;
-      const countEl = document.getElementById('lab-placed-count');
+      const total = this.activeItems.length;
+
+      const counterEl = document.getElementById('lab-placed-count');
+      if (counterEl) {
+        counterEl.textContent = `${placedCount} / ${total}`;
+      }
+
       const verifyBtn = document.getElementById('lab-verify-btn');
       const hintText = document.getElementById('lab-hint-text');
 
-      if (countEl) countEl.textContent = `${placedCount} / 10`;
-
-      if (verifyBtn) {
-        if (placedCount === 10) {
+      if (placedCount >= total && total > 0) {
+        if (verifyBtn) {
           verifyBtn.disabled = false;
-          verifyBtn.className = "w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-black text-sm tracking-wide shadow-2xl shadow-emerald-500/30 animate-pulse hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer";
-          if (hintText) hintText.innerHTML = "🎉 <b>Barcha chiqindilar joylandi!</b> Natijani ko'rish uchun tekshirish tugmasini bosing.";
-        } else {
+          verifyBtn.className = "w-full sm:w-auto px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 text-slate-950 font-black text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xl shadow-emerald-500/30 hover:scale-105 active:scale-95 animate-pulse";
+        }
+        if (hintText) {
+          hintText.innerHTML = `<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i> Barcha chiqindilar joylandi! Natijani tekshirishga tayyor.</span>`;
+        }
+      } else {
+        if (verifyBtn) {
           verifyBtn.disabled = true;
-          verifyBtn.className = "w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-slate-800 text-slate-500 font-black text-sm tracking-wide transition-all duration-300 flex items-center justify-center gap-2 cursor-not-allowed";
-          if (hintText) hintText.textContent = `Yana ${10 - placedCount} ta chiqindini qutilarga joylang.`;
+          verifyBtn.className = "w-full sm:w-auto px-7 py-3 rounded-xl bg-slate-800 text-slate-500 font-black text-sm flex items-center justify-center gap-2 transition-all cursor-not-allowed opacity-50";
+        }
+        if (hintText) {
+          hintText.textContent = `Yana ${total - placedCount} ta chiqindini qutilarga joylang.`;
         }
       }
     },
 
-    // 9. Klaviatura orqali 1-9 boshqaruvi
-    bindKeyboard() {
-      if (this._keyBound) return;
-      this._handleKeyDown = (e) => {
-        if (this.isFinished) return;
-        const num = parseInt(e.key);
-        if (num >= 1 && num <= 9 && this.selectedItemId) {
-          const bin = BINS.find(b => b.num === num);
-          if (bin) {
-            this.placeItemIntoBin(this.selectedItemId, bin.key);
-            this.selectedItemId = null;
+    setupKeyboard() {
+      window.addEventListener('keydown', (e) => {
+        if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+        if (!this.selectedItemId) return;
+
+        const num = parseInt(e.key, 10);
+        if (num >= 1 && num <= 9) {
+          e.preventDefault();
+          const targetBin = BINS[num - 1];
+          if (targetBin) {
+            this.placeItemIntoBin(this.selectedItemId, targetBin.key);
           }
         }
-      };
-      window.addEventListener('keydown', this._handleKeyDown);
-      this._keyBound = true;
+      });
     },
 
-    // 10. Taymer boshqaruvi
+    // 10. Taymer mexanikasi
     startTimer() {
+      this.stopTimer();
       this.timerRemaining = this.timerSeconds;
-      const numEl = document.getElementById('lab-timer-num');
-      if (numEl) numEl.textContent = `${this.timerRemaining}s`;
+      const timerBadge = document.getElementById('lab-timer-badge');
+      const timerNum = document.getElementById('lab-timer-num');
+      if (timerBadge) timerBadge.classList.remove('hidden');
+      if (timerNum) timerNum.textContent = `${this.timerRemaining}s`;
 
       this.timerInterval = setInterval(() => {
         this.timerRemaining--;
-        if (numEl) numEl.textContent = `${this.timerRemaining}s`;
-
-        // Vaqt kamayganda audio tezlashuvi
-        if (window.ecoAudio && typeof window.ecoAudio.playCountdownTick === 'function') {
-          window.ecoAudio.playCountdownTick(this.timerRemaining);
-        }
-
+        if (timerNum) timerNum.textContent = `${this.timerRemaining}s`;
         if (this.timerRemaining <= 0) {
           this.stopTimer();
-          alert("⏱️ 90 Soniyalik vaqt yakunlandi! Natijalar avtomatik hisoblanadi.");
-          this.verifyRound();
+          this.verifyRound(true);
         }
       }, 1000);
     },
@@ -728,221 +909,15 @@
         clearInterval(this.timerInterval);
         this.timerInterval = null;
       }
-      if (window.ecoAudio && typeof window.ecoAudio.stopCountdownSound === 'function') {
-        window.ecoAudio.stopCountdownSound();
+    },
+
+    toggleTimerOption(enabled) {
+      this.timerEnabled = enabled;
+      const badge = document.getElementById('lab-timer-badge');
+      if (badge) {
+        if (enabled) badge.classList.remove('hidden');
+        else badge.classList.add('hidden');
       }
-    },
-
-    // 11. YAKUNIY NATIJANI TEKSHIRISH VA HISOBOT (Results Evaluation)
-    verifyRound() {
-      this.stopTimer();
-      this.isFinished = true;
-      this.endTime = Date.now();
-
-      let correctCount = 0;
-      const mistakes = [];
-      const categoryStats = {};
-
-      this.activeItems.forEach(item => {
-        const correctKey = item.categoryKey || item.category || 'utilizatsiya';
-        const userKey = this.placements[item.id] || 'joylanmagan';
-        const isCorrect = userKey === correctKey;
-
-        if (!categoryStats[correctKey]) {
-          categoryStats[correctKey] = { total: 0, correct: 0 };
-        }
-        categoryStats[correctKey].total++;
-
-        if (isCorrect) {
-          correctCount++;
-          categoryStats[correctKey].correct++;
-        } else {
-          mistakes.push(item);
-        }
-      });
-
-      this._lastMistakes = mistakes;
-
-      // Zaif toifalarni saqlab qo'yish (keyingi safar o'rgatish maqsadida ko'proq chiqishi uchun)
-      const weakList = [];
-      Object.keys(categoryStats).forEach(cKey => {
-        if (categoryStats[cKey].correct < categoryStats[cKey].total) {
-          weakList.push(cKey);
-        }
-      });
-      try {
-        localStorage.setItem('ECO_WEAK_CATEGORIES', JSON.stringify(weakList));
-      } catch (e) {}
-
-      // Ball va mukofot hisoblash
-      const earnedXP = correctCount * 10 + (correctCount === 10 ? 50 : 0);
-      const earnedCoins = correctCount * 2 + (correctCount === 10 ? 10 : 0);
-
-      if (typeof window.addPlayerXP === 'function' && earnedXP > 0) {
-        window.addPlayerXP(earnedXP);
-      }
-
-      // 10/10 bo'lsa Paqldoq mushaklari
-      if (correctCount === 10) {
-        if (window.EcoFxEngine && typeof window.EcoFxEngine.triggerPaqldoq === 'function') {
-          window.EcoFxEngine.triggerPaqldoq();
-          setTimeout(() => window.EcoFxEngine.triggerPaqldoq(), 600);
-        }
-        if (window.ecoAudio && typeof window.ecoAudio.playCelebration === 'function') {
-          window.ecoAudio.playCelebration();
-        }
-      } else {
-        if (window.ecoAudio && typeof window.ecoAudio.playSuccess === 'function') {
-          window.ecoAudio.playSuccess();
-        }
-      }
-
-      this.renderResultsModal(correctCount, earnedXP, earnedCoins, categoryStats);
-    },
-
-    // 12. Yakuniy Natija Modali
-    renderResultsModal(correctCount, earnedXP, earnedCoins, categoryStats) {
-      const modal = document.getElementById('lab-results-modal');
-      if (!modal) return;
-
-      const totalItems = this.activeItems.length;
-      const accuracy = Math.round((correctCount / totalItems) * 100);
-      const timeSpentSec = Math.round((this.endTime - this.startTime) / 1000);
-
-      // Unvonlar tizimi
-      let titleBadge = "";
-      let titleColor = "";
-      let trophyIcon = "";
-
-      if (correctCount === 10) {
-        titleBadge = "👑 Eko-ustoz (Mutlaq Chempion!)";
-        titleColor = "text-amber-300 border-amber-500 bg-amber-500/20";
-        trophyIcon = "🏆";
-      } else if (correctCount >= 7) {
-        titleBadge = "🥈 Saralash ustasi";
-        titleColor = "text-emerald-300 border-emerald-500 bg-emerald-500/20";
-        trophyIcon = "🥇";
-      } else if (correctCount >= 4) {
-        titleBadge = "🥉 O'rganuvchi";
-        titleColor = "text-cyan-300 border-cyan-500 bg-cyan-500/20";
-        trophyIcon = "🥈";
-      } else {
-        titleBadge = "🌱 Yangi boshlovchi";
-        titleColor = "text-slate-300 border-slate-600 bg-slate-800";
-        trophyIcon = "🌱";
-      }
-
-      modal.classList.remove('hidden');
-      modal.innerHTML = `
-        <div class="relative w-full max-w-2xl bg-slate-900 border-2 border-emerald-500/50 rounded-3xl p-6 sm:p-8 shadow-2xl my-8 animate-scale-in">
-          
-          <!-- Podium Header -->
-          <div class="text-center mb-6">
-            <div class="text-6xl mb-2 animate-bounce">${trophyIcon}</div>
-            <span class="inline-block px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest border ${titleColor} mb-2">
-              ${titleBadge}
-            </span>
-            <h3 class="text-2xl sm:text-3xl font-black text-white">Laboratoriya Sinovi Natijasi</h3>
-            <p class="text-xs text-slate-400 mt-1">Har bir chiqindining to'g'ri utilizatsiyasi tahlili</p>
-          </div>
-
-          <!-- Katta Ko'rsatkichlar Kartochkalari -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 font-mono text-center">
-            <div class="p-3 bg-slate-950 rounded-2xl border border-slate-800">
-              <span class="text-[10px] text-slate-500 uppercase font-black block">To'g'ri / Umumiy</span>
-              <span class="text-xl font-black text-emerald-400">${correctCount} / ${totalItems}</span>
-            </div>
-            <div class="p-3 bg-slate-950 rounded-2xl border border-slate-800">
-              <span class="text-[10px] text-slate-500 uppercase font-black block">Aniqlik</span>
-              <span class="text-xl font-black text-cyan-400">${accuracy}%</span>
-            </div>
-            <div class="p-3 bg-slate-950 rounded-2xl border border-slate-800">
-              <span class="text-[10px] text-slate-500 uppercase font-black block">Sarflangan Vaqt</span>
-              <span class="text-xl font-black text-amber-400">${timeSpentSec}s</span>
-            </div>
-            <div class="p-3 bg-slate-950 rounded-2xl border border-slate-800">
-              <span class="text-[10px] text-slate-500 uppercase font-black block">Mukofot XP</span>
-              <span class="text-xl font-black text-emerald-300">+${earnedXP} XP</span>
-            </div>
-          </div>
-
-          <!-- Har bir chiqindi bo'yicha ilmiy xatolar tahlili -->
-          <div class="mb-6 max-h-[260px] overflow-y-auto pr-1 custom-scrollbar space-y-2">
-            <h5 class="text-xs font-black text-slate-300 uppercase tracking-wider sticky top-0 bg-slate-900 py-1">
-              📋 Har Bir Chiqindi Bo'yicha Tahlil:
-            </h5>
-            ${this.activeItems.map(item => {
-              const correctKey = item.categoryKey || item.category || 'utilizatsiya';
-              const userKey = this.placements[item.id];
-              const isCorrect = userKey === correctKey;
-              const correctBin = BINS.find(b => b.key === correctKey);
-              const userBin = BINS.find(b => b.key === userKey);
-
-              return `
-                <div class="p-3 rounded-xl ${isCorrect ? 'bg-slate-950/70 border border-emerald-500/30' : 'bg-rose-950/40 border border-rose-500/40'} flex items-start gap-3">
-                  <div class="text-2xl shrink-0 mt-0.5">${item.emoji || '♻️'}</div>
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-2">
-                      <h6 class="text-xs font-black text-white truncate">${item.name}</h6>
-                      <span class="text-xs">${isCorrect ? '✅ To\'g\'ri' : '❌ Xato'}</span>
-                    </div>
-                    <div class="text-[11px] text-slate-400 mt-1 flex flex-wrap gap-2">
-                      <span>Siz tanladingiz: <b>${userBin ? userBin.name : 'Bo\'sh'}</b></span>
-                      ${!isCorrect ? `<span class="text-emerald-400">To'g'ri quti: <b>${correctBin ? correctBin.name : ''}</b></span>` : ''}
-                    </div>
-                    <p class="text-[10px] text-slate-400 mt-1 leading-normal italic">
-                      💡 ${item.explanation || ''}
-                    </p>
-                  </div>
-                </div>
-              `;
-            }).join('')}
-          </div>
-
-          <!-- Harakat Tugmalari -->
-          <div class="flex flex-wrap items-center justify-center gap-3">
-            ${this._lastMistakes && this._lastMistakes.length > 0 ? `
-              <button onclick="EcoWasteDragLab.retryMistakes()" class="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all flex items-center gap-1.5 cursor-pointer shadow-lg shadow-amber-500/20">
-                <i class="fa-solid fa-graduation-cap"></i> Faqat Xatolarni Qayta Mashq Qilish (${this._lastMistakes.length})
-              </button>
-            ` : ''}
-
-            <button onclick="EcoWasteDragLab.closeResultsAndNew()" class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition-all flex items-center gap-1.5 cursor-pointer shadow-lg shadow-emerald-500/20">
-              <i class="fa-solid fa-arrows-rotate"></i> Yangi 10 Talik O'yin
-            </button>
-
-            <button onclick="EcoWasteDragLab.closeResultsModal(); if (typeof window.returnToGamesHub === 'function') window.returnToGamesHub();" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer border border-slate-700">
-              <i class="fa-solid fa-gamepad"></i> Barcha O'yinlar
-            </button>
-          </div>
-
-        </div>
-      `;
-    },
-
-    retryMistakes() {
-      this.closeResultsModal();
-      this.startNewRound(true);
-    },
-
-    closeResultsAndNew() {
-      this.closeResultsModal();
-      this.startNewRound(false);
-    },
-
-    closeResultsModal() {
-      const modal = document.getElementById('lab-results-modal');
-      if (modal) modal.classList.add('hidden');
-    },
-
-    openSettingsModal() {
-      const modal = document.getElementById('lab-settings-modal');
-      if (modal) modal.classList.remove('hidden');
-    },
-
-    closeSettingsModal() {
-      const modal = document.getElementById('lab-settings-modal');
-      if (modal) modal.classList.add('hidden');
     },
 
     setMode(newMode) {
@@ -951,28 +926,221 @@
       if (tag) {
         tag.textContent = newMode === 'exam' ? '🏆 Imtihon Rejimi' : '🎓 Mashq Rejimi';
       }
-      this.openSettingsModal(); // Modal ranglarini yangilash
     },
 
-    toggleTimer(enabled) {
-      this.timerEnabled = enabled;
-      const badge = document.getElementById('lab-timer-badge');
-      if (badge) {
-        if (enabled) {
-          badge.classList.remove('hidden');
-          badge.classList.add('flex');
-        } else {
-          badge.classList.add('hidden');
-          badge.classList.remove('flex');
+    openSettingsModal() {
+      const m = document.getElementById('lab-settings-modal');
+      if (m) m.classList.remove('hidden');
+    },
+
+    closeSettingsModal() {
+      const m = document.getElementById('lab-settings-modal');
+      if (m) m.classList.add('hidden');
+    },
+
+    // 11. Yakuniy Natijani Tekshirish (Hisobot Ekrani)
+    verifyRound(isTimeout = false) {
+      this.stopTimer();
+      this.isFinished = true;
+      this.endTime = Date.now();
+      const elapsedSeconds = Math.round((this.endTime - this.startTime) / 1000);
+
+      let correctCount = 0;
+      const detailedList = [];
+      const catStats = {};
+
+      let storedWeak = {};
+      try {
+        storedWeak = JSON.parse(localStorage.getItem('ECO_WEAK_CATEGORIES') || '{}');
+      } catch (e) {}
+
+      this.activeItems.forEach(item => {
+        const chosenKey = this.placements[item.id] || 'unplaced';
+        const isMatch = this.isItemMatchBin(item, chosenKey);
+        const correctKey = this.getItemCategory(item);
+
+        if (!catStats[correctKey]) {
+          catStats[correctKey] = { total: 0, correct: 0 };
         }
+        catStats[correctKey].total++;
+
+        if (isMatch) {
+          correctCount++;
+          catStats[correctKey].correct++;
+        } else {
+          storedWeak[correctKey] = (storedWeak[correctKey] || 0) + 1;
+        }
+
+        const chosenBin = BINS.find(b => b.key === chosenKey);
+        const correctBin = BINS.find(b => b.key === correctKey);
+
+        detailedList.push({
+          item: item,
+          chosenName: chosenBin ? chosenBin.name : 'Joylashtirilmadi',
+          correctName: correctBin ? correctBin.name : correctKey,
+          isCorrect: isMatch
+        });
+      });
+
+      try {
+        localStorage.setItem('ECO_WEAK_CATEGORIES', JSON.stringify(storedWeak));
+      } catch (e) {}
+
+      const total = this.activeItems.length;
+      const accuracy = Math.round((correctCount / total) * 100);
+
+      let earnedXP = correctCount * 10;
+      if (correctCount === total) earnedXP += 50; // Bonus
+      let earnedCoins = Math.floor(earnedXP / 2);
+
+      if (typeof addPlayerXP === 'function') addPlayerXP(earnedXP);
+      if (typeof addEcoCoins === 'function') addEcoCoins(earnedCoins);
+
+      let badgeTitle = "🌱 Yangi boshlovchi";
+      let badgeColor = "text-slate-400";
+      if (correctCount === total) {
+        badgeTitle = "👑 Eko-ustoz (Mukammal!)";
+        badgeColor = "text-amber-400";
+      } else if (correctCount >= Math.floor(total * 0.7)) {
+        badgeTitle = "🥈 Saralash ustasi";
+        badgeColor = "text-emerald-400";
+      } else if (correctCount >= Math.floor(total * 0.4)) {
+        badgeTitle = "🥉 O'rganuvchi";
+        badgeColor = "text-cyan-400";
       }
+
+      if (correctCount >= Math.floor(total * 0.7)) {
+        if (window.ecoAudio) window.ecoAudio.playLevelUp();
+        if (window.EcoFxEngine) {
+          window.EcoFxEngine.triggerPaqldoq(window.innerWidth / 2, window.innerHeight / 3, earnedXP);
+        }
+      } else {
+        if (window.ecoAudio) window.ecoAudio.playError();
+      }
+
+      this.renderResultModal({
+        total,
+        correctCount,
+        accuracy,
+        elapsedSeconds,
+        earnedXP,
+        earnedCoins,
+        badgeTitle,
+        badgeColor,
+        detailedList,
+        isTimeout
+      });
+    },
+
+    renderResultModal(stats) {
+      const modal = document.getElementById('lab-results-modal');
+      const content = document.getElementById('lab-results-content');
+      if (!modal || !content) return;
+
+      modal.classList.remove('hidden');
+
+      content.innerHTML = `
+        <div class="text-center pb-4 mb-4 border-b border-slate-800">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-800/80 border border-slate-700 mb-3 text-xs font-black ${stats.badgeColor}">
+            <span>${stats.badgeTitle}</span>
+          </div>
+          <h3 class="text-2xl sm:text-3xl font-black text-white">
+            ${stats.isTimeout ? '⏱️ Vaqt Tugadi! Natija' : '🎉 Saralash Yakunlandi!'}
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">Laboratoriya sinovida to'plangan natijalar tahlili:</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5 text-center">
+          <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+            <span class="text-[10px] text-slate-500 uppercase font-black block">To'g'ri / Jami</span>
+            <span class="text-2xl font-black text-emerald-400">${stats.correctCount} / ${stats.total}</span>
+          </div>
+
+          <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+            <span class="text-[10px] text-slate-500 uppercase font-black block">Aniqlik</span>
+            <span class="text-2xl font-black ${stats.accuracy >= 70 ? 'text-emerald-400' : 'text-amber-400'}">${stats.accuracy}%</span>
+          </div>
+
+          <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+            <span class="text-[10px] text-slate-500 uppercase font-black block">Sarflangan Vaqt</span>
+            <span class="text-2xl font-black text-cyan-400">${stats.elapsedSeconds}s</span>
+          </div>
+
+          <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+            <span class="text-[10px] text-slate-500 uppercase font-black block">Mukofot</span>
+            <span class="text-xl font-black text-amber-400">+${stats.earnedXP} XP</span>
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <h4 class="text-xs font-black uppercase text-slate-400 tracking-wider mb-2.5 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-emerald-400"></i>
+            Har bir chiqindi bo'yicha tahliliy qoidalar:
+          </h4>
+          <div class="space-y-2 max-h-60 overflow-y-auto pr-1 custom-scrollbar">
+            ${stats.detailedList.map(row => `
+              <div class="p-3 rounded-xl border ${row.isCorrect ? 'border-emerald-500/30 bg-emerald-950/20' : 'border-rose-500/30 bg-rose-950/20'} text-xs">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="font-black text-white flex items-center gap-2">
+                    <span>${row.item.icon || row.item.emoji || '📦'}</span>
+                    <span>${row.item.name}</span>
+                  </span>
+                  <span class="${row.isCorrect ? 'text-emerald-400' : 'text-rose-400'} font-bold">
+                    ${row.isCorrect ? '✅ To\\'g\\'ri' : '❌ Xato'}
+                  </span>
+                </div>
+                <div class="text-[11px] text-slate-400 mb-1">
+                  Siz tanlagan quti: <strong class="text-slate-200">${row.chosenName}</strong> | 
+                  To'g'ri quti: <strong class="text-emerald-300">${row.correctName}</strong>
+                </div>
+                <p class="text-[11px] text-slate-300 bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                  💡 <strong>Qoida:</strong> ${row.item.explanation}
+                </p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-2.5 pt-3 border-t border-slate-800">
+          ${stats.correctCount < stats.total ? `
+            <button onclick="EcoWasteDragLab.retryMistakes()" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black rounded-xl text-xs transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20 cursor-pointer">
+              <i class="fa-solid fa-graduation-cap"></i>
+              <span>Faqat Xatolarni Qayta Mashq Qilish (${stats.total - stats.correctCount} ta)</span>
+            </button>
+          ` : ''}
+
+          <button onclick="EcoWasteDragLab.closeResultModal(); EcoWasteDragLab.startNewRound();" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs transition-all flex items-center gap-2 shadow-lg shadow-emerald-500/20 cursor-pointer">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span>Yangi Partiya (${stats.total} ta)</span>
+          </button>
+
+          <button onclick="EcoWasteDragLab.closeResultModal();" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-all cursor-pointer">
+            Yopish
+          </button>
+        </div>
+      `;
+    },
+
+    retryMistakes() {
+      const mistakes = this.activeItems.filter(item => !this.isItemMatchBin(item, this.placements[item.id]));
+      this.closeResultModal();
+      if (mistakes.length === 0) {
+        this.startNewRound();
+        return;
+      }
+      this._lastMistakes = mistakes;
+      this.startNewRound();
+      if (window.showToast) {
+        window.showToast(`🎯 Faqat xato qilingan ${mistakes.length} ta chiqindi qayta yuklandi!`);
+      }
+    },
+
+    closeResultModal() {
+      const m = document.getElementById('lab-results-modal');
+      if (m) m.classList.add('hidden');
     }
   };
 
-  // Global eksport
   window.EcoWasteDragLab = EcoWasteDragLab;
-  window.renderWasteSandboxLabUI = function(container) {
-    EcoWasteDragLab.renderUI(container);
-  };
 
 })();
