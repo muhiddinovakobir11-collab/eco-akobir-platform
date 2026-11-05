@@ -695,7 +695,7 @@ function renderLeaderboard() {
             <div class="flex items-center gap-2 flex-wrap">
               <h5 class="font-bold text-white text-sm flex items-center gap-1.5">
                 <span>${user.name}</span>
-                ${idx === 0 ? '<i class="fa-solid fa-crown text-amber-400 text-xs" title="1-o'rin"></i>' : ''}
+                ${idx === 0 ? '<i class="fa-solid fa-crown text-amber-400 text-xs" title="1-o&apos;rin"></i>' : ''}
                 ${isCurrentPlayer ? '<span class="bg-emerald-500 text-slate-950 font-black text-[9px] px-2 py-0.5 rounded-full uppercase">Siz</span>' : ''}
               </h5>
               <a href="https://t.me/${userTg}" target="_blank" onclick="event.stopPropagation()" class="inline-flex items-center gap-1 text-[11px] text-sky-400 hover:text-sky-300 font-bold bg-sky-500/10 hover:bg-sky-500/20 px-2 py-0.5 rounded-md border border-sky-500/25 transition-colors" title="Telegram profilini ochish">

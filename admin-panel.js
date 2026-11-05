@@ -1211,7 +1211,7 @@ function adminSaveManualUser() {
 
   renderAdminDashboardContent();
   if (typeof showToast === 'function') {
-    showToast(`Yangi foydalanuvchi ${name} (@${tg || 'yo'q'}) muvaffaqiyatli qo'shildi!`, "success");
+    showToast(`Yangi foydalanuvchi ${name} (@${tg || "yo'q"}) muvaffaqiyatli qo'shildi!`, "success");
   }
 }
 window.adminSaveManualUser = adminSaveManualUser;
