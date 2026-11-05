@@ -371,6 +371,12 @@
 
     gameSession.isAnsweringLocked = false;
 
+    // 1. ESKI JAVOB VA BELGILARNING HAR QANDAY IZINI TO'LIQ TOZALASH
+    if (window.EcoFxEngine && typeof window.EcoFxEngine.clearAllFeedback === 'function') {
+      window.EcoFxEngine.clearAllFeedback(document.getElementById('session-playfield') || document);
+    }
+    document.querySelectorAll('#categories-grid').forEach(el => el.innerHTML = '');
+
     const total = gameSession.activeBatch.length || 25;
     const counterText = `Chiqindi ${gameSession.currentIndex + 1} / ${total}`;
 
@@ -425,6 +431,8 @@
     const container = document.getElementById('categories-4-grid');
     if (!container) return;
 
+    // Har doim konteynerni toza holda qayta qurish
+    container.innerHTML = '';
     const letters = ['A', 'B', 'C', 'D'];
 
     container.innerHTML = choices.map((cat, idx) => {
@@ -493,6 +501,8 @@
       }
     });
 
+    let transitionDelay = 500;
+
     if (isCorrect) {
       gameSession.correctCount++;
       const itemXP = 10;
@@ -517,6 +527,8 @@
         userChoice: selectedCategory,
         isCorrect: true
       });
+
+      transitionDelay = 550;
     } else {
       gameSession.wrongCount++;
       if (window.ecoAudio) window.ecoAudio.playError();
@@ -537,19 +549,24 @@
         isCorrect: false,
         correctName: correctName
       });
+
+      transitionDelay = 850; // O'quvchi xatosini o'qib tushunishi uchun yetarli vaqt
     }
 
     updateSessionProgressUI();
 
-    // Silliq va tezkor keyingi savolga o'tish (420ms)
+    // Silliq keyingi savolga o'tish (eski izlarni to'liq tozalagan holda)
     setTimeout(() => {
+      if (window.EcoFxEngine && typeof window.EcoFxEngine.clearAllFeedback === 'function') {
+        window.EcoFxEngine.clearAllFeedback(document.getElementById('session-playfield') || document);
+      }
       gameSession.currentIndex++;
       if (gameSession.currentIndex >= gameSession.activeBatch.length) {
         finish25Session();
       } else {
         displayCurrentItem();
       }
-    }, 420);
+    }, transitionDelay);
   }
   window.submitChoiceAnswer = submitChoiceAnswer;
   window.submitCategoryAnswer = submitChoiceAnswer; // Orqaga moslik
@@ -603,6 +620,9 @@
     if (window.EcoPauseEngine && window.EcoPauseEngine.recordTimeout()) {
       window.EcoPauseEngine.triggerAutoPause({
         onContinue: () => {
+          if (window.EcoFxEngine && typeof window.EcoFxEngine.clearAllFeedback === 'function') {
+            window.EcoFxEngine.clearAllFeedback(document.getElementById('session-playfield') || document);
+          }
           gameSession.currentIndex++;
           if (gameSession.currentIndex >= gameSession.activeBatch.length) {
             finish25Session();
@@ -615,13 +635,16 @@
     }
 
     setTimeout(() => {
+      if (window.EcoFxEngine && typeof window.EcoFxEngine.clearAllFeedback === 'function') {
+        window.EcoFxEngine.clearAllFeedback(document.getElementById('session-playfield') || document);
+      }
       gameSession.currentIndex++;
       if (gameSession.currentIndex >= gameSession.activeBatch.length) {
         finish25Session();
       } else {
         displayCurrentItem();
       }
-    }, 420);
+    }, 850);
   }
 
   // -----------------------------------------------------------------------

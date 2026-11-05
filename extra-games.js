@@ -563,6 +563,9 @@ function startExtendedGameSession() {
 function displayCurrentExtendedScenario() {
   stopExtraGameTimer();
   extendedGameSession.isAnsweringLocked = false;
+  if (window.EcoFxEngine && typeof window.EcoFxEngine.clearAllFeedback === "function") {
+    window.EcoFxEngine.clearAllFeedback(document.getElementById("active-game-arena") || document);
+  }
 
   const scenarios = extendedGameSession.scenarios;
   const idx = extendedGameSession.currentIndex;

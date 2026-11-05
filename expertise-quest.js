@@ -218,6 +218,9 @@ function displayCurrentExpertiseItem() {
   if (!item) return;
 
   expertiseSession.isAnsweringLocked = false;
+  if (window.EcoFxEngine && typeof window.EcoFxEngine.clearAllFeedback === "function") {
+    window.EcoFxEngine.clearAllFeedback(currentExpertiseContainer || document);
+  }
 
   const counterEl = getExpertiseScopeEl('expertise-card-counter');
   const svgEl = getExpertiseScopeEl('expertise-card-svg');

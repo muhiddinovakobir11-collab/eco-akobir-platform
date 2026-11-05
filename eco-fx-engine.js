@@ -289,6 +289,9 @@
 
   // 4. XATO JAVOB REAKSIYASI (Seysmik Silkinish, Qizil Vinetka, Maydalanish & To'g'ri Mayog')
   function triggerWrongFeedback(clickedElement, correctElementOrSelector, containerEl) {
+    // Avvalgi qoldiq izlarni tozalash
+    clearAllFeedback(containerEl || document);
+
     // A) Ekranning seysmik silkinishi
     const shakeTarget = containerEl || document.getElementById('session-question-card') || document.getElementById('audit-question-card') || document.getElementById('active-game-arena') || document.body;
     if (shakeTarget) {
@@ -296,7 +299,7 @@
       // Reflow
       void shakeTarget.offsetWidth;
       shakeTarget.classList.add('animate-seismic-shake');
-      setTimeout(() => shakeTarget.classList.remove('animate-seismic-shake'), 500);
+      setTimeout(() => shakeTarget.classList.remove('animate-seismic-shake'), 450);
     }
 
     // B) Ekranning qizil vinetka avariya chirog'i (Full-screen red vignette)
@@ -309,8 +312,8 @@
         if (vignette && vignette.parentNode) {
           vignette.parentNode.removeChild(vignette);
         }
-      }, 1800);
-    }, 200);
+      }, 800);
+    }, 150);
 
     // C) Xato bosilgan tugmaning parchalanishi va qizil titrashi
     if (clickedElement) {
@@ -318,6 +321,11 @@
       // Qizil tutun / X nishoni
       const rect = clickedElement.getBoundingClientRect();
       createFloatingXpBadge(rect.left + rect.width / 2, rect.top, `❌ Noto'g'ri!`);
+
+      // 800ms dan keyin qizil shattirni avtomatik olib tashlash
+      setTimeout(() => {
+        if (clickedElement) clickedElement.classList.remove('animate-wrong-shatter');
+      }, 800);
     }
 
     // D) Haqiqiy TO'G'RI javobning yashil mayoq bo'lib porlashi
@@ -337,16 +345,61 @@
         hint.textContent = "To'g'ri javob!";
         correctTarget.appendChild(hint);
       }
+
+      // 800ms dan keyin yashil mayoq va "To'g'ri javob!" yozuvini avtomatik tozalash
+      setTimeout(() => {
+        if (correctTarget) {
+          correctTarget.classList.remove('animate-correct-beacon');
+          const hint = correctTarget.querySelector('.eco-correct-arrow-hint');
+          if (hint && hint.parentNode) hint.parentNode.removeChild(hint);
+        }
+      }, 800);
     }
   }
 
-  // 5. Global API orqali eksport qilish
+  // 5. BARCHA ESKI JAVOB VA BELGILAR IZLARINI TO'LIQ TOZALASH (Eski izlar qolib ketmasligi kafolati)
+  function clearAllFeedback(scopeEl = document) {
+    const scope = scopeEl || document;
+    try {
+      // 1. "To'g'ri javob!" nishonlarini to'liq o'chirish
+      scope.querySelectorAll('.eco-correct-arrow-hint').forEach(el => {
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+      });
+
+      // 2. Yashil mayoq va qizil titrash klasslarini olib tashlash
+      scope.querySelectorAll('.animate-correct-beacon').forEach(el => {
+        el.classList.remove('animate-correct-beacon');
+      });
+      scope.querySelectorAll('.animate-wrong-shatter').forEach(el => {
+        el.classList.remove('animate-wrong-shatter');
+      });
+      scope.querySelectorAll('.animate-seismic-shake').forEach(el => {
+        el.classList.remove('animate-seismic-shake');
+      });
+
+      // 3. Tugmalardagi ring, xato/to'g'ri ranglarni tozalash
+      scope.querySelectorAll('.ring-4, .ring-emerald-400, .ring-rose-500, .bg-emerald-600/40, .bg-rose-600/40, .scale-[1.02], .opacity-30').forEach(el => {
+        el.classList.remove('ring-4', 'ring-emerald-400', 'ring-rose-500', 'bg-emerald-600/40', 'bg-rose-600/40', 'scale-[1.02]', 'opacity-30');
+      });
+
+      // 4. Qizil vinetkani o'chirish
+      document.querySelectorAll('.eco-wrong-vignette').forEach(el => {
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+      });
+    } catch (e) {
+      console.warn("clearAllFeedback error:", e);
+    }
+  }
+
+  // 6. Global API orqali eksport qilish
   window.EcoFxEngine = {
     triggerPaqldoq: triggerPaqldoq,
     triggerWrongFeedback: triggerWrongFeedback,
     triggerWrongFx: function(el) {
       triggerWrongFeedback(el, null, null);
-    }
+    },
+    clearAllFeedback: clearAllFeedback
   };
+  window.clearEcoFeedback = clearAllFeedback;
 
 })();

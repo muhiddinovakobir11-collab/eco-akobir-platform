@@ -211,6 +211,9 @@ function displayCurrentAuditItem() {
   if (!item) return;
 
   auditSession.isAnsweringLocked = false;
+  if (window.EcoFxEngine && typeof window.EcoFxEngine.clearAllFeedback === "function") {
+    window.EcoFxEngine.clearAllFeedback(currentAuditContainer || document);
+  }
 
   const counterEl = getAuditScopeEl('audit-card-counter');
   const svgEl = getAuditScopeEl('audit-card-svg');
