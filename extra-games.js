@@ -324,15 +324,33 @@ function stopExtraGameTimer() {
 }
 window.stopExtraGameTimer = stopExtraGameTimer;
 
-function startExtendedTimer() {
+function startExtendedTimer(customRemaining) {
   stopExtraGameTimer();
   const totalSeconds = (window.ECO_CONFIG && window.ECO_CONFIG.extraGameTimer) ? window.ECO_CONFIG.extraGameTimer : EXTRA_GAME_SECONDS;
+  const initialRemaining = (typeof customRemaining === 'number' && customRemaining > 0) ? customRemaining : totalSeconds;
+  extendedGameSession.remainingSeconds = initialRemaining;
   const startTime = Date.now();
-  updateExtendedTimerUI(totalSeconds, 100);
+  updateExtendedTimerUI(Math.ceil(initialRemaining), (initialRemaining / totalSeconds) * 100);
+
+  if (window.EcoPauseEngine) {
+    window.EcoPauseEngine.registerGame({
+      type: 'extended',
+      pause: () => { stopExtraGameTimer(); },
+      resume: () => { startExtendedTimer(extendedGameSession.remainingSeconds); },
+      restart: () => { startExtendedGameSession(); },
+      getCurrentStats: () => ({
+        counter: `Keys ${extendedGameSession.currentIndex + 1} / ${extendedGameSession.scenarios.length}`,
+        score: `${extendedGameSession.score} XP`
+      })
+    });
+  }
 
   extraGameTimerInterval = setInterval(() => {
+    if (window.EcoPauseEngine && window.EcoPauseEngine.isGamePaused()) return;
+
     const elapsedSeconds = (Date.now() - startTime) / 1000;
-    const remainingTime = Math.max(0, totalSeconds - elapsedSeconds);
+    const remainingTime = Math.max(0, initialRemaining - elapsedSeconds);
+    extendedGameSession.remainingSeconds = remainingTime;
     const remainingDisplay = Math.ceil(remainingTime);
     const percent = Math.max(0, (remainingTime / totalSeconds) * 100);
 
@@ -452,9 +470,15 @@ function renderExtendedInteractiveGame(gameId, target) {
               <span id="ext-card-counter" class="text-xs uppercase font-extrabold text-cyan-400 tracking-wider">
                 Keys 1 / 10
               </span>
-              <div id="ext-timer-badge" class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">
-                <i class="fa-solid fa-stopwatch animate-pulse"></i>
-                <span>Vaqt: <strong id="ext-timer-seconds">10</strong>s</span>
+              <div class="flex items-center gap-2">
+                <button onclick="EcoPauseEngine.togglePause()" type="button" class="eco-pause-btn flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-800/90 hover:bg-slate-700 text-amber-300 border border-amber-500/40 transition-all active:scale-95 cursor-pointer shadow-sm">
+                  <i class="fa-solid fa-pause text-[10px]"></i>
+                  <span>Pauza</span>
+                </button>
+                <div id="ext-timer-badge" class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">
+                  <i class="fa-solid fa-stopwatch animate-pulse"></i>
+                  <span>Vaqt: <strong id="ext-timer-seconds">10</strong>s</span>
+                </div>
               </div>
             </div>
             
@@ -503,6 +527,7 @@ function renderExtendedInteractiveGame(gameId, target) {
 
 function startExtendedGameSession() {
   stopExtraGameTimer();
+  if (window.EcoPauseEngine) window.EcoPauseEngine.resetTimeouts();
 
   // Savollarni random tarzda aralashtirish (Fisher-Yates)
   const pool = (extendedGameSession.rawScenarios && extendedGameSession.rawScenarios.length > 0)
@@ -613,6 +638,8 @@ function displayCurrentExtendedScenario() {
 
 function handleExtendedOptionClick(choiceIndex, btnElement) {
   if (extendedGameSession.isAnsweringLocked || extendedGameSession.isFinished) return;
+  if (window.EcoPauseEngine && window.EcoPauseEngine.isGamePaused()) return;
+  if (window.EcoPauseEngine) window.EcoPauseEngine.recordUserAnswer();
   extendedGameSession.isAnsweringLocked = true;
   stopExtraGameTimer();
 
@@ -736,6 +763,21 @@ function handleExtendedTimeout() {
   });
 
   updateExtendedProgressUI();
+
+  // AVTO-PAUZA: 2 ta savol ketma-ket belgilanmasa o'yin to'xtatiladi
+  if (window.EcoPauseEngine && window.EcoPauseEngine.recordTimeout()) {
+    window.EcoPauseEngine.triggerAutoPause({
+      onContinue: () => {
+        extendedGameSession.currentIndex++;
+        if (extendedGameSession.currentIndex >= extendedGameSession.scenarios.length) {
+          finishExtendedGameSession();
+        } else {
+          displayCurrentExtendedScenario();
+        }
+      }
+    });
+    return;
+  }
 
   setTimeout(() => {
     extendedGameSession.currentIndex++;

@@ -1505,6 +1505,22 @@ function initStandardNewInteractiveGame(gameId, container, difficulty = 'medium'
 }
 
 function renderStandardGameStep() {
+  if (window.EcoPauseEngine) {
+    window.EcoPauseEngine.registerGame({
+      type: 'standard',
+      pause: () => {},
+      resume: () => {},
+      restart: () => {
+        activeStandardSession.currentIndex = 0;
+        activeStandardSession.score = 0;
+        renderStandardGameStep();
+      },
+      getCurrentStats: () => ({
+        counter: `Bosqich ${activeStandardSession.currentIndex + 1} / ${(STANDARD_NEW_GAMES_DATA[activeStandardSession.gameId]?.scenarios?.length || 10)}`,
+        score: `${activeStandardSession.score} XP`
+      })
+    });
+  }
   const c = activeStandardSession.container;
   const gameData = STANDARD_NEW_GAMES_DATA[activeStandardSession.gameId];
   if (!c || !gameData) return;
@@ -1545,9 +1561,15 @@ function renderStandardGameStep() {
         <span class="text-xs font-black uppercase text-amber-400 bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full">
           Bosqich ${idx + 1} / ${scenarios.length}
         </span>
-        <span class="text-xs text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full">
-          ${item.param}
-        </span>
+        <div class="flex items-center gap-2">
+          <button onclick="EcoPauseEngine.togglePause()" type="button" class="eco-pause-btn flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-800/90 hover:bg-slate-700 text-amber-300 border border-amber-500/40 transition-all active:scale-95 cursor-pointer shadow-sm">
+            <i class="fa-solid fa-pause text-[10px]"></i>
+            <span>Pauza</span>
+          </button>
+          <span class="text-xs text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full">
+            ${item.param}
+          </span>
+        </div>
       </div>
 
       <h3 class="text-xl font-black text-white mb-2">${item.title}</h3>
@@ -1572,6 +1594,8 @@ function renderStandardGameStep() {
 }
 
 function handleStandardOptionClick(selectedIdx) {
+  if (window.EcoPauseEngine && window.EcoPauseEngine.isGamePaused()) return;
+  if (window.EcoPauseEngine) window.EcoPauseEngine.recordUserAnswer();
   const gameData = STANDARD_NEW_GAMES_DATA[activeStandardSession.gameId];
   if (!gameData) return;
 

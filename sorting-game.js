@@ -265,9 +265,15 @@ function renderSortingGameUI(container) {
               <span id="card-item-counter" class="text-xs uppercase font-extrabold text-emerald-400 tracking-wider">
                 Chiqindi 1 / 25
               </span>
-              <div id="card-timer-badge" class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
-                <i class="fa-solid fa-stopwatch animate-pulse"></i>
-                <span>Vaqt: <strong id="card-timer-seconds">10</strong>s</span>
+              <div class="flex items-center gap-2">
+                <button onclick="EcoPauseEngine.togglePause()" type="button" class="eco-pause-btn flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-800/90 hover:bg-slate-700 text-amber-300 border border-amber-500/40 transition-all active:scale-95 cursor-pointer shadow-sm">
+                  <i class="fa-solid fa-pause text-[10px]"></i>
+                  <span>Pauza</span>
+                </button>
+                <div id="card-timer-badge" class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                  <i class="fa-solid fa-stopwatch animate-pulse"></i>
+                  <span>Vaqt: <strong id="card-timer-seconds">10</strong>s</span>
+                </div>
               </div>
             </div>
             <!-- Dynamic 10s progress bar -->
@@ -311,6 +317,7 @@ function renderSortingGameUI(container) {
 // 25 ta tasodifiy chiqindili yangi raundni boshlash
 function startNew25Session() {
   stopSortingGameTimer();
+  if (window.EcoPauseEngine) window.EcoPauseEngine.resetTimeouts();
 
   // Tasodifiy 100 tadan 25 tasini saralab olish (Fisher-Yates shuffle)
   const batchSize = (window.ECO_CONFIG && window.ECO_CONFIG.sortingBatchSize) ? window.ECO_CONFIG.sortingBatchSize : 25;
@@ -394,16 +401,34 @@ function highlightCategoryButtons(correctCatKey, chosenCatKey) {
 }
 
 // 10 soniyalik taymer mexanizmi
-function startQuestionTimer() {
+function startQuestionTimer(customRemaining) {
   stopSortingGameTimer();
   
   const totalSeconds = (window.ECO_CONFIG && window.ECO_CONFIG.sortingTimer) ? window.ECO_CONFIG.sortingTimer : 10;
+  const initialRemaining = (typeof customRemaining === 'number' && customRemaining > 0) ? customRemaining : totalSeconds;
+  gameSession.remainingSeconds = initialRemaining;
   const startTime = Date.now();
-  updateTimerUI(totalSeconds, 100);
+  updateTimerUI(Math.ceil(initialRemaining), (initialRemaining / totalSeconds) * 100);
+
+  if (window.EcoPauseEngine) {
+    window.EcoPauseEngine.registerGame({
+      type: 'sorting',
+      pause: () => { stopSortingGameTimer(); },
+      resume: () => { startQuestionTimer(gameSession.remainingSeconds); },
+      restart: () => { startNew25Session(); },
+      getCurrentStats: () => ({
+        counter: `Chiqindi ${gameSession.currentIndex + 1} / ${(gameSession.activeBatch ? gameSession.activeBatch.length : 25)}`,
+        score: `${gameSession.score} XP`
+      })
+    });
+  }
 
   gameSession.timerInterval = setInterval(() => {
+    if (window.EcoPauseEngine && window.EcoPauseEngine.isGamePaused()) return;
+
     const elapsedSeconds = (Date.now() - startTime) / 1000;
-    const remainingTime = Math.max(0, totalSeconds - elapsedSeconds);
+    const remainingTime = Math.max(0, initialRemaining - elapsedSeconds);
+    gameSession.remainingSeconds = remainingTime;
     const remainingDisplay = Math.ceil(remainingTime);
     const percent = Math.max(0, (remainingTime / totalSeconds) * 100);
 
@@ -478,6 +503,21 @@ function handleQuestionTimeout() {
 
   updateSessionProgressUI();
 
+  // AVTO-PAUZA: 2 ta savol belgilanmasa o'yin avtomatik to'xtatiladi
+  if (window.EcoPauseEngine && window.EcoPauseEngine.recordTimeout()) {
+    window.EcoPauseEngine.triggerAutoPause({
+      onContinue: () => {
+        gameSession.currentIndex++;
+        if (gameSession.currentIndex >= gameSession.activeBatch.length) {
+          finish25Session();
+        } else {
+          displayCurrentItem();
+        }
+      }
+    });
+    return;
+  }
+
   // Keyingi savolga tezkor o'tish (380ms)
   setTimeout(() => {
     gameSession.currentIndex++;
@@ -492,6 +532,8 @@ function handleQuestionTimeout() {
 // Foydalanuvchi javob belgilaganda: xato bo'lsa xato, to'g'ri bo'lsa to'g'ri ko'rsatish va keyingisiga o'tqazish
 function submitCategoryAnswer(selectedCategory, clickedBtnElement) {
   if (gameSession.isAnsweringLocked || gameSession.isFinished) return;
+  if (window.EcoPauseEngine && window.EcoPauseEngine.isGamePaused()) return;
+  if (window.EcoPauseEngine) window.EcoPauseEngine.recordUserAnswer();
   gameSession.isAnsweringLocked = true;
 
   // Taymerni zudlik bilan to'xtatish!

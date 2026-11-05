@@ -264,15 +264,33 @@ function displayCurrentAuditItem() {
   startAuditTimer();
 }
 
-function startAuditTimer() {
+function startAuditTimer(customRemaining) {
   stopAuditTimer();
   const totalSeconds = (window.ECO_CONFIG && window.ECO_CONFIG.auditTimer) ? window.ECO_CONFIG.auditTimer : AUDIT_QUESTION_SECONDS;
+  const initialRemaining = (typeof customRemaining === 'number' && customRemaining > 0) ? customRemaining : totalSeconds;
+  auditSession.remainingSeconds = initialRemaining;
   const startTime = Date.now();
-  updateAuditTimerUI(totalSeconds, 100);
+  updateAuditTimerUI(Math.ceil(initialRemaining), (initialRemaining / totalSeconds) * 100);
+
+  if (window.EcoPauseEngine) {
+    window.EcoPauseEngine.registerGame({
+      type: 'audit',
+      pause: () => { stopAuditTimer(); },
+      resume: () => { startAuditTimer(auditSession.remainingSeconds); },
+      restart: () => { startNew25AuditSession(); },
+      getCurrentStats: () => ({
+        counter: `Savol ${auditSession.currentIndex + 1} / ${(auditSession.activeBatch ? auditSession.activeBatch.length : 25)}`,
+        score: `${auditSession.score} XP`
+      })
+    });
+  }
 
   auditTimerInterval = setInterval(() => {
+    if (window.EcoPauseEngine && window.EcoPauseEngine.isGamePaused()) return;
+
     const elapsedSeconds = (Date.now() - startTime) / 1000;
-    const remainingTime = Math.max(0, totalSeconds - elapsedSeconds);
+    const remainingTime = Math.max(0, initialRemaining - elapsedSeconds);
+    auditSession.remainingSeconds = remainingTime;
     const remainingDisplay = Math.ceil(remainingTime);
     const percent = Math.max(0, (remainingTime / totalSeconds) * 100);
 
@@ -317,6 +335,8 @@ function updateAuditTimerUI(seconds, percent) {
 
 function handleAuditChoice(choiceIndex, btnElement) {
   if (auditSession.isAnsweringLocked || auditSession.isFinished) return;
+  if (window.EcoPauseEngine && window.EcoPauseEngine.isGamePaused()) return;
+  if (window.EcoPauseEngine) window.EcoPauseEngine.recordUserAnswer();
   auditSession.isAnsweringLocked = true;
   stopAuditTimer();
 
@@ -443,6 +463,21 @@ function handleAuditTimeout() {
   });
 
   updateAuditProgressUI();
+
+  // AVTO-PAUZA: 2 ta savol ketma-ket belgilanmasa o'yin to'xtatiladi
+  if (window.EcoPauseEngine && window.EcoPauseEngine.recordTimeout()) {
+    window.EcoPauseEngine.triggerAutoPause({
+      onContinue: () => {
+        auditSession.currentIndex++;
+        if (auditSession.currentIndex >= auditSession.activeBatch.length) {
+          finish25AuditSession();
+        } else {
+          displayCurrentAuditItem();
+        }
+      }
+    });
+    return;
+  }
 
   setTimeout(() => {
     auditSession.currentIndex++;

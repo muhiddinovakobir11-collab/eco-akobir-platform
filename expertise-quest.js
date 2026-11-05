@@ -108,9 +108,15 @@ function renderExpertiseQuestUI(container) {
               <span id="expertise-card-counter" class="text-xs uppercase font-extrabold text-purple-400 tracking-wider">
                 Bosqich 1 / 25
               </span>
-              <div id="expertise-timer-badge" class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-purple-500/20 text-purple-400 border border-purple-500/40">
-                <i class="fa-solid fa-stopwatch animate-pulse"></i>
-                <span>Vaqt: <strong id="expertise-timer-seconds">10</strong>s</span>
+              <div class="flex items-center gap-2">
+                <button onclick="EcoPauseEngine.togglePause()" type="button" class="eco-pause-btn flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-800/90 hover:bg-slate-700 text-amber-300 border border-amber-500/40 transition-all active:scale-95 cursor-pointer shadow-sm">
+                  <i class="fa-solid fa-pause text-[10px]"></i>
+                  <span>Pauza</span>
+                </button>
+                <div id="expertise-timer-badge" class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-purple-500/20 text-purple-400 border border-purple-500/40">
+                  <i class="fa-solid fa-stopwatch animate-pulse"></i>
+                  <span>Vaqt: <strong id="expertise-timer-seconds">10</strong>s</span>
+                </div>
               </div>
             </div>
             <div class="w-full bg-slate-950 rounded-full h-2.5 overflow-hidden border border-slate-800 p-0.5 shadow-inner">
@@ -165,6 +171,7 @@ function renderExpertiseQuestUI(container) {
 // 25 ta tasodifiy savolli yangi ekspertiza kvestini boshlash
 function startNew25ExpertiseSession() {
   stopExpertiseTimer();
+  if (window.EcoPauseEngine) window.EcoPauseEngine.resetTimeouts();
 
   const pool = (typeof ALL_100_EXPERTISE_QUESTIONS !== 'undefined' && ALL_100_EXPERTISE_QUESTIONS.length >= 25) 
     ? ALL_100_EXPERTISE_QUESTIONS 
@@ -264,15 +271,33 @@ function displayCurrentExpertiseItem() {
   startExpertiseTimer();
 }
 
-function startExpertiseTimer() {
+function startExpertiseTimer(customRemaining) {
   stopExpertiseTimer();
   const totalSeconds = (window.ECO_CONFIG && window.ECO_CONFIG.expertiseTimer) ? window.ECO_CONFIG.expertiseTimer : EXPERTISE_QUESTION_SECONDS;
+  const initialRemaining = (typeof customRemaining === 'number' && customRemaining > 0) ? customRemaining : totalSeconds;
+  expertiseSession.remainingSeconds = initialRemaining;
   const startTime = Date.now();
-  updateExpertiseTimerUI(totalSeconds, 100);
+  updateExpertiseTimerUI(Math.ceil(initialRemaining), (initialRemaining / totalSeconds) * 100);
+
+  if (window.EcoPauseEngine) {
+    window.EcoPauseEngine.registerGame({
+      type: 'expertise',
+      pause: () => { stopExpertiseTimer(); },
+      resume: () => { startExpertiseTimer(expertiseSession.remainingSeconds); },
+      restart: () => { startNew25ExpertiseSession(); },
+      getCurrentStats: () => ({
+        counter: `Bosqich ${expertiseSession.currentIndex + 1} / ${(expertiseSession.activeBatch ? expertiseSession.activeBatch.length : 25)}`,
+        score: `${expertiseSession.score} XP`
+      })
+    });
+  }
 
   expertiseTimerInterval = setInterval(() => {
+    if (window.EcoPauseEngine && window.EcoPauseEngine.isGamePaused()) return;
+
     const elapsedSeconds = (Date.now() - startTime) / 1000;
-    const remainingTime = Math.max(0, totalSeconds - elapsedSeconds);
+    const remainingTime = Math.max(0, initialRemaining - elapsedSeconds);
+    expertiseSession.remainingSeconds = remainingTime;
     const remainingDisplay = Math.ceil(remainingTime);
     const percent = Math.max(0, (remainingTime / totalSeconds) * 100);
 
@@ -317,6 +342,8 @@ function updateExpertiseTimerUI(seconds, percent) {
 
 function handleExpertiseChoice(choiceIndex, btnElement) {
   if (expertiseSession.isAnsweringLocked || expertiseSession.isFinished) return;
+  if (window.EcoPauseEngine && window.EcoPauseEngine.isGamePaused()) return;
+  if (window.EcoPauseEngine) window.EcoPauseEngine.recordUserAnswer();
   expertiseSession.isAnsweringLocked = true;
   stopExpertiseTimer();
 
@@ -442,6 +469,21 @@ function handleExpertiseTimeout() {
   });
 
   updateExpertiseProgressUI();
+
+  // AVTO-PAUZA: 2 ta savol ketma-ket belgilanmasa o'yin to'xtatiladi
+  if (window.EcoPauseEngine && window.EcoPauseEngine.recordTimeout()) {
+    window.EcoPauseEngine.triggerAutoPause({
+      onContinue: () => {
+        expertiseSession.currentIndex++;
+        if (expertiseSession.currentIndex >= expertiseSession.activeBatch.length) {
+          finish25ExpertiseSession();
+        } else {
+          displayCurrentExpertiseItem();
+        }
+      }
+    });
+    return;
+  }
 
   setTimeout(() => {
     expertiseSession.currentIndex++;
