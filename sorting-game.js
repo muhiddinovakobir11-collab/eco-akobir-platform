@@ -116,118 +116,77 @@
   }
 
   // -----------------------------------------------------------------------
-  // 2. ADAPTIVE & BALANCED ITEM SELECTOR (Muvozanatli va Moslashuvchan Tanlash)
+  // 2. ADAPTIVE & BALANCED ITEM SELECTOR (9 ta Qutiga 9 Xil Chiqindi!)
   // -----------------------------------------------------------------------
+  function normalizeItemCategory(item) {
+    if (!item) return 'utilizatsiya';
+    const c = (item.cat || item.categoryKey || item.category || '').toLowerCase().trim();
+    if (c === 'u' || c.includes('utiliz') || c.includes('qayta ishlanmaydi')) return 'utilizatsiya';
+    if (c.includes('plast')) return 'plastik';
+    if (c.includes('qog') || c.includes('kart')) return 'qogoz';
+    if (c.includes('shish')) return 'shisha';
+    if (c.includes('met')) return 'metall';
+    if (c.includes('organ')) return 'organik';
+    if (c.includes('xavf')) return 'xavfli';
+    if (c.includes('elektron')) return 'elektronika';
+    if (c.includes('tekst') || c.includes('kiyim')) return 'tekstil';
+    return 'utilizatsiya';
+  }
+
   function selectBalancedRoundItems(options = {}) {
     const db = window.ECO_WASTE_DATABASE || [];
     if (!db || db.length === 0) return [];
 
-    const totalCount = options.count || 10;
-    const filterDifficulty = options.difficulty || 'all';
-
-    // 1) Qiyinlik bo'yicha saralash
-    let pool = db;
-    if (filterDifficulty !== 'all') {
-      pool = db.filter(item => item.difficulty === filterDifficulty);
-      if (pool.length < totalCount) pool = db; // Zaxira
-    }
-
-    // 2) Recency penalty (oxirgi 2-3 o'yinda chiqqan rasmlar kamroq tushsin)
     let recentIds = [];
     try {
       recentIds = JSON.parse(localStorage.getItem('ECO_RECENT_SORT_IDS') || '[]');
     } catch (e) { recentIds = []; }
 
-    // 3) Moslashuvchan tanlash: foydalanuvchi ko'p xato qilgan toifalar (weak categories)
-    let weakCategories = {};
-    try {
-      weakCategories = JSON.parse(localStorage.getItem('ECO_WEAK_CATEGORIES') || '{}');
-    } catch (e) { weakCategories = {}; }
-
-    // Toifalarni guruhlash
+    // Toifalarni 9 ta qutiga normallashtirib guruhlash
     const byCategory = {};
-    pool.forEach(item => {
-      if (!byCategory[item.cat]) byCategory[item.cat] = [];
-      byCategory[item.cat].push(item);
-    });
+    MASTER_ECO_CATEGORIES.forEach(c => { byCategory[c.key] = []; });
 
-    const categoryKeys = Object.keys(byCategory);
-
-    // Zaif toifalarni saralash (eng ko'p xato qilinganlari yuqorida)
-    const sortedCategories = [...categoryKeys].sort((a, b) => {
-      const errA = weakCategories[a] || 0;
-      const errB = weakCategories[b] || 0;
-      return errB - errA;
+    db.forEach(item => {
+      const catKey = normalizeItemCategory(item);
+      if (byCategory[catKey]) {
+        byCategory[catKey].push(item);
+      }
     });
 
     const chosenItems = [];
-    const usedCategoriesCount = {};
+    const usedIds = new Set();
 
-    // Qopqon (Trap) chiqindilardan kamida 2-3 ta qo'shish
-    const traps = pool.filter(i => i.isTrap && !recentIds.slice(-15).includes(i.id));
-    const shuffledTraps = fisherYatesShuffle(traps.length > 0 ? traps : pool.filter(i => i.isTrap));
-    const trapCount = Math.min(shuffledTraps.length, 3);
-    for (let i = 0; i < trapCount; i++) {
-      const it = shuffledTraps[i];
-      if (it && !chosenItems.some(c => c.id === it.id)) {
-        chosenItems.push(it);
-        usedCategoriesCount[it.cat] = (usedCategoriesCount[it.cat] || 0) + 1;
+    // 9 ta rangli qutining HAR BIRIDAN AYNAN 1 TADAN chiqindi tanlash (9 qutiga 9 xil axlat)
+    MASTER_ECO_CATEGORIES.forEach(catObj => {
+      const pool = byCategory[catObj.key] || [];
+      if (pool.length === 0) return;
+
+      const fresh = pool.filter(i => !recentIds.includes(i.id) && !usedIds.has(i.id));
+      const candidates = fresh.length > 0 ? fresh : pool.filter(i => !usedIds.has(i.id));
+      const pickList = candidates.length > 0 ? candidates : pool;
+      const pick = pickList[Math.floor(Math.random() * pickList.length)];
+      if (pick && !usedIds.has(pick.id)) {
+        chosenItems.push(pick);
+        usedIds.add(pick.id);
       }
-    }
+    });
 
-    // Zaif toifalardan alohida 1-2 ta kiritish
-    for (const cat of sortedCategories) {
-      if (chosenItems.length >= totalCount) break;
-      if ((weakCategories[cat] || 0) > 0 && (!usedCategoriesCount[cat] || usedCategoriesCount[cat] < 2)) {
-        const catCandidates = byCategory[cat].filter(it => !chosenItems.some(c => c.id === it.id));
-        if (catCandidates.length > 0) {
-          const fresh = catCandidates.filter(it => !recentIds.includes(it.id));
-          const pick = fresh.length > 0 ? fresh[Math.floor(Math.random() * fresh.length)] : catCandidates[0];
-          chosenItems.push(pick);
-          usedCategoriesCount[pick.cat] = (usedCategoriesCount[pick.cat] || 0) + 1;
-        }
-      }
-    }
-
-    // Qolgan toifalardan muvozanatli to'ldirish (kamida 5-6 toifa, bitta toifadan max 3 ta)
-    const remainingCats = fisherYatesShuffle(categoryKeys);
-    let catIndex = 0;
-
-    while (chosenItems.length < totalCount && catIndex < remainingCats.length * 4) {
-      const cat = remainingCats[catIndex % remainingCats.length];
-      catIndex++;
-
-      if ((usedCategoriesCount[cat] || 0) >= 3) continue; // Bitta toifadan ko'pi bilan 3 ta!
-
-      const available = (byCategory[cat] || []).filter(it => !chosenItems.some(c => c.id === it.id));
-      if (available.length === 0) continue;
-
-      // Recency bo'yicha saralash
-      const freshItems = available.filter(it => !recentIds.includes(it.id));
-      const chosenCandidate = freshItems.length > 0
-        ? freshItems[Math.floor(Math.random() * freshItems.length)]
-        : available[Math.floor(Math.random() * available.length)];
-
-      chosenItems.push(chosenCandidate);
-      usedCategoriesCount[cat] = (usedCategoriesCount[cat] || 0) + 1;
-    }
-
-    // Agar 10 taga yetmay qolsa, qolgan hamma pool'dan to'ldiramiz
-    if (chosenItems.length < totalCount) {
-      const leftover = pool.filter(it => !chosenItems.some(c => c.id === it.id));
-      const shuffledLeftover = fisherYatesShuffle(leftover);
-      for (const item of shuffledLeftover) {
-        if (chosenItems.length >= totalCount) break;
+    // Agar 9 taga yetmay qolsa
+    if (chosenItems.length < 9) {
+      const leftover = db.filter(i => !usedIds.has(i.id));
+      const shuffled = fisherYatesShuffle(leftover);
+      for (const item of shuffled) {
+        if (chosenItems.length >= 9) break;
         chosenItems.push(item);
+        usedIds.add(item.id);
       }
     }
 
-    // Yakuniy tartib ham Fisher-Yates orqali to'liq aralashtiriladi (toifalar ketma-ket tushmasin!)
+    // Fisher-Yates orqali aralashtirish
     const finalShuffled = fisherYatesShuffle(chosenItems);
 
-    // Oxirgi o'ynalganlar ro'yxatini yangilash (oxirgi 30 ta)
-    const newRecentIds = [...recentIds, ...finalShuffled.map(i => i.id)].slice(-30);
     try {
+      const newRecentIds = [...recentIds, ...finalShuffled.map(i => i.id)].slice(-30);
       localStorage.setItem('ECO_RECENT_SORT_IDS', JSON.stringify(newRecentIds));
     } catch (e) {}
 
@@ -347,7 +306,7 @@
         <!-- Header -->
         <div class="flex flex-wrap items-center justify-between gap-3 mb-5 pb-4 border-b border-slate-800">
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-500/40 shadow-lg shadow-emerald-500/10 shrink-0">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-500/40 shadow-lg shadow-emerald-500/9 shrink-0">
               ♻️
             </div>
             <div>
@@ -382,7 +341,7 @@
             </button>
             <div class="bg-slate-950 px-3.5 py-1.5 rounded-xl border border-slate-800 text-center">
               <span class="text-[9px] text-slate-500 uppercase font-black block">Joylandi</span>
-              <span id="sorting-placed-counter" class="text-sm font-black text-emerald-400">0 / 10</span>
+              <span id="sorting-placed-counter" class="text-sm font-black text-emerald-400">0 / 9</span>
             </div>
           </div>
         </div>
@@ -416,13 +375,13 @@
             <div class="flex items-center gap-2">
               <span class="text-xs font-black uppercase text-amber-400 tracking-wider flex items-center gap-1.5">
                 <i class="fa-solid fa-hand-pointer animate-bounce text-emerald-400"></i>
-                Saralanishi kerak bo'lgan 10 ta chiqindi:
+                Saralanishi kerak bo'lgan 9 ta chiqindi (9 qutiga 9 xil):
               </span>
               <span class="text-[11px] text-slate-400 hidden sm:inline">
                 (Qutiga sudrab tashlang yoki kartani bir marta bosib, so'ng kerakli qutini bosing)
               </span>
             </div>
-            <span id="tray-remaining-count" class="text-xs font-black text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/40">10 ta qoldi</span>
+            <span id="tray-remaining-count" class="text-xs font-black text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/40">9 ta qoldi</span>
           </div>
 
           <div id="sorting-tray-items" class="flex flex-wrap gap-2.5 min-h-[110px] items-center justify-center p-2 rounded-xl border border-dashed border-slate-700/80 bg-slate-900/60">
@@ -632,7 +591,7 @@
 
     // 10 ta chiqindini Fisher-Yates + Adaptive + Balans qoidalari bilan tanlash
     EcoSortingState.activeItems = selectBalancedRoundItems({
-      count: 10,
+      count: 9,
       difficulty: EcoSortingState.difficulty
     });
 
@@ -675,7 +634,7 @@
       tray.innerHTML = `
         <div class="py-5 text-center animate-fade-in text-emerald-400 font-bold text-xs flex flex-col items-center gap-2 w-full">
           <i class="fa-solid fa-circle-check text-3xl animate-bounce"></i>
-          <span class="text-sm font-black">Barcha 10 ta chiqindi qutilarga joylandi!</span>
+          <span class="text-sm font-black">Barcha 9 ta chiqindi 9 ta qutiga joylandi!</span>
           <span class="text-slate-300 text-[11px]">Agar xohlasangiz qutilardagi elementlarni bosib qaytarib olishingiz mumkin. Tayyor bo'lsangiz quyidagi <strong>"Tekshirish"</strong> tugmasini bosing!</span>
         </div>
       `;
@@ -718,7 +677,7 @@
                 ⚠️ QOPQON
               </span>
             ` : `
-              <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-emerald-500/9 text-emerald-400 border border-emerald-500/20">
                 +10 XP
               </span>
             `}
@@ -1174,7 +1133,7 @@
     let titleBadge = "🌱 Yangi boshlovchi";
     let titleColor = "text-slate-400";
     if (correctCount === totalCount) {
-      titleBadge = "👑 Eko-ustoz (10/10 Mukammal!)";
+      titleBadge = "👑 Eko-ustoz (10/9 Mukammal!)";
       titleColor = "text-amber-400";
     } else if (correctCount >= 7) {
       titleBadge = "🥈 Saralash ustasi";
@@ -1471,7 +1430,7 @@
         <!-- Top Session Header -->
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl border border-cyan-500/40 shadow-lg shadow-cyan-500/10 shrink-0">
+            <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl border border-cyan-500/40 shadow-lg shadow-cyan-500/9 shrink-0">
               ⚡
             </div>
             <div>
@@ -1751,7 +1710,7 @@
     if (target) {
       target.innerHTML = `
         <div class="py-10 text-center max-w-lg mx-auto bg-slate-950/80 rounded-3xl p-6 border border-emerald-500/30">
-          <div class="w-20 h-20 mx-auto mb-4 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-4xl shadow-xl shadow-emerald-500/10 animate-bounce">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-3xl bg-emerald-500/9 border border-emerald-500/30 flex items-center justify-center text-4xl shadow-xl shadow-emerald-500/9 animate-bounce">
             🏆
           </div>
           <h4 class="text-2xl font-black text-white mb-2">25 Talik Konveyer Yakunlandi!</h4>

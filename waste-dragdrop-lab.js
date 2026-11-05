@@ -66,7 +66,7 @@
 
   const EcoWasteDragLab = {
     mode: 'exam', // 'exam' yoki 'practice'
-    roundSize: 10, // 10, 15 yoki 20
+    roundSize: 9, // 10, 15 yoki 20
     timerEnabled: false,
     timerSeconds: 90,
     timerRemaining: 90,
@@ -126,46 +126,25 @@
               <div>
                 <div class="flex items-center gap-2 flex-wrap">
                   <h3 class="text-xl font-black text-white tracking-wide">Chiqindi Laboratoriyasi (Drag & Drop)</h3>
-                  <span class="text-[10px] uppercase font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full">
-                    200 TA CHIQINDI BAZASI
+                  <span class="text-[10px] uppercase font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-0.5 rounded-full">
+                    9 QUTI & 9 XIL CHIQINDI (200 TA BAZA)
                   </span>
                   <span id="lab-mode-tag" class="text-[10px] uppercase font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full">
                     ${this.mode === 'exam' ? '🏆 Imtihon Rejimi' : '🎓 Mashq Rejimi'}
                   </span>
                 </div>
                 <p class="text-xs text-slate-400 mt-0.5">
-                  Chiqindilarni 9 ta rangli qutiga sudrab joylang yoki bosing. "Tekshirish" bosilguncha javoblarni erkin o'zgartirish mumkin!
+                  9 ta rangli qutining har biriga mos 9 xil chiqindini sudrab joylang yoki bosing. "Tekshirish" bosilguncha javoblarni erkin o'zgartirish mumkin!
                 </p>
               </div>
             </div>
 
             <!-- Header Quick Controls -->
             <div class="flex items-center gap-2 flex-wrap">
-              <!-- Hajm tanlash (10, 15, 20) -->
+              <!-- Hajm tanlash (9 ta, 18 ta) -->
               <div class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800 text-[11px] font-bold">
-                <button onclick="EcoWasteDragLab.setRoundSize(10)" class="px-2.5 py-1 rounded-lg ${this.roundSize === 10 ? 'bg-emerald-500 text-slate-950 font-black' : 'text-slate-400 hover:text-white'} transition-all cursor-pointer">10 ta</button>
-                <button onclick="EcoWasteDragLab.setRoundSize(15)" class="px-2.5 py-1 rounded-lg ${this.roundSize === 15 ? 'bg-emerald-500 text-slate-950 font-black' : 'text-slate-400 hover:text-white'} transition-all cursor-pointer">15 ta</button>
-                <button onclick="EcoWasteDragLab.setRoundSize(20)" class="px-2.5 py-1 rounded-lg ${this.roundSize === 20 ? 'bg-emerald-500 text-slate-950 font-black' : 'text-slate-400 hover:text-white'} transition-all cursor-pointer">20 ta</button>
-              </div>
-
-              <button onclick="EcoWasteDragLab.openSettingsModal()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border border-slate-700">
-                <i class="fa-solid fa-sliders text-amber-400"></i>
-                <span>Rejim</span>
-              </button>
-
-              <button onclick="EcoWasteDragLab.startNewRound()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border border-slate-700">
-                <i class="fa-solid fa-arrows-rotate text-emerald-400"></i>
-                <span>Yangi Partiya</span>
-              </button>
-
-              <div class="bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-center min-w-[70px]">
-                <span class="text-[9px] text-slate-500 uppercase font-black block">Joylandi</span>
-                <span id="lab-placed-count" class="text-xs font-black text-amber-400">0 / ${this.roundSize}</span>
-              </div>
-
-              <div id="lab-timer-badge" class="${this.timerEnabled ? 'flex' : 'hidden'} items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-xs font-black text-rose-400">
-                <i class="fa-solid fa-stopwatch animate-pulse"></i>
-                <span id="lab-timer-num">90s</span>
+                <button onclick="EcoWasteDragLab.setRoundSize(9)" class="px-3 py-1 rounded-lg ${this.roundSize === 9 ? 'bg-emerald-500 text-slate-950 font-black' : 'text-slate-400 hover:text-white'} transition-all cursor-pointer">9 ta (1 tadan)</button>
+                <button onclick="EcoWasteDragLab.setRoundSize(18)" class="px-3 py-1 rounded-lg ${this.roundSize === 18 ? 'bg-emerald-500 text-slate-950 font-black' : 'text-slate-400 hover:text-white'} transition-all cursor-pointer">18 ta (2 tadan)</button>
               </div>
             </div>
           </div>
@@ -473,100 +452,68 @@
         window.ecoAudio.playClick();
       }
     },
-
-    // 5. Muvozanatli Chiqindilarni tanlash (200 ta bazadan to'liq)
-    selectBalancedItems(count = 10) {
+    // 5. Muvozanatli Chiqindilarni tanlash (9 ta qutiga 9 xil chiqindi!)
+    selectBalancedItems(count = 9) {
       const db = window.ECO_WASTE_DATABASE || [];
       if (!Array.isArray(db) || db.length === 0) {
         return this.getFallbackItems().slice(0, count);
       }
 
       let recentIds = [];
-      let weakCategories = [];
       try {
         recentIds = JSON.parse(localStorage.getItem('ECO_RECENT_SORT_IDS') || '[]');
-        weakCategories = JSON.parse(localStorage.getItem('ECO_WEAK_CATEGORIES') || '[]');
       } catch (e) {
         recentIds = [];
-        weakCategories = [];
       }
 
-      // Toifalar bo'yicha guruhlash (9 ta toifaga to'g'ri ajratiladi)
+      // Toifalar bo'yicha guruhlash (9 ta toifaga to'liq ajratiladi)
       const byCategory = {};
+      BINS.forEach(b => { byCategory[b.key] = []; });
+
       db.forEach(item => {
         const cat = this.getItemCategory(item);
-        if (!byCategory[cat]) byCategory[cat] = [];
-        byCategory[cat].push(item);
+        if (byCategory[cat]) {
+          byCategory[cat].push(item);
+        }
       });
-
-      const categories = Object.keys(byCategory);
-      const shuffledCategories = this.fisherYates(categories);
 
       const chosen = [];
       const usedIds = new Set();
-      const categoryCounts = {};
+      const perCategoryCount = Math.max(1, Math.floor(count / BINS.length));
 
-      // 1-bosqich: Zaif toifalar (Moslashuvchan Ta'lim)
-      if (weakCategories.length > 0) {
-        weakCategories.slice(0, 3).forEach(wCat => {
-          if (byCategory[wCat] && byCategory[wCat].length > 0) {
-            const pool = byCategory[wCat].filter(i => !recentIds.includes(i.id));
-            const pickFrom = pool.length > 0 ? pool : byCategory[wCat];
-            const candidate = pickFrom[Math.floor(Math.random() * pickFrom.length)];
-            if (candidate && !usedIds.has(candidate.id)) {
-              chosen.push(candidate);
-              usedIds.add(candidate.id);
-              categoryCounts[wCat] = (categoryCounts[wCat] || 0) + 1;
-            }
-          }
-        });
-      }
+      // Har bir 9 ta qutidan AYNAN 1 TADAN chiqindi tanlash (9 qutiga 9 xil chiqindi)
+      BINS.forEach(bin => {
+        const pool = byCategory[bin.key] || [];
+        if (pool.length === 0) return;
 
-      // 2-bosqich: Barcha toifalardan kamida 1 tadan kiritish
-      for (const cat of shuffledCategories) {
-        if (chosen.length >= count) break;
-        if (!categoryCounts[cat]) {
-          const pool = byCategory[cat].filter(i => !recentIds.includes(i.id) && !usedIds.has(i.id));
-          const pickFrom = pool.length > 0 ? pool : byCategory[cat].filter(i => !usedIds.has(i.id));
-          if (pickFrom.length > 0) {
-            const candidate = pickFrom[Math.floor(Math.random() * pickFrom.length)];
-            chosen.push(candidate);
-            usedIds.add(candidate.id);
-            categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+        for (let k = 0; k < perCategoryCount; k++) {
+          const fresh = pool.filter(i => !recentIds.includes(i.id) && !usedIds.has(i.id));
+          const candidates = fresh.length > 0 ? fresh : pool.filter(i => !usedIds.has(i.id));
+          const pickList = candidates.length > 0 ? candidates : pool;
+          const pick = pickList[Math.floor(Math.random() * pickList.length)];
+          if (pick && !usedIds.has(pick.id)) {
+            chosen.push(pick);
+            usedIds.add(pick.id);
           }
         }
-      }
+      });
 
-      // 3-bosqich: Qolgan o'rinlarni to'ldirish
-      const maxPerCat = Math.max(2, Math.ceil(count / 4));
-      const allRemaining = db.filter(i => !usedIds.has(i.id));
-      const shuffledRemaining = this.fisherYates(allRemaining);
-
-      for (const item of shuffledRemaining) {
-        if (chosen.length >= count) break;
-        const cat = this.getItemCategory(item);
-        if ((categoryCounts[cat] || 0) < maxPerCat) {
+      // Agar qo'shimcha o'rinlar kerak bo'lsa
+      if (chosen.length < count) {
+        const remainingPool = db.filter(i => !usedIds.has(i.id));
+        const shuffled = this.fisherYates(remainingPool);
+        for (const item of shuffled) {
+          if (chosen.length >= count) break;
           chosen.push(item);
           usedIds.add(item.id);
-          categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
         }
       }
 
-      // Agar hali ham yetmagan bo'lsa, istalgan boshqa chiqindilar bilan to'ldirish
-      if (chosen.length < count) {
-        for (const item of shuffledRemaining) {
-          if (chosen.length >= count) break;
-          if (!usedIds.has(item.id)) {
-            chosen.push(item);
-            usedIds.add(item.id);
-          }
-        }
-      }
-
+      // 9 ta chiqindini Fisher-Yates orqali aralashtirib berish
       const finalItems = this.fisherYates(chosen);
 
       try {
-        const updatedRecent = [...finalItems.map(i => i.id), ...recentIds].slice(0, 40);
+        const updatedRecent = [...finalItems.map(i => i.id), ...recentIds].slice(0, 30);
         localStorage.setItem('ECO_RECENT_SORT_IDS', JSON.stringify(updatedRecent));
       } catch (e) {}
 
@@ -582,18 +529,17 @@
       return copy;
     },
 
-    getFallbackItems() {
+        getFallbackItems() {
       return [
         { id: 101, slug: "pet-bottle", name: "PET Plastik Butilka", cat: "plastik", difficulty: "oson", icon: "🧴", explanation: "Oddiy PET shishalar plastik konteyneriga topshiriladi." },
-        { id: 102, slug: "old-newspaper", name: "Eski Gazeta & Jurnal", cat: "qogoz", difficulty: "oson", icon: "📰", explanation: "Toza qog'oz ikkilamchi karton ishlab chiqarish uchun ketadi." },
-        { id: 103, slug: "banana-peel", name: "Banan Po'stlog'i", cat: "organik", difficulty: "oson", icon: "🍌", explanation: "Organik qoldiqlar kompost qilinadi." },
-        { id: 104, slug: "tetra-pak", name: "Tetra Pak Sharbat Qutisi", cat: "U", difficulty: "qiyin", isTrap: true, icon: "🧃", explanation: "Tetra Pak ichida polietilen va alyuminiy qatlam bor, shuning uchun 'U'!" },
-        { id: 105, slug: "cash-receipt", name: "Kassa Cheki (Termo)", cat: "U", difficulty: "qiyin", isTrap: true, icon: "🧾", explanation: "Termo-chekda zaharli Bisfenol-A bor, qog'oz bilan qayta ishlanmaydi!" },
-        { id: 106, slug: "powerbank", name: "Powerbank (Litiy)", cat: "elektronika", difficulty: "qiyin", isTrap: true, icon: "🔋", explanation: "Elektron plata va litiy akkumulyator bor, E-waste ga topshiriladi!" },
-        { id: 107, slug: "aluminum-can", name: "Alyuminiy Ichimlik Bankasi", cat: "metall", difficulty: "oson", icon: "🥫", explanation: "Alyuminiy cheksiz marta 95% energiya tejalgan holda qayta ishlanadi." },
-        { id: 108, slug: "glass-bottle", name: "Shisha Dori Flakoni", cat: "shisha", difficulty: "orta", icon: "🍾", explanation: "Shisha idishlar yuvilib shisha konteyneriga topshiriladi." },
-        { id: 109, slug: "old-tshirt", name: "Paxtali Eski Futbolka", cat: "tekstil", difficulty: "orta", icon: "👕", explanation: "Toza kiyim-kechaklar tekstil konteyneriga topshiriladi." },
-        { id: 110, slug: "used-battery", name: "Ishlatilgan Batareyka", cat: "xavfli", difficulty: "oson", icon: "🔋", explanation: "Zaharli og'ir metallar bor, faqat xavfli chiqindi qutisiga tashlanadi." }
+        { id: 102, slug: "old-newspaper", name: "Eski Gazeta & Jurnal", cat: "qogoz", difficulty: "oson", icon: "📦", explanation: "Toza qog'oz ikkilamchi karton ishlab chiqarish uchun ketadi." },
+        { id: 103, slug: "glass-bottle", name: "Shisha Dori Flakoni", cat: "shisha", difficulty: "orta", icon: "🍾", explanation: "Shisha idishlar yuvilib shisha konteyneriga topshiriladi." },
+        { id: 104, slug: "banana-peel", name: "Banan Po'stlog'i", cat: "organik", difficulty: "oson", icon: "🍌", explanation: "Organik qoldiqlar kompost qilinadi." },
+        { id: 105, slug: "aluminum-can", name: "Alyuminiy Ichimlik Bankasi", cat: "metall", difficulty: "oson", icon: "🥫", explanation: "Alyuminiy cheksiz marta 95% energiya tejalgan holda qayta ishlanadi." },
+        { id: 106, slug: "used-battery", name: "Ishlatilgan Batareyka", cat: "xavfli", difficulty: "oson", icon: "🔋", explanation: "Zaharli og'ir metallar bor, faqat xavfli chiqindi qutisiga tashlanadi." },
+        { id: 107, slug: "powerbank", name: "Powerbank (Litiy)", cat: "elektronika", difficulty: "qiyin", isTrap: true, icon: "📱", explanation: "Elektron plata va litiy akkumulyator bor, E-waste ga topshiriladi!" },
+        { id: 108, slug: "old-tshirt", name: "Paxtali Eski Futbolka", cat: "tekstil", difficulty: "orta", icon: "👕", explanation: "Toza kiyim-kechaklar tekstil konteyneriga topshiriladi." },
+        { id: 109, slug: "tetra-pak", name: "Tetra Pak Sharbat Qutisi", cat: "U", difficulty: "qiyin", isTrap: true, icon: "🗑️", explanation: "Tetra Pak ichida polietilen va alyuminiy qatlam bor, shuning uchun Utilizatsiya!" }
       ];
     },
 
@@ -1142,5 +1088,6 @@
   };
 
   window.EcoWasteDragLab = EcoWasteDragLab;
+  window.renderWasteSandboxLabUI = function(container) { EcoWasteDragLab.renderUI(container); };
 
 })();

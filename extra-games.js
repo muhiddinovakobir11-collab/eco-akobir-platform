@@ -137,7 +137,7 @@ const ALL_GAMES_CATALOG = [
   },
   {
     id: 24,
-    title: "24. Chiqindi Laboratoriyasi (10 Quti & Drag-and-Drop)",
+    title: "24. Chiqindi Laboratoriyasi (9 Quti & 9 Xil Chiqindi)",
     category: "Saralash va Qayta ishlash",
     badge: "10 Chiqindi • 9 Quti • Erkin Sudrash",
     icon: "fa-hand-pointer",
@@ -326,7 +326,9 @@ function renderActiveGame(gameId, container) {
       if (typeof renderExpertiseQuestUI === 'function') renderExpertiseQuestUI(target);
       break;
     case 24:
-      if (typeof window.renderWasteSandboxLabUI === 'function') {
+      if (window.EcoWasteDragLab && typeof window.EcoWasteDragLab.renderUI === 'function') {
+        window.EcoWasteDragLab.renderUI(target);
+      } else if (typeof window.renderWasteSandboxLabUI === 'function') {
         window.renderWasteSandboxLabUI(target);
       }
       break;
