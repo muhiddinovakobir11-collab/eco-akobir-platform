@@ -1323,9 +1323,13 @@
 
   function switchToTraySorting() {
     if (typeof stopConveyorQuizTimer === 'function') stopConveyorQuizTimer();
-    const container = document.getElementById('sorting-game-container');
-    renderSortingGameUI(container);
-    startNewSortingRound();
+    const container = document.getElementById('sorting-game-container') || document.getElementById('game-dynamic-content');
+    if (window.EcoWasteDragLab && typeof window.EcoWasteDragLab.renderUI === 'function') {
+      window.EcoWasteDragLab.renderUI(container);
+    } else {
+      renderSortingGameUI(container);
+      startNewSortingRound();
+    }
   }
 
   EcoSortingEngine.switchToConveyorQuiz = switchToConveyorQuiz;

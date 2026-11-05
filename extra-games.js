@@ -7,13 +7,13 @@
 const ALL_GAMES_CATALOG = [
   {
     id: 1,
-    title: "1. Chiqindilarni Tafakkur Qilib Saralash",
+    title: "1. Chiqindilarni Tafakkur Qilib Saralash (4 Talik Konveyer)",
     category: "Saralash va Qayta ishlash",
-    badge: "150 ta Chiqindi • 25 savolli Raund",
+    badge: "200 ta Chiqindi • 4 Talik Variantlar",
     icon: "fa-recycle",
     color: "emerald",
     xp: 250,
-    desc: "150 xil real chiqindilar ichidan tasodifiy 25 tasi beriladi. Har biriga 10s vaqt beriladi."
+    desc: "200 xil real hayotiy va qopqon chiqindilar ichidan 25 tasi 4 ta toifali variant (A, B, C, D) va 10s taymer bilan tushadi."
   },
   {
     id: 2,
@@ -134,6 +134,16 @@ const ALL_GAMES_CATALOG = [
     color: "lime",
     xp: 190,
     desc: "Jigarrang (Uglerod) va Yashil (Azot) chiqindilarni 30:1 nisbatda qorishtirib toza bio-gumus oling."
+  },
+  {
+    id: 24,
+    title: "24. Chiqindi Laboratoriyasi (10 Quti & Drag-and-Drop)",
+    category: "Saralash va Qayta ishlash",
+    badge: "10 Chiqindi • 9 Quti • Erkin Sudrash",
+    icon: "fa-hand-pointer",
+    color: "emerald",
+    xp: 260,
+    desc: "10 ta muvozanatli chiqindini maxsus lagondan 9 ta rangli qutiga erkin sudrang, joylang va faqat oxirida tekshiring. Imtihon va Mashq rejimlari!"
   }
 ];
 
@@ -303,7 +313,11 @@ function renderActiveGame(gameId, container) {
   // Launch appropriate game runner
   switch (gameId) {
     case 1:
-      if (typeof renderSortingGameUI === 'function') renderSortingGameUI(target);
+      if (typeof window.launchConveyorQuizMode === 'function') {
+        window.launchConveyorQuizMode(target);
+      } else if (typeof renderSortingGameUI === 'function') {
+        renderSortingGameUI(target);
+      }
       break;
     case 2:
       if (typeof renderAuditSimulatorUI === 'function') renderAuditSimulatorUI(target);
@@ -311,8 +325,13 @@ function renderActiveGame(gameId, container) {
     case 3:
       if (typeof renderExpertiseQuestUI === 'function') renderExpertiseQuestUI(target);
       break;
+    case 24:
+      if (typeof window.renderWasteSandboxLabUI === 'function') {
+        window.renderWasteSandboxLabUI(target);
+      }
+      break;
     default:
-      if (gameId >= 14 && typeof window.launchNewPackGame === 'function') {
+      if (gameId >= 14 && gameId <= 23 && typeof window.launchNewPackGame === 'function') {
         window.launchNewPackGame(gameId, target);
       } else {
         renderExtendedInteractiveGame(gameId, target);
