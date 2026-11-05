@@ -175,6 +175,35 @@ function renderGamesHub() {
       </div>
     </div>
 
+    <!-- 1v1 Eko-Batl Bellashuv Maxsus Banneri -->
+    <div onclick="switchMainTab('battle-tab')" class="rounded-3xl bg-gradient-to-r from-amber-950/60 via-slate-900 to-rose-950/60 border-2 border-amber-500/50 p-5 mb-6 shadow-2xl flex flex-wrap items-center justify-between gap-4 cursor-pointer hover:border-amber-400 hover:scale-[1.01] transition-all group">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center text-2xl text-slate-950 font-black shadow-lg shadow-amber-500/30 group-hover:rotate-12 transition-transform">
+          ⚔️
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-black uppercase tracking-wider">
+              Yangi Format • 1v1 Jonli Arena
+            </span>
+            <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">Ekran 2 ga bo'linadi</span>
+          </div>
+          <h3 class="text-lg sm:text-xl font-black text-white group-hover:text-amber-300 transition-colors mt-1">
+            ⚔️ Eko-Batl: 2 Talaba Bir Vaqtda Bellashuvi
+          </h3>
+          <p class="text-xs text-slate-300 mt-0.5">
+            2 jamoa nomini yozing, ekran ikkiga bo'linadi va butun platforma savollari mustaqil random tarzda beriladi!
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-500 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform flex items-center gap-1.5">
+          <span>Batlga Kirish</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
     <!-- Games Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       ${catalog.map(game => `

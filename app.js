@@ -960,7 +960,11 @@ function switchMainTab(tabId) {
   if (typeof stopAuditTimer === 'function') stopAuditTimer();
   if (typeof stopExpertiseTimer === 'function') stopExpertiseTimer();
   if (typeof stopExtraGameTimer === 'function') stopExtraGameTimer();
-  const tabs = ['modules-tab', 'games-tab', 'sorting-tab', 'audit-tab', 'expertise-tab', 'teacher-tab', 'videos-tab'];
+  if (tabId !== 'battle-tab' && window.EcoBattleArena && typeof window.EcoBattleArena.unbindKeyboard === 'function') {
+    window.EcoBattleArena.unbindKeyboard();
+  }
+
+  const tabs = ['modules-tab', 'games-tab', 'battle-tab', 'sorting-tab', 'audit-tab', 'expertise-tab', 'teacher-tab', 'videos-tab'];
   tabs.forEach(t => {
     const el = document.getElementById(t);
     const navBtn = document.getElementById(`nav-${t}`);
@@ -979,6 +983,10 @@ function switchMainTab(tabId) {
     activeNav.classList.remove('text-slate-400');
   }
 
+  if (tabId === 'battle-tab' && window.EcoBattleArena) {
+    window.EcoBattleArena.init();
+  }
+
   if (tabId === 'videos-tab' && window.EcoVideoManager) {
     window.EcoVideoManager.renderCatalog();
   }
@@ -991,13 +999,17 @@ function switchMainTab(tabId) {
   // Update mobile bottom nav active highlights
   const mModules = document.getElementById('m-nav-modules');
   const mGames = document.getElementById('m-nav-games');
+  const mBattle = document.getElementById('m-nav-battle');
+  const mVideos = document.getElementById('m-nav-videos');
   if (mModules && mGames) {
     mModules.className = `mobile-nav-btn flex flex-col items-center gap-1 transition-colors p-1 ${tabId === 'modules-tab' ? 'text-emerald-400 font-bold' : 'text-slate-400 hover:text-emerald-400'}`;
     mGames.className = `mobile-nav-btn flex flex-col items-center gap-1 transition-colors p-1 ${tabId === 'games-tab' ? 'text-emerald-400 font-bold' : 'text-slate-400 hover:text-emerald-400'}`;
-    const mVideos = document.getElementById('m-nav-videos');
-    if (mVideos) {
-      mVideos.className = `mobile-nav-btn flex flex-col items-center gap-1 transition-colors p-1 ${tabId === 'videos-tab' ? 'text-rose-400 font-bold' : 'text-slate-400 hover:text-rose-400'}`;
-    }
+  }
+  if (mBattle) {
+    mBattle.className = `mobile-nav-btn flex flex-col items-center gap-1 transition-colors p-1 ${tabId === 'battle-tab' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-amber-400'}`;
+  }
+  if (mVideos) {
+    mVideos.className = `mobile-nav-btn flex flex-col items-center gap-1 transition-colors p-1 ${tabId === 'videos-tab' ? 'text-rose-400 font-bold' : 'text-slate-400 hover:text-rose-400'}`;
   }
 
   if (window.ecoAudio) window.ecoAudio.playClick();
