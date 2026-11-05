@@ -1086,7 +1086,7 @@
                     <span>${row.item.name}</span>
                   </span>
                   <span class="${row.isCorrect ? 'text-emerald-400' : 'text-rose-400'} font-bold">
-                    ${row.isCorrect ? '✅ To\\'g\\'ri' : '❌ Xato'}
+                    ${row.isCorrect ? '✅ To&#39;g&#39;ri' : '❌ Xato'}
                   </span>
                 </div>
                 <div class="text-[11px] text-slate-400 mb-1">
