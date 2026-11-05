@@ -178,16 +178,16 @@ window.ecoAudio = new EcoSoundEngine();
 
 // 2. Player Profile & State
 const DEFAULT_PROFILE = {
-  name: "Akobir (Asoschi)",
-  university: "O'zbekiston Milliy Universiteti",
-  group: "302-guruh (Ekologiya)",
-  role: "Auditor",
-  telegramUsername: "akoshprod",
-  avatarUrl: "https://t.me/i/userpic/320/akoshprod.jpg",
-  xp: 450,
-  level: 2,
-  ecoCoins: 120,
-  completedModules: [1],
+  name: "Talaba (Ro'yxatdan o'ting)",
+  university: "O'quv yurti kiritilmagan",
+  group: "Guruh kiritilmagan",
+  role: "Talaba",
+  telegramUsername: "",
+  avatarUrl: "https://ui-avatars.com/api/?name=Talaba&background=059669&color=ffffff&bold=true",
+  xp: 0,
+  level: 1,
+  ecoCoins: 0,
+  completedModules: [],
   selectedCategory: "all"
 };
 
@@ -214,10 +214,6 @@ function loadProfile() {
   if (saved) {
     try {
       const p = JSON.parse(saved);
-      if (!p.telegramUsername) {
-        p.telegramUsername = "akoshprod";
-        p.avatarUrl = "https://t.me/i/userpic/320/akoshprod.jpg";
-      }
       return p;
     } catch (e) {}
   }
@@ -261,15 +257,23 @@ function openAuthModal() {
     
     const nameInput = document.getElementById('auth-fullname');
     if (nameInput) {
-      if (playerProfile.name && playerProfile.name !== "Akobir (Asoschi)") {
-        nameInput.value = playerProfile.name;
-      }
+      nameInput.value = (playerProfile.name && !playerProfile.name.includes("Ro'yxatdan")) ? playerProfile.name : "";
       setTimeout(() => nameInput.focus(), 200);
     }
 
     const tgInput = document.getElementById('auth-telegram');
     if (tgInput) {
-      tgInput.value = playerProfile.telegramUsername ? ('@' + playerProfile.telegramUsername.replace(/^@/, '')) : '@akoshprod';
+      tgInput.value = playerProfile.telegramUsername ? ('@' + playerProfile.telegramUsername.replace(/^@/, '')) : "";
+    }
+
+    const uniInput = document.getElementById('auth-university');
+    if (uniInput) {
+      uniInput.value = (playerProfile.university && !playerProfile.university.includes("kiritilmagan")) ? playerProfile.university : "";
+    }
+
+    const groupInput = document.getElementById('auth-group');
+    if (groupInput) {
+      groupInput.value = (playerProfile.group && !playerProfile.group.includes("kiritilmagan")) ? playerProfile.group : "";
     }
   }
 }
@@ -289,15 +293,22 @@ function handleUserRegistration(e) {
     return;
   }
 
+  const cleanTg = tgValue.replace(/^@/, '').trim();
   playerProfile.name = fullname;
-  playerProfile.university = university || "O'zbekiston Milliy Universiteti";
-  playerProfile.group = group || "Ekologiya 1-bosqich";
+  playerProfile.university = university || "O'quv yurti kiritilmagan";
+  playerProfile.group = group || "Guruh kiritilmagan";
   playerProfile.role = role || "Talaba";
-  playerProfile.telegramUsername = tgValue || "akoshprod";
-  playerProfile.avatarUrl = `https://t.me/i/userpic/320/${playerProfile.telegramUsername}.jpg`;
+  playerProfile.telegramUsername = cleanTg;
+  playerProfile.avatarUrl = cleanTg 
+    ? `https://t.me/i/userpic/320/${cleanTg}.jpg`
+    : `https://ui-avatars.com/api/?name=${encodeURIComponent(fullname)}&background=059669&color=ffffff&bold=true`;
 
   localStorage.setItem('eco_akobir_registered', 'true');
   saveProfile();
+
+  if (typeof registerOrUpdateUserInRegistry === 'function') {
+    registerOrUpdateUserInRegistry(playerProfile);
+  }
 
   const modal = document.getElementById('auth-modal');
   if (modal) modal.classList.add('hidden');
@@ -336,15 +347,24 @@ function updateProfileHeaderUI() {
   }
 
   if (avatarContainer) {
-    const tg = playerProfile.telegramUsername || "akoshprod";
-    const av = getTelegramAvatarUrl(tg, playerProfile.name);
-    avatarContainer.innerHTML = `
-      <img src="${av.primary}" 
-           alt="${playerProfile.name}" 
-           class="w-full h-full object-cover rounded-xl"
-           onerror="if (this.src !== '${av.fallback}') { this.src = '${av.fallback}'; } else { this.onerror = null; this.src = '${av.tertiary}'; }"
-      />
-    `;
+    const tg = (playerProfile.telegramUsername || "").replace(/^@/, '').trim();
+    const av = getTelegramAvatarUrl(tg, playerProfile.name || "Talaba");
+    if (tg) {
+      avatarContainer.innerHTML = `
+        <img src="${av.primary}" 
+             alt="${playerProfile.name}" 
+             class="w-full h-full object-cover rounded-xl"
+             onerror="if (this.src !== '${av.fallback}') { this.src = '${av.fallback}'; } else { this.onerror = null; this.src = '${av.tertiary}'; }"
+        />
+      `;
+    } else {
+      avatarContainer.innerHTML = `
+        <img src="${av.tertiary}" 
+             alt="${playerProfile.name}" 
+             class="w-full h-full object-cover rounded-xl"
+        />
+      `;
+    }
   }
 }
 
@@ -1048,6 +1068,7 @@ function bootApp() {
   window._appBooted = true;
 
   if (typeof loadEcoConfig === 'function') loadEcoConfig();
+  if (typeof checkAdminAccess === 'function') checkAdminAccess();
   initAppleSplash();
   updateProfileHeaderUI();
   syncLeaderboardWithPlayer();

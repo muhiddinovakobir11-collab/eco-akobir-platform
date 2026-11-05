@@ -122,10 +122,37 @@ function isAdminAuthenticated() {
   return sessionStorage.getItem('ECO_ADMIN_AUTH') === 'true';
 }
 
+function checkAdminAccess() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const isAdminParam = urlParams.get('admin') === '1' || urlParams.get('admin') === 'true' || window.location.hash === '#admin';
+  const isAuth = sessionStorage.getItem('ECO_ADMIN_AUTH') === 'true';
+
+  const headerBtn = document.getElementById('header-admin-btn');
+  const navTab = document.getElementById('nav-admin-tab');
+
+  if (isAdminParam || isAuth) {
+    if (headerBtn) headerBtn.classList.remove('hidden');
+    if (navTab) navTab.classList.remove('hidden');
+  } else {
+    if (headerBtn) headerBtn.classList.add('hidden');
+    if (navTab) navTab.classList.add('hidden');
+  }
+}
+window.checkAdminAccess = checkAdminAccess;
+
+// Maxfiy kombinatsiya: Ctrl + Shift + A (yoki Cmd + Shift + A) admin panelni ochadi
+window.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+    e.preventDefault();
+    openAdminPanelModal();
+  }
+});
+
 function authenticateAdmin(pass) {
   const currentPass = (window.ECO_CONFIG && window.ECO_CONFIG.adminPassword) || DEFAULT_ECO_CONFIG.adminPassword;
   if (pass.trim() === currentPass.trim()) {
     sessionStorage.setItem('ECO_ADMIN_AUTH', 'true');
+    checkAdminAccess();
     return true;
   }
   return false;
@@ -133,6 +160,7 @@ function authenticateAdmin(pass) {
 
 function logoutAdmin() {
   sessionStorage.removeItem('ECO_ADMIN_AUTH');
+  checkAdminAccess();
   renderAdminPanelModal();
   if (typeof showToast === 'function') {
     showToast("Admin paneli qulflandi.", "info");
