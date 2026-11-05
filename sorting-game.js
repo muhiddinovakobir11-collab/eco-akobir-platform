@@ -410,40 +410,40 @@
           </div>
         </div>
 
-        <!-- 9 Ta Konteyner Paneli (Drop Targets) -->
-        <div class="mb-5">
-          <div class="flex items-center justify-between mb-2 px-1">
-            <span class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
-              <i class="fa-solid fa-boxes-stacked text-emerald-400"></i>
-              Saralash Konteynerlari (Qutilar)
-            </span>
-            <span class="text-[11px] text-slate-500 hidden sm:inline">
-              💡 Klaviatura: Chiqindini tanlang va <strong>1-9</strong> raqamlarini bosing
-            </span>
+        <!-- 1. Chiqindilar qatori (Tray / Dock - 10 ta element) — TEPADA QULAY JOYLASHGAN -->
+        <div class="bg-slate-950/95 border-2 border-emerald-500/30 rounded-2xl p-3 sm:p-4 mb-4 shadow-xl">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-black uppercase text-amber-400 tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-hand-pointer animate-bounce text-emerald-400"></i>
+                Saralanishi kerak bo'lgan 10 ta chiqindi:
+              </span>
+              <span class="text-[11px] text-slate-400 hidden sm:inline">
+                (Qutiga sudrab tashlang yoki kartani bir marta bosib, so'ng kerakli qutini bosing)
+              </span>
+            </div>
+            <span id="tray-remaining-count" class="text-xs font-black text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/40">10 ta qoldi</span>
           </div>
 
-          <div id="sorting-bins-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2.5 sm:gap-3.5">
-            <!-- Dinamik ravishda render qilinadi -->
+          <div id="sorting-tray-items" class="flex flex-wrap gap-2.5 min-h-[110px] items-center justify-center p-2 rounded-xl border border-dashed border-slate-700/80 bg-slate-900/60">
+            <!-- 10 ta chiqindi kartochkalari shu yerda joylashadi -->
           </div>
         </div>
 
-        <!-- Chiqindilar qatori (Tray / Dock - 10 ta element) -->
-        <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-4 sm:p-5 relative shadow-inner">
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-black uppercase text-amber-400 tracking-wider flex items-center gap-1.5">
-                <i class="fa-solid fa-hand-pointer animate-bounce"></i>
-                Saralanishi kerak bo'lgan chiqindilar (10 ta)
-              </span>
-              <span class="text-[10px] text-slate-500 hidden md:inline">
-                (Sudrang yoki ustiga bosing, so'ng konteynerni tanlang)
-              </span>
-            </div>
-            <span id="tray-remaining-count" class="text-xs font-bold text-slate-400">10 ta qoldi</span>
+        <!-- 2. 9 Ta Konteyner Paneli (Drop Targets) — PASTDAGI BARCHA QUTILAR OSON KO'RINIB TURADI -->
+        <div class="mb-4">
+          <div class="flex items-center justify-between mb-2 px-1">
+            <span class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
+              <i class="fa-solid fa-boxes-stacked text-emerald-400"></i>
+              Saralash Konteynerlari (9 ta rangli quti)
+            </span>
+            <span class="text-[11px] text-slate-500 hidden sm:inline">
+              💡 Klaviatura: Chiqindini tanlab <strong>1-9</strong> raqamlarini bosing
+            </span>
           </div>
 
-          <div id="sorting-tray-items" class="flex flex-wrap gap-3 min-h-[120px] items-center justify-center p-2 rounded-xl border border-dashed border-slate-800 bg-slate-900/50">
-            <!-- 10 ta chiqindi kartochkalari shu yerda joylashadi -->
+          <div id="sorting-bins-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2.5 sm:gap-3">
+            <!-- Dinamik ravishda render qilinadi -->
           </div>
         </div>
 
@@ -583,10 +583,13 @@
           id="sorting-bin-${cat.key}" 
           data-bin-key="${cat.key}" 
           onclick="EcoSortingEngine.handleBinClick('${cat.key}')"
-          class="sorting-drop-bin ${cat.binBg} border-2 rounded-2xl p-3 sm:p-3.5 transition-all duration-200 flex flex-col justify-between min-h-[110px] sm:min-h-[125px] relative group cursor-pointer hover:shadow-lg hover:-translate-y-0.5 select-none"
+          ondragover="EcoSortingEngine.handleNativeDragOver(event, '${cat.key}')"
+          ondragleave="EcoSortingEngine.handleNativeDragLeave(event, '${cat.key}')"
+          ondrop="EcoSortingEngine.handleNativeDrop(event, '${cat.key}')"
+          class="sorting-drop-bin ${cat.binBg} border-2 rounded-2xl p-2.5 sm:p-3 transition-all duration-200 flex flex-col justify-between min-h-[95px] sm:min-h-[110px] relative group cursor-pointer hover:shadow-xl hover:-translate-y-0.5 select-none"
         >
           <!-- Top Bin Header -->
-          <div class="flex items-center justify-between gap-1 mb-1.5">
+          <div class="flex items-center justify-between gap-1 mb-1">
             <div class="flex items-center gap-1.5 min-w-0">
               <span class="text-xl sm:text-2xl shrink-0 transition-transform group-hover:scale-110">${cat.icon}</span>
               <div class="truncate">
@@ -594,20 +597,22 @@
                 <span class="text-[9px] text-slate-400 block">${cat.key === 'utilizatsiya' ? 'Qayta ishlanmaydi' : 'Qayta ishlanadi'}</span>
               </div>
             </div>
-            <span class="w-5 h-5 rounded-md bg-slate-950/80 border border-slate-700/80 text-slate-400 text-[10px] font-black flex items-center justify-center shrink-0">
+            <span class="w-5 h-5 rounded-md bg-slate-950/80 border border-slate-700/80 text-slate-300 text-[10px] font-black flex items-center justify-center shrink-0">
               ${shortcutNum}
             </span>
           </div>
 
-          <!-- Bin Slot Badges (Joylashtirilgan elementlar kichik nishonlari) -->
-          <div id="bin-items-slot-${cat.key}" class="flex flex-wrap gap-1 items-center min-h-[30px] p-1 rounded-lg bg-slate-950/60 border border-slate-800/80">
+          <!-- Bin Slot Badges (Joylashtirilgan elementlar) -->
+          <div id="bin-items-slot-${cat.key}" class="flex flex-wrap gap-1 items-center min-h-[26px] p-1 rounded-lg bg-slate-950/60 border border-slate-800/80">
             <span class="text-[10px] text-slate-500 italic px-1 bin-empty-label">Bo'sh</span>
           </div>
 
-          <!-- Bottom Bin Count -->
+          <!-- Bottom Bin Count & Drop Hint -->
           <div class="flex items-center justify-between text-[10px] font-bold text-slate-400 mt-1 pt-1 border-t border-slate-800/60">
             <span class="bin-counter-text">0 ta chiqindi</span>
-            <span class="text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity text-[10px]">Tashlash 📥</span>
+            <span class="text-emerald-400 text-[10px] font-extrabold flex items-center gap-0.5">
+              <span>📥 Tashlash</span>
+            </span>
           </div>
         </div>
       `;
@@ -631,13 +636,11 @@
       difficulty: EcoSortingState.difficulty
     });
 
-    // Trayni render qilish
     renderBins();
     renderTrayItems();
     updateBinsContentUI();
     updatePlacedCountUI();
 
-    // Taymerni boshlash (agar yoniq bo'lsa)
     const timerRow = document.getElementById('sorting-timer-row');
     if (EcoSortingState.timerEnabled) {
       if (timerRow) timerRow.classList.remove('hidden');
@@ -670,10 +673,10 @@
 
     if (unplacedItems.length === 0) {
       tray.innerHTML = `
-        <div class="py-6 text-center animate-fade-in text-emerald-400 font-bold text-xs flex flex-col items-center gap-2 w-full">
+        <div class="py-5 text-center animate-fade-in text-emerald-400 font-bold text-xs flex flex-col items-center gap-2 w-full">
           <i class="fa-solid fa-circle-check text-3xl animate-bounce"></i>
-          <span>Barcha 10 ta chiqindi konteynerlarga joylandi!</span>
-          <span class="text-slate-400 text-[11px]">Agar xohlasangiz qutilardagi elementlarni bosib qaytarib olishingiz mumkin. Tayyor bo'lsangiz <strong>"Tekshirish"</strong> tugmasini bosing!</span>
+          <span class="text-sm font-black">Barcha 10 ta chiqindi qutilarga joylandi!</span>
+          <span class="text-slate-300 text-[11px]">Agar xohlasangiz qutilardagi elementlarni bosib qaytarib olishingiz mumkin. Tayyor bo'lsangiz quyidagi <strong>"Tekshirish"</strong> tugmasini bosing!</span>
         </div>
       `;
       return;
@@ -688,11 +691,15 @@
         <div 
           id="waste-card-${item.id}"
           data-item-id="${item.id}"
-          style="touch-action: none; --idx: ${idx};"
-          class="waste-draggable-card waste-card-animated bg-slate-900 border-2 ${isSelected ? 'ring-4 ring-emerald-400 border-emerald-400 scale-105 bg-emerald-950/50' : 'border-slate-700/80 hover:border-emerald-400'} rounded-2xl p-2.5 sm:p-3 w-[140px] sm:w-[155px] flex flex-col items-center justify-between text-center transition-all duration-200 cursor-pointer hover:shadow-2xl relative group shadow-md hover:-translate-y-1 select-none"
+          draggable="true"
+          ondragstart="EcoSortingEngine.handleNativeDragStart(event, ${item.id})"
+          ondragend="EcoSortingEngine.handleNativeDragEnd(event)"
           onpointerdown="EcoSortingEngine.handlePointerDown(event, ${item.id})"
+          onclick="EcoSortingEngine.handleCardClick(event, ${item.id})"
+          style="touch-action: none; --idx: ${idx};"
+          class="waste-draggable-card waste-card-animated bg-slate-900 border-2 ${isSelected ? 'ring-4 ring-emerald-400 border-emerald-400 scale-105 bg-emerald-950/60 shadow-emerald-500/30' : 'border-slate-700 hover:border-emerald-400'} rounded-2xl p-2.5 w-[130px] sm:w-[145px] flex flex-col items-center justify-between text-center transition-all duration-200 cursor-pointer hover:shadow-2xl relative group shadow-md hover:-translate-y-1 select-none"
         >
-          <!-- Card Shimmer Sweep Effect -->
+          <!-- Shimmer Effect -->
           <div class="waste-card-shimmer"></div>
 
           ${isSelected ? `
@@ -701,7 +708,7 @@
             </span>
           ` : ''}
 
-          <!-- Trap / Difficulty badge -->
+          <!-- Header badge -->
           <div class="w-full flex items-center justify-between gap-1 mb-1 relative z-10">
             <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-slate-950 text-slate-400 border border-slate-800">
               ${(item.difficulty || 'orta').toUpperCase()}
@@ -710,37 +717,38 @@
               <span class="waste-trap-pulse text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40">
                 ⚠️ QOPQON
               </span>
-            ` : ''}
+            ` : `
+              <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                +10 XP
+              </span>
+            `}
           </div>
 
-          <!-- Image with Fallback Emoji & Float Animation -->
-          <div class="w-16 h-16 sm:w-20 sm:h-20 my-1 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-center p-1.5 overflow-hidden relative group-hover:scale-105 transition-transform duration-300 z-10">
+          <!-- Rasm yoki Vektorli SVG Icon -->
+          <div class="w-14 h-14 my-1 flex items-center justify-center relative z-10 pointer-events-none select-none">
             ${item.svg ? `
-              <div class="w-full h-full flex items-center justify-center waste-img-float">
+              <div class="w-full h-full flex items-center justify-center transition-transform group-hover:scale-110 drop-shadow-md">
                 ${item.svg}
               </div>
             ` : `
               <img 
                 src="${imgSrc}" 
                 alt="${item.name}" 
-                class="waste-img-float w-full h-full object-contain filter drop-shadow-md"
-                loading="lazy"
-                onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"
+                draggable="false"
+                class="w-14 h-14 object-contain transition-transform group-hover:scale-110 drop-shadow-md select-none pointer-events-none"
+                onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'text-3xl animate-bounce\'>${item.icon || item.emoji || '📦'}</div>';"
               />
-              <div class="hidden w-full h-full text-3xl sm:text-4xl items-center justify-center waste-img-float">
-                ${item.icon || item.emoji || '📦'}
-              </div>
             `}
           </div>
 
-          <!-- Name -->
-          <span class="text-xs font-extrabold text-white line-clamp-2 leading-tight min-h-[32px] flex items-center justify-center group-hover:text-emerald-300 transition-colors z-10">
+          <!-- Chiqindi Nomi -->
+          <span class="text-xs font-black text-white line-clamp-2 leading-tight min-h-[30px] flex items-center justify-center group-hover:text-emerald-300 transition-colors z-10">
             ${item.name}
           </span>
 
-          <!-- Grab hint -->
-          <div class="mt-1 text-[9px] font-bold ${isSelected ? 'text-emerald-400' : 'text-slate-500'} group-hover:text-emerald-400 transition-colors flex items-center gap-1 z-10">
-            <i class="fa-solid ${isSelected ? 'fa-arrow-up' : 'fa-hand-pointer'} text-[8px] animate-bounce"></i>
+          <!-- Harakat ko'rsatkichi -->
+          <div class="mt-1 text-[9px] font-bold ${isSelected ? 'text-emerald-400' : 'text-slate-400'} group-hover:text-emerald-300 transition-colors flex items-center gap-1 z-10">
+            <i class="fa-solid ${isSelected ? 'fa-arrow-down' : 'fa-hand-pointer'} text-[9px]"></i>
             <span>${isSelected ? "Qutini bosing!" : "Bosing / Sudrang"}</span>
           </div>
         </div>
@@ -757,7 +765,6 @@
       const binEl = document.getElementById(`sorting-bin-${cat.key}`);
       if (!slotEl || !binEl) return;
 
-      // Ushbu qutiga tushgan chiqindilar
       const placedInThisBin = EcoSortingState.activeItems.filter(
         item => EcoSortingState.placements[item.id] === cat.key
       );
@@ -775,7 +782,7 @@
             type="button"
             onclick="event.stopPropagation(); EcoSortingEngine.removeFromBin(${it.id})"
             title="${it.name} (Qaytarib olish uchun bosing)"
-            class="px-2 py-1 rounded-md bg-slate-900 hover:bg-rose-950/80 text-white hover:text-rose-300 border border-slate-700 hover:border-rose-500/60 text-[10px] font-bold flex items-center gap-1 transition-all group/item shadow-sm cursor-pointer"
+            class="px-2 py-0.5 rounded-md bg-slate-900 hover:bg-rose-950/80 text-white hover:text-rose-300 border border-slate-700 hover:border-rose-500/60 text-[10px] font-bold flex items-center gap-1 transition-all group/item shadow-sm cursor-pointer"
           >
             <span>${it.icon || it.emoji || '♻️'}</span>
             <span class="max-w-[70px] truncate">${it.name}</span>
@@ -816,7 +823,68 @@
   }
 
   // -----------------------------------------------------------------------
-  // 9. POINTER EVENTS DRAG-AND-DROP & CLICK-TO-PLACE ENGINE
+  // 9. NATIVE HTML5 DRAG & DROP ENGINE (Desktop brauzerlar uchun)
+  // -----------------------------------------------------------------------
+  function handleNativeDragStart(e, itemId) {
+    EcoSortingState.dragActive = true;
+    EcoSortingState.dragItemId = itemId;
+    if (e.dataTransfer) {
+      e.dataTransfer.setData('text/plain', String(itemId));
+      e.dataTransfer.effectAllowed = 'move';
+    }
+    const card = document.getElementById(`waste-card-${itemId}`);
+    if (card) card.style.opacity = '0.4';
+  }
+
+  function handleNativeDragOver(e, binKey) {
+    e.preventDefault();
+    if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+    const bin = document.getElementById(`sorting-bin-${binKey}`);
+    if (bin) {
+      bin.classList.add('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'bg-emerald-950/60');
+    }
+  }
+
+  function handleNativeDragLeave(e, binKey) {
+    const bin = document.getElementById(`sorting-bin-${binKey}`);
+    if (bin) {
+      bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'bg-emerald-950/60');
+    }
+  }
+
+  function handleNativeDrop(e, binKey) {
+    e.preventDefault();
+    const bin = document.getElementById(`sorting-bin-${binKey}`);
+    if (bin) {
+      bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'bg-emerald-950/60');
+    }
+
+    let itemId = EcoSortingState.dragItemId;
+    if (!itemId && e.dataTransfer) {
+      const raw = e.dataTransfer.getData('text/plain');
+      if (raw) itemId = parseInt(raw, 10);
+    }
+
+    if (itemId) {
+      placeItemInBin(itemId, binKey);
+    }
+    EcoSortingState.dragActive = false;
+    EcoSortingState.dragItemId = null;
+  }
+
+  function handleNativeDragEnd(e) {
+    EcoSortingState.dragActive = false;
+    EcoSortingState.dragItemId = null;
+    document.querySelectorAll('.sorting-drop-bin').forEach(bin => {
+      bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'bg-emerald-950/60');
+    });
+    document.querySelectorAll('.waste-draggable-card').forEach(c => {
+      c.style.opacity = '1';
+    });
+  }
+
+  // -----------------------------------------------------------------------
+  // 10. POINTER EVENTS DRAG-AND-DROP (Touch, Mobile & Unified Pointer)
   // -----------------------------------------------------------------------
   let pointerStartPos = null;
   let dragGhost = null;
@@ -826,11 +894,17 @@
     const card = document.getElementById(`waste-card-${itemId}`);
     if (!card) return;
 
+    // Pointer capture (touch siljishida ham nazorat yo'qolmasligi uchun)
+    try {
+      card.setPointerCapture(e.pointerId);
+    } catch (err) {}
+
     pointerStartPos = {
       x: e.clientX,
       y: e.clientY,
       itemId: itemId,
-      hasMoved: false
+      hasMoved: false,
+      pointerId: e.pointerId
     };
 
     const onMove = (moveEvt) => {
@@ -839,7 +913,7 @@
       const dy = moveEvt.clientY - pointerStartPos.y;
       const dist = Math.hypot(dx, dy);
 
-      if (dist > 8 && !pointerStartPos.hasMoved) {
+      if (dist > 6 && !pointerStartPos.hasMoved) {
         pointerStartPos.hasMoved = true;
         EcoSortingState.dragActive = true;
         EcoSortingState.dragItemId = itemId;
@@ -848,7 +922,7 @@
         dragGhost = document.createElement('div');
         dragGhost.id = 'waste-drag-ghost';
         dragGhost.className = 'fixed pointer-events-none z-[9999] rounded-2xl bg-slate-900/95 border-2 border-emerald-400 p-2.5 flex items-center gap-2 shadow-2xl';
-        dragGhost.style.transform = 'translate(-50%, -50%) scale(1.1) rotate(3deg)';
+        dragGhost.style.transform = 'translate(-50%, -50%) scale(1.08)';
         dragGhost.innerHTML = `
           <span class="text-2xl">${item ? (item.icon || item.emoji || '📦') : '📦'}</span>
           <span class="text-xs font-black text-white">${item ? item.name : ''}</span>
@@ -866,9 +940,9 @@
           const r = bin.getBoundingClientRect();
           if (moveEvt.clientX >= r.left && moveEvt.clientX <= r.right && moveEvt.clientY >= r.top && moveEvt.clientY <= r.bottom) {
             foundKey = bin.dataset.binKey;
-            bin.classList.add('ring-4', 'ring-emerald-400', 'scale-[1.04]', 'bg-emerald-950/50');
+            bin.classList.add('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'bg-emerald-950/60');
           } else {
-            bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.04]', 'bg-emerald-950/50');
+            bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'bg-emerald-950/60');
           }
         });
         EcoSortingState.dragCandidateBinKey = foundKey;
@@ -876,12 +950,16 @@
     };
 
     const onUp = (upEvt) => {
+      try {
+        card.releasePointerCapture(upEvt.pointerId || (pointerStartPos ? pointerStartPos.pointerId : 0));
+      } catch (err) {}
+
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
       window.removeEventListener('pointercancel', onUp);
 
       document.querySelectorAll('.sorting-drop-bin').forEach(bin => {
-        bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.04]', 'bg-emerald-950/50');
+        bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'bg-emerald-950/60');
       });
 
       if (dragGhost) {
@@ -891,9 +969,18 @@
       card.style.opacity = '1';
 
       if (pointerStartPos && pointerStartPos.hasMoved) {
-        // Sudraldi va qo'yib yuborildi
         EcoSortingState.dragActive = false;
-        const candidate = EcoSortingState.dragCandidateBinKey;
+        let candidate = EcoSortingState.dragCandidateBinKey;
+        
+        // Agar drop koordinatasida quti aniqlanmagan bo'lsa, up nuqtasi bo'yicha ham tekshirish
+        if (!candidate && upEvt.clientX !== undefined) {
+          document.querySelectorAll('.sorting-drop-bin').forEach(bin => {
+            const r = bin.getBoundingClientRect();
+            if (upEvt.clientX >= r.left && upEvt.clientX <= r.right && upEvt.clientY >= r.top && upEvt.clientY <= r.bottom) {
+              candidate = bin.dataset.binKey;
+            }
+          });
+        }
         EcoSortingState.dragCandidateBinKey = null;
 
         if (candidate) {
@@ -902,10 +989,6 @@
           card.classList.add('animate-shake');
           setTimeout(() => card.classList.remove('animate-shake'), 400);
         }
-      } else {
-        // Sudralmadi: Bu Click / Tap edi!
-        EcoSortingState.dragActive = false;
-        handleCardClick(null, itemId);
       }
       pointerStartPos = null;
     };
@@ -916,9 +999,10 @@
   }
 
   // -----------------------------------------------------------------------
-  // 10. CLICK-TO-PLACE & KLAVIATURA BOSHQARUVI
+  // 11. CLICK-TO-PLACE & KLAVIATURA BOSHQARUVI
   // -----------------------------------------------------------------------
   function handleCardClick(e, itemId) {
+    if (e) e.stopPropagation();
     if (EcoSortingState.selectedItemId === itemId) {
       EcoSortingState.selectedItemId = null; // Bekor qilish
     } else {
@@ -935,16 +1019,16 @@
     const hasSelection = !!EcoSortingState.selectedItemId;
     document.querySelectorAll('.sorting-drop-bin').forEach(bin => {
       if (hasSelection) {
-        bin.classList.add('ring-2', 'ring-emerald-400/50');
+        bin.classList.add('ring-2', 'ring-emerald-400', 'animate-pulse');
       } else {
-        bin.classList.remove('ring-2', 'ring-emerald-400/50');
+        bin.classList.remove('ring-2', 'ring-emerald-400', 'animate-pulse');
       }
     });
   }
 
   function handleBinClick(binKey) {
     if (!EcoSortingState.selectedItemId) {
-      if (window.showToast) window.showToast("Avval saralanadigan chiqindini bosing, so'ngra qutini tanlang!");
+      if (window.showToast) window.showToast("Avval yuqoridagi chiqindilardan birini bosing, so'ng qutini tanlang!");
       return;
     }
     placeItemInBin(EcoSortingState.selectedItemId, binKey);
@@ -992,48 +1076,49 @@
     updatePlacedCountUI();
   }
 
+  // -----------------------------------------------------------------------
+  // 12. KLAVIATURA TEZKOR TUGMALARI (1-9)
+  // -----------------------------------------------------------------------
   function setupKeyboardShortcuts() {
     window.addEventListener('keydown', (e) => {
-      // 1 dan 9 gacha raqamlar
-      if (e.key >= '1' && e.key <= '9') {
-        const categories = MASTER_ECO_CATEGORIES;
-        const idx = parseInt(e.key, 10) - 1;
-        const targetCat = categories[idx];
+      if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+      if (!EcoSortingState.selectedItemId) return;
 
-        if (targetCat && EcoSortingState.selectedItemId) {
-          e.preventDefault();
+      const num = parseInt(e.key, 10);
+      if (num >= 1 && num <= 9) {
+        e.preventDefault();
+        const targetCat = MASTER_ECO_CATEGORIES[num - 1];
+        if (targetCat) {
           placeItemInBin(EcoSortingState.selectedItemId, targetCat.key);
         }
-      }
-      // Escape bosilsa tanlangan kartochkani bekor qilish
-      if (e.key === 'Escape') {
-        EcoSortingState.selectedItemId = null;
-        renderTrayItems();
       }
     });
   }
 
   // -----------------------------------------------------------------------
-  // 11. YAKUNIY NATIJANI TEKSHIRISH VA CHUQUR TAHLIL (Exam Result Screen)
+  // 13. NATIJANI TEKSHIRISH VA YAKUNIY HISOBOT (Imtihon Rejimi)
   // -----------------------------------------------------------------------
   function verifyRound() {
+    const total = EcoSortingState.activeItems.length || 10;
+    const placed = Object.keys(EcoSortingState.placements).length;
+    if (placed < total) {
+      if (window.showToast) window.showToast(`Hali ${total - placed} ta chiqindi qutilarga joylanmagan!`);
+      return;
+    }
     submitExamResults(false);
   }
 
   function submitExamResults(isTimeout = false) {
     stopSortingGameTimer();
     EcoSortingState.isFinished = true;
-    EcoSortingState.endTime = Date.now();
 
-    const elapsedSeconds = Math.max(1, Math.round((EcoSortingState.endTime - EcoSortingState.startTime) / 1000));
     const items = EcoSortingState.activeItems;
-    const categories = MASTER_ECO_CATEGORIES;
+    const elapsedSeconds = Math.round((Date.now() - EcoSortingState.startTime) / 1000);
 
     let correctCount = 0;
     const categoryStats = {};
     const detailedList = [];
 
-    // Zaif toifalarni saqlab borish uchun obyekt
     let storedWeakCats = {};
     try {
       storedWeakCats = JSON.parse(localStorage.getItem('ECO_WEAK_CATEGORIES') || '{}');
@@ -1078,42 +1163,18 @@
     const totalCount = items.length || 10;
     const accuracy = Math.round((correctCount / totalCount) * 100);
 
-    // Ball va XP hisoblash (Anti-spam / Diminishing Returns hisobi bilan)
     let baseXP = correctCount * 10;
     let perfectionBonus = (correctCount === totalCount) ? 50 : 0;
     let earnedXP = baseXP + perfectionBonus;
     let earnedCoins = Math.floor(earnedXP / 2);
 
-    // Kunlik o'yinlar sonini hisoblash
-    let dailyPlayCount = 1;
-    try {
-      const today = new Date().toISOString().slice(0, 10);
-      const lastDate = localStorage.getItem('ECO_SORT_LAST_DATE');
-      if (lastDate === today) {
-        dailyPlayCount = parseInt(localStorage.getItem('ECO_SORT_DAILY_COUNT') || '1', 10) + 1;
-      } else {
-        localStorage.setItem('ECO_SORT_LAST_DATE', today);
-        dailyPlayCount = 1;
-      }
-      localStorage.setItem('ECO_SORT_DAILY_COUNT', dailyPlayCount.toString());
-    } catch (e) {}
+    if (typeof addPlayerXP === 'function') addPlayerXP(earnedXP);
+    if (typeof addEcoCoins === 'function') addEcoCoins(earnedCoins);
 
-    // Agar kuniga 5 tadan ko'p o'ynasa kamayib boruvchi XP
-    if (dailyPlayCount > 5) {
-      earnedXP = Math.max(5, Math.floor(earnedXP * 0.7));
-      earnedCoins = Math.floor(earnedXP / 2);
-    }
-
-    // Profilga ball qo'shish
-    if (window.addPlayerXP) {
-      window.addPlayerXP(earnedXP);
-    }
-
-    // Unvonni aniqlash
     let titleBadge = "🌱 Yangi boshlovchi";
-    let titleColor = "text-slate-300";
-    if (correctCount === 10) {
-      titleBadge = "👑 Eko-ustoz";
+    let titleColor = "text-slate-400";
+    if (correctCount === totalCount) {
+      titleBadge = "👑 Eko-ustoz (10/10 Mukammal!)";
       titleColor = "text-amber-400";
     } else if (correctCount >= 7) {
       titleBadge = "🥈 Saralash ustasi";
@@ -1123,7 +1184,6 @@
       titleColor = "text-cyan-400";
     }
 
-    // Audio va Paqldoq
     if (correctCount >= 7) {
       if (window.ecoAudio) window.ecoAudio.playLevelUp();
       if (window.EcoFxEngine) {
@@ -1133,7 +1193,6 @@
       if (window.ecoAudio) window.ecoAudio.playError();
     }
 
-    // Natija oynasini render qilish
     renderResultModalUI({
       totalCount,
       correctCount,
@@ -1156,11 +1215,9 @@
 
     modal.classList.remove('hidden');
 
-    // Zaif toifalarni topish (xatosi bo'lganlar)
     const weakList = Object.entries(stats.categoryStats).filter(([k, v]) => v.correct < v.total);
 
     content.innerHTML = `
-      <!-- Top Title & Badge -->
       <div class="text-center pb-4 mb-4 border-b border-slate-800">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 mb-3 text-xs font-black ${stats.titleColor}">
           <span>${stats.titleBadge}</span>
@@ -1171,7 +1228,6 @@
         <p class="text-xs text-slate-400 mt-1">10 ta chiqindini tafakkur qilib saralash bo'yicha hisobot:</p>
       </div>
 
-      <!-- Katta Ball va Ko'rsatkichlar Grid -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5 text-center">
         <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
           <span class="text-[10px] text-slate-500 uppercase font-black block">To'g'ri / Jami</span>
@@ -1189,57 +1245,44 @@
         </div>
 
         <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
-          <span class="text-[10px] text-slate-500 uppercase font-black block">Mukofot XP</span>
-          <span class="text-2xl font-black text-amber-400">+${stats.earnedXP} XP</span>
+          <span class="text-[10px] text-slate-500 uppercase font-black block">Mukofot</span>
+          <span class="text-xl font-black text-amber-400">+${stats.earnedXP} XP</span>
         </div>
       </div>
 
-      <!-- Toifalar bo'yicha statistika (Zaif toifalarni ajratib ko'rsatish) -->
-      <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3.5 mb-5">
-        <h5 class="text-xs font-black uppercase tracking-wider text-slate-300 mb-2 flex items-center justify-between">
-          <span>Toifalar bo'yicha tahlil:</span>
-          ${weakList.length > 0 ? `<span class="text-[10px] text-rose-400 font-bold">⚠️ ${weakList.length} ta toifada xato bor</span>` : `<span class="text-[10px] text-emerald-400 font-bold">✅ Barcha toifalar 100% to'g'ri!</span>`}
-        </h5>
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
-          ${Object.entries(stats.categoryStats).map(([k, st]) => {
-            const isPerfect = st.correct === st.total;
-            return `
-              <div class="p-2 rounded-xl bg-slate-900 border ${isPerfect ? 'border-emerald-500/30' : 'border-rose-500/40'} flex items-center justify-between">
-                <span class="font-bold text-slate-300 truncate">${st.catName}:</span>
-                <span class="font-black ${isPerfect ? 'text-emerald-400' : 'text-rose-400'}">${st.correct} / ${st.total}</span>
-              </div>
-            `;
-          }).join('')}
+      ${weakList.length > 0 ? `
+        <div class="mb-5 p-3.5 rounded-2xl bg-rose-950/30 border border-rose-500/40 text-xs">
+          <div class="font-bold text-rose-300 flex items-center gap-1.5 mb-1">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            E'tibor bering: Zaif toifalar aniqlandi!
+          </div>
+          <p class="text-slate-300">
+            Siz <strong>${weakList.map(([k, v]) => `${v.catName} (${v.correct}/${v.total})`).join(', ')}</strong> toifalarida adashdingiz. Tizim bu toifalarni keyingi o'yinlarda ko'proq chiqarib sizni o'rgatadi.
+          </p>
         </div>
-      </div>
+      ` : ''}
 
-      <!-- Har bir rasm uchun qator (Rasm, Siz tanlagan, To'g'ri, ✅/❌, Chuqur Izoh) -->
       <div class="mb-5">
-        <h5 class="text-xs font-black uppercase tracking-wider text-slate-300 mb-2.5 flex items-center gap-2">
-          <i class="fa-solid fa-list-check text-cyan-400"></i>
-          10 ta Chiqindining Batafsil Tahlili va Qoidalari:
-        </h5>
-
-        <div class="space-y-2.5 max-h-64 overflow-y-auto custom-scrollbar pr-1.5">
-          ${stats.detailedList.map((row, idx) => `
-            <div class="p-3 rounded-xl bg-slate-950 border ${row.isCorrect ? 'border-emerald-500/30' : 'border-rose-500/40'} flex flex-col gap-1.5 text-xs">
-              <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-2 font-bold text-white">
-                  <span class="text-lg">${row.item.icon}</span>
-                  <span>${idx + 1}. ${row.item.name}</span>
-                </div>
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-black ${row.isCorrect ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-rose-500/20 text-rose-300 border border-rose-500/40'}">
-                  ${row.isCorrect ? '✅ TO\'G\'RI' : '❌ XATO'}
+        <h4 class="text-xs font-black uppercase text-slate-400 tracking-wider mb-2.5 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-emerald-400"></i>
+          Har bir chiqindi bo'yicha tahlil:
+        </h4>
+        <div class="space-y-2 max-h-60 overflow-y-auto pr-1 custom-scrollbar">
+          ${stats.detailedList.map(row => `
+            <div class="p-3 rounded-xl border ${row.isCorrect ? 'border-emerald-500/30 bg-emerald-950/20' : 'border-rose-500/30 bg-rose-950/20'} text-xs">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="font-black text-white flex items-center gap-2">
+                  <span>${row.item.icon || row.item.emoji || '📦'}</span>
+                  <span>${row.item.name}</span>
+                </span>
+                <span class="${row.isCorrect ? 'text-emerald-400' : 'text-rose-400'} font-bold">
+                  ${row.isCorrect ? '✅ To\'g\'ri' : '❌ Xato'}
                 </span>
               </div>
-
-              <div class="flex flex-wrap items-center gap-3 text-[11px] text-slate-400">
-                <span>Sizning tanlovingiz: <strong class="${row.isCorrect ? 'text-emerald-400' : 'text-rose-400'}">${row.chosenName}</strong></span>
-                ${!row.isCorrect ? `<span>To'g'ri konteyner: <strong class="text-emerald-400">${row.correctName}</strong></span>` : ''}
+              <div class="text-[11px] text-slate-400 mb-1">
+                Tanlangan quti: <strong class="text-slate-200">${row.chosenName}</strong> | 
+                Asl to'g'ri quti: <strong class="text-emerald-300">${row.correctName}</strong>
               </div>
-
-              <!-- Chuqur ilmiy izoh -->
               <p class="text-[11px] text-slate-300 bg-slate-900/90 p-2 rounded-lg border border-slate-800">
                 💡 <strong>Qoida:</strong> ${row.item.explanation}
               </p>
@@ -1248,7 +1291,6 @@
         </div>
       </div>
 
-      <!-- Action Buttons -->
       <div class="flex flex-wrap items-center justify-center gap-2.5 pt-3 border-t border-slate-800">
         ${stats.correctCount < stats.totalCount ? `
           <button onclick="EcoSortingEngine.retryOnlyMistakes()" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black rounded-xl text-xs transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20 cursor-pointer">
@@ -1280,11 +1322,10 @@
     startNewSortingRound();
   }
 
-  // Faqat xato qilingan elementlarni qayta mashq qilish rejimi
   function retryOnlyMistakes() {
     closeResultModal();
     const mistakes = EcoSortingState.activeItems.filter(
-      item => EcoSortingState.placements[item.id] !== item.cat
+      item => !isItemMatchBin(item, EcoSortingState.placements[item.id])
     );
 
     if (mistakes.length === 0) {
@@ -1308,9 +1349,6 @@
     }
   }
 
-  // -----------------------------------------------------------------------
-  // 12. SOZLAMALAR VA MODAL BOSHQARUVI
-  // -----------------------------------------------------------------------
   function showStartModal() {
     const modal = document.getElementById('sorting-config-modal');
     if (modal) modal.classList.remove('hidden');
@@ -1344,9 +1382,6 @@
     startNewSortingRound();
   }
 
-  // Public API
-  
-  // Mode Switchers between 10-tray Drag-and-drop & 4-choice Rapid Conveyor Quiz
   function switchToConveyorQuiz() {
     stopSortingGameTimer();
     const container = document.getElementById('sorting-game-container');
@@ -1366,14 +1401,17 @@
     }
   }
 
-  EcoSortingEngine.switchToConveyorQuiz = switchToConveyorQuiz;
-  EcoSortingEngine.switchToTraySorting = switchToTraySorting;
-
-  window.EcoSortingEngine = {
+  // To'liq xavfsiz va declared EcoSortingEngine
+  const EcoSortingEngine = {
     init: initSortingGame,
     startNewRound: startNewSortingRound,
     restartRound: startNewSortingRound,
     handlePointerDown,
+    handleNativeDragStart,
+    handleNativeDragOver,
+    handleNativeDragLeave,
+    handleNativeDrop,
+    handleNativeDragEnd,
     handleCardClick,
     handleBinClick,
     removeFromBin,
@@ -1385,10 +1423,13 @@
     applyConfigAndStart,
     closeResultModal,
     closeResultAndRestart,
-    retryOnlyMistakes
+    retryOnlyMistakes,
+    switchToConveyorQuiz,
+    switchToTraySorting
   };
 
-  // Eski API nomlarini saqlab qolish (moslik uchun)
+  window.EcoSortingEngine = EcoSortingEngine;
+    // Eski API nomlarini saqlab qolish (moslik uchun)
   window.startNew25Session = startNewSortingRound;
 
 })();
