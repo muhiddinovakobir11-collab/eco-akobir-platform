@@ -1079,6 +1079,7 @@ function bootApp() {
   if (typeof initSortingGame === 'function') initSortingGame();
   if (typeof initAuditSimulator === 'function') initAuditSimulator();
   if (typeof initExpertiseQuest === 'function') initExpertiseQuest();
+  if (window.EcoVideoManager && typeof window.EcoVideoManager.renderCatalog === 'function') window.EcoVideoManager.renderCatalog();
 
   // Category filter clicks
   const filterBtns = document.querySelectorAll('.cat-filter-btn');
