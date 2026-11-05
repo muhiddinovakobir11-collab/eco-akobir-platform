@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="uz" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoAkobir — Chiqindilarni Boshqarish va Ekologik Audit Simulyatori</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              900: '#064e3b',
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #030712;
+      color: #f3f4f6;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #10b981;
+    }
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin-slow {
+      animation: spinSlow 12s linear infinite;
+    }
+    .active-filter {
+      background-color: #10b981 !important;
+      color: #ffffff !important;
+      border-color: #10b981 !important;
+    }
+
+    /* Apple Motion Cinematic Keyframes */
+    @keyframes appleCinematicFade {
+      0% {
+        opacity: 0;
+        transform: scale(0.94) translateY(20px);
+        filter: blur(16px);
+      }
+      60% {
+        filter: blur(0px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0px);
+      }
+    }
+
+    @keyframes appleAuraGlow {
+      0%, 100% {
+        opacity: 0.35;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.7;
+        transform: scale(1.15);
+      }
+    }
+
+    @keyframes sloganShimmer {
+      0% {
+        background-position: -200% center;
+      }
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    .apple-motion-intro {
+      animation: appleCinematicFade 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .apple-glow-aura {
+      animation: appleAuraGlow 5s ease-in-out infinite;
+    }
+
+    .slogan-shimmer-text {
+      background: linear-gradient(90deg, #ffffff 0%, #34d399 25%, #ffffff 50%, #38bdf8 75%, #ffffff 100%);
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      animation: sloganShimmer 6s linear infinite;
+    }
+
+    /* Auto Adaptive Orientation Styles (Telefon Vertikal | Katta Ekran Gorizontal) */
+    html.mode-vertical-mobile body {
+      padding-bottom: 74px;
+    }
+    html.mode-vertical-mobile .responsive-adaptive-container {
+      max-width: 100% !important;
+      padding-left: 0.75rem !important;
+      padding-right: 0.75rem !important;
+    }
+    html.mode-horizontal-desktop .responsive-adaptive-container {
+      max-width: 1600px !important;
+      padding-left: 2rem !important;
+      padding-right: 2rem !important;
+    }
+    html.mode-vertical-mobile button, 
+    html.mode-vertical-mobile input,
+    html.mode-vertical-mobile select {
+      touch-action: manipulation;
+    }
+
+    /* Eko Odamcha Animations (Har doim qimirlab turuvchi jonli personaj) */
+    @keyframes ecoFloat {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-8px) rotate(2deg);
+      }
+    }
+    @keyframes armWave {
+      0%, 100% {
+        transform: rotate(0deg);
+      }
+      25% {
+        transform: rotate(-22deg);
+      }
+      50% {
+        transform: rotate(14deg);
+      }
+      75% {
+        transform: rotate(-14deg);
+      }
+    }
+    @keyframes leafSway {
+      0%, 100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(18deg);
+      }
+    }
+    @keyframes eyeBlink {
+      0%, 90%, 100% {
+        transform: scaleY(1);
+      }
+      95% {
+        transform: scaleY(0.1);
+      }
+    }
+
+    .animate-eco-float {
+      animation: ecoFloat 3.2s ease-in-out infinite;
+      transform-origin: center bottom;
+    }
+    .animate-arm-wave {
+      animation: armWave 1.6s ease-in-out infinite;
+      transform-origin: 70px 58px;
+    }
+    .animate-leaf-sway {
+      animation: leafSway 2.4s ease-in-out infinite;
+      transform-origin: 50px 16px;
+    }
+    .animate-eye-blink {
+      animation: eyeBlink 3.8s infinite;
+      transform-origin: 50px 34px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-emerald-500 selection:text-white">
+
+  <!-- Apple Motion Style 5-Second Splash Intro -->
+  <div id="apple-splash-screen" class="fixed inset-0 z-50 bg-[#000000] flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden transition-all duration-1000 ease-out">
+    <!-- Glowing Radial Aura -->
+    <div class="absolute w-[500px] h-[500px] bg-emerald-500/15 rounded-full blur-[130px] pointer-events-none apple-glow-aura"></div>
+    <div class="absolute w-[300px] h-[300px] bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-3xl mx-auto flex flex-col items-center apple-motion-intro">
+      
+      <!-- Akosh Eco Brand Pill & Logo -->
+      <div class="mb-6 inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/[0.04] border border-white/[0.1] backdrop-blur-2xl shadow-2xl">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 flex items-center justify-center text-slate-950 text-sm font-black shadow-lg shadow-emerald-500/40">
+          <i class="fa-solid fa-leaf"></i>
+        </div>
+        <span class="text-sm font-extrabold tracking-widest text-white uppercase font-sans">
+          AKOSH ECO
+        </span>
+        <span class="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded-full border border-emerald-500/30">
+          Official
+        </span>
+      </div>
+
+      <!-- Main Slogan (Apple Motion Typography) -->
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight sm:leading-none mb-4 slogan-shimmer-text">
+        Chiqindilarni tafakkur qilib boshqarish
+      </h1>
+
+      <p class="text-sm sm:text-base text-slate-400 font-normal tracking-wide max-w-xl mx-auto mb-6 leading-relaxed">
+        Ongli ekologik ta'lim, sanoat auditi va oliy ta'limga integratsiya qilingan innovatsion o'yinlar platformasi
+      </p>
+
+      <div class="text-xs text-slate-400 mb-8 font-medium">
+        Loyiha Asoschisi: <button onclick="openFounderModal()" class="text-emerald-400 hover:text-emerald-300 font-bold underline cursor-pointer inline-flex items-center gap-1 transition-colors">Akobir <i class="fa-brands fa-telegram text-sky-400 text-xs"></i></button> • Akosh Eco
+      </div>
+
+      <!-- 5-Second Minimalist Apple Progress Bar -->
+      <div class="w-64 sm:w-80 h-1.5 bg-white/[0.1] rounded-full overflow-hidden border border-white/[0.05] relative mb-3">
+        <div id="splash-progress-bar" class="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 rounded-full w-0 transition-all duration-[5000ms] ease-linear"></div>
+      </div>
+
+      <div class="flex items-center gap-4 text-xs">
+        <span id="splash-countdown" class="text-slate-500 font-mono">5s</span>
+        <button onclick="dismissAppleSplash()" class="text-slate-400 hover:text-white transition-colors underline underline-offset-4 decoration-emerald-500/50 cursor-pointer">
+          Platformaga o'tish &rarr;
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Alert -->
+  <div id="global-toast" class="hidden fixed top-5 right-5 z-40 bg-slate-900 border-2 border-emerald-500/80 text-white px-5 py-3 rounded-2xl shadow-2xl text-sm font-semibold flex items-center shadow-emerald-950/50">
+    Xabar matni
+  </div>
+
+  <!-- Top Navigation & Brand Header -->
+  <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Brand Logo: Akosh Eco / EcoAkobir -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchMainTab('modules-tab')">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-cyan-400 p-0.5 shadow-lg shadow-emerald-500/20 flex items-center justify-center">
+          <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center text-emerald-400 text-xl font-black">
+            <i class="fa-solid fa-leaf animate-pulse"></i>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+              Akosh Eco
+            </h1>
+            <span class="text-[10px] uppercase font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+              EcoAkobir
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-medium">
+            Asoschi: <button onclick="openFounderModal()" class="text-emerald-300 hover:text-emerald-200 font-bold underline cursor-pointer inline-flex items-center gap-1 transition-colors">Akobir <i class="fa-brands fa-telegram text-sky-400 text-xs"></i></button> • Ekologiyani tozalash va audit
+          </p>
+        </div>
+      </div>
+
+      <!-- CENTER SLOGAN BADGE (Doimo tepada ko'rinib turadi) -->
+      <div class="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/90 border border-emerald-500/30 shadow-lg shadow-emerald-950/40">
+        <i class="fa-solid fa-brain text-emerald-400 animate-pulse text-xs"></i>
+        <span class="slogan-shimmer-text font-black text-xs tracking-wide">
+          Chiqindilarni tafakkur qilib boshqarish
+        </span>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Avto Ekran Formati Belgisi (Telefon: Vertikal | Katta Ekran: Gorizontal) -->
+        <button id="screen-mode-pill" onclick="if(window.DeviceAdaptiveManager) window.DeviceAdaptiveManager.toggleMode()" title="Ekran formati: Avtomatik aniqlanadi (O'zgartirish uchun bosing)" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-[11px] font-bold text-slate-300 flex items-center gap-1.5 shadow-sm transition-all hover:border-emerald-500 cursor-pointer">
+          <span id="screen-mode-icon" class="text-emerald-400"><i class="fa-solid fa-mobile-screen"></i></span>
+          <span id="screen-mode-text" class="hidden sm:inline">Avto: Vertikal</span>
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        </button>
+
+        <button onclick="openCertificateModal()" class="px-3 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95">
+          <i class="fa-solid fa-award text-amber-400"></i>
+          <span>Sertifikat</span>
+        </button>
+
+        <button onclick="switchStudentAccount()" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-emerald-400 text-xs font-bold transition-all flex items-center gap-2 hover:border-emerald-500">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i>
+          <span>Talabani almashtirish</span>
+        </button>
+
+        <button onclick="openEditProfileModal()" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-slate-200 text-xs font-semibold transition-all flex items-center gap-2 hover:border-emerald-500/50">
+          <i class="fa-solid fa-user-pen text-emerald-400"></i>
+          <span class="hidden sm:inline">Profilni tahrirlash</span>
+        </button>
+
+        <!-- Asoschi Akobir uchun Admin Panel Tugmasi -->
+        <button onclick="openAdminPanelModal()" title="Faqat Asoschi (Akobir) uchun Admin Boshqaruvi" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 border border-amber-500/50 text-amber-300 text-xs font-black transition-all flex items-center gap-1.5 shadow-lg shadow-amber-500/10 hover:scale-105 active:scale-95 cursor-pointer">
+          <i class="fa-solid fa-crown text-amber-400"></i>
+          <span>Admin</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero & Student Stats Section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-4 w-full responsive-adaptive-container">
+    <div class="bg-gradient-to-r from-slate-900 via-slate-900/90 to-emerald-950/40 border border-slate-800/90 rounded-3xl p-6 shadow-xl relative overflow-hidden">
+      <!-- Background ambient glow -->
+      <div class="absolute -top-24 -right-24 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Top Motto Badge -->
+      <div class="mb-4 inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-950/80 border border-emerald-500/30 text-xs shadow-inner">
+        <i class="fa-solid fa-brain text-emerald-400 animate-pulse"></i>
+        <span class="text-slate-400 font-medium">Platforma Bosh Shiori:</span>
+        <span class="slogan-shimmer-text font-black">«Chiqindilarni tafakkur qilib boshqarish»</span>
+      </div>
+
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+        <!-- Student Info -->
+        <div class="flex items-center gap-4">
+          <div onclick="openEditProfileModal()" title="Telegram profil rasmini o'zgartirish (Bosing)" class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 p-1 flex items-center justify-center shadow-lg shadow-emerald-500/20 shrink-0 relative group cursor-pointer transition-transform hover:scale-105">
+            <div id="profile-avatar-container" class="w-full h-full bg-slate-950 rounded-xl flex items-center justify-center text-2xl text-emerald-400 overflow-hidden relative shadow-inner">
+              <img src="https://t.me/i/userpic/320/akoshprod.jpg" alt="Telegram Avatar" class="w-full h-full object-cover rounded-xl" onerror="this.onerror=null; this.src='https://unavatar.io/telegram/akoshprod';">
+            </div>
+            <!-- Telegram Badge -->
+            <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-sky-500 text-white flex items-center justify-center text-[10px] shadow-md border-2 border-slate-950" title="Telegram Profil Rasmi">
+              <i class="fa-brands fa-telegram"></i>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 id="profile-name" class="text-2xl font-black text-white">Akobir (Asoschi)</h2>
+              <span id="profile-level" class="text-xs bg-emerald-500 text-slate-950 font-black px-2.5 py-0.5 rounded-full">
+                Daraja 2
+              </span>
+            </div>
+            <p id="profile-university" class="text-xs text-slate-400 font-medium mt-1">
+              O'zbekiston Milliy Universiteti • 302-guruh (Ekologiya)
+            </p>
+          </div>
+        </div>
+
+        <!-- Eko Odamcha va Metrik Ko'rsatkichlar Konteyneri -->
+        <div class="flex flex-wrap sm:flex-nowrap items-center justify-end gap-3 sm:gap-5">
+          
+          <!-- JONLI QIMIRLAB TURUVCHI EKO ODAMCHA (Animated Mascot) -->
+          <div onclick="triggerEcoMascotCheer()" title="Eko-Odamcha: Salom, Akobir! Menga bosing!" class="flex items-center gap-2 cursor-pointer group select-none transition-transform hover:scale-105 active:scale-95 shrink-0">
+            <!-- Nutq Pufagi (Speech Bubble) -->
+            <div id="eco-mascot-speech" class="hidden sm:flex items-center gap-1.5 text-[10px] font-black text-emerald-300 bg-slate-950/90 border border-emerald-500/40 px-2.5 py-1.5 rounded-2xl shadow-lg shadow-emerald-500/10 animate-pulse">
+              <span>🌿 Salom, Akobir!</span>
+            </div>
+
+            <!-- Animatsiyali SVG Eko Odamcha -->
+            <div class="relative w-14 h-16 sm:w-16 sm:h-20 shrink-0">
+              <svg viewBox="0 0 100 110" class="w-full h-full animate-eco-float drop-shadow-[0_4px_12px_rgba(16,185,129,0.35)]" id="eco-mascot-svg">
+                <defs>
+                  <linearGradient id="ecoHeadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#34d399" />
+                    <stop offset="100%" stop-color="#059669" />
+                  </linearGradient>
+                  <linearGradient id="ecoSuitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#10b981" />
+                    <stop offset="100%" stop-color="#047857" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Ground Shadow / Jet Glow -->
+                <ellipse cx="50" cy="104" rx="20" ry="4" fill="#10b981" opacity="0.3" class="animate-pulse" />
+
+                <!-- Feet / Thrusters -->
+                <rect x="36" y="82" width="10" height="15" rx="5" fill="#047857" stroke="#064e3b" stroke-width="1.5" />
+                <rect x="54" y="82" width="10" height="15" rx="5" fill="#047857" stroke="#064e3b" stroke-width="1.5" />
+                <ellipse cx="41" cy="97" rx="3" ry="1.5" fill="#38bdf8" opacity="0.8" />
+                <ellipse cx="59" cy="97" rx="3" ry="1.5" fill="#38bdf8" opacity="0.8" />
+
+                <!-- Left Arm (Resting) -->
+                <path d="M 30 58 Q 20 68 25 78" fill="none" stroke="#059669" stroke-width="6" stroke-linecap="round" />
+                <circle cx="25" cy="78" r="4.5" fill="#34d399" />
+
+                <!-- Body (Suit) -->
+                <rect x="30" y="50" width="40" height="34" rx="14" fill="url(#ecoSuitGrad)" stroke="#34d399" stroke-width="2" />
+                <!-- Chest Eco Emblem -->
+                <circle cx="50" cy="65" r="9" fill="#022c22" stroke="#6ee7b7" stroke-width="1.5" />
+                <text x="50" y="69" fill="#34d399" font-size="10" text-anchor="middle" font-weight="bold">♻</text>
+
+                <!-- Right Arm (Qo'l silkituvchi - Waving Arm) -->
+                <g class="animate-arm-wave">
+                  <path d="M 70 58 Q 84 50 82 36" fill="none" stroke="#059669" stroke-width="6" stroke-linecap="round" />
+                  <circle cx="82" cy="36" r="5" fill="#34d399" />
+                  <circle cx="85" cy="33" r="2" fill="#6ee7b7" />
+                </g>
+
+                <!-- Head -->
+                <rect x="22" y="16" width="56" height="40" rx="18" fill="url(#ecoHeadGrad)" stroke="#6ee7b7" stroke-width="2.5" />
+                
+                <!-- Ear Headsets -->
+                <rect x="18" y="28" width="5" height="16" rx="2.5" fill="#047857" />
+                <rect x="77" y="28" width="5" height="16" rx="2.5" fill="#047857" />
+
+                <!-- Eyes (Pirpirab turuvchi - Blinking Eyes) -->
+                <g class="animate-eye-blink">
+                  <ellipse cx="38" cy="34" rx="4.5" ry="6" fill="#0f172a" />
+                  <circle cx="37" cy="32" r="1.8" fill="#ffffff" />
+                  <ellipse cx="62" cy="34" rx="4.5" ry="6" fill="#0f172a" />
+                  <circle cx="61" cy="32" r="1.8" fill="#ffffff" />
+                </g>
+
+                <!-- Blushing Cheeks -->
+                <circle cx="32" cy="42" r="3.5" fill="#f43f5e" opacity="0.4" />
+                <circle cx="68" cy="42" r="3.5" fill="#f43f5e" opacity="0.4" />
+
+                <!-- Cute Smile -->
+                <path d="M 45 42 Q 50 46 55 42" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" />
+
+                <!-- Sprout / Leaf on Head (Qimirlab turuvchi bargcha) -->
+                <g class="animate-leaf-sway">
+                  <path d="M 50 16 Q 50 6 56 3" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" />
+                  <path d="M 56 3 Q 66 2 64 10 Q 56 12 56 3 Z" fill="#6ee7b7" stroke="#059669" stroke-width="1" />
+                </g>
+
+                <!-- Sparkle Star -->
+                <polygon points="12,24 14,20 18,22 15,25 17,29 13,27 10,30 11,26" fill="#fde047" class="animate-ping" style="transform-origin: 14px 25px; animation-duration: 2.5s;" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Metric Badges -->
+          <div class="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-3 shrink-0">
+            <div class="bg-slate-950/70 border border-slate-800 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-center">
+              <span class="text-[10px] text-slate-400 uppercase font-semibold block">Umumiy XP</span>
+              <span id="profile-xp" class="text-base sm:text-lg font-black text-emerald-400">450 XP</span>
+            </div>
+
+            <div class="bg-slate-950/70 border border-slate-800 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-center">
+              <span class="text-[10px] text-slate-400 uppercase font-semibold block">Eco-Coin</span>
+              <div class="flex items-center justify-center gap-1">
+                <span id="profile-coins" class="text-base sm:text-lg font-black text-amber-400">120</span>
+                <span class="text-xs">🪙</span>
+              </div>
+            </div>
+
+            <div class="bg-slate-950/70 border border-slate-800 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-center">
+              <span class="text-[10px] text-slate-400 uppercase font-semibold block">Darslar</span>
+              <span id="profile-completed-count" class="text-base sm:text-lg font-black text-cyan-400">1/20</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Experience Bar -->
+      <div class="mt-5 pt-4 border-t border-slate-800/80">
+        <div class="flex justify-between text-xs text-slate-400 mb-1.5 font-medium">
+          <span>Keyingi unvonga rivojlanish:</span>
+          <span>Daraja o'sishi (300 XP har bir daraja)</span>
+        </div>
+        <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+          <div id="profile-xp-bar" class="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 transition-all duration-500" style="width: 50%;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Navigation Tabs -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 w-full responsive-adaptive-container">
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-800 custom-scrollbar">
+      <button id="nav-modules-tab" onclick="switchMainTab('modules-tab')" class="px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition-all flex items-center gap-2 bg-emerald-500/20 text-emerald-400 border border-emerald-500">
+        <i class="fa-solid fa-book-open"></i> 20 ta O'quv Moduli
+      </button>
+
+      <button id="nav-games-tab" onclick="switchMainTab('games-tab')" class="px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent">
+        <i class="fa-solid fa-gamepad text-emerald-400"></i> 🎮 Barcha O'yinlar (23 ta O'yin)
+      </button>
+
+      <button id="nav-sorting-tab" onclick="quickLaunchGame(1)" class="px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent">
+        <i class="fa-solid fa-recycle text-amber-400"></i> 1-Saralash
+      </button>
+
+      <button id="nav-audit-tab" onclick="quickLaunchGame(2)" class="px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent">
+        <i class="fa-solid fa-industry text-blue-400"></i> 2-Audit Simulyator
+      </button>
+
+      <button id="nav-expertise-tab" onclick="quickLaunchGame(3)" class="px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent">
+        <i class="fa-solid fa-scale-balanced text-purple-400"></i> 3-Ekspertiza Kvesti
+      </button>
+
+      <button id="nav-teacher-tab" onclick="switchMainTab('teacher-tab')" class="px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent">
+        <i class="fa-solid fa-chalkboard-user text-cyan-400"></i> Institut / O'qituvchi Kabineti
+      </button>
+
+      <!-- Video Darslar Bo'limi -->
+      <button id="nav-videos-tab" onclick="switchMainTab('videos-tab')" class="px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent">
+        <i class="fa-solid fa-circle-play text-rose-400"></i> 🎥 Video Darslar
+      </button>
+
+      <!-- Admin Tab (Akobir uchun) -->
+      <button id="nav-admin-tab" onclick="openAdminPanelModal()" class="px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition-all flex items-center gap-2 text-amber-300 bg-amber-500/10 hover:bg-amber-500/25 border border-amber-500/40 shadow-sm cursor-pointer">
+        <i class="fa-solid fa-crown text-amber-400"></i> 👑 Admin Panel (Akobir)
+      </button>
+    </div>
+  </section>
+
+  <!-- CONTENT PANELS -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 responsive-adaptive-container">
+
+    <!-- TAB 1: 20 ta O'quv Moduli Katalogi -->
+    <div id="modules-tab" class="space-y-6">
+      
+      <!-- Filter Bar & Search -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+        
+        <!-- Category Filters -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 custom-scrollbar">
+          <button data-cat="all" class="cat-filter-btn active-filter px-3.5 py-1.5 rounded-xl text-xs font-bold border border-slate-700 transition-all">
+            Hammasi (20)
+          </button>
+          <button data-cat="Chiqindilar boshqaruvi" class="cat-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800/80 text-slate-300 border border-slate-700/80 hover:border-emerald-500 transition-all">
+            Chiqindilar
+          </button>
+          <button data-cat="Qayta ishlash texnologiyalari" class="cat-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800/80 text-slate-300 border border-slate-700/80 hover:border-blue-500 transition-all">
+            Qayta ishlash
+          </button>
+          <button data-cat="Ekologik Audit" class="cat-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800/80 text-slate-300 border border-slate-700/80 hover:border-amber-500 transition-all">
+            Audit (ISO 14001)
+          </button>
+          <button data-cat="Ekologik Ekspertiza" class="cat-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800/80 text-slate-300 border border-slate-700/80 hover:border-purple-500 transition-all">
+            Ekspertiza & AMTB
+          </button>
+        </div>
+
+        <!-- Search Box -->
+        <div class="relative w-full md:w-72">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+          <input type="text" id="modules-search-input" placeholder="Mavzuni qidirish..." class="w-full bg-slate-950 border border-slate-800 pl-9 pr-4 py-2 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors">
+        </div>
+      </div>
+
+      <!-- Quick Top Leaders Bar -->
+      <div class="bg-gradient-to-r from-amber-500/10 via-slate-900 to-emerald-500/10 border border-slate-800 p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl shrink-0">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+              Talabalar Liderlar Reytingi
+              <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full border border-amber-500/30">Jonli</span>
+            </h4>
+            <p class="text-xs text-slate-400">Har bir modul va o'yindan to'plangan XP orqali o'rningiz belgilanadi</p>
+          </div>
+        </div>
+
+        <button onclick="switchMainTab('teacher-tab')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold rounded-xl text-xs border border-amber-500/30 transition-all flex items-center gap-2 hover:scale-105">
+          <i class="fa-solid fa-ranking-star"></i> To'liq reyting jadvalini ko'rish <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </button>
+      </div>
+
+      <!-- Modules Grid -->
+      <div id="modules-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Rendered by app.js -->
+      </div>
+    </div>
+
+    <!-- TAB: Barcha 13 ta O'yinlar Markazi -->
+    <div id="games-tab" class="hidden space-y-6">
+      <!-- Hub view of 13 games -->
+      <div id="games-hub-view"></div>
+
+      <!-- Active Game Arena (Loaded dynamically) -->
+      <div id="active-game-arena" class="hidden"></div>
+    </div>
+
+    <!-- TAB 2: Chiqindini Saralash Mini-O'yini -->
+    <div id="sorting-tab" class="hidden">
+      <div id="sorting-game-container">
+        <!-- Rendered by sorting-game.js -->
+      </div>
+    </div>
+
+    <!-- TAB 3: Ekologik Audit Simulyatori -->
+    <div id="audit-tab" class="hidden">
+      <div id="audit-simulator-container">
+        <!-- Rendered by audit-simulator.js -->
+      </div>
+    </div>
+
+    <!-- TAB 4: Davlat Ekologik Ekspertizasi Kvesti -->
+    <div id="expertise-tab" class="hidden">
+      <div id="expertise-quest-container">
+        <!-- Rendered by expertise-quest.js -->
+      </div>
+    </div>
+
+    <!-- TAB 5: O'qituvchi va Institut Kabineti -->
+    <div id="teacher-tab" class="hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+        <div class="flex items-center gap-4 mb-6 pb-4 border-b border-slate-800">
+          <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl">
+            <i class="fa-solid fa-university"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">Institut va O'qituvchi Boshqaruv Paneli</h3>
+            <p class="text-xs text-slate-400">Dars jarayonida talabalar natijalarini kuzatish, reyting va baholash mexanizmi</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Left: Academic Leaderboard -->
+          <div class="md:col-span-2 space-y-4">
+            <h4 class="font-bold text-white text-base flex items-center gap-2">
+              <i class="fa-solid fa-trophy text-amber-400"></i> Guruhlar va Talabalar Liderlar Jadvali
+            </h4>
+            <div id="leaderboard-list" class="space-y-2">
+              <!-- Rendered by app.js -->
+            </div>
+          </div>
+
+          <!-- Right: Professor Controls -->
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-4">
+            <h4 class="font-bold text-white text-sm flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-emerald-400"></i> O'qituvchi Vazifalari
+            </h4>
+
+            <div class="space-y-2 text-xs">
+              <label class="text-slate-400 font-semibold block">Guruhni tanlang:</label>
+              <select class="w-full bg-slate-900 border border-slate-800 text-white rounded-xl p-2.5 focus:border-emerald-500">
+                <option>O'zMU 302-guruh (Ekologiya)</option>
+                <option>ToshDTU 214-guruh (Hayot faoliyati xavfsizligi)</option>
+                <option>ToshDAU Agroekologiya 4-kurs</option>
+                <option>SamDU 104-guruh (Biologiya-ekologiya)</option>
+              </select>
+            </div>
+
+            <button onclick="showToast('Oraliq nazorat vedomosti yuklab olindi (Excel)!')" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-file-excel text-emerald-400"></i> Baholarni yuklab olish (Excel)
+            </button>
+
+            <button onclick="showToast('Jonli auditorlik viktorina kodi yaratildi: #ECO-9942')" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
+              <i class="fa-solid fa-bolt"></i> Jonli Dars Musobaqasini Boshlash
+            </button>
+
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800/80 text-[11px] text-slate-400 leading-relaxed">
+              💡 <strong>Tavsiya:</strong> Amaliy mashg'ulotda talabalarga 2-simulyatordagi "O'zKimyoTekstil" audit keysini yechishni topshiring va eng tez yakunlagan 3 talabaga oraliq nazorat uchun rag'batlantiruvchi ball qo'ying.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: Ekologik Video Darslar & Media Markazi -->
+    <div id="videos-tab" class="hidden space-y-6">
+      
+      <!-- Video Header Banner -->
+      <div class="bg-gradient-to-r from-rose-950/40 via-slate-900 to-emerald-950/40 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <span class="text-xs uppercase font-extrabold bg-rose-500/20 text-rose-400 border border-rose-500/30 px-3 py-1 rounded-full">
+            Media & Video Darslar
+          </span>
+          <h2 class="text-2xl font-black text-white mt-2">🎥 Ekologik Video Darslar va Amaliyotlar</h2>
+          <p class="text-xs text-slate-400 mt-1">Har bir darsni tomosha qilib bilimingizni mustahkamlang va qo'shimcha XP ballarini qo'lga kiriting!</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span id="videos-stats-count" class="text-xs text-slate-400 bg-slate-950 px-3.5 py-2 rounded-xl border border-slate-800 font-bold">
+            6 ta dars
+          </span>
+          <!-- Admin shortcut button to add videos directly -->
+          <button onclick="openAdminPanelModal(); setTimeout(() => switchAdminSubTab('videos'), 100);" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 text-xs font-black rounded-xl shadow-lg shadow-amber-500/20 transition-all flex items-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95">
+            <i class="fa-solid fa-plus-circle"></i> + Video Yaratish (Admin)
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters & Search Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+        <!-- Category Filters -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 custom-scrollbar text-xs">
+          <button onclick="filterVideosByCategory('all', this)" class="video-filter-btn active-filter px-3.5 py-1.5 rounded-xl font-bold bg-emerald-500 text-white border border-emerald-500 transition-all cursor-pointer">
+            Hammasi
+          </button>
+          <button onclick="filterVideosByCategory('Saralash va Qayta ishlash', this)" class="video-filter-btn px-3.5 py-1.5 rounded-xl font-bold bg-slate-800/80 text-slate-300 border border-slate-700/80 hover:border-emerald-500 transition-all cursor-pointer">
+            Saralash
+          </button>
+          <button onclick="filterVideosByCategory('Ekologik Audit', this)" class="video-filter-btn px-3.5 py-1.5 rounded-xl font-bold bg-slate-800/80 text-slate-300 border border-slate-700/80 hover:border-blue-500 transition-all cursor-pointer">
+            Audit
+          </button>
+          <button onclick="filterVideosByCategory('Qayta ishlash', this)" class="video-filter-btn px-3.5 py-1.5 rounded-xl font-bold bg-slate-800/80 text-slate-300 border border-slate-700/80 hover:border-purple-500 transition-all cursor-pointer">
+            Piroliz & Neft
+          </button>
+          <button onclick="filterVideosByCategory('Biotexnologiya', this)" class="video-filter-btn px-3.5 py-1.5 rounded-xl font-bold bg-slate-800/80 text-slate-300 border border-slate-700/80 hover:border-lime-500 transition-all cursor-pointer">
+            Biogaz
+          </button>
+          <button onclick="filterVideosByCategory('Muhandislik', this)" class="video-filter-btn px-3.5 py-1.5 rounded-xl font-bold bg-slate-800/80 text-slate-300 border border-slate-700/80 hover:border-amber-500 transition-all cursor-pointer">
+            Poligonlar
+          </button>
+        </div>
+
+        <!-- Search Input -->
+        <div class="relative w-full md:w-72">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+          <input type="text" id="videos-search-input" oninput="handleVideoSearch(this.value)" placeholder="Video darsni qidirish..." class="w-full bg-slate-950 border border-slate-800 pl-9 pr-4 py-2 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors">
+        </div>
+      </div>
+
+      <!-- Video Grid Container -->
+      <div id="videos-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+    </div>
+
+  </main>
+
+  <!-- MODAL: Module Theory & Quiz -->
+  <div id="module-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-emerald-500/30 rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden">
+      
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-slate-800 flex items-center justify-between shrink-0 bg-slate-950/60">
+        <div>
+          <span id="modal-module-cat" class="text-xs uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20"></span>
+          <h3 id="modal-module-title" class="text-xl font-bold text-white mt-1"></h3>
+        </div>
+        <button onclick="closeModuleModal()" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition-colors">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar text-sm">
+        
+        <!-- Theory text -->
+        <div class="bg-slate-950/60 border border-slate-800/80 p-5 rounded-2xl">
+          <h4 class="font-bold text-emerald-400 text-base mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-book-bookmark"></i> Ma'ruza va Nazariy Asoslar
+          </h4>
+          <div id="modal-module-theory" class="text-slate-300 leading-relaxed space-y-3"></div>
+        </div>
+
+        <!-- Seminar Task -->
+        <div class="bg-amber-500/10 border border-amber-500/30 p-4 rounded-2xl">
+          <h5 class="text-xs uppercase font-bold text-amber-400 mb-1 flex items-center gap-1.5">
+            <i class="fa-solid fa-lightbulb"></i> Seminar va Amaliy Dars Vazifasi:
+          </h5>
+          <p id="modal-module-task" class="text-xs text-slate-200"></p>
+        </div>
+
+        <!-- Quiz section -->
+        <div>
+          <h4 class="font-bold text-white text-base mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-question text-cyan-400"></i> Bilimni Mustahkamlash Testi
+          </h4>
+          <div id="modal-module-quiz" class="space-y-3"></div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-slate-800 bg-slate-950/80 flex items-center justify-between shrink-0">
+        <button onclick="closeModuleModal()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-colors">
+          Yopish
+        </button>
+        <button id="modal-complete-btn" onclick="submitModuleQuiz()" class="px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold rounded-xl text-xs shadow-lg shadow-emerald-500/20 transition-all flex items-center gap-2">
+          <i class="fa-solid fa-award"></i> Testni topshirish
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: Certificate Canvas Display -->
+  <div id="certificate-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-amber-500/40 rounded-3xl w-full max-w-4xl p-6 shadow-2xl relative text-center">
+      <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-800">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-award text-amber-400"></i> Rasmiy Sertifikat
+        </h3>
+        <button onclick="closeCertificateModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Canvas -->
+      <div class="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950 p-2 mb-4">
+        <canvas id="certificate-canvas" class="max-w-full h-auto mx-auto rounded-lg shadow-2xl"></canvas>
+      </div>
+
+      <div class="flex justify-center gap-4">
+        <button onclick="downloadCertificateImage()" class="px-8 py-3 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black rounded-xl text-sm shadow-xl shadow-amber-500/20 transition-all flex items-center gap-2">
+          <i class="fa-solid fa-download"></i> Sertifikatni yuklab olish (PNG)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Mandatory Login / Registration (Kirish va Ro'yxatdan o'tish) -->
+  <div id="auth-modal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 border-2 border-emerald-500/50 rounded-3xl w-full max-w-lg p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+      <!-- Glow decoration -->
+      <div class="absolute -top-16 -right-16 w-48 h-48 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none"></div>
+
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-0.5 shadow-lg shadow-emerald-500/30 flex items-center justify-center">
+          <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center text-3xl text-emerald-400">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+        </div>
+        <h3 class="text-2xl font-black text-white">EcoAkobir Platformasiga Kirish</h3>
+        <p class="text-xs text-slate-400 mt-1">
+          Dars jarayonida qatnashish, testlar topshirish va <strong class="text-emerald-400">Liderlar Jadvalida</strong> o'rningizni egallash uchun ma'lumotlaringizni kiriting:
+        </p>
+      </div>
+
+      <form id="auth-form" onsubmit="handleUserRegistration(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">
+            <i class="fa-solid fa-user text-emerald-400 mr-1"></i> Ism va Familiyangiz: <span class="text-rose-400">*</span>
+          </label>
+          <input type="text" id="auth-fullname" required placeholder="Ism va familiyangizni kiriting" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white text-sm focus:border-emerald-500 focus:outline-none transition-colors">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">
+              <i class="fa-solid fa-university text-cyan-400 mr-1"></i> OTM / Institut: <span class="text-rose-400">*</span>
+            </label>
+            <input type="text" id="auth-university" required placeholder="Masalan: O'zMU yoki ToshDTU" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white text-xs focus:border-emerald-500 focus:outline-none">
+          </div>
+
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">
+              <i class="fa-solid fa-users text-amber-400 mr-1"></i> Guruh / Yo'nalish: <span class="text-rose-400">*</span>
+            </label>
+            <input type="text" id="auth-group" required placeholder="Masalan: 302-guruh, Ekologiya" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white text-xs focus:border-emerald-500 focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">
+            <i class="fa-brands fa-telegram text-sky-400 mr-1"></i> Telegram Username (Profil rasmingiz uchun):
+          </label>
+          <div class="relative">
+            <input type="text" id="auth-telegram" placeholder="Masalan: @akoshprod yoki username" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white text-xs focus:border-sky-500 focus:outline-none">
+          </div>
+          <p class="text-[10px] text-slate-400 mt-1">Telegramdagi rasmingiz avtomatik tarzda asosiy avatar sifatida o'rnatiladi.</p>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">
+            <i class="fa-solid fa-user-tag text-purple-400 mr-1"></i> Roli:
+          </label>
+          <select id="auth-role" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white text-xs focus:border-emerald-500 focus:outline-none">
+            <option value="Talaba">Talaba</option>
+            <option value="Magistr">Magistrant</option>
+            <option value="Auditor">Ekolog-Auditor</option>
+            <option value="O'qituvchi">O'qituvchi / Professor</option>
+          </select>
+        </div>
+
+        <div class="pt-3">
+          <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black rounded-xl text-sm shadow-xl shadow-emerald-500/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+            <span>Darslarga kirish va Liderlar qatoriga qo'shilish</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Edit Profile -->
+  <div id="profile-edit-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
+        <h3 class="text-base font-bold text-white">Profil Ma'lumotlarini Tahrirlash</h3>
+        <button onclick="closeEditProfileModal()" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="saveProfileChanges(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Talaba / Ism-familiya:</label>
+          <input type="text" id="input-player-name" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white focus:border-emerald-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Universitet / Institut nomi:</label>
+          <input type="text" id="input-player-uni" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white focus:border-emerald-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Guruh raqami / Fakultet:</label>
+          <input type="text" id="input-player-group" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white focus:border-emerald-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Telegram Username (@username):</label>
+          <input type="text" id="input-player-tg" placeholder="@akoshprod" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white focus:border-sky-500 focus:outline-none">
+          <p class="text-[10px] text-slate-400 mt-1">Telegram profilingiz rasmi yuqoridagi avatarda aks etadi.</p>
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3 border-t border-slate-800">
+          <button type="button" onclick="closeEditProfileModal()" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl">Bekor qilish</button>
+          <button type="submit" class="px-5 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/20">Saqlash</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Loyiha Asoschisi Akobir Profili va Aloqa -->
+  <div id="founder-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border-2 border-emerald-500/40 rounded-3xl max-w-md w-full p-6 sm:p-7 relative shadow-2xl animate-fade-in text-center">
+      <!-- Close button -->
+      <button onclick="closeFounderModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl p-2 cursor-pointer transition-colors">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Founder Avatar & Telegram Badge -->
+      <div class="relative w-24 h-24 mx-auto mb-4">
+        <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 p-1 shadow-xl shadow-emerald-500/30 overflow-hidden">
+          <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center overflow-hidden">
+            <img src="https://t.me/i/userpic/320/akoshprod.jpg" alt="Akobir (Asoschi)" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://unavatar.io/telegram/akoshprod';">
+          </div>
+        </div>
+        <div class="absolute -bottom-1 -right-1 bg-sky-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm shadow-md border-2 border-slate-900">
+          <i class="fa-brands fa-telegram"></i>
+        </div>
+      </div>
+
+      <!-- Names & Title -->
+      <h3 class="text-2xl font-black text-white mb-1 founder-name-text">Akobir</h3>
+      <p class="text-xs uppercase font-extrabold text-emerald-400 tracking-wider mb-2">
+        Akosh Eco & EcoAkobir Platformasi Asoschisi
+      </p>
+      
+      <!-- Motto Badge -->
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold mb-6">
+        <i class="fa-solid fa-brain text-xs"></i>
+        <span class="slogan-shimmer-text">Chiqindilarni tafakkur qilib boshqarish</span>
+      </div>
+
+      <!-- Contact Info Cards -->
+      <div class="space-y-3 mb-6 text-left">
+        <!-- Telegram -->
+        <a href="https://t.me/akoshprod" target="_blank" rel="noopener noreferrer" class="p-3.5 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 hover:border-sky-500/60 rounded-2xl flex items-center justify-between transition-all group cursor-pointer block founder-tg-anchor">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-sky-500 text-white flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform shadow-md">
+              <i class="fa-brands fa-telegram"></i>
+            </div>
+            <div>
+              <span class="text-[10px] text-sky-400 font-bold uppercase block">Telegram Profil</span>
+              <span class="text-base font-black text-white group-hover:text-sky-300 transition-colors founder-tg-link">@akoshprod</span>
+            </div>
+          </div>
+          <span class="text-xs font-bold text-sky-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Ochish <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+          </span>
+        </a>
+
+        <!-- Phone -->
+        <a href="tel:+998936884849" class="p-3.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-500/60 rounded-2xl flex items-center justify-between transition-all group cursor-pointer block founder-phone-link">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform shadow-md">
+              <i class="fa-solid fa-phone"></i>
+            </div>
+            <div>
+              <span class="text-[10px] text-emerald-400 font-bold uppercase block">Telefon raqam</span>
+              <span class="text-base font-black text-white group-hover:text-emerald-300 transition-colors founder-phone-text">(93) 688-48-49</span>
+            </div>
+          </div>
+          <span class="text-xs font-bold text-emerald-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            Qo'ng'iroq <i class="fa-solid fa-phone text-[10px]"></i>
+          </span>
+        </a>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-2.5">
+        <a href="https://t.me/akoshprod" target="_blank" rel="noopener noreferrer" class="flex-1 py-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-black text-xs rounded-xl shadow-lg shadow-sky-500/20 transition-all flex items-center justify-center gap-2">
+          <i class="fa-brands fa-telegram text-base"></i> Telegramga O'tish
+        </a>
+        <button onclick="copyFounderPhone()" class="px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 cursor-pointer border border-slate-700">
+          <i class="fa-solid fa-copy text-amber-400"></i>
+          <span id="copy-phone-text">Nusxa olish</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- ADMIN PANEL MODAL (Faqat Asoschi Akobir uchun Maxsus Boshqaruv) -->
+  <!-- ================================================================= -->
+  <div id="admin-panel-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
+    <div class="relative w-full max-w-3xl bg-slate-900 border border-amber-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden animate-scale-in">
+      
+      <!-- Close Button -->
+      <button onclick="closeAdminPanelModal()" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 flex items-center justify-center transition-all cursor-pointer z-10 border border-slate-700">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Dynamic Modal Content rendered by admin-panel.js -->
+      <div id="admin-modal-body"></div>
+
+    </div>
+  </div>
+
+  <!-- Mobile Ergonomic Bottom Navigation Bar (Telefonda vertikal rejim uchun maxsus) -->
+  <nav id="mobile-bottom-nav" class="fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 px-3 py-2 flex items-center justify-around shadow-2xl transition-all duration-300 md:hidden">
+    <button onclick="switchMainTab('modules-tab')" class="mobile-nav-btn flex flex-col items-center gap-1 text-slate-400 hover:text-emerald-400 transition-colors p-1" id="m-nav-modules">
+      <i class="fa-solid fa-book-open text-base"></i>
+      <span class="text-[10px] font-bold">20 Modul</span>
+    </button>
+    <button onclick="switchMainTab('games-tab')" class="mobile-nav-btn flex flex-col items-center gap-1 text-emerald-400 font-bold transition-colors p-1" id="m-nav-games">
+      <i class="fa-solid fa-gamepad text-base"></i>
+      <span class="text-[10px] font-bold">23 O'yin</span>
+    </button>
+        <button onclick="switchMainTab('videos-tab')" class="mobile-nav-btn flex flex-col items-center gap-1 text-slate-400 hover:text-rose-400 transition-colors p-1" id="m-nav-videos">
+      <i class="fa-solid fa-film text-base"></i>
+      <span class="text-[10px] font-bold">Videolar</span>
+    </button>
+    <button onclick="quickLaunchGame(1)" class="mobile-nav-btn flex flex-col items-center gap-1 text-slate-400 hover:text-amber-400 transition-colors p-1" id="m-nav-saralash">
+      <i class="fa-solid fa-recycle text-base"></i>
+      <span class="text-[10px] font-bold">Saralash</span>
+    </button>
+    <button onclick="openEditProfileModal()" class="mobile-nav-btn flex flex-col items-center gap-1 text-slate-400 hover:text-cyan-400 transition-colors p-1" id="m-nav-profile">
+      <i class="fa-solid fa-user text-base"></i>
+      <span class="text-[10px] font-bold">Profil</span>
+    </button>
+    <button onclick="openFounderModal()" class="mobile-nav-btn flex flex-col items-center gap-1 text-slate-400 hover:text-sky-400 transition-colors p-1" id="m-nav-founder">
+      <i class="fa-brands fa-telegram text-base text-sky-400"></i>
+      <span class="text-[10px] font-bold">Asoschi</span>
+    </button>
+  </nav>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div>
+        <strong class="text-slate-300">EcoAkobir Platformasi</strong> — Asoschi: <button onclick="openFounderModal()" class="text-emerald-400 hover:text-emerald-300 font-bold underline cursor-pointer inline-flex items-center gap-1 transition-colors">Akobir <i class="fa-brands fa-telegram text-sky-400 text-xs"></i></button>
+      </div>
+      <div>
+        Ekologiya, Chiqindilarni Boshqarish va Ekologik Audit Ta'lim Tizimi © 2026
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="admin-panel.js?v=6"></script>
+  <script src="modules-data.js?v=6"></script>
+  <script src="eco-fx-engine.js?v=9"></script>
+  <script src="eco-2d-animator.js?v=9"></script>
+  <script src="sorting-game.js?v=6"></script>
+  <script src="hard-audit-questions.js?v=6"></script>
+  <script src="audit-simulator.js?v=6"></script>
+  <script src="expertise-questions-100.js?v=6"></script>
+  <script src="expertise-quest.js?v=6"></script>
+  <script src="games-catalog-data.js?v=6"></script>
+  <script src="extra-games.js?v=6"></script>
+  <script src="new-games-pack.js?v=7"></script>
+  <script src="video-manager.js?v=8"></script>
+  <script src="device-adaptive.js?v=7"></script>
+  <script src="app.js?v=6"></script>
+</body>
+</html>

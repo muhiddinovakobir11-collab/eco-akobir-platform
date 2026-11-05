@@ -1,0 +1,610 @@
+{
+  "10": {
+    "id": 10,
+    "title": "10. Ekologik Jarima & Matematik Hisob-kitob",
+    "badge": "Ekomatematika",
+    "icon": "fa-calculator",
+    "color": "rose",
+    "category": "Ekologik Audit",
+    "xp": 250,
+    "desc": "Atmosferaga me'yordan ortiq chiqarilgan SO2 va chang uchun oshirilgan jarimani hisoblang.",
+    "scenarios": [
+      {
+        "id": "pen-1",
+        "title": "SO2 Bo'yicha Me'yordan Ortiq Tashlama Hisobi",
+        "param": "Yillik limit: 50 tonna | Haqiqiy tashlama: 62 tonna | Ortiqcha: 12 tonna",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"60\" y=\"45\" width=\"200\" height=\"30\" fill=\"#047857\"/><text x=\"160\" y=\"65\" fill=\"white\" font-size=\"11\" text-anchor=\"middle\">50t Ruxsat Etilgan Limit</text><rect x=\"260\" y=\"45\" width=\"100\" height=\"30\" fill=\"#ef4444\"/><text x=\"310\" y=\"65\" fill=\"white\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">+12t Ortiqcha!</text><text x=\"250\" y=\"105\" fill=\"#fca5a5\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Jarima Formulada 5 barobar oshirilgan koeffitsiyent bilan hisoblanadi</text></svg>",
+        "question": "Zavod ruxsat etilgan limitdan 12 tonna ortiq SO2 chiqardi. Kompensatsiya to'lovi qanday hisoblanadi?",
+        "options": [
+          "12 tonna ortiqcha tashlama uchun qonunchilik bo'yicha 5 barobar oshirilgan stavka qo'llanilib jarima solinadi",
+          "Oddiy 1 barobar stavka to'lanadi",
+          "Limit oshishi tabiatga zarar bermaydi deb bekor qilinadi"
+        ],
+        "correct": 0,
+        "hint": "O'zR qonunchiligiga ko'ra me'yordan ortiq (sverxlimit) tashlamalar uchun oshirilgan 5x karrali koeffitsiyent qo'llaniladi."
+      },
+      {
+        "id": "pen-2",
+        "title": "1-Xavflilik Sinfiga Mansub Zaharli Chiqindilar",
+        "param": "Xavflilik sinfi: 1 (O'ta xavfli) | Massa: 500 kg simobli lampalar",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"8\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#fca5a5\" font-size=\"14\" font-weight=\"bold\" text-anchor=\"middle\">1-Sinf Xavfli</text><text x=\"250\" y=\"75\" fill=\"#ffffff\" font-size=\"10\" text-anchor=\"middle\">Simob / Polixlorbifenil</text><text x=\"250\" y=\"90\" fill=\"#fcd34d\" font-size=\"9\" text-anchor=\"middle\">K_xavf = 10.0 Maksimal</text></svg>",
+        "question": "1-sinf xavfli chiqindilar noqonuniy tashlab ketilganda xavflilik koeffitsiyenti (K_xavf) qanday qabul qilinadi?",
+        "options": [
+          "Eng yuqori maksimal koeffitsiyent (10.0) qo'llanilib, atrof-muhitga yetkazilgan zarar hisoblanadi",
+          "Oddiy maishiy chiqindi kabi 1.0 deb olinadi",
+          "Koeffitsiyent nolga tenglashtiriladi"
+        ],
+        "correct": 0,
+        "hint": "1-sinf chiqindilar tabiatni o'nlab yillarga zaharlaydi, shuning uchun jarima multiplikatori eng yuqori bo'ladi."
+      },
+      {
+        "id": "pen-3",
+        "title": "Oqova Suvda Neft Mahsulotlari Ko'payishi",
+        "param": "PDS me'yori: 0.05 mg/l | Oqovada: 2.5 mg/l (50 barobar oshish!)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"80\" y=\"45\" width=\"140\" height=\"35\" rx=\"6\" fill=\"#047857\"/><text x=\"150\" y=\"67\" fill=\"white\" font-size=\"11\" text-anchor=\"middle\">PDS: 0.05 mg/l</text><text x=\"250\" y=\"68\" fill=\"#ef4444\" font-size=\"20\" font-weight=\"bold\" text-anchor=\"middle\">→</text><rect x=\"280\" y=\"45\" width=\"150\" height=\"35\" rx=\"6\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"355\" y=\"67\" fill=\"#fca5a5\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Haqiqiy: 2.5 mg/l (50x)</text></svg>",
+        "question": "Avtomobil yuvish shoxobchasi daryoga me'yordan 50 barobar ko'p neftli suv oqizdi. Qanday chora ko'riladi?",
+        "options": [
+          "Zarar yetkazilgan suv hajmi bo'yicha yirik jarima solinadi va tozalash inshooti qurilmaguncha faoliyati to'xtatiladi",
+          "Faqat ogohlantirish xati berilib suv oqizishga ruxsat beriladi",
+          "Shoxobchaga mukofot beriladi"
+        ],
+        "correct": 0,
+        "hint": "Suv havzalariga neft oqizish qat'iy javobgarlikka sabab bo'lib, korxona faoliyati to'xtatilishi shart."
+      },
+      {
+        "id": "pen-4",
+        "title": "Suv Havzasi Qirg'oq Himoya Zonasidagi Jarima",
+        "param": "Hududiy koeffitsiyent: Qirg'oq himoya zonasida K_hudud = 3.0",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"8\" fill=\"#1e3a8a\" stroke=\"#38bdf8\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#38bdf8\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Daryo Himoya Zonasi</text><text x=\"250\" y=\"75\" fill=\"#fcd34d\" font-size=\"11\" text-anchor=\"middle\">K_hudud = 3.0</text><text x=\"250\" y=\"90\" fill=\"#fca5a5\" font-size=\"9\" text-anchor=\"middle\">Jarima 3 barobarga oshadi</text></svg>",
+        "question": "Chiqindini daryoning qirg'oq himoya polosasiga noqonuniy to'kish oddiy joyga nisbatan qanday hisoblanadi?",
+        "options": [
+          "Maxsus himoyalangan hudud bo'lganligi uchun hududiy koeffitsiyent 3 barobar oshiriladi",
+          "Hech qanday farqi yo'q, hamma joyga bir xil hisoblanadi",
+          "Daryo yaqin bo'lgani uchun jarima kamaytiriladi"
+        ],
+        "correct": 0,
+        "hint": "Suvni muhofaza qilish polosalari ekologik o'ta nozik hudud hisoblanib, qat'iy koeffitsiyentlar qo'llaniladi."
+      },
+      {
+        "id": "pen-5",
+        "title": "Filtrni O'chirib Qo'yish (24 Soatlik Avariya)",
+        "param": "24 soat x 500 kg/soat tozalanmagan chang = 12 000 kg",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"120\" y=\"35\" width=\"260\" height=\"60\" rx=\"8\" fill=\"#1e293b\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"250\" y=\"60\" fill=\"#fca5a5\" font-size=\"13\" font-weight=\"bold\" text-anchor=\"middle\">Filtr 24 soat o'chiq turgan!</text><text x=\"250\" y=\"80\" fill=\"#ffffff\" font-size=\"11\" text-anchor=\"middle\">12 tonna xom zaharli chang atmosferada</text></svg>",
+        "question": "Zavod elektrni tejash uchun filtrni 24 soat o'chirib qo'yganini inspeksiya fosh qildi. To'lov qanday hisoblanadi?",
+        "options": [
+          "Filtrsiz ishlagan barcha soatlar uchun maksimal quvvat bo'yicha to'liq tashlama hisoblanib, 10 barobar jarima undiriladi",
+          "Faqat o'chirilgan paytda ko'rinib qolgan bir necha minut hisoblanadi",
+          "Kechirim berilib elektr tejalgani maqtovga sazovor deb topiladi"
+        ],
+        "correct": 0,
+        "hint": "Gaz tozalash uskunalarini qasddan o'chirib qo'yish ekologik qoidabuzarlikning eng og'ir turidir."
+      },
+      {
+        "id": "pen-6",
+        "title": "PM2.5 Chang Zarralari Bo'yicha Jarima",
+        "param": "PM2.5 konsentratsiyasi: Ruxsat 0.06 mg/m3 | Haqiqiy 0.85 mg/m3",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"8\" fill=\"#1e293b\" stroke=\"#f59e0b\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#fcd34d\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">PM2.5 Mayda Chang</text><text x=\"250\" y=\"75\" fill=\"#fca5a5\" font-size=\"11\" text-anchor=\"middle\">14 barobar ortiqcha</text><text x=\"250\" y=\"90\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">O'pka va qonga singuvchi</text></svg>",
+        "question": "Aholi yashash massivi yaqinida PM2.5 me'yordan 14 barobar oshganda jarima qanday asoslanadi?",
+        "options": [
+          "Aholi salomatligiga to'g'ridan-to'g'ri xavf tug'diruvchi yuqori zaharli kantselyar omil sifatida eng yuqori toifa bo'yicha",
+          "Oddiy chang kabi e'tiborsiz qoldiriladi",
+          "Shamolda uchib ketgani uchun jarima yozilmaydi"
+        ],
+        "correct": 0,
+        "hint": "PM2.5 zarralari inson o'pkasining chuqur alveolalariga kirib qonga o'tuvchi eng xavfli chang turidir."
+      },
+      {
+        "id": "pen-7",
+        "title": "Aralash Xavfli Chiqindilar Saqlash",
+        "param": "Akkumulyator kislotasi va qog'oz chiqindilari aralashtirilgan",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"8\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#fca5a5\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Aralash Saqlash ⚠️</text><text x=\"250\" y=\"75\" fill=\"#ffffff\" font-size=\"10\" text-anchor=\"middle\">Yong'in va Toksik Xavf</text></svg>",
+        "question": "Korxona xavfli akkumulyator kislotali qoldiqlarini oddiy maishiy chiqindi bilan aralashtirib saqlagan. Jarima qanday qo'llanadi?",
+        "options": [
+          "Barcha aralashgan hajm eng yuqori xavfli toifa deb baholanadi va qat'iy moddiy jarima belgilanadi",
+          "Faqat kislota qismi alohida hisoblanadi",
+          "Chiqindilar aralashsa arzonlashadi deb to'lov olinmaydi"
+        ],
+        "correct": 0,
+        "hint": "Sanitariya qoidalariga ko'ra xavfsiz chiqindi xavfli chiqindiga tekkanda, butun massa xavfli deb tan olinadi."
+      },
+      {
+        "id": "pen-8",
+        "title": "Ko'p Yillik Qimmatbaho Daraxtlarni Shikastlash",
+        "param": "Diametri 60 sm bo'lgan chinor daraxti noqonuniy kesilgan",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"250\" cy=\"50\" r=\"22\" fill=\"#047857\"/><text x=\"250\" y=\"55\" fill=\"white\" font-size=\"16\" text-anchor=\"middle\">🌳</text><text x=\"250\" y=\"90\" fill=\"#f87171\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">BHM ning 100-300 barobari + 100 ta ko'chat ekish majburiyati</text></svg>",
+        "question": "Qurilish kompaniyasi 80 yillik chinor daraxtini noqonuniy kesib tashladi. Qanday ekologik chora qo'llanadi?",
+        "options": [
+          "Yetkazilgan zarar to'liq undiriladi, eng yuqori jarima solinadi va o'rniga 100 tup 5 yillik ko'chat ekib 3 yil parvarishlash majburiyati yuklanadi",
+          "Faqat o'tin puli to'lanadi",
+          "Kompaniyaga hech narsa qilinmaydi"
+        ],
+        "correct": 0,
+        "hint": "O'zbekistonda daraxtlarni kesishga moratoriy amal qilmoqda va har bir noqonuniy kesilgan daraxt uchun ulkan jarimalar belgilangan."
+      },
+      {
+        "id": "pen-9",
+        "title": "Ixtiyoriy 30 Kunlik To'lov Imtiyozi",
+        "param": "Jarima dalolatnomasi topshirildi: 30 kun ichida to'lov",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"150\" y=\"35\" width=\"200\" height=\"60\" rx=\"8\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"250\" y=\"60\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">30 Kun Ichida To'lov</text><text x=\"250\" y=\"80\" fill=\"#a7f3d0\" font-size=\"10\" text-anchor=\"middle\">70% to'lansa, 30% chegirma (Rag'bat)</text></svg>",
+        "question": "Huquqbuzar jarimani o'z ixtiyori bilan 30 kun ichida to'lasa qanday qonuniy rag'bat bor?",
+        "options": [
+          "Belgilangan jarima summasining 70% ini 30 kun ichida ixtiyoriy to'lasa, qolgan 30% idan ozod qilinadi",
+          "Hech qanday imtiyoz berilmaydi",
+          "Jarima summasi ikki barobar oshiriladi"
+        ],
+        "correct": 0,
+        "hint": "Ixtiyoriy to'lov tizimi da'vo jarayonlarini tezlashtiradi va kompensatsiyaning darhol ekologik jamg'armaga tushishini ta'minlaydi."
+      },
+      {
+        "id": "pen-10",
+        "title": "Issiqxona Gazlari Metan (CO2-ekvivalent) Balansi",
+        "param": "CH4 ning issiqxona salohiyati: GWP = 28 barobar CO2 dan kuchli",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"80\" y=\"45\" width=\"140\" height=\"40\" rx=\"6\" fill=\"#1e293b\"/><text x=\"150\" y=\"70\" fill=\"#fcd34d\" font-size=\"12\" text-anchor=\"middle\">1 Tonna CH4 (Metan)</text><text x=\"250\" y=\"70\" fill=\"#38bdf8\" font-size=\"20\" font-weight=\"bold\" text-anchor=\"middle\">=</text><rect x=\"280\" y=\"45\" width=\"150\" height=\"40\" rx=\"6\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"355\" y=\"70\" fill=\"#fca5a5\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">28 Tonna CO2-ekv!</text></svg>",
+        "question": "1 tonna metan havoga chiqib ketsa, Parij bitimi bo'yicha qancha CO2 ga teng zarar yetkaziladi?",
+        "options": [
+          "28 tonna CO2 ekvivalentiga teng, chunki metan issiqlikni 28 barobar kuchli ushlab turadi",
+          "Aynan 1 tonna CO2 ga teng",
+          "Metan issiqxona gazi emas, zararsiz"
+        ],
+        "correct": 0,
+        "hint": "Metan qisqa muddatda atmosferani eng tez isituvchi agressiv gaz bo'lib, uning emissiyasi qat'iy hisoblanadi."
+      }
+    ]
+  },
+  "11": {
+    "id": 11,
+    "title": "11. Yashil Shahar Arxitekturasi",
+    "badge": "Shaharsozlik",
+    "icon": "fa-city",
+    "color": "indigo",
+    "category": "Ekspertiza va Qonunchilik",
+    "xp": 260,
+    "desc": "Shamol atirguli (roza vetrov) va 1000m sanitar zonani hisobga olib shaharni to'g'ri loyihalang.",
+    "scenarios": [
+      {
+        "id": "city-1",
+        "title": "Shamol Atirguli (Roza Vetrov) Tahlili",
+        "param": "Ustun shamol yo'nalishi: Shimoli-Sharq (NE) → Janubi-G'arb (SW)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"150\" cy=\"65\" r=\"45\" fill=\"#0f172a\" stroke=\"#818cf8\" stroke-width=\"2\"/><line x1=\"150\" y1=\"20\" x2=\"150\" y2=\"110\" stroke=\"#64748b\"/><line x1=\"105\" y1=\"65\" x2=\"195\" y2=\"65\" stroke=\"#64748b\"/><path d=\"M 180 35 L 120 95\" stroke=\"#ef4444\" stroke-width=\"4\"/><text x=\"185\" y=\"30\" fill=\"#f87171\" font-size=\"10\" font-weight=\"bold\">NE Shamol</text><rect x=\"300\" y=\"35\" width=\"140\" height=\"60\" rx=\"8\" fill=\"#1e293b\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"370\" y=\"60\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Sanoat Zonasi:</text><text x=\"370\" y=\"78\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Janubi-G'arbga joylanadi</text></svg>",
+        "question": "Shamol yil bo'yi shimoli-sharqdan essachi, kimyo sanoat hududi shahar aholisiga nisbatan qayerda joylashishi kerak?",
+        "options": [
+          "Shahar aholisi shamolning yuqori (shimoli-sharqiy) qismida, zavodlar esa shamol yo'nalishi bo'yicha pastda (janubi-g'arbda) joylashishi shart",
+          "Zavodlarni to'g'ridan-to'g'ri shamol kelayotgan shimoli-sharqqa aholi oldiga qurish",
+          "Zavodlarni shahar markaziga joylashtirish"
+        ],
+        "correct": 0,
+        "hint": "Zavodlar doimo shamol osti (podvetrennaya storona) tomonda joylashtirilsa, tutun shaharga emas, dashtga qarab ketadi."
+      },
+      {
+        "id": "city-2",
+        "title": "Sanitar-Himoya Zonasi (SPZ = 1000m)",
+        "param": "1-sinf metallurgiya kombinati va aholi uylari orasi",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"50\" y=\"35\" width=\"100\" height=\"60\" rx=\"8\" fill=\"#7f1d1d\"/><text x=\"100\" y=\"70\" fill=\"white\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Metallurgiya</text><line x1=\"160\" y1=\"65\" x2=\"340\" y2=\"65\" stroke=\"#10b981\" stroke-width=\"4\" stroke-dasharray=\"6,4\"/><text x=\"250\" y=\"55\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">1000 metr Yashil SPZ Zonasi</text><rect x=\"350\" y=\"35\" width=\"100\" height=\"60\" rx=\"8\" fill=\"#047857\"/><text x=\"400\" y=\"70\" fill=\"white\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Aholi Massivi</text></svg>",
+        "question": "1-toifali og'ir sanoat korxonasi va aholi turar-joyi o'rtasidagi minimal Sanitar-himoya zonasi qancha bo'lishi shart?",
+        "options": [
+          "Kamida 1000 metr yashil daraxtzorlar bilan qoplangan himoya polisasi",
+          "50 metr yetarli",
+          "Orasida masofa bo'lishi shart emas"
+        ],
+        "correct": 0,
+        "hint": "SanQvaM 0350-17 bo'yicha 1-sinf xavfli obyektlar uchun 1000 metr masofa qat'iy qonuniy talabdir."
+      },
+      {
+        "id": "city-3",
+        "title": "Shahar Shamollatish Koridorlari (Aero-Ventilyatsiya)",
+        "param": "Ko'p qavatli binolar shamol oqimini to'sib qo'ymasligi lozim",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"80\" y=\"30\" width=\"30\" height=\"70\" fill=\"#334155\"/><rect x=\"150\" y=\"30\" width=\"30\" height=\"70\" fill=\"#334155\"/><rect x=\"220\" y=\"30\" width=\"30\" height=\"70\" fill=\"#334155\"/><path d=\"M 50 65 L 450 65\" stroke=\"#38bdf8\" stroke-width=\"4\"/><text x=\"350\" y=\"60\" fill=\"#38bdf8\" font-size=\"11\" font-weight=\"bold\">Keng Xiyobonli Havo Koridori</text></svg>",
+        "question": "Smog va havoning turg'unlashib qolishini oldini olish uchun zamonaviy shaharlar qanday loyihalanadi?",
+        "options": [
+          "Shamol yo'nalishi bo'ylab keng yashil xiyobonlar va daryo bo'ylari bo'ylab ochiq 'havo koridorlari' qoldiriladi",
+          "Shamol yo'liga 30 qavatli uylarni uzluksiz devor qilib quriladi",
+          "Shaharni yopiq gumbaz bilan o'rab olinadi"
+        ],
+        "correct": 0,
+        "hint": "Havo koridorlari tog'dan keluvchi toza shabadani shahar markazigacha yetkazib, avtomobil tutunlarini haydab chiqaradi."
+      },
+      {
+        "id": "city-4",
+        "title": "Magistral Yo'l Shovqiniga Qarshi Yashil To'siq",
+        "param": "Magistral: 85 dBA shovqin | Maktab binosi yaqin",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"50\" y=\"45\" width=\"100\" height=\"40\" fill=\"#334155\"/><text x=\"100\" y=\"70\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Magistral (85 dB)</text><circle cx=\"210\" cy=\"65\" r=\"16\" fill=\"#15803d\"/><circle cx=\"250\" cy=\"65\" r=\"20\" fill=\"#166534\"/><circle cx=\"290\" cy=\"65\" r=\"16\" fill=\"#15803d\"/><text x=\"250\" y=\"110\" fill=\"#34d399\" font-size=\"10\" text-anchor=\"middle\">3 Qator Daraxt + Akustik Ekran (-20 dB)</text><rect x=\"360\" y=\"45\" width=\"90\" height=\"40\" fill=\"#0369a1\"/><text x=\"405\" y=\"70\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Maktab</text></svg>",
+        "question": "Katta trassa yonidagi maktab bolalarini shovqin va zaharli gazdan qanday samarali himoya qilinadi?",
+        "options": [
+          "Akustik shaffof himoya devori va 3 qatorli zich bargli butalar hamda ignabargli daraxtlar belbog'i bilan",
+          "Yo'l chetiga reklama bannerlari ilib qo'yish bilan",
+          "Maktab derazalarini g'isht bilan terib yopish bilan"
+        ],
+        "correct": 0,
+        "hint": "Ko'p qatlamli yashil to'siq shovqinni 15-20 dBA ga kamaytiradi va og'ir metall changlarini 70% barglarida tutib qoladi."
+      },
+      {
+        "id": "city-5",
+        "title": "Shahar Issiqlik Oroli (Urban Heat Island) Effekti",
+        "param": "Asfalt va beton harorati: 52°C | Yashil parkda: 31°C",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"80\" y=\"35\" width=\"140\" height=\"60\" rx=\"6\" fill=\"#7f1d1d\"/><text x=\"150\" y=\"60\" fill=\"#fca5a5\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Beton Markaz (52°C)</text><text x=\"150\" y=\"80\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Konditsionerlar zo'riqishi</text><text x=\"250\" y=\"70\" fill=\"#10b981\" font-size=\"20\" font-weight=\"bold\" text-anchor=\"middle\">→</text><rect x=\"280\" y=\"35\" width=\"150\" height=\"60\" rx=\"6\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"355\" y=\"60\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Yashil Tom & Park (31°C)</text><text x=\"355\" y=\"80\" fill=\"#a7f3d0\" font-size=\"10\" text-anchor=\"middle\">Tabiiy sovutish</text></svg>",
+        "question": "Yozda shahar ichi jazirama issiq bo'lib ketmasligi uchun shaharsozlar nima qilishi kerak?",
+        "options": [
+          "Binolarda yashil tomlar (Green roofs), ochiq suv havzalari, favvoralar va soyali xiyobonlar ulushini kamida 40% ga yetkazish",
+          "Butun shaharni asfalt bilan qoplash",
+          "Ko'chalarga ko'proq yirik konditsionerlar o'rnatish"
+        ],
+        "correct": 0,
+        "hint": "Daraxtlar transpiratsiya (suv bug'latish) hisobiga havo haroratini sun'iy asfaltdan 8-12 darajagacha pasaytiradi."
+      },
+      {
+        "id": "city-6",
+        "title": "Bio-Drenaj Ariqlari va Yomg'ir Bog'lari (Rain Gardens)",
+        "param": "Yomg'ir suvi kollektorga toshmasdan yer ostiga singishi kerak",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 120 40 L 160 90 L 340 90 L 380 40 Z\" fill=\"#1e293b\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"250\" y=\"65\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Yomg'ir Bog'i (Bioswale)</text><text x=\"250\" y=\"82\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">G'ovakli qatlam + Suv o'simliklari</text></svg>",
+        "question": "Shahar ko'chalarida yomg'ir yoqqanda suv toshib ketmasligi uchun qanday yashil infratuzilma qo'llaniladi?",
+        "options": [
+          "G'ovakli shag'al va o'simliklardan iborat yomg'ir bog'lari (Rain gardens) orqali suvni tabiiy tozalab yerosti suviga singdirish",
+          "Barcha ariqlarni betonlab yopib tashlash",
+          "Yomg'ir suvini chelaklarda tashish"
+        ],
+        "correct": 0,
+        "hint": "Yomg'ir bog'lari shahar drenaj tizimi yuklamasini 60% ga yengillatadi va yerosti suv zaxiralarini to'ldiradi."
+      },
+      {
+        "id": "city-7",
+        "title": "Chiqindi Maydonchasi Masofasi (SanQvaM)",
+        "param": "Norma: Turar-joy binosidan minimal 20m, maksimal 100m",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"60\" y=\"40\" width=\"80\" height=\"50\" fill=\"#334155\"/><text x=\"100\" y=\"70\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Uy Derazasi</text><line x1=\"150\" y1=\"65\" x2=\"330\" y2=\"65\" stroke=\"#10b981\" stroke-width=\"3\"/><text x=\"240\" y=\"55\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">20 m &le; Masofa &le; 100 m</text><rect x=\"340\" y=\"40\" width=\"100\" height=\"50\" fill=\"#0f172a\" stroke=\"#f59e0b\" stroke-width=\"2\"/><text x=\"390\" y=\"68\" fill=\"#fcd34d\" font-size=\"10\" text-anchor=\"middle\">Konteyner</text></svg>",
+        "question": "Chiqindi yig'ish maydonchasi ko'p qavatli turar-joy derazasidan necha metr uzoqlikda joylashishi kerak?",
+        "options": [
+          "Kamida 20 metr (hid va hasharot kirmasligi uchun) va ko'pi bilan 100 metr (aholi borishi oson bo'lishi uchun)",
+          "To'g'ridan-to'g'ri podyezd eshigi tagiga 1 metr qilib qo'yish",
+          "Shahardan 5 km tashqariga qo'yish"
+        ],
+        "correct": 0,
+        "hint": "SanQvaM 0300-14 bo'yicha 20-100 metr oralig'i sanitariya xavfsizligi va qulaylikning oltin qoidasidir."
+      },
+      {
+        "id": "city-8",
+        "title": "Sanoat Oqovalarini Daryoga Ulash Taqiqlanishi",
+        "param": "Kimyo korxonasi oqovasi: To'g'ridan-to'g'ri daryoga ulash man etiladi",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"70\" y=\"35\" width=\"120\" height=\"60\" rx=\"6\" fill=\"#7f1d1d\"/><text x=\"130\" y=\"65\" fill=\"#fca5a5\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Zavod Oqovasi</text><line x1=\"200\" y1=\"65\" x2=\"300\" y2=\"65\" stroke=\"#ef4444\" stroke-width=\"6\"/><text x=\"250\" y=\"55\" fill=\"#ef4444\" font-size=\"18\" font-weight=\"bold\" text-anchor=\"middle\">✕</text><rect x=\"310\" y=\"35\" width=\"130\" height=\"60\" rx=\"6\" fill=\"#0284c7\"/><text x=\"375\" y=\"65\" fill=\"white\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Tabiiy Daryo</text></svg>",
+        "question": "Sanoat zonasini loyihalashda korxona oqova suvlarini to'g'ridan-to'g'ri daryoga ulash mumkinmi?",
+        "options": [
+          "Mutlaqo yo'q! Zavod o'zining lokal tozalash inshootiga ega bo'lishi va faqat chuqur tozalangach shahar kollektoriga ruxsat etiladi",
+          "Ha, daryo oqimi katta bo'lsa darhol suyulib ketadi",
+          "Faqat kechasi oqizish sharti bilan ruxsat beriladi"
+        ],
+        "correct": 0,
+        "hint": "Tozalanmagan sanoat oqovalarini ochiq suv havzasiga chiqarish qat'iyan jinoiy javobgarlikka olib keladi."
+      },
+      {
+        "id": "city-9",
+        "title": "Yashil Transport va Velosiped Magistrallari",
+        "param": "Transport chiqindilari shahar havosi ifloslanishining 60% qismi",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"80\" y=\"45\" width=\"140\" height=\"40\" rx=\"8\" fill=\"#1e293b\"/><text x=\"150\" y=\"70\" fill=\"#94a3b8\" font-size=\"11\" text-anchor=\"middle\">Avtomobil Yo'li</text><rect x=\"230\" y=\"40\" width=\"15\" height=\"50\" fill=\"#047857\"/><text x=\"237\" y=\"30\" fill=\"#34d399\" font-size=\"9\" text-anchor=\"middle\">Yashil To'siq</text><rect x=\"255\" y=\"45\" width=\"160\" height=\"40\" rx=\"8\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"335\" y=\"70\" fill=\"#a7f3d0\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Alohida Velo-Magistral 🚲</text></svg>",
+        "question": "Shaharda avtomobilsiz sog'lom harakatni rivojlantirish uchun veloyo'laklar qanday quriladi?",
+        "options": [
+          "Avtomobil harakatidan yashil daraxtzor yoki bort bilan to'liq ajratilgan, xavfsiz va uzluksiz tarmoq sifatida",
+          "Mashinalar orasidan chiziq chizib qo'yish bilan",
+          "Piyodalar yo'lkasida odamlar orasidan yurgizish bilan"
+        ],
+        "correct": 0,
+        "hint": "Izolyatsiyalangan velomagistrallar xavfsizlikni 90% oshiradi va aholini velosipeddan kundalik foydalanishga undaydi."
+      },
+      {
+        "id": "city-10",
+        "title": "Quyosh Panellari va Energo-Samarador Binolar",
+        "param": "Orientatsiya: Janubiy tomon (180°) | Nishablik: 32°",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 120 90 L 250 30 L 380 90 Z\" fill=\"#1e293b\" stroke=\"#38bdf8\" stroke-width=\"2\"/><circle cx=\"340\" cy=\"40\" r=\"14\" fill=\"#f59e0b\"/><text x=\"250\" y=\"65\" fill=\"#38bdf8\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Janubga Qaragan Quyosh Tomi</text><text x=\"250\" y=\"85\" fill=\"#34d399\" font-size=\"10\" text-anchor=\"middle\">Nishablik 32° (Maksimal insolyatsiya)</text></svg>",
+        "question": "O'zbekiston sharoitida quyosh panellari eng ko'p energiya ishlab chiqarishi uchun binolar qaysi tomonga qarashi kerak?",
+        "options": [
+          "Uylarning asosiy tomlari janubga tomon 30-35° burchak ostida yo'naltirilgan bo'lishi kerak",
+          "Shimol tomonga qaratilishi kerak",
+          "Quyoshdan panalab daraxtlar soyasiga yashirilishi kerak"
+        ],
+        "correct": 0,
+        "hint": "O'zbekiston shimoliy yarimsharda joylashgani uchun janubiy orientatsiya yil bo'yi maksimal quyosh nuri oladi."
+      }
+    ]
+  },
+  "12": {
+    "id": 12,
+    "title": "12. Ekologik Detektiv: GIS & Sun'iy Yo'ldosh",
+    "badge": "Kosmik Monitoring",
+    "icon": "fa-satellite",
+    "color": "purple",
+    "category": "Monitoring",
+    "xp": 240,
+    "desc": "Sun'iy yo'ldosh xaritasi va spektral datchiklar orqali ko'milgan noqonuniy chiqindilarni toping.",
+    "scenarios": [
+      {
+        "id": "gis-1",
+        "title": "Termal Infraqizil (TIR) Issiqlik Anomaliyasi",
+        "param": "Sentinel-2 / Landsat-8 termal kanali (B10) | Harorat: +12°C yuqori",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"250\" cy=\"65\" r=\"40\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"3\"/><text x=\"250\" y=\"60\" fill=\"#fca5a5\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Issiqlik Anomaliyasi!</text><text x=\"250\" y=\"78\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">+12°C Atrofga nisbatan</text><text x=\"250\" y=\"115\" fill=\"#fcd34d\" font-size=\"10\" text-anchor=\"middle\">Yer ostida noqonuniy chiriyotgan organik chiqindi</text></svg>",
+        "question": "Tunda olingan sun'iy yo'ldosh termal xaritasida adirlik ostida kutilmaganda +12°C issiqlik o'chog'i ko'rindi. Bu nima?",
+        "options": [
+          "Tuproq ostiga noqonuniy ko'milgan chiqindilar chirishi natijasida metan va biologik issiqlik ajralmoqda",
+          "Yer ostida vulqon paydo bo'lgan",
+          "Oddiy qum qatlami"
+        ],
+        "correct": 0,
+        "hint": "Chiriyotgan organik massalar termofil bakteriyalar tufayli 50-60°C gacha qiziydi va termal sun'iy yo'ldoshda yaqqol fosh bo'ladi."
+      },
+      {
+        "id": "gis-2",
+        "title": "Vegetatsiya Indeksi (NDVI) Keskin Tushishi",
+        "param": "NDVI normasi: 0.75 (Sog'lom yashil) | Anomaliya zonasi: 0.18",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"60\" y=\"40\" width=\"120\" height=\"50\" rx=\"6\" fill=\"#047857\"/><text x=\"120\" y=\"65\" fill=\"white\" font-size=\"11\" text-anchor=\"middle\">NDVI = 0.75 (Yashil)</text><text x=\"240\" y=\"70\" fill=\"#ef4444\" font-size=\"20\" font-weight=\"bold\" text-anchor=\"middle\">→</text><rect x=\"270\" y=\"40\" width=\"160\" height=\"50\" rx=\"6\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"350\" y=\"62\" fill=\"#fca5a5\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">NDVI = 0.18 (Qurigan)</text><text x=\"350\" y=\"78\" fill=\"white\" font-size=\"9\" text-anchor=\"middle\">Zaharli sizib chiqish o'chog'i</text></svg>",
+        "question": "Ekin maydoni o'rtasida 200 metrli doira ichida o'simliklar keskin sarg'ayib quriydi (NDVI tushgan). Sababi:",
+        "options": [
+          "Yerosti suviga yaqin ko'milgan zaharli kimyoviy shlam o'simlik ildiz tizimini zaharlagan",
+          "O'simliklar quyoshdan uyalib qolgan",
+          "U yerga faqat oq gul ekilgan"
+        ],
+        "correct": 0,
+        "hint": "NDVI spektral indeksi o'simlikdagi xlorofill miqdorini o'lchaydi; zaharli ifloslanishda xlorofill birinchi bo'lib parchalanadi."
+      },
+      {
+        "id": "gis-3",
+        "title": "Qisqa To'lqinli Infraqizil (SWIR) Spektroskopiya",
+        "param": "Spektral belgi: Polimer va uglevodorodlarning yutilish chizig'i",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 80 80 Q 150 20 220 80 T 360 80\" fill=\"none\" stroke=\"#38bdf8\" stroke-width=\"3\"/><circle cx=\"220\" cy=\"80\" r=\"6\" fill=\"#ef4444\"/><text x=\"220\" y=\"105\" fill=\"#fca5a5\" font-size=\"10\" text-anchor=\"middle\">Plastik Absorbtsiya Pik (2.2 µm)</text><text x=\"250\" y=\"35\" fill=\"#38bdf8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Ko'milgan Plastik Chiqindixona Fosh Etildi</text></svg>",
+        "question": "Tuproq bilan yupqa ko'mib yashirilgan plastmassa va polimer chiqindilarini kosmosdan qanday aniqlanadi?",
+        "options": [
+          "SWIR (Qisqa to'lqinli infraqizil) kanalida polimerlarning o'ziga xos 2.2 mkm spektral yutilish chizig'i orqali",
+          "Kosmonavtlar durbin bilan qarab topadi",
+          "Tuproqni qazib ko'rmaguncha aniqlashning iloji yo'q"
+        ],
+        "correct": 0,
+        "hint": "Har bir kimyoviy modda o'ziga xos spektral barmoq iziga (spectral signature) ega bo'lib, sun'iy yo'ldoshda aniq ko'rinadi."
+      },
+      {
+        "id": "gis-4",
+        "title": "SAR Radari: Poligon Cho'kishi va Deformatsiyasi",
+        "param": "Interferometrik SAR (InSAR) | Yillik siljish: -18 mm",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 120 70 L 250 90 L 380 70\" fill=\"none\" stroke=\"#f59e0b\" stroke-width=\"3\" stroke-dasharray=\"6,4\"/><text x=\"250\" y=\"55\" fill=\"#fcd34d\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">InSAR: Cho'kish -18 mm/yil</text><text x=\"250\" y=\"115\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">Geomembrana uzilish va o'pirilish xavfi bor</text></svg>",
+        "question": "Sun'iy yo'ldosh radari poligon qiyaliklarida yiliga 18 millimetr siljishni ko'rsatdi. Bu qanday xavf?",
+        "options": [
+          "Poligon ichki qatlamlarida ko'chki va geomembrana yirtilish xavfi bor; zudlik bilan mustahkamlash talab etiladi",
+          "Hech qanday xavf yo'q, yer har doim qimirlab turadi",
+          "Poligon o'z-o'zidan tekislanib qolishini kutish kerak"
+        ],
+        "correct": 0,
+        "hint": "Radar interferometriyasi (InSAR) millimetrlik aniqlikda poligon dambalari cho'kishini oldindan ogohlantiradi."
+      },
+      {
+        "id": "gis-5",
+        "title": "Daryoga Tunda Oqizilgan Loyqalanish (Turbidity)",
+        "param": "Spektral loyqalik izi (Turbidity plume): Zavod trubasidan 8 km ga cho'zilgan",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 50 65 Q 250 40 450 65\" stroke=\"#0284c7\" stroke-width=\"16\"/><path d=\"M 160 65 Q 280 50 400 65\" stroke=\"#78350f\" stroke-width=\"10\"/><circle cx=\"150\" cy=\"65\" r=\"10\" fill=\"#ef4444\"/><text x=\"150\" y=\"45\" fill=\"#f87171\" font-size=\"10\" font-weight=\"bold\">Noqonuniy Truba</text><text x=\"320\" y=\"95\" fill=\"#fcd34d\" font-size=\"10\" font-weight=\"bold\">8 km ga cho'zilgan loyqa shlam oqimi</text></svg>",
+        "question": "Zavod tunda daryoga kirlangan oqova tashladi. Detektiv inspektor buni qanday fosh etadi?",
+        "options": [
+          "Ertalabki sun'iy yo'ldosh suratida suvning spektral aks etish koeffitsiyenti (loyqalik oqimi) orqali manbani aniq trubasigacha topadi",
+          "Buni fosh etishning imkoni yo'q, suv oqib ketgan",
+          "Zavod direktoridan kechagi ishlarini so'rab biladi"
+        ],
+        "correct": 0,
+        "hint": "Kosmik multispektral suratlar daryodagi har qanday noqonuniy oqova izini aniq koordinatasi bilan xaritaga muhrlaydi."
+      },
+      {
+        "id": "gis-6",
+        "title": "Dron Lazer Spektrometri (CH4 Metan Xaritasi)",
+        "param": "Dron parvozi: 50m balandlik | Lazer detektori: TDLAS",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"180\" cy=\"40\" r=\"14\" fill=\"#3b82f6\"/><text x=\"180\" y=\"45\" fill=\"white\" font-size=\"12\" text-anchor=\"middle\">🛸</text><path d=\"M 180 54 L 220 90 L 320 90 L 180 54\" fill=\"#10b981\" opacity=\"0.2\"/><circle cx=\"270\" cy=\"85\" r=\"15\" fill=\"#ef4444\"/><text x=\"270\" y=\"90\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">500 ppm</text><text x=\"380\" y=\"85\" fill=\"#fcd34d\" font-size=\"11\" font-weight=\"bold\">Metan Sizib Chiqish Nuqtasi</text></svg>",
+        "question": "Katta poligonda metan gazi qayerdan sizib chiqayotganini aniqlash uchun eng tezkor usul:",
+        "options": [
+          "Dazgohlangan dron lazerli metan datchigi (TDLAS) orqali uchib, konsentratsiya xaritasini (ppm) tuzish",
+          "Poligon bo'ylab gugurt yoqib yurish",
+          "Chiqindilarni qo'lda hidlab ko'rish"
+        ],
+        "correct": 0,
+        "hint": "Lazerli datchiklar bir necha santimetr aniqlikda metan sizayotgan yoriqlarni darhol topib beradi."
+      },
+      {
+        "id": "gis-7",
+        "title": "Ko'p Yillik Xaritalar Solishtiruvi (Change Detection)",
+        "param": "2020-yil sun'iy yo'ldosh xaritasi vs 2026-yil xaritasi",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"80\" y=\"35\" width=\"120\" height=\"60\" rx=\"8\" fill=\"#1e293b\"/><text x=\"140\" y=\"60\" fill=\"#38bdf8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">2020: 4 Gektar</text><text x=\"140\" y=\"78\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">Chegara bo'yicha</text><text x=\"240\" y=\"70\" fill=\"#ef4444\" font-size=\"20\" font-weight=\"bold\" text-anchor=\"middle\">→</text><rect x=\"270\" y=\"35\" width=\"150\" height=\"60\" rx=\"8\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"345\" y=\"60\" fill=\"#fca5a5\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">2026: 11 Gektar!</text><text x=\"345\" y=\"78\" fill=\"white\" font-size=\"9\" text-anchor=\"middle\">+7 Ga Noqonuniy Egallangan</text></svg>",
+        "question": "Chiqindixona egasi chegara buzilmagan desa, kosmik arxiv suratlari qanday isbotlaydi?",
+        "options": [
+          "O'tgan 5 yillik yuqori aniqlikdagi multispektral suratlarni ustma-ust qo'yib (Change Detection) noqonuniy kengaygan gektarlarni isbotlash",
+          "Eski qog'oz xaritaga qarab bahslashish",
+          "Chiqindixona egasining aytganiga ishonish"
+        ],
+        "correct": 0,
+        "hint": "Sun'iy yo'ldosh arxivi o'chmas raqamli dalildir; yer maydonining yillar davomida qanday o'zgarganini sudga taqdim etadi."
+      },
+      {
+        "id": "gis-8",
+        "title": "Tashlab Ketilgan Toksik Asbest Chiqindilari",
+        "param": "Tarkibi: Xrizotil asbest tolalari (O'pka saratoni omili)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"8\" fill=\"#1e293b\" stroke=\"#f59e0b\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#fcd34d\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Asbest Shiferlar</text><text x=\"250\" y=\"75\" fill=\"#f87171\" font-size=\"10\" text-anchor=\"middle\">Kanserogen Tolalar</text><text x=\"250\" y=\"90\" fill=\"#38bdf8\" font-size=\"9\" text-anchor=\"middle\">Spektral oqlik piki</text></svg>",
+        "question": "Eski tashlandiq binolar buzilganda asbest chiqindisi dashtga tashlab ketilgan. Qanday topiladi?",
+        "options": [
+          "Asbest mineralining quyosh nuri ostidagi o'ziga xos ultra-oq spektral qaytarishi va datchiklar yordamida",
+          "U yerni haydab paxta ekib yuborish bilan",
+          "Asbestni qo'lda ushlab hidlab ko'rish bilan"
+        ],
+        "correct": 0,
+        "hint": "Asbest tolalari shamolda uchib havoga tarqaladi; kosmik aniqlash zudlik bilan polimer germetik plyonkaga o'rash imkonini beradi."
+      },
+      {
+        "id": "gis-9",
+        "title": "GIS Sanitar Qatlamlari va Aholi Maktablari",
+        "param": "Qonuniy talab: Chiqindixona maktabdan kamida 1000m uzoq bo'lishi shart",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"200\" cy=\"65\" r=\"35\" fill=\"#7f1d1d\" opacity=\"0.3\"/><circle cx=\"200\" cy=\"65\" r=\"10\" fill=\"#ef4444\"/><circle cx=\"310\" cy=\"65\" r=\"10\" fill=\"#3b82f6\"/><line x1=\"200\" y1=\"65\" x2=\"310\" y2=\"65\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"255\" y=\"55\" fill=\"#fca5a5\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Masofa: 420m (Buzilish!)</text><text x=\"200\" y=\"115\" fill=\"#fcd34d\" font-size=\"10\" text-anchor=\"middle\">GIS Bufer Zonasi Tahlili</text></svg>",
+        "question": "GIS tizimida noqonuniy poligon maktabdan atigi 420 metr masofadaligi aniqlandi. Huquqiy qaror:",
+        "options": [
+          "Sanitar qonunchilik qo'pol buzilganligi sababli chiqindixonani zudlik bilan to'xtatish va tozalab ko'chirish talabnomasi",
+          "Maktabni boshqa joyga ko'chirish",
+          "Hech qanday chora ko'rmaslik"
+        ],
+        "correct": 0,
+        "hint": "GIS bufer zonalari (Buffer Analysis) qonuniy masofalar buzilganini millisekundlarda xaritada qizil rang bilan belgilab beradi."
+      },
+      {
+        "id": "gis-10",
+        "title": "Yerosti Yonishi (Smoldering Fire) Xavfi",
+        "param": "Poligon chuqurligida havosiz yonish harorati: 140°C",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"150\" y=\"30\" width=\"200\" height=\"70\" rx=\"8\" fill=\"#7f1d1d\" stroke=\"#f59e0b\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#fcd34d\" font-size=\"13\" font-weight=\"bold\" text-anchor=\"middle\">Yerosti Yonishi: 140°C 🔥</text><text x=\"250\" y=\"75\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Termal infraqizil dron fosh etdi</text><text x=\"250\" y=\"90\" fill=\"#fca5a5\" font-size=\"9\" text-anchor=\"middle\">O'pirilish va zaharli gaz otilishi arafasida</text></svg>",
+        "question": "Ustidan qarab bilinmaydigan, ammo ichkarida 140°C da tutab yonayotgan poligon qanday qutqariladi?",
+        "options": [
+          "Yonayotgan chuqurlikka azot (N2) gazi yoki suvli bentonit gil suspenziyasi haydab havo kirishini butunlay bo'g'ish",
+          "Chuqurlikka benzin quyish",
+          "Ustidan olov yoqib ko'rish"
+        ],
+        "correct": 0,
+        "hint": "Yerosti yonishiga oddiy suv quyish bug' portlashiga olib keladi, faqat kislorod kirishini to'suvchi gilli bo'g'ish qo'llaniladi."
+      }
+    ]
+  },
+  "13": {
+    "id": 13,
+    "title": "13. Kompost Master: C/N Balansi",
+    "badge": "Biologiya",
+    "icon": "fa-seedling",
+    "color": "lime",
+    "category": "Saralash va Qayta ishlash",
+    "xp": 190,
+    "desc": "Jigarrang (Uglerod) va Yashil (Azot) chiqindilarni 30:1 nisbatda qorishtirib bio-gumus oling.",
+    "scenarios": [
+      {
+        "id": "cmp-1",
+        "title": "Ideal C:N Nisbati (30:1 Balansi)",
+        "param": "Jigarrang (Uglerod C): Somon, qipiq | Yashil (Azot N): Oziq-ovqat, go'ng",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"70\" y=\"35\" width=\"160\" height=\"60\" rx=\"6\" fill=\"#78350f\"/><text x=\"150\" y=\"60\" fill=\"#fcd34d\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">30 qism Uglerod (C)</text><text x=\"150\" y=\"78\" fill=\"#fef08a\" font-size=\"10\" text-anchor=\"middle\">Quruq xazon / Somon</text><text x=\"250\" y=\"70\" fill=\"#10b981\" font-size=\"22\" font-weight=\"bold\" text-anchor=\"middle\">:</text><rect x=\"270\" y=\"35\" width=\"160\" height=\"60\" rx=\"6\" fill=\"#047857\"/><text x=\"350\" y=\"60\" fill=\"#a7f3d0\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">1 qism Azot (N)</text><text x=\"350\" y=\"78\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Oshxona chiqindisi</text></svg>",
+        "question": "Mikroorganizmlar tez va hidsiz bio-gumus hosil qilishi uchun C:N (Uglerod/Azot) nisbati qanday bo'lishi kerak?",
+        "options": [
+          "Taxminan 25:1 dan 30:1 gacha — ya'ni 3 hissa quruq jigarrang materialga 1 hissa yangi yashil massa",
+          "1:100 qilib faqat go'sht tashlash kerak",
+          "Faqat polietilen paketlar aralashtirish kerak"
+        ],
+        "correct": 0,
+        "hint": "30:1 nisbatida bakteriyalar ugleroddan energiya oladi va azotdan o'z hujayra oqsilini quradi."
+      },
+      {
+        "id": "cmp-2",
+        "title": "Termofil Faza Harorati (55°C - 65°C)",
+        "param": "Uyum markazidagi harorat: 62°C | Patogenlar nobud bo'lmoqda",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"250\" cy=\"65\" r=\"40\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"250\" y=\"60\" fill=\"#fcd34d\" font-size=\"18\" font-weight=\"bold\" text-anchor=\"middle\">62°C</text><text x=\"250\" y=\"80\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Termofil Faza</text><text x=\"250\" y=\"115\" fill=\"#34d399\" font-size=\"10\" text-anchor=\"middle\">Begona o't urug'lari va bakteriyalar zararsizlanadi</text></svg>",
+        "question": "Kompost uyumi ichidagi harorat nega 55-65°C gacha qizishi o'ta muhim?",
+        "options": [
+          "Ushbu haroratda begona o't urug'lari, gelmint tuxumlari va kasallik qo'zg'atuvchi bakteriyalar 100% nobud bo'ladi",
+          "Chunki u yerda yong'in chiqishi kerak",
+          "Harorat oshishi kompostni buzadi"
+        ],
+        "correct": 0,
+        "hint": "Sanitariya talabiga ko'ra kompost uyumi kamida 3 kun 55°C dan yuqori turishi toza o'g'it olishning kafolatidir."
+      },
+      {
+        "id": "cmp-3",
+        "title": "O'tkir Ammiak (NH3) Hidi Chiqishi",
+        "param": "Muammo: Uyumdan achchiq ammiak hidi kelmoqda | Sabab: Azot ko'p",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"170\" y=\"30\" width=\"160\" height=\"70\" rx=\"8\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#fca5a5\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">NH3 Ammiak Hidi ⚠️</text><text x=\"250\" y=\"75\" fill=\"#ffffff\" font-size=\"10\" text-anchor=\"middle\">Azot ortib ketgan (C/N past)</text><text x=\"250\" y=\"90\" fill=\"#fcd34d\" font-size=\"9\" text-anchor=\"middle\">Zudlik bilan quruq somon/qipiq qo'shish!</text></svg>",
+        "question": "Kompost uyumidan o'tkir ammiak hidi kela boshladi. Bu nimadan darak beradi va nima qilish kerak?",
+        "options": [
+          "Azot (yashil go'ng/oziq-ovqat) ko'payib ketgan; zudlik bilan quruq somon, qipiq yoki karton qo'shib aralashtirish kerak",
+          "Uyumga ko'proq go'sht va tuxum tashlash kerak",
+          "Uyum ustiga xlor sepish kerak"
+        ],
+        "correct": 0,
+        "hint": "Uglerodli materiallar (qipiq, xazon) ortiqcha azotni bog'lab, qimmatbaho o'g'it elementlarini saqlab qoladi."
+      },
+      {
+        "id": "cmp-4",
+        "title": "Anaerob Chirindi va Vodorod Sulfid (H2S)",
+        "param": "Muammo: Chirigan tuxum hidi | Kislorod yetishmasligi (O2 < 5%)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"160\" y=\"30\" width=\"180\" height=\"70\" rx=\"8\" fill=\"#1e293b\" stroke=\"#38bdf8\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#38bdf8\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Aeratsiya Yetishmaydi</text><text x=\"250\" y=\"75\" fill=\"#f87171\" font-size=\"10\" text-anchor=\"middle\">Anaerob sharoit (Kislorodsiz)</text><text x=\"250\" y=\"90\" fill=\"#34d399\" font-size=\"9\" text-anchor=\"middle\">Ushbu uyumni vilkalar bilan ag'darish shart</text></svg>",
+        "question": "Kompostdan sasigan tuxum hidi kelsa va ichi qorayib ketsa, bunga nima sabab bo'lgan?",
+        "options": [
+          "Kislorod yetishmasligi sababli anaerob chirish boshlangan; uyumni zudlik bilan ag'darib havo berish (aeratsiya) kerak",
+          "Bakteriyalar juda ko'p kislorod olganidan",
+          "Uyumga juda ko'p quruq xazon solinganidan"
+        ],
+        "correct": 0,
+        "hint": "Aerob bakteriyalar kislorod bor joyda hidsiz ishlaydi; havo yetishmasa sassiq anaerob gazlar ajraladi."
+      },
+      {
+        "id": "cmp-5",
+        "title": "Optimal Namlik Darajasi (50% - 60% Siqish Testi)",
+        "param": "Kaftda siqqanda: Suv tomchilamaydi, lekin nam quyuq sharcha bo'lib qoladi",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"250\" cy=\"65\" r=\"35\" fill=\"#0284c7\" stroke=\"#38bdf8\" stroke-width=\"2\"/><text x=\"250\" y=\"60\" fill=\"white\" font-size=\"14\" font-weight=\"bold\" text-anchor=\"middle\">55%</text><text x=\"250\" y=\"78\" fill=\"#e0f2fe\" font-size=\"9\" text-anchor=\"middle\">Optimal Namlik</text><text x=\"250\" y=\"115\" fill=\"#38bdf8\" font-size=\"10\" text-anchor=\"middle\">Siqqanda suv oqmasligi, ammo kaft nam bo'lishi kerak</text></svg>",
+        "question": "Kompostdagi namlik qanday tekshiriladi va ideal namlik qancha bo'lishi kerak?",
+        "options": [
+          "Namlik 50-60% bo'lishi kerak (kaftda siqqanda suv tommasdan nam sharcha bo'lib turishi - siqilgan gubka kabi)",
+          "Quruq chang holatida 5% bo'lishi kerak",
+          "Suvda suzib yuradigan darajada 95% bo'lishi kerak"
+        ],
+        "correct": 0,
+        "hint": "Namlik 40% dan tushsa bakteriyalar faoliyati to'xtaydi, 65% dan oshsa havo yo'llari suvga to'lib chirish boshlanadi."
+      },
+      {
+        "id": "cmp-6",
+        "title": "Vermikompost: Kaliforniya Qizil Chuvalchangi",
+        "param": "Harorat: 20°C - 25°C ga tushdi | Chuvalchanglar bio-gumus yaratmoqda",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"160\" y=\"30\" width=\"180\" height=\"70\" rx=\"8\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Eisenia Fetida Chuvalchangi</text><text x=\"250\" y=\"75\" fill=\"#fcd34d\" font-size=\"10\" text-anchor=\"middle\">Koprolit (Toza Bio-Gumus)</text><text x=\"250\" y=\"90\" fill=\"#ffffff\" font-size=\"9\" text-anchor=\"middle\">O'sish stimulyatori va fermentlar</text></svg>",
+        "question": "Kompost uyumi sovigach (25°C) unga qizil chuvalchanglar solinsa nima sodir bo'ladi?",
+        "options": [
+          "Chuvalchanglar organikani yeb eng yuqori sifatli fermentlarga boy 'Koprolit' (Bio-gumus) o'g'itiga aylantiradi",
+          "Chuvalchanglar kompostni zaharli qilib qo'yadi",
+          "Ular barcha organikani yo'q qilib tashlaydi"
+        ],
+        "correct": 0,
+        "hint": "Vermikompost oddiy kompostdan 4-8 barobar unumdor bo'lib, o'simlik ildizini barcha kasalliklardan asraydi."
+      },
+      {
+        "id": "cmp-7",
+        "title": "Go'sht va Sut Mahsulotlarini Cheklash",
+        "param": "Ochiq kompost uyumiga yog'li go'sht va pishloq tashlash mumkinmi?",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"150\" cy=\"65\" r=\"25\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"150\" y=\"65\" fill=\"white\" font-size=\"16\" text-anchor=\"middle\">🥩 ✕</text><text x=\"320\" y=\"60\" fill=\"#fca5a5\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Ochiq kompostga go'sht taqiqlanadi!</text><text x=\"320\" y=\"80\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">Kalamush, chivin va zaharli chirishni chaqiradi</text></svg>",
+        "question": "Nega ochiq bog' kompostiga yog'li go'sht, baliq va sut qoldiqlari solish tavsiya etilmaydi?",
+        "options": [
+          "Yog'lar havo kirishini to'sib chirindi hid chiqaradi va kemiruvchilar (kalamushlar) hamda chivinlarni jalb qiladi",
+          "Chunki go'sht hech qachon chirimaydi",
+          "Chunki u o'g'itni qora rangga bo'yab qo'yadi"
+        ],
+        "correct": 0,
+        "hint": "Hayvon yog'lari va go'sht faqat maxsus yopiq Bokashi fermentatorlarida yoki biogaz reaktorlarida utilizatsiya qilinadi."
+      },
+      {
+        "id": "cmp-8",
+        "title": "Kompost Uyumi Minimal O'lchami (1m x 1m x 1m)",
+        "param": "Hajm: 1 metr kub (minimal kritik massa)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"190\" y=\"30\" width=\"120\" height=\"70\" rx=\"8\" fill=\"#1e293b\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">1 m³ Hajm</text><text x=\"250\" y=\"75\" fill=\"#fcd34d\" font-size=\"10\" text-anchor=\"middle\">Issiqlikni saqlovchi massa</text><text x=\"250\" y=\"90\" fill=\"#94a3b8\" font-size=\"8\" text-anchor=\"middle\">Kichik uyumlar tez sovib qoladi</text></svg>",
+        "question": "Kompost uyumi nega 1 metr kubdan kichik bo'lmasligi kerak?",
+        "options": [
+          "Kichik uyumlar hosil bo'lgan biologik issiqlikni saqlay olmaydi va tez sovib, termofil bosqichga chiqa olmaydi",
+          "Chunki qonunda kichik uyumlar taqiqlangan",
+          "Chunki kichik uyumga chuvalchang sig'maydi"
+        ],
+        "correct": 0,
+        "hint": "1 m x 1 m x 1 m o'lchami tashqi sovuq havoga qaramay markazda 60°C issiqlikni saqlash uchun ideal termal massadir."
+      },
+      {
+        "id": "cmp-9",
+        "title": "Yetilgan Bio-Gumus Sifatini Tekshirish (Solvita Testi)",
+        "param": "Rangi: Qoramtir-jigarrang | Hidi: Nam o'rmon tuprog'i hidi",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"150\" y=\"30\" width=\"200\" height=\"70\" rx=\"8\" fill=\"#047857\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Yetilgan Qora Oltin (Gumus)</text><text x=\"250\" y=\"75\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Yomg'irdan keyingi toza o'rmon hidi</text><text x=\"250\" y=\"90\" fill=\"#a7f3d0\" font-size=\"9\" text-anchor=\"middle\">Solvita Index = 8 (Barqaror)</text></svg>",
+        "question": "Kompostning to'liq yetilganini va o'simlik ildizini kuydirmasligini qanday bilish mumkin?",
+        "options": [
+          "Uyum to'liq sovigan, rangi qora-jigarrang bir jinsli bo'lib, xushbo'y yangi o'rmon tuprog'i hidi keladi",
+          "Uyumdan kuchli achchiq tutun chiqib tursa",
+          "Uyumda hali butun pomidor va kartoshkalar ko'rinib tursa"
+        ],
+        "correct": 0,
+        "hint": "Chala pishgan kompost o'simlik ildizidagi kislorodni tortib oladi, faqat to'liq yetilgan gumus o'simlikni oziqlantiradi."
+      },
+      {
+        "id": "cmp-10",
+        "title": "Xomashyoni Maydalashning (Shredding) Samarasi",
+        "param": "Fraksiya: 2-5 sm gacha maydalash | Tezlik: 3 barobar tez",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"80\" y=\"40\" width=\"130\" height=\"50\" rx=\"6\" fill=\"#334155\"/><text x=\"145\" y=\"65\" fill=\"#94a3b8\" font-size=\"11\" text-anchor=\"middle\">Yirik shox-shabba (2 yil)</text><text x=\"245\" y=\"70\" fill=\"#10b981\" font-size=\"20\" font-weight=\"bold\" text-anchor=\"middle\">→</text><rect x=\"275\" y=\"40\" width=\"150\" height=\"50\" rx=\"6\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"350\" y=\"62\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">2-5 sm Shreder (2 oy)</text><text x=\"350\" y=\"78\" fill=\"#a7f3d0\" font-size=\"9\" text-anchor=\"middle\">6 barobar tezroq chirish</text></svg>",
+        "question": "Qalin daraxt shoxlari va poyalarni maydalab kompostga solish nimasi bilan foydali?",
+        "options": [
+          "Bakteriyalar uchun aloqa yuzasi yuzlab barobarga oshadi va kompostlash vaqti 2 yildan 2-3 oyga qisqaradi",
+          "Chunki maydalanmagan shoxlar kompost idishini teshadi",
+          "Faqat tashish oson bo'lishi uchun"
+        ],
+        "correct": 0,
+        "hint": "Shrederdan o'tgan mayda fraksiya namlik va issiqlikni bir tekis taqsimlab, fermentatsiyani maksimal tezlashtiradi."
+      }
+    ]
+  }
+}

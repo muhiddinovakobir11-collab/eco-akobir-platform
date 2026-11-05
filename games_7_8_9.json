@@ -1,0 +1,458 @@
+{
+  "7": {
+    "id": 7,
+    "title": "7. E-Waste Demontaj & Qimmatbaho Metallar",
+    "badge": "Laboratoriya",
+    "icon": "fa-microchip",
+    "color": "amber",
+    "category": "Saralash va Qayta ishlash",
+    "xp": 230,
+    "desc": "Plata, batareya va chiplardan oltin, mis va litiyni xavfsiz ajratib, zaharli moddalarni zararsizlantiring.",
+    "scenarios": [
+      {
+        "id": "ew-1",
+        "title": "Ona Platalardagi Oltin (Au) Kontaktlarini Ajratish",
+        "param": "1 tonna kompyuter platasi tarkibida 200-250 gramm sof oltin bor",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"60\" y=\"30\" width=\"160\" height=\"70\" rx=\"8\" fill=\"#1e293b\" stroke=\"#f59e0b\" stroke-width=\"2\"/><text x=\"140\" y=\"55\" fill=\"#fcd34d\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">PCB Platalar (Au)</text><text x=\"140\" y=\"75\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">250g Au / tonna</text><line x1=\"225\" y1=\"65\" x2=\"310\" y2=\"65\" stroke=\"#f59e0b\" stroke-width=\"3\"/><rect x=\"315\" y=\"30\" width=\"135\" height=\"70\" rx=\"8\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"382\" y=\"55\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Tiomochevina (Ekotoza)</text><text x=\"382\" y=\"75\" fill=\"#a7f3d0\" font-size=\"9\" text-anchor=\"middle\">Tsianidsiz eritmada ajratish</text></svg>",
+        "question": "Eski platalardan oltinni ajratishda qaysi zamonaviy ekologik usul zaharli tsianid kislotasi o'rnini bosadi?",
+        "options": [
+          "Ekologik xavfsiz tiomochevina yoki tiosulfatli gidrometallurgik eritma bilan tanlab eritish",
+          "Platalarni ochiq olovda yoqib, kulini daryo suvida yuvish",
+          "Kuchli konsentrlangan tsianid kislotasini ochiq idishda qaynatish"
+        ],
+        "correct": 0,
+        "hint": "Tsianidsiz tiomochevina eritmasi zaharli bug'lar hosil qilmaydi va 95% sof oltin ajratib beradi."
+      },
+      {
+        "id": "ew-2",
+        "title": "Litiy-ion Batareyalarni Maydalash va Black Mass",
+        "param": "NMC batareyalar: Litiy, Nikel, Kobalt, Marganets",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"80\" y=\"35\" width=\"120\" height=\"60\" rx=\"8\" fill=\"#1e3a8a\" stroke=\"#3b82f6\" stroke-width=\"2\"/><text x=\"140\" y=\"60\" fill=\"white\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Li-ion Batareya</text><text x=\"140\" y=\"78\" fill=\"#93c5fd\" font-size=\"9\" text-anchor=\"middle\">Yong'in xavfi!</text><text x=\"240\" y=\"70\" fill=\"#10b981\" font-size=\"20\" font-weight=\"bold\" text-anchor=\"middle\">→</text><rect x=\"270\" y=\"35\" width=\"150\" height=\"60\" rx=\"8\" fill=\"#020617\" stroke=\"#64748b\" stroke-width=\"2\"/><text x=\"345\" y=\"60\" fill=\"#fcd34d\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Black Mass (Qora kukun)</text><text x=\"345\" y=\"78\" fill=\"#34d399\" font-size=\"9\" text-anchor=\"middle\">Inert Azot (N2) Gazida</text></svg>",
+        "question": "Telefon va noutbuk batareyalarini oddiy shrederda havoda maydalab bo'lmaydi (portlaydi). Nima qilish kerak?",
+        "options": [
+          "Inert gaz (Azot N2 yoki Argon) muhitida yoki vakuum ostida maydalab, xavfsiz 'Black Mass' kukunini olish",
+          "Batareyalarni suv to'la chelakka tashlab, bolg'a bilan urib sindirish",
+          "Batareyalarni qizdirib zaryadini o'chirish"
+        ],
+        "correct": 0,
+        "hint": "Litiy havodagi kislorod va namlik bilan o'z-o'zidan yonib ketadi, shuning uchun inert azot muhiti shart."
+      },
+      {
+        "id": "ew-3",
+        "title": "Qo'rg'oshinli Kavsharni (Solder) Xavfsiz Eritish",
+        "param": "Kavshar qotishmasi: Qalay-Qo'rg'oshin (Sn-Pb)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"8\" fill=\"#1e293b\" stroke=\"#f59e0b\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#fcd34d\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Infraqizil Isitgich</text><text x=\"250\" y=\"75\" fill=\"#38bdf8\" font-size=\"10\" text-anchor=\"middle\">210°C Dinamik Qizdirish</text><text x=\"250\" y=\"90\" fill=\"#10b981\" font-size=\"9\" text-anchor=\"middle\">Chiplar buzilmay ajraladi</text></svg>",
+        "question": "Elektron chiplarni platadan ajratishda zaharli qo'rg'oshin bug'lari chiqmasligi uchun:",
+        "options": [
+          "Lokal ventilyatsiyali infraqizil (IR) dinamik qizdirgich orqali 210°C da kavsharni eritib silkitish",
+          "Gaz gorelka bilan 1000°C da kuydirish",
+          "Platani qo'l arrasi bilan arralash"
+        ],
+        "correct": 0,
+        "hint": "Infraqizil kontaktsiz qizdirish komponentlarni shikastlamaydi va qo'rg'oshin bug'lanishining oldini oladi."
+      },
+      {
+        "id": "ew-4",
+        "title": "Nodir-yer Neodim Magnitlari (NdFeB)",
+        "param": "Qattiq disklar (HDD) va ovoz karnaylari",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"100\" y=\"40\" width=\"120\" height=\"50\" rx=\"6\" fill=\"#1e293b\"/><text x=\"160\" y=\"68\" fill=\"#60a5fa\" font-size=\"11\" text-anchor=\"middle\">HDD Aktuator</text><text x=\"250\" y=\"70\" fill=\"#f59e0b\" font-size=\"20\" font-weight=\"bold\" text-anchor=\"middle\">→</text><rect x=\"280\" y=\"40\" width=\"130\" height=\"50\" rx=\"6\" fill=\"#78350f\" stroke=\"#f59e0b\" stroke-width=\"2\"/><text x=\"345\" y=\"62\" fill=\"#fcd34d\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">NdFeB Magnit</text><text x=\"345\" y=\"78\" fill=\"#fef08a\" font-size=\"9\" text-anchor=\"middle\">Neodim + Disproziy</text></svg>",
+        "question": "Eski kompyuter qattiq disklaridagi eng qimmatbaho strategik xomashyo nima?",
+        "options": [
+          "Magnit boshchalarni boshqaruvchi o'ta kuchli Neodim-Temir-Bor (NdFeB) nodir-yer magniti",
+          "Diskning alyuminiy korpusi",
+          "Diskning plastik kabeli"
+        ],
+        "correct": 0,
+        "hint": "Neodim magnitlari shamol generatorlari va elektromobil motorlari uchun eng tanqis nodir-yer metalli hisoblanadi."
+      },
+      {
+        "id": "ew-5",
+        "title": "Transformator va Relelardan Toza Mis (Cu)",
+        "param": "Chiqish: 99.9% sof elektrolitik mis simlari",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"150\" cy=\"65\" r=\"35\" fill=\"#78350f\" stroke=\"#d97706\" stroke-width=\"2\"/><text x=\"150\" y=\"70\" fill=\"#fcd34d\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Mis Cho'lg'ami</text><text x=\"260\" y=\"70\" fill=\"#10b981\" font-size=\"20\" font-weight=\"bold\" text-anchor=\"middle\">→</text><rect x=\"300\" y=\"40\" width=\"140\" height=\"50\" rx=\"6\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"370\" y=\"68\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Mexanik Ajratgich</text></svg>",
+        "question": "Transformatorlardagi mis simlar lak qatlami bilan qoplangan. Ularni qanday tozalab yaroqli qilish mumkin?",
+        "options": [
+          "Mexanik sim tozalash uskunasi yoki past haroratli kamerasimon pechda lakni qizdirib tushirish (olovsiz)",
+          "Ochiq o'choqda rezina va simlarni birga yoqish",
+          "Simlarni kislotaga tashlab butunlay eritib yuborish"
+        ],
+        "correct": 0,
+        "hint": "Simlarni ochiq yoqishda zaharli dioksin va furanlar havoga tarqaladi, shuning uchun mexanik tozalash qo'llaniladi."
+      },
+      {
+        "id": "ew-6",
+        "title": "Bromlangan Plastiklar (BFR) Xavfi",
+        "param": "Korpus plastmassasi: ABS + PBDE (yonmaydigan qo'shimchalar)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"8\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#fca5a5\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">BFR Plastik ⚠️</text><text x=\"250\" y=\"75\" fill=\"#ffffff\" font-size=\"10\" text-anchor=\"middle\">Rentgen-Flyuoressensiya</text><text x=\"250\" y=\"90\" fill=\"#fca5a5\" font-size=\"8\" text-anchor=\"middle\">Oddiy qayta ishlash taqiqlanadi</text></svg>",
+        "question": "Eski monitor va televizor orqa qopqoqlaridagi olovga chidamli plastikni oddiy bolalar o'yinchog'iga aylantirish mumkinmi?",
+        "options": [
+          "Mutlaqo yo'q! Tarkibidagi bromlangan birikmalar (BFR) gormonal zahardir; ularni rentgen (XRF) orqali ajratib xavfsiz yo'qotiladi",
+          "Ha, maydalab barcha oziq-ovqat idishlariga qo'shish mumkin",
+          "Faqat eritib gul tuvaklari yasash tavsiya etiladi"
+        ],
+        "correct": 0,
+        "hint": "BFR plastmassalari xalqaro Stokgolm konvensiyasi bilan qat'iy cheklangan xavfli chiqindi hisoblanadi."
+      },
+      {
+        "id": "ew-7",
+        "title": "Tantal (Ta) Kondensatorlarini Saralash",
+        "param": "Mobil telefon platalarida sariq/qora to'rtburchak tantal chiplari",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"190\" y=\"40\" width=\"120\" height=\"50\" rx=\"6\" fill=\"#1e293b\" stroke=\"#eab308\" stroke-width=\"2\"/><text x=\"250\" y=\"62\" fill=\"#fde047\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Tantal (Ta)</text><text x=\"250\" y=\"78\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">Yuqori sig'imli kondensator</text></svg>",
+        "question": "Smartfon platalaridagi tantal qotishmasi nimasi bilan qadrlanadi?",
+        "options": [
+          "Tantal o'ta noyob va qimmat metall bo'lib, mikro-elektronikada yuqori elektr sig'imini beradi",
+          "Chunki u juda tez eriydi",
+          "Chunki u oddiy qumdek arzon metall"
+        ],
+        "correct": 0,
+        "hint": "Tantal dunyo bo'yicha kam uchraydigan strategik 'konflikt metallari' ro'yxatiga kiradi."
+      },
+      {
+        "id": "ew-8",
+        "title": "Kineskop (CRT) Qo'rg'oshinli Shishasi",
+        "param": "Eski televizor kineskopi konusida 1.5 - 2 kg qo'rg'oshin (Pb) bor",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 120 40 L 220 50 L 220 80 L 120 90 Z\" fill=\"#334155\"/><text x=\"170\" y=\"70\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Old Shisha</text><path d=\"M 225 50 L 360 30 L 360 100 L 225 80 Z\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"290\" y=\"70\" fill=\"#fca5a5\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">Qo'rg'oshinli Konus (Pb)</text></svg>",
+        "question": "Eski televizor kineskopining old yuzasi oddiy shisha, orqa konusi esa qo'rg'oshinli shishadir. Qanday qayta ishlanadi?",
+        "options": [
+          "Lazer yoki olmos sim bilan konus va ekran birikmasini kesib, qo'rg'oshinli qismini metallurgiya pechlariga xomashyo qilish",
+          "Butun kineskopni bolg'a bilan maydalab beton qorishmasiga qo'shish",
+          "Daryo qirg'og'iga tashlab yuborish"
+        ],
+        "correct": 0,
+        "hint": "Qo'rg'oshinli shisha maydalansa yerosti suviga qo'rg'oshin ionlari o'tadi, uni faqat maxsus metallurgik qayta ishlash mumkin."
+      },
+      {
+        "id": "ew-9",
+        "title": "Sun'iy Intellektli Optik Saralash (AI Sorter)",
+        "param": "Konveyer tezligi: 2.5 m/s | Pnevmatik nozzllar",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><line x1=\"60\" y1=\"80\" x2=\"440\" y2=\"80\" stroke=\"#475569\" stroke-width=\"4\"/><circle cx=\"200\" cy=\"50\" r=\"16\" fill=\"#3b82f6\"/><text x=\"200\" y=\"55\" fill=\"white\" font-size=\"9\" text-anchor=\"middle\">AI Kamera</text><path d=\"M 200 66 L 250 80\" stroke=\"#38bdf8\" stroke-width=\"2\" stroke-dasharray=\"2,2\"/><circle cx=\"340\" cy=\"70\" r=\"8\" fill=\"#10b981\"/><text x=\"340\" y=\"105\" fill=\"#34d399\" font-size=\"9\" text-anchor=\"middle\">Havo zarbasi</text></svg>",
+        "question": "Maydalangan e-chiqindilardan mikrochiplarni millisekundlarda qanday ajratib olinadi?",
+        "options": [
+          "Yuqori tezlikdagi neyrotarmoq kameralari komponentni tanib, kerakli bo'lagini siqilgan havo zarbasi bilan savatga uradi",
+          "Ishchilar qo'lda pinset bilan terib chiqadi",
+          "Suvga oqizib toshlar bilan elanadi"
+        ],
+        "correct": 0,
+        "hint": "Optik AI saralagichlar daqiqasiga 10 000 tagacha chip va metall bo'laklarini 99% aniqlikda saralaydi."
+      },
+      {
+        "id": "ew-10",
+        "title": "Gidrometallurgiya Qoldiqlarini Neytrallash",
+        "param": "Reaksiyadan keyingi kislotali oqova: pH 1.2",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"8\" fill=\"#1e293b\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#fca5a5\" font-size=\"11\" text-anchor=\"middle\">pH 1.2 Nordon Shlam</text><text x=\"250\" y=\"75\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">+ Ca(OH)2 Ohak Suti</text><text x=\"250\" y=\"90\" fill=\"#a7f3d0\" font-size=\"9\" text-anchor=\"middle\">pH 7.0 Xavfsiz Cho'kma</text></svg>",
+        "question": "Metallar eritib olingach, qolgan kuchli kislotali shlam qanday zararsizlantiriladi?",
+        "options": [
+          "Ohak suti (kalsiy gidroksid) qo'shib neytrallash va og'ir metallarni erimaydigan gidroksid holatida cho'ktirib press-filtrdan o'tkazish",
+          "To'g'ridan-to'g'ri tuproqqa quyib yuborish",
+          "Kanalizatsiyaga shoshilinch oqizish"
+        ],
+        "correct": 0,
+        "hint": "Neytrallash jarayoni barcha og'ir metall ionlarini xavfsiz qattiq shlamga aylantiradi."
+      }
+    ]
+  },
+  "8": {
+    "id": 8,
+    "title": "8. Sanitar Poligon Konstruktori",
+    "badge": "Muhandislik",
+    "icon": "fa-layer-group",
+    "color": "teal",
+    "category": "Muhandislik",
+    "xp": 200,
+    "desc": "Geomembrana, filtrlash tizimi va metan quvurlarini qatlam-qatlam to'g'ri muhandislik bilan quring.",
+    "scenarios": [
+      {
+        "id": "lan-1",
+        "title": "Poligon Asosi: Bentonit Gil Qatlami",
+        "param": "Suv o'tkazuvchanlik koeffitsiyenti: K &le; 10^-9 m/s | Qalinlik: 1 metr",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"50\" y=\"60\" width=\"400\" height=\"40\" fill=\"#78350f\"/><text x=\"250\" y=\"85\" fill=\"#fcd34d\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">1 metr Zichlangan Bentonit Gil (K &le; 10⁻⁹ m/s)</text><rect x=\"50\" y=\"45\" width=\"400\" height=\"15\" fill=\"#1e293b\"/><text x=\"250\" y=\"56\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">Asos tuprog'i</text></svg>",
+        "question": "Sanitar poligon tagidan zaharli filtrat yerosti suviga tushmasligi uchun poydevor qanday tayyorlanadi?",
+        "options": [
+          "Kamida 1 metr qalinlikda suvni mutlaqo o'tkazmaydigan zichlangan tabiiy bentonit gil qatlami yotqiziladi",
+          "Oddiy daryo qumi to'kib tekislanadi",
+          "Hech qanday qatlam qilinmaydi, to'g'ridan-to'g'ri yerga to'kiladi"
+        ],
+        "correct": 0,
+        "hint": "K <= 10^-9 m/s ko'rsatkichi suvning 1 metr gil qatlamidan o'tishi uchun yuzlab yillar talab etilishini bildiradi."
+      },
+      {
+        "id": "lan-2",
+        "title": "2.0 mm HDPE Geomembrana Payvandi",
+        "param": "Yuqori zichlikdagi polietilen (HDPE) ekstruzion payvandlash",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><line x1=\"50\" y1=\"65\" x2=\"450\" y2=\"65\" stroke=\"#000000\" stroke-width=\"8\"/><rect x=\"220\" y=\"55\" width=\"60\" height=\"20\" fill=\"#38bdf8\"/><text x=\"250\" y=\"45\" fill=\"#38bdf8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Qo'sh Chokli Havo Sinovi</text><text x=\"250\" y=\"100\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">2.0 mm HDPE Geomembrana</text></svg>",
+        "question": "Geomembrana polotnolari o'zaro qanday ulanadi va uning germetikligi qanday tekshiriladi?",
+        "options": [
+          "Ikki chokli termik payvandlanadi va choklar orasidagi kanalga 2 bar havo haydab bosim tushishi tekshiriladi",
+          "Oddiy skotch yoki kantselyariya yelimi bilan yopishtiriladi",
+          "Bir-birining ustiga shunchaki taxlab qo'yiladi"
+        ],
+        "correct": 0,
+        "hint": "Qo'sh payvand choki orasidagi bosim testi har bir santimetr chokning 100% teshiksiz ekanligini kafolatlaydi."
+      },
+      {
+        "id": "lan-3",
+        "title": "Himoyalovchi Nonto'qima Geotekstil (500 g/m2)",
+        "param": "Vazifasi: Geomembranani o'tkir toshlardan yirtilishdan asrash",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"50\" y=\"45\" width=\"400\" height=\"10\" fill=\"#94a3b8\"/><text x=\"250\" y=\"38\" fill=\"#cbd5e1\" font-size=\"10\" text-anchor=\"middle\">Igna teshikli Geotekstil (500 g/m²)</text><line x1=\"50\" y1=\"65\" x2=\"450\" y2=\"65\" stroke=\"#000000\" stroke-width=\"6\"/><text x=\"250\" y=\"85\" fill=\"#38bdf8\" font-size=\"10\" text-anchor=\"middle\">HDPE Geomembrana</text></svg>",
+        "question": "Geomembrana ustiga shag'al va tosh to'kilganda u yirtilib ketmasligi uchun nima to'shaladi?",
+        "options": [
+          "Qalinligi 5-6 mm bo'lgan nonto'qima igna teshikli kuchli himoya geotekstili",
+          "Eski gazeta qog'ozlari",
+          "Yupqa polietilen paketlar"
+        ],
+        "correct": 0,
+        "hint": "Geotekstil amortizator vazifasini o'tab, millionlab tonna chiqindi bosimida geomembranani teshilishdan saqlaydi."
+      },
+      {
+        "id": "lan-4",
+        "title": "Filtrat (Leachate) Yig'uvchi Drenaj Quvurlari",
+        "param": "HDPE teshikli quvurlar (d=250 mm) | Nishablik: 2%",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"250\" cy=\"65\" r=\"28\" fill=\"#1e293b\" stroke=\"#38bdf8\" stroke-width=\"3\"/><circle cx=\"235\" cy=\"55\" r=\"3\" fill=\"#38bdf8\"/><circle cx=\"265\" cy=\"55\" r=\"3\" fill=\"#38bdf8\"/><circle cx=\"250\" cy=\"75\" r=\"3\" fill=\"#38bdf8\"/><text x=\"250\" y=\"115\" fill=\"#38bdf8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Teshikli Drenaj Quvuri (Nishablik 2%)</text></svg>",
+        "question": "Yomg'ir suvi chiqindiga tekkanda hosil bo'ladigan zaharli filtrat qanday chiqariladi?",
+        "options": [
+          "Shag'al qatlami ichiga yotqizilgan teshikli HDPE drenaj quvurlari orqali o'z oqimi bilan filtrat hovuziga yig'iladi",
+          "Filtrat yerga singib yo'q bo'lib ketishi kutiladi",
+          "Filtratni daryoga quyuvchi ariq qaziladi"
+        ],
+        "correct": 0,
+        "hint": "Filtrat sathi membranada 30 sm dan oshmasligi kerak, aks holda gidrostatik bosim sizib chiqish xavfini oshiradi."
+      },
+      {
+        "id": "lan-5",
+        "title": "Vertikal Poligon Gazi Quduqlari (Degazatsiya)",
+        "param": "Poligon gazining 50-55% metan (CH4). Portlash xavfi bor!",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"235\" y=\"20\" width=\"30\" height=\"90\" fill=\"#334155\" stroke=\"#f59e0b\" stroke-width=\"2\"/><text x=\"250\" y=\"15\" fill=\"#fcd34d\" font-size=\"10\" text-anchor=\"middle\">Metan So'rgich (Vakuum)</text><circle cx=\"250\" cy=\"65\" r=\"6\" fill=\"#10b981\"/><text x=\"350\" y=\"65\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\">Biogaz Generatori ⚡</text></svg>",
+        "question": "Chiqindi poligonida metan to'planib o'z-o'zidan yonib ketmasligi uchun qanday muhandislik chorasi ko'riladi?",
+        "options": [
+          "Teshikli vertikal gaz quduqlari o'rnatilib, vakuum kompressor bilan gaz tortib olinadi va elektr energiyasiga yoqiladi",
+          "Poligonda doimiy ochiq olov yoqib qo'yiladi",
+          "Gaz quduqlariga qum tiqib berkitiladi"
+        ],
+        "correct": 0,
+        "hint": "Faol degazatsiya poligon yonishi va havoga metan tarqalishining oldini oladi hamda elektr ishlab chiqaradi."
+      },
+      {
+        "id": "lan-6",
+        "title": "Har Kungi Tuproq Yopmasi (Daily Cover)",
+        "param": "Qalinlik: 15-20 sm tuproq yoki kompozit plyonka",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"60\" y=\"35\" width=\"380\" height=\"20\" fill=\"#78350f\"/><text x=\"250\" y=\"50\" fill=\"#fcd34d\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">15-20 sm Kundalik Tuproq Yopmasi</text><rect x=\"60\" y=\"60\" width=\"380\" height=\"40\" fill=\"#334155\"/><text x=\"250\" y=\"85\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">Kompaktlangan Yangi Chiqindi Qatlami</text></svg>",
+        "question": "Har bir ish smenasi oxirida to'kilgan chiqindilar usti nega zudlik bilan tuproq bilan yopilishi shart?",
+        "options": [
+          "Hid tarqalishi, chiqindi uchishi, qushlar, kemiruvchilar va o'z-o'zidan yonish xavfini to'xtatish uchun",
+          "Chiqindilar ko'rinib xunuk turmasligi uchun faqat chiroy uchun",
+          "Poligon hajmini sun'iy kattalashtirish uchun"
+        ],
+        "correct": 0,
+        "hint": "Sanitariya qoidalariga ko'ra ochiq qoldirilgan chiqindi infeksiya o'chog'i va yong'in manbaiga aylanadi."
+      },
+      {
+        "id": "lan-7",
+        "title": "Teskari Osmosli Filtratni Qayta Tozalash",
+        "param": "TDS: 28 000 mg/l | Ikki bosqichli Disk Tube RO (DTRO)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"160\" y=\"30\" width=\"180\" height=\"70\" rx=\"8\" fill=\"#0f172a\" stroke=\"#38bdf8\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#38bdf8\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">DTRO Membrana Zavodi</text><text x=\"250\" y=\"75\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">Qora zaharli filtrat → Toza texnik suv</text></svg>",
+        "question": "Qop-qora, o'ta zaharli poligon filtratini tozalashda qaysi texnologiya xalqaro standart hisoblanadi?",
+        "options": [
+          "Yuqori bosimli ikki bosqichli teskari osmos (DTRO - Disc Tube Reverse Osmosis) membranali stansiyasi",
+          "Oddiy qum filtri orqali o'tkazish",
+          "Filtratni daryoga tunda quyib yuborish"
+        ],
+        "correct": 0,
+        "hint": "DTRO membranalari 120 bar bosim ostida eng og'ir kimyoviy birikmalarni ham 99.5% ushlab qolib toza suv ajratadi."
+      },
+      {
+        "id": "lan-8",
+        "title": "Poligon Yon Bag'ri Barqarorligi (Slope 1:3)",
+        "param": "Nishablik: 1:3 (18.4°) | Ko'chki xavfini bartaraf etish",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 60 100 L 220 30 L 440 30 L 440 100 Z\" fill=\"#1e293b\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"140\" y=\"80\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\">1:3 Nishablik</text><text x=\"330\" y=\"65\" fill=\"white\" font-size=\"10\">Barqaror Pog'onali Katta Baza</text></svg>",
+        "question": "Poligon tog'i 30-40 metr balandlikka yetganda chiqindilar ko'chib tushmasligi uchun nishablik qanday olinadi?",
+        "options": [
+          "Nishablik 1:3 dan tik bo'lmasligi va har 6-8 metr balandlikda oraliq gorizontal berkalar (terrassa) qilinishi shart",
+          "Tik devor sifatida 90° burchakda qadab chiqiladi",
+          "Poligon balandligi hech qachon 2 metrdan oshirilmaydi"
+        ],
+        "correct": 0,
+        "hint": "Noto'g'ri qiyalikdagi poligonlar kuchli yomg'irda sirpanib, fojiali o'pirilishlarga olib kelishi mumkin."
+      },
+      {
+        "id": "lan-9",
+        "title": "Monitoring Quduqlari Tarmog'i",
+        "param": "Yuqori va quyi gidrologik oqim: 50m va 200m masofa",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"8\" fill=\"#334155\"/><text x=\"250\" y=\"65\" fill=\"white\" font-size=\"11\" text-anchor=\"middle\">Poligon</text><circle cx=\"90\" cy=\"65\" r=\"14\" fill=\"#047857\"/><text x=\"90\" y=\"70\" fill=\"white\" font-size=\"9\" text-anchor=\"middle\">Q1</text><circle cx=\"410\" cy=\"65\" r=\"14\" fill=\"#047857\"/><text x=\"410\" y=\"70\" fill=\"white\" font-size=\"9\" text-anchor=\"middle\">Q2</text><text x=\"250\" y=\"115\" fill=\"#34d399\" font-size=\"10\" text-anchor=\"middle\">Choraklik Yerosti Suvi Laboratoriya Tahlili</text></svg>",
+        "question": "Poligon geomembranasi teshilgan yoki teshilmaganini qanday qilib yillar davomida aniqlab boriladi?",
+        "options": [
+          "Poligon atrofida yerosti suvi oqimi bo'ylab nazorat pyezometrik quduqlari qazilib, suv har chorakda tahlil qilib boriladi",
+          "Poligon tagiga odam tushib ko'radi",
+          "Quduq qazish shart emas, daryodan suv ichib ko'riladi"
+        ],
+        "correct": 0,
+        "hint": "Monitoring quduqlarida og'ir metall yoki ammiak topilishi geomembrananing sizib chiqayotganidan darak beradi."
+      },
+      {
+        "id": "lan-10",
+        "title": "Poligonni Yopish va Rekultivatsiya (Final Cap)",
+        "param": "Poligon to'ldi. Ko'p qatlamli himoya ekrani va fitomelioratsiya",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"60\" y=\"30\" width=\"380\" height=\"15\" fill=\"#15803d\"/><text x=\"250\" y=\"42\" fill=\"white\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">Maysazor va Butalar (Fitomelioratsiya)</text><rect x=\"60\" y=\"48\" width=\"380\" height=\"15\" fill=\"#78350f\"/><text x=\"250\" y=\"59\" fill=\"#fcd34d\" font-size=\"9\" text-anchor=\"middle\">1 m Unumdor Tuproq</text><line x1=\"60\" y1=\"68\" x2=\"440\" y2=\"68\" stroke=\"#000\" stroke-width=\"4\"/><text x=\"250\" y=\"80\" fill=\"#38bdf8\" font-size=\"9\" text-anchor=\"middle\">Geomembrana (Yomg'ir kirmasligi uchun)</text></svg>",
+        "question": "Poligon o'z muddatini o'tab to'lgach, uni xavfsiz yashil bog' zonasiga aylantirish uchun nima qilinadi?",
+        "options": [
+          "Ustidan geomembrana yopilib yomg'ir suvi to'siladi, 1 metr tuproq to'kilib chuqur ildiz otmaydigan maysalar ekiladi",
+          "Ustiga ko'p qavatli turar-joy binolari quriladi",
+          "Poligon ustini ochiq qoldirib shahar axlatxonasi qilib saqlanadi"
+        ],
+        "correct": 0,
+        "hint": "Yakuniy qoplama yomg'ir suvining chiqindiga kirishini to'xtatadi va yangi filtrat hosil bo'lishini nolga tushiradi."
+      }
+    ]
+  },
+  "9": {
+    "id": 9,
+    "title": "9. Tutun Tozalash Filtrlari Simulyatori",
+    "badge": "Sanoat Ekologiyasi",
+    "icon": "fa-smog",
+    "color": "blue",
+    "category": "Ekologik Audit",
+    "xp": 220,
+    "desc": "Zavod trubasiga siklon, matoli elektrofiltr va skrubber o'rnatib zaharli gazlar va changni 99.8% tozalang.",
+    "scenarios": [
+      {
+        "id": "air-1",
+        "title": "Dag'al Chang uchun Birlamchi Siklon Apparati",
+        "param": "Chang zarralari o'lchami: >15 mkm | Harorat: 220°C",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 190 30 L 310 30 L 270 100 L 230 100 Z\" fill=\"#1e293b\" stroke=\"#38bdf8\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#38bdf8\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Siklon Separator</text><text x=\"250\" y=\"75\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">Markazdan qochma kuch</text></svg>",
+        "question": "Yirik qattiq chang zarralarini matoli filtrlarga yetib bormasdan oldin tutib qolish uchun qaysi apparat birinchi qo'yiladi?",
+        "options": [
+          "Markazdan qochma gravitatsion kuch bilan ishlaydigan Siklon chang ushlagichi",
+          "Qog'ozli salfetka to'sig'i",
+          "Oddiy sovuq suv purkagich"
+        ],
+        "correct": 0,
+        "hint": "Siklonlar arzon, elektr sarflamaydi va 10 mikrondan katta changning 85-90% ini bir zumda cho'ktiradi."
+      },
+      {
+        "id": "air-2",
+        "title": "Mayda Chang uchun Matoli Yengli Filtr (Baghouse)",
+        "param": "PM2.5 va PM10 changlari | Samaradorlik: 99.9%",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"160\" y=\"25\" width=\"180\" height=\"80\" rx=\"8\" fill=\"#0f172a\" stroke=\"#10b981\" stroke-width=\"2\"/><line x1=\"200\" y1=\"40\" x2=\"200\" y2=\"90\" stroke=\"#10b981\" stroke-width=\"6\"/><line x1=\"250\" y1=\"40\" x2=\"250\" y2=\"90\" stroke=\"#10b981\" stroke-width=\"6\"/><line x1=\"300\" y1=\"40\" x2=\"300\" y2=\"90\" stroke=\"#10b981\" stroke-width=\"6\"/><text x=\"250\" y=\"118\" fill=\"#34d399\" font-size=\"10\" text-anchor=\"middle\">PTFE Qoplamali Yengli Filtr (Baghouse)</text></svg>",
+        "question": "Eng mayda xavfli changlarni (PM2.5) 99.9% tozalashda qaysi filtr turi tengsiz hisoblanadi?",
+        "options": [
+          "Teskari impulsli siqilgan havo bilan tozalanadigan PTFE matoli yengli filtrlar (Baghouse)",
+          "Oddiy temir to'r",
+          "Ventilyator qanoti"
+        ],
+        "correct": 0,
+        "hint": "Baghouse filtrlari sement, metallurgiya va ko'mir stansiyalarida submikron changlarni deyarli to'liq ushlab qoladi."
+      },
+      {
+        "id": "air-3",
+        "title": "Yuqori Kuchlanishli Elektrofiltr (60 kV ESP)",
+        "param": "Gaz harorati: 350°C | Gaz hajmi: 250 000 m3/soat",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"150\" y=\"30\" width=\"200\" height=\"70\" rx=\"8\" fill=\"#1e293b\" stroke=\"#f59e0b\" stroke-width=\"2\"/><line x1=\"190\" y1=\"40\" x2=\"190\" y2=\"90\" stroke=\"#ef4444\" stroke-width=\"3\"/><line x1=\"250\" y1=\"40\" x2=\"250\" y2=\"90\" stroke=\"#38bdf8\" stroke-width=\"4\"/><line x1=\"310\" y1=\"40\" x2=\"310\" y2=\"90\" stroke=\"#ef4444\" stroke-width=\"3\"/><text x=\"250\" y=\"115\" fill=\"#fcd34d\" font-size=\"10\" text-anchor=\"middle\">Ionizatsiya Maydoni: 60 000 Volt (ESP)</text></svg>",
+        "question": "Mato kuyib ketadigan o'ta yuqori haroratli (350°C) gaz oqimlarida chang qanday ushlanadi?",
+        "options": [
+          "Chang zarralariga manfiy zaryad berib, musbat cho'ktiruvchi plastinalarga tortuvchi Elektrofiltr (ESP) orqali",
+          "Gazni daryoga haydash orqali",
+          "Filtr o'rnatmasdan to'g'ridan-to'g'ri trubadan chiqarish orqali"
+        ],
+        "correct": 0,
+        "hint": "Elektrofiltrlar aerodinamik qarshiligi o'ta past bo'lgan holda ulkan gaz hajmlarini tozalash imkonini beradi."
+      },
+      {
+        "id": "air-4",
+        "title": "Oltingugurt Dioksidini (SO2) Tutuvchi Nam Skrubber",
+        "param": "SO2 miqdori: 4500 mg/m3 | Reagent: Ohak suti Ca(OH)2",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"25\" width=\"140\" height=\"80\" rx=\"8\" fill=\"#0c4a6e\" stroke=\"#38bdf8\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#38bdf8\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Nam Skrubber</text><text x=\"250\" y=\"75\" fill=\"#fcd34d\" font-size=\"10\" text-anchor=\"middle\">SO2 + Ca(OH)2 → Gips</text><text x=\"250\" y=\"90\" fill=\"#a7f3d0\" font-size=\"9\" text-anchor=\"middle\">98% Tozalash</text></svg>",
+        "question": "Kislotali yomg'ir hosil qiluvchi SO2 gazini zararsizlantirish uchun qaysi texnologik yechim zarur?",
+        "options": [
+          "Ohak suti (Ca(OH)2) eritmasi purkaladigan nam skrubber (FGD) orqali SO2 ni zararsiz sintetik gipsga aylantirish",
+          "Gazni muzlatib qo'yish",
+          "Trubani balandroq qurish bilan cheklanish"
+        ],
+        "correct": 0,
+        "hint": "Nam skrubberlar oltingugurt dioksidini 98% tutib qoladi va qurilish gipsi (CaSO4) ishlab chiqarishga xomashyo beradi."
+      },
+      {
+        "id": "air-5",
+        "title": "Azot Oksidlarini (NOx) Kamaytirish: SCR Texnologiyasi",
+        "param": "Katalitik qaytarilish: Ammiak suvi (NH3) injeksiyasi",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"160\" y=\"30\" width=\"180\" height=\"70\" rx=\"8\" fill=\"#1e293b\" stroke=\"#818cf8\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#a5b4fc\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">SCR Katalizatori (TiO2/V2O5)</text><text x=\"250\" y=\"75\" fill=\"#34d399\" font-size=\"10\" text-anchor=\"middle\">4NO + 4NH3 + O2 → 4N2 + 6H2O</text></svg>",
+        "question": "Zaharli qizg'ish tutun (NO va NO2) hosil qiluvchi azot oksidlarini havoga chiqarmaslik uchun:",
+        "options": [
+          "Selektiv Katalitik Qaytarilish (SCR) reaktorida ammiak purkash orqali NOx ni toza azot (N2) va suvga parchalash",
+          "Zavod pechiga suv sepib olovni o'chirish",
+          "NOx gazini havo sharlariga yig'ish"
+        ],
+        "correct": 0,
+        "hint": "SCR reaksiyasi azot oksidlarini 95% gacha toza atmosferadagi azot gazi (N2) holatiga qaytaradi."
+      },
+      {
+        "id": "air-6",
+        "title": "Faollashtirilgan Ko'mir Inyeksiyasi (Dioksinlar)",
+        "param": "Chiqindi yoqish zavodi: Dioksin, furan va simob (Hg)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"170\" y=\"35\" width=\"160\" height=\"60\" rx=\"8\" fill=\"#020617\" stroke=\"#64748b\" stroke-width=\"2\"/><text x=\"250\" y=\"60\" fill=\"#fcd34d\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Ko'mir Kukuni Purkash</text><text x=\"250\" y=\"80\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">Og'ir metall va dioksin adsorbsiyasi</text></svg>",
+        "question": "Eng xavfli kanserogen dioksinlar va simob bug'larini tutib qolishda nima qo'llaniladi?",
+        "options": [
+          "Tutun yo'liga mayda faollashtirilgan ko'mir kukuni purkab, keyin uni yengli filtrda tutib qolish",
+          "Oddiy qum sepish",
+          "Tutunga atir purkash"
+        ],
+        "correct": 0,
+        "hint": "Faollashtirilgan ko'mir ulkan solishtirma yuzasi orqali dioksin va simobni 99% o'ziga yutadi."
+      },
+      {
+        "id": "air-7",
+        "title": "Impulsli Tozalash (Pulse-Jet Cleaning)",
+        "param": "Bosim farqi: &Delta;P > 1600 Pa (Filtr tiqilib qolgan)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"250\" cy=\"50\" r=\"20\" fill=\"#0284c7\"/><text x=\"250\" y=\"55\" fill=\"white\" font-size=\"14\" text-anchor=\"middle\">💨</text><text x=\"250\" y=\"90\" fill=\"#38bdf8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">6 bar Siqilgan Havo Impulsi (0.1 soniya)</text><text x=\"250\" y=\"110\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">Qalin chang qatlami silkinib tushadi</text></svg>",
+        "question": "Matoli yengli filtrda chang qalinlashib gaz o'tishi qiyinlashganda avtomatik tizim nima qiladi?",
+        "options": [
+          "Yengning ichki qismiga 6 bar bosimli siqilgan havoni 0.1 soniyalik impuls bilan urib, tashqi changni bunkerga silkitadi",
+          "Filtr matolarini yechib kir mashinada yuvishga olib ketadi",
+          "Tutun trubasini berkitib zavodni to'xtatadi"
+        ],
+        "correct": 0,
+        "hint": "Pulse-Jet tozalash zavodni to'xtatmasdan turib filtrlarning uzluksiz o'tkazuvchanligini ta'minlaydi."
+      },
+      {
+        "id": "air-8",
+        "title": "Kislotali Shudring Nuqtasi (Acid Dew Point)",
+        "param": "Gaz harorati: 110°C | Shudring nuqtasi: 135°C (Kritik xavf)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"8\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#fca5a5\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Korroziya Xavfi ⚠️</text><text x=\"250\" y=\"75\" fill=\"#ffffff\" font-size=\"10\" text-anchor=\"middle\">T_gaz &lt; T_shudring</text><text x=\"250\" y=\"90\" fill=\"#fca5a5\" font-size=\"9\" text-anchor=\"middle\">H2SO4 kondensatsiyasi</text></svg>",
+        "question": "Tutun gazi harorati kislotali shudring nuqtasidan pastga tushib ketsa nima bo'ladi?",
+        "options": [
+          "Gazdagi namlik kislota bug'i bilan birikib metall truba va filtrlarni bir necha haftada teshvoruvchi agressiv kislotaga aylanadi",
+          "Filtrlar yanada yaxshiroq ishlay boshlaydi",
+          "Gaz muzga aylanib qoladi"
+        ],
+        "correct": 0,
+        "hint": "Gaz harorati doimo kislotali shudring nuqtasidan kamida 20°C yuqori bo'lishi qat'iy nazorat qilinadi."
+      },
+      {
+        "id": "air-9",
+        "title": "CEMS Uzluksiz Monitoring Datchiklari",
+        "param": "Trubadagi optik lazerli datchiklar (NOx, SO2, CO, PM)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"230\" y=\"10\" width=\"40\" height=\"110\" fill=\"#334155\"/><circle cx=\"230\" cy=\"50\" r=\"10\" fill=\"#10b981\"/><circle cx=\"270\" cy=\"50\" r=\"10\" fill=\"#10b981\"/><line x1=\"230\" y1=\"50\" x2=\"270\" y2=\"50\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"350\" y=\"55\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\">CEMS Lazer Datchigi</text><text x=\"350\" y=\"75\" fill=\"#94a3b8\" font-size=\"9\">Davlat inspeksiyasiga onlayn uzatish</text></svg>",
+        "question": "Korxonaning ruxsatsiz zaharli tutun chiqarishini real vaqt rejimida qanday nazorat qilinadi?",
+        "options": [
+          "Trubaga o'rnatilgan optik CEMS stansiyasi ma'lumotlarni 24/7 rejimida to'g'ridan-to'g'ri Ekologiya vazirligi serveriga uzatadi",
+          "Yiliga bir marta kelib trubaga termometr tiqib ko'rish bilan",
+          "Zavod direktorining og'zaki so'ziga ishonish bilan"
+        ],
+        "correct": 0,
+        "hint": "CEMS (Continuous Emission Monitoring System) ko'rsatkichlari oshganda avtomatik jarima va ogohlantirish shakllanadi."
+      },
+      {
+        "id": "air-10",
+        "title": "Skrubber Oqova Suvini Sirkulyatsiya Qilish",
+        "param": "Yopiq suv aylanish sikli (Zero Liquid Discharge)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><ellipse cx=\"250\" cy=\"65\" rx=\"140\" ry=\"35\" fill=\"none\" stroke=\"#38bdf8\" stroke-width=\"3\" stroke-dasharray=\"6,4\"/><text x=\"250\" y=\"60\" fill=\"#38bdf8\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Yopiq Siklli Aylanma Suv</text><text x=\"250\" y=\"80\" fill=\"#10b981\" font-size=\"10\" text-anchor=\"middle\">Cho'kindi gips chiqarilib, suv qaytadi</text></svg>",
+        "question": "Nam skrubberdan chiquvchi nordon yuvish suvi nima qilinadi?",
+        "options": [
+          "Cho'kindi tindirgichida gips ajratilib, suv neytrallanib yana qayta skrubberga purkash uchun aylanma tizimda ishlatiladi",
+          "Shaharning ichimlik suvi tarmog'iga oqiziladi",
+          "Zavod hovlisiga to'kib qo'yiladi"
+        ],
+        "correct": 0,
+        "hint": "Yopiq gidravlik sikl (ZLD) suv sarfini 90% ga tejaydi va daryolarga oqova tushishini nolga tenglashtiradi."
+      }
+    ]
+  }
+}

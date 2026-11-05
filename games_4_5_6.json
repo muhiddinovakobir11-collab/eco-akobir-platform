@@ -1,0 +1,458 @@
+{
+  "4": {
+    "id": 4,
+    "title": "4. Shahar Chiqindi Logistikasi",
+    "badge": "Smart Logistika",
+    "icon": "fa-truck-fast",
+    "color": "emerald",
+    "category": "Saralash va Qayta ishlash",
+    "xp": 180,
+    "desc": "Cheklangan yoqilg'i, IoT sensorlar va tirbandlikni hisobga olib eng kam CO2 emissiyali optimal chiqindi marshrutini tanlang.",
+    "scenarios": [
+      {
+        "id": "log-1",
+        "title": "Tirbandlik va Yoqilg'i Optimizatsiyasi",
+        "param": "Yoqilg'i: 20L | Masofa: 18 km | Chiqindi: 4.5t",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 50 65 L 180 30 L 320 30 L 450 65\" fill=\"none\" stroke=\"#10b981\" stroke-width=\"4\" stroke-dasharray=\"6,4\"/><path d=\"M 50 65 L 250 100 L 450 65\" fill=\"none\" stroke=\"#ef4444\" stroke-width=\"3\"/><circle cx=\"50\" cy=\"65\" r=\"14\" fill=\"#059669\"/><text x=\"50\" y=\"70\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\" font-weight=\"bold\">Baza</text><circle cx=\"180\" cy=\"30\" r=\"12\" fill=\"#10b981\"/><text x=\"180\" y=\"34\" fill=\"#022c22\" font-size=\"9\" text-anchor=\"middle\" font-weight=\"bold\">Q1</text><circle cx=\"320\" cy=\"30\" r=\"12\" fill=\"#10b981\"/><text x=\"320\" y=\"34\" fill=\"#022c22\" font-size=\"9\" text-anchor=\"middle\" font-weight=\"bold\">Q2</text><circle cx=\"450\" cy=\"65\" r=\"14\" fill=\"#3b82f6\"/><text x=\"450\" y=\"70\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\" font-weight=\"bold\">Poligon</text><text x=\"250\" y=\"20\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">A-Smart: Aylanma halqa (12 km, 10L yoqilgi, 18 kg CO2)</text><text x=\"250\" y=\"118\" fill=\"#f87171\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">B-Tirband: Markaziy svetoforlar (18 km, 22L yoqilgi - Yetmaydi!)</text></svg>",
+        "question": "Ertalabki soat 08:30 da markaziy ko'chalarda tirbandlik. Bakda 20L dizel bor. Eng kam CO2 va xavfsiz marshrut qaysi?",
+        "options": [
+          "Aylanma halqa yo'l (Smart): 12 km, barqaror tezlik, 10L yoqilg'i, 18 kg CO2 sarfi",
+          "To'g'ridan-to'g'ri markaziy ko'cha: 18 km, 1.5 soat tirbandlikda dvigatelni o't oldirib turish (22L yoqilg'i)",
+          "Chiqindilarni tashishni bekor qilib kechki 23:00 ga qoldirish"
+        ],
+        "correct": 0,
+        "hint": "Tirbandlikda dvigatelning bo'sh ishlashi yoqilg'i sarfini va zaharli uglerod oksidini 3 barobargacha oshiradi."
+      },
+      {
+        "id": "log-2",
+        "title": "IoT Ultratovush Sensorlari Tahlili",
+        "param": "Sensorlar: A (95%), B (30%), C (100%), D (40%) to'lgan",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"40\" y=\"30\" width=\"70\" height=\"70\" rx=\"8\" fill=\"#0f172a\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"75\" y=\"65\" fill=\"#f87171\" font-size=\"16\" font-weight=\"bold\" text-anchor=\"middle\">95%</text><text x=\"75\" y=\"85\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">A-Quti</text><rect x=\"160\" y=\"30\" width=\"70\" height=\"70\" rx=\"8\" fill=\"#0f172a\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"195\" y=\"65\" fill=\"#34d399\" font-size=\"16\" font-weight=\"bold\" text-anchor=\"middle\">30%</text><text x=\"195\" y=\"85\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">B-Quti</text><rect x=\"280\" y=\"30\" width=\"70\" height=\"70\" rx=\"8\" fill=\"#0f172a\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"315\" y=\"65\" fill=\"#f87171\" font-size=\"16\" font-weight=\"bold\" text-anchor=\"middle\">100%</text><text x=\"315\" y=\"85\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">C-Quti</text><rect x=\"400\" y=\"30\" width=\"70\" height=\"70\" rx=\"8\" fill=\"#0f172a\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"435\" y=\"65\" fill=\"#34d399\" font-size=\"16\" font-weight=\"bold\" text-anchor=\"middle\">40%</text><text x=\"435\" y=\"85\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">D-Quti</text></svg>",
+        "question": "Sensorlar ko'rsatkichi bo'yicha mashina faqat kritik to'lgan nuqtalarga borishi kerak. Qaysi harakat eng to'g'ri?",
+        "options": [
+          "Faqat 95% va 100% to'lgan A va C nuqtalarga borish, chala to'lgan B va D ni keyingi smenaga qoldirish",
+          "To'lishidan qat'i nazar barcha 4 ta nuqtaga ketma-ket kirib chiqish",
+          "Faqat 30% to'lgan B konteynerga borib, qolganlarini kutish"
+        ],
+        "correct": 0,
+        "hint": "Dinamik marshrutlash faqat 80% dan yuqori to'lgan qutilarni tanlash orqali logistika xarajatini 40% tejaydi."
+      },
+      {
+        "id": "log-3",
+        "title": "Chiqindini Qayta Yuklash Stansiyasi (Peregruzka)",
+        "param": "Poligongacha: 45 km | Qayta yuklash stansiyasigacha: 7 km",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"60\" cy=\"65\" r=\"25\" fill=\"#0f172a\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"60\" y=\"70\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Kichik Mashina</text><line x1=\"90\" y1=\"65\" x2=\"220\" y2=\"65\" stroke=\"#10b981\" stroke-width=\"3\"/><rect x=\"220\" y=\"35\" width=\"90\" height=\"60\" rx=\"8\" fill=\"#1e293b\" stroke=\"#38bdf8\" stroke-width=\"2\"/><text x=\"265\" y=\"62\" fill=\"#38bdf8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Peregruzka</text><text x=\"265\" y=\"78\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">K=1:6 Siqish</text><line x1=\"315\" y1=\"65\" x2=\"420\" y2=\"65\" stroke=\"#38bdf8\" stroke-width=\"4\"/><circle cx=\"445\" cy=\"65\" r=\"25\" fill=\"#0f172a\" stroke=\"#f59e0b\" stroke-width=\"2\"/><text x=\"445\" y=\"70\" fill=\"#f59e0b\" font-size=\"10\" text-anchor=\"middle\">Katta Fura (40t)</text></svg>",
+        "question": "Kichik 5 tonnalik mashinalar har safar 45 km uzoqdagi poligonga qatnashi texnikani toliqtirmoqda. Qaysi yechim optimal?",
+        "options": [
+          "Shaharda 7 km masofada oraliq stansiya qurib, chiqindini 1:6 siqib 40 tonnalik yirik tirkamalarda tashish",
+          "Kichik mashinalarga qo'shimcha bak o'rnatib 45 km masofaga kuniga 8 martadan qatnash",
+          "Chiqindilarni tunda shahar chetiga vaqtincha to'kib qo'yish"
+        ],
+        "correct": 0,
+        "hint": "Oraliq qayta yuklash stansiyalari shahar ichidagi kichik texnikalar yurish masofasini 70% ga qisqartiradi."
+      },
+      {
+        "id": "log-4",
+        "title": "Elektr Maxsus Texnika (EV Truck) Quvvati",
+        "param": "Batareya: 280 kVt*soat | Qolgan zaryad: 22% (60 kVt*soat)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"60\" y=\"45\" width=\"300\" height=\"40\" rx=\"10\" fill=\"#020617\" stroke=\"#334155\" stroke-width=\"2\"/><rect x=\"65\" y=\"50\" width=\"60\" height=\"30\" rx=\"6\" fill=\"#f59e0b\"/><text x=\"210\" y=\"70\" fill=\"white\" font-size=\"14\" font-weight=\"bold\" text-anchor=\"middle\">22% Zaryad Qoldi</text><circle cx=\"430\" cy=\"65\" r=\"30\" fill=\"#0f172a\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"430\" y=\"62\" fill=\"#10b981\" font-size=\"18\" text-anchor=\"middle\">⚡</text><text x=\"430\" y=\"78\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">Tezkor Quvvat</text></svg>",
+        "question": "Gidravlik press har bir qutini ko'tarishda 3.5 kVt*soat sarflaydi. Mashinada 60 kVt*soat quvvat qoldi. To'g'ri qaror:",
+        "options": [
+          "Keyingi 4 ta nuqtani yig'ib, 5 km masofadagi 150 kVt tezkor zaryadlash stansiyasiga yo'l olish",
+          "Zaryad nolga tushguncha qolgan barcha 18 ta qutini majburiy yig'ish",
+          "Gidravlik pressni o'chirib, chiqindilarni qo'lda qutiga bosish"
+        ],
+        "correct": 0,
+        "hint": "Gidravlik presslash jarayoni elektr transport batareyasini harakatlanishdan 2 barobar tezroq sarflaydi."
+      },
+      {
+        "id": "log-5",
+        "title": "Ikki Seksiyali Chiqindi Mashinasi Balansi",
+        "param": "Seksiya A: Ho'l organik (4t) | Seksiya B: Quruq saralangan (2t)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"80\" y=\"35\" width=\"160\" height=\"60\" rx=\"6\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"160\" y=\"70\" fill=\"white\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Ho'l Organik (4t)</text><rect x=\"250\" y=\"35\" width=\"160\" height=\"60\" rx=\"6\" fill=\"#1e3a8a\" stroke=\"#3b82f6\" stroke-width=\"2\"/><text x=\"330\" y=\"70\" fill=\"white\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Quruq Qog'oz/Plastik (2t)</text></svg>",
+        "question": "Aholi saralagan chiqindilarni bitta mashinada aralashtirmasdan olib ketish uchun qanday logistika texnologiyasi qo'llaniladi?",
+        "options": [
+          "Ichki germetik to'siqli ikki kamerali (Dual-compartment) alohida gidravlik pressli mashina",
+          "Ikkala turdagi chiqindini bitta umumiy bunkerga tashlab, poligon ustida saralash",
+          "Avval qog'ozni yig'ib, keyin yana shu ko'chaga ikkinchi marta organikaga qaytib kelish"
+        ],
+        "correct": 0,
+        "hint": "Ikki kamerali maxsus avtomobillar alohida yig'ish sifatini saqlagan holda logistika reyslarini 50% ga qisqartiradi."
+      },
+      {
+        "id": "log-6",
+        "title": "Tibbiyot Chiqindilari Logistikasi (ADR Xavfsizligi)",
+        "param": "Kategoriya: B va V sinf (Biologik xavfli buyumlar)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"70\" y=\"35\" width=\"90\" height=\"60\" rx=\"8\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"115\" y=\"65\" fill=\"#fca5a5\" font-size=\"20\" text-anchor=\"middle\">☣️</text><text x=\"115\" y=\"82\" fill=\"white\" font-size=\"9\" text-anchor=\"middle\">B Sinf</text><line x1=\"170\" y1=\"65\" x2=\"310\" y2=\"65\" stroke=\"#ef4444\" stroke-width=\"2\" stroke-dasharray=\"4,4\"/><rect x=\"320\" y=\"30\" width=\"120\" height=\"70\" rx=\"10\" fill=\"#1e293b\" stroke=\"#f59e0b\" stroke-width=\"2\"/><text x=\"380\" y=\"65\" fill=\"#fcd34d\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Avtoklav / Insinerator</text><text x=\"380\" y=\"82\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">Termik Utilizatsiya</text></svg>",
+        "question": "Shifoxonalardan chiqqan patogen tibbiy chiqindilarni maishiy chiqindi poligoniga tashish mumkinmi?",
+        "options": [
+          "Mutlaqo yo'q! Faqat maxsus sovutgichli, dezinfeksiyali furgonda insinerator yoki avtoklav zavodiga tashiladi",
+          "Ha, agar qalin qora paketlarga yaxshilab o'ralgan bo'lsa umumiy poligon chetiga ko'mish mumkin",
+          "Faqat tunda boshqa chiqindilarga aralashtirib olib ketishga ruxsat beriladi"
+        ],
+        "correct": 0,
+        "hint": "SanQvaM 0317-15 bo'yicha tibbiy xavfli chiqindilar qat'iy ravishda termik zararsizlantirishga yo'naltirilishi shart."
+      },
+      {
+        "id": "log-7",
+        "title": "Shovqin Darajasi va Tungi Logistika",
+        "param": "SanQvaM me'yori: Tunda 40 dBA | Mashina shovqini: 78 dBA",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 50 80 Q 150 20 250 80 T 450 80\" fill=\"none\" stroke=\"#64748b\" stroke-width=\"2\"/><circle cx=\"120\" cy=\"55\" r=\"16\" fill=\"#ef4444\"/><text x=\"120\" y=\"60\" fill=\"white\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">78 dB</text><rect x=\"220\" y=\"40\" width=\"100\" height=\"50\" rx=\"8\" fill=\"#0f172a\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"270\" y=\"65\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Plastik Quti</text><text x=\"270\" y=\"80\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">&lt;45 dB Akustik</text></svg>",
+        "question": "Aholi turar-joy massivlarida soat 23:00 dan keyin metall qutilarni shovqin bilan tushirish taqiqlangan. Tungi reysni qanday tashkil etish kerak?",
+        "options": [
+          "G'ildirakli plastik yevro-konteynerlar va shovqinsiz elektr ko'targichli mashinalardan foydalanish",
+          "Shovqinni kamaytirish uchun chiqindilarni mashinaga balanddan uloqtirib bosish",
+          "Tungi yig'uvchilar signal chalg'ituvchi sirena bilan aholini ogohlantirishi lozim"
+        ],
+        "correct": 0,
+        "hint": "Tungi shovqin me'yori oshishi fuqarolar salomatligi va sanitariya qoidalarining jiddiy buzilishi hisoblanadi."
+      },
+      {
+        "id": "log-8",
+        "title": "Chiqindini Siqish Koeffitsiyenti (Compaction)",
+        "param": "Boshlang'ich: 180 kg/m3 | Siqilgandan keyin: 720 kg/m3",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"60\" y=\"35\" width=\"140\" height=\"60\" rx=\"6\" fill=\"#334155\"/><text x=\"130\" y=\"65\" fill=\"#94a3b8\" font-size=\"12\" text-anchor=\"middle\">Siqilmagan (1:1)</text><text x=\"130\" y=\"82\" fill=\"#cbd5e1\" font-size=\"10\" text-anchor=\"middle\">180 kg/m³</text><text x=\"250\" y=\"70\" fill=\"#10b981\" font-size=\"24\" font-weight=\"bold\" text-anchor=\"middle\">→</text><rect x=\"300\" y=\"35\" width=\"140\" height=\"60\" rx=\"6\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"370\" y=\"65\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Siqilgan (1:4)</text><text x=\"370\" y=\"82\" fill=\"#a7f3d0\" font-size=\"10\" text-anchor=\"middle\">720 kg/m³</text></svg>",
+        "question": "Chiqindi tashuvchi avtomobilning gidravlik plitasi chiqindini 1:4 nisbatda siqadi. Bu logistikaga qanday ta'sir ko'rsatadi?",
+        "options": [
+          "Mashina sig'imi 4 barobar oshadi va reyslar soni hamda yoqilg'i xarajati keskin kamayadi",
+          "Chiqindi siqilsa og'irligi 4 barobarga ko'payib ketadi va yo'l buziladi",
+          "Chiqindini siqish uning qayta ishlanishini butunlay imkonsiz qiladi"
+        ],
+        "correct": 0,
+        "hint": "Yuqori siqish koeffitsiyenti avtopark amortizatsiyasi va transport tannarxini tejaydi."
+      },
+      {
+        "id": "log-9",
+        "title": "RFID Belgilash va Avtomatlashgan Tarozilar",
+        "param": "Konteyner: RFID Chip #8841 | Tarozilar: Avtomatik brutto/tara",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"80\" cy=\"65\" r=\"25\" fill=\"#1e293b\" stroke=\"#38bdf8\" stroke-width=\"2\"/><text x=\"80\" y=\"65\" fill=\"#38bdf8\" font-size=\"18\" text-anchor=\"middle\">📡</text><text x=\"80\" y=\"80\" fill=\"#94a3b8\" font-size=\"8\" text-anchor=\"middle\">RFID</text><line x1=\"110\" y1=\"65\" x2=\"220\" y2=\"65\" stroke=\"#38bdf8\" stroke-width=\"2\"/><rect x=\"220\" y=\"40\" width=\"160\" height=\"50\" rx=\"8\" fill=\"#0f172a\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"300\" y=\"65\" fill=\"white\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">GPS & Vzveshivaniye</text><text x=\"300\" y=\"80\" fill=\"#34d399\" font-size=\"9\" text-anchor=\"middle\">Haqiqiy vazn: 342 kg</text></svg>",
+        "question": "Chiqindi yig'ishda soxta hisobotlar (pripiska) va o'g'irliklarni yo'qotish uchun qanday texnologiya eng samarali?",
+        "options": [
+          "Har bir konteynerga RFID chip va mashinaning ko'tarish manipulyatoriga avtomatik tarozi o'rnatish",
+          "Haydovchiga har bir qutini ko'z bilan chamalab daftarga yozib borishni buyurish",
+          "Faqat poligon darvozasidagi qo'lda yoziladigan qog'oz jurnalga tayanish"
+        ],
+        "correct": 0,
+        "hint": "RFID va telematika tizimi qaysi mahalladan qancha chiqindi olinganini millisekundlarda markaziy serverga jo'natadi."
+      },
+      {
+        "id": "log-10",
+        "title": "Tog'li Hududlarda Qishki Ekologik Logistika",
+        "param": "Nishablik: 14% | Muzlama | Yozgi shinalar taqiqlangan",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 50 100 L 250 40 L 450 100\" fill=\"none\" stroke=\"#60a5fa\" stroke-width=\"3\"/><circle cx=\"250\" cy=\"40\" r=\"14\" fill=\"#1e3a8a\" stroke=\"#60a5fa\" stroke-width=\"2\"/><text x=\"250\" y=\"44\" fill=\"white\" font-size=\"9\" text-anchor=\"middle\">Tog' Qishlog'i</text><rect x=\"180\" y=\"80\" width=\"140\" height=\"35\" rx=\"6\" fill=\"#0f172a\" stroke=\"#f59e0b\" stroke-width=\"1.5\"/><text x=\"250\" y=\"102\" fill=\"#fcd34d\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">4x4 To'liq Privod + Zanjir</text></svg>",
+        "question": "Chorvoq yoki Bo'stonliq tog'li hududlarida qishda yo'llar muzlaganda chiqindi tashish qanday tashkil etiladi?",
+        "options": [
+          "Kichik 4x4 to'liq yetakchi zanjirli mashinalar bilan oraliq xabga tushirilib, keyin yirik texnikaga yuklanadi",
+          "Qish tugaguncha tog' qishloqlariga chiqindi mashinasi yuborishni butunlay to'xtatish",
+          "20 tonnalik og'ir tirkamalarni muzlagan tog' dovoniga zanjirsiz haydash"
+        ],
+        "correct": 0,
+        "hint": "Tog'li hududlarda xavfsizlik va barqaror sanitar tozalik uchun maxsus kichik gabaritli 4x4 texnikalar qo'llaniladi."
+      }
+    ]
+  },
+  "5": {
+    "id": 5,
+    "title": "5. Daryo Tozalash & Neft To'kilishi",
+    "badge": "Favqulodda Vaziyat",
+    "icon": "fa-water",
+    "color": "cyan",
+    "category": "Favqulodda vaziyatlar",
+    "xp": 240,
+    "desc": "Daryoga to'kilgan neft dog'ini bon to'siqlar, gidravlik skimmerlar va biologik sorbentlar bilan tezkor lokallashtiring.",
+    "scenarios": [
+      {
+        "id": "oil-1",
+        "title": "Daryo Oqimi va Bon To'siqlari Burchagi",
+        "param": "Oqim tezligi: 0.9 m/s | To'kilgan neft: 12 tonna",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 0 40 Q 250 20 500 40 L 500 110 Q 250 90 0 110 Z\" fill=\"#0f172a\"/><path d=\"M 120 45 L 360 85\" stroke=\"#f59e0b\" stroke-width=\"5\" stroke-dasharray=\"10,4\"/><text x=\"240\" y=\"60\" fill=\"#fcd34d\" font-size=\"11\" font-weight=\"bold\">Bon to'sig'i (45° burchak ostida)</text><circle cx=\"200\" cy=\"50\" r=\"10\" fill=\"#ef4444\"/><text x=\"200\" y=\"54\" fill=\"white\" font-size=\"9\" text-anchor=\"middle\">Neft</text><text x=\"400\" y=\"95\" fill=\"#38bdf8\" font-size=\"10\">Skimmer tomon oqim</text></svg>",
+        "question": "Oqim tezligi 0.9 m/s bo'lgan daryoda bon to'sig'i to'g'ri 90° burchakda o'rnatilsa nima yuz beradi?",
+        "options": [
+          "Kuchli gidrodinamik bosim tufayli neft bon tagidan o'tib ketadi (entrainment); bon 40-45° qiya o'rnatilishi shart",
+          "Neft butunlay to'xtaydi va darhol suv tubiga cho'kadi",
+          "Bon to'sig'i erib suvga aralashib ketadi"
+        ],
+        "correct": 0,
+        "hint": "Tez oqimlarda bonlar 40-45° burchak ostida yo'naltiruvchi tarzda qo'yilib, neft qirg'oqdagi tinch cho'ntakka yig'iladi."
+      },
+      {
+        "id": "oil-2",
+        "title": "Gidravlik Diskli Skimmer Tanlash",
+        "param": "Neft plyonkasi: 4 mm | Qovushqoqlik: O'rtacha",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"10\" fill=\"#1e293b\" stroke=\"#38bdf8\" stroke-width=\"2\"/><circle cx=\"215\" cy=\"65\" r=\"20\" fill=\"#0284c7\"/><circle cx=\"285\" cy=\"65\" r=\"20\" fill=\"#0284c7\"/><text x=\"250\" y=\"45\" fill=\"white\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Oleofil Diskli Skimmer</text><text x=\"250\" y=\"90\" fill=\"#38bdf8\" font-size=\"9\" text-anchor=\"middle\">98% Toza Neft Yig'ish</text></svg>",
+        "question": "Suv aralashmasisiz toza neftni so'rib olish uchun qaysi turdagi skimmer apparati tanlanadi?",
+        "options": [
+          "Oleofil (neftni o'ziga yopishtiruvchi, suvni itaruvchi) diskli yoki barabanli skimmer",
+          "Oddiy loyqa so'ruvchi qum nasosi (drakor)",
+          "Suv yuzasiga qizdirilgan havo purkagich"
+        ],
+        "correct": 0,
+        "hint": "Oleofil polimer disklar neftni 98% toza holda yig'ib oladi va suvni qaytarib chiqaradi."
+      },
+      {
+        "id": "oil-3",
+        "title": "Biologik Torf Sorbentlari (Bio-sorb)",
+        "param": "Qoldiq yupqa neft plyonkasi: 0.1 mm sheen",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><ellipse cx=\"250\" cy=\"65\" rx=\"180\" ry=\"35\" fill=\"#0c4a6e\"/><circle cx=\"210\" cy=\"65\" r=\"8\" fill=\"#10b981\"/><circle cx=\"250\" cy=\"60\" r=\"8\" fill=\"#10b981\"/><circle cx=\"290\" cy=\"70\" r=\"8\" fill=\"#10b981\"/><text x=\"250\" y=\"115\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Hidrofob Tabiiy Torf Sorbenti</text></svg>",
+        "question": "Skimmer yig'a olmaydigan o'ta yupqa kamalaksimon neft plyonkasini tozalashda qaysi material qo'llaniladi?",
+        "options": [
+          "Suvni shimib olmaydigan, faqat neftni yutuvchi tabiiy gidrofob torf yoki yog'och tolali sorbent",
+          "Qurilish sementi yoki ohak kukuni",
+          "Daryoga ko'p miqdorda idish yuvish geli quyish"
+        ],
+        "correct": 0,
+        "hint": "Gidrofob bio-sorbentlar o'z og'irligidan 8-10 barobar ko'p neftni bir necha daqiqada shimib oladi."
+      },
+      {
+        "id": "oil-4",
+        "title": "Ichimlik Suvi Vodozaborini Himoyalash",
+        "param": "Vodozaborgacha masofa: 3.5 km | Oqim vaqti: 40 daqiqa",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"40\" y=\"45\" width=\"80\" height=\"40\" rx=\"6\" fill=\"#7f1d1d\"/><text x=\"80\" y=\"68\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Avariya Joyi</text><line x1=\"130\" y1=\"65\" x2=\"350\" y2=\"65\" stroke=\"#ef4444\" stroke-width=\"3\" stroke-dasharray=\"8,4\"/><rect x=\"360\" y=\"35\" width=\"110\" height=\"60\" rx=\"8\" fill=\"#1e3a8a\" stroke=\"#60a5fa\" stroke-width=\"2\"/><text x=\"415\" y=\"60\" fill=\"white\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">Shahar Vodozabor</text><text x=\"415\" y=\"78\" fill=\"#f87171\" font-size=\"9\" text-anchor=\"middle\">Zudlik bilan to'xtatish!</text></svg>",
+        "question": "Neft dog'i shahar ichimlik suvi olish inshooti tomon harakatlanmoqda. Zudlik bilan qanday harakat qilinadi?",
+        "options": [
+          "Vodozabor shlyuzlarini darhol yopish, zaxira yerosti suviga o'tish va suv olish oldiga 3 qator bon o'rnatish",
+          "Vodozabor nasoslarini maksimal quvvatda ishlatib neftni shahar quvurlariga tortib yuborish",
+          "Neft o'tib ketishini kutib turish"
+        ],
+        "correct": 0,
+        "hint": "Ichimlik suviga neft mahsulotlarining 0.05 mg/l dan ortiq tushishi butun shahar tarmog'ini zaharlaydi."
+      },
+      {
+        "id": "oil-5",
+        "title": "Neft Yutuvchi Bakteriyalar (Bioremediatsiya)",
+        "param": "Tuproq va daryo qirg'og'i ifloslanishi: 15 g/kg neft",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"80\" y=\"40\" width=\"120\" height=\"50\" rx=\"6\" fill=\"#1e293b\"/><text x=\"140\" y=\"65\" fill=\"#fcd34d\" font-size=\"11\" text-anchor=\"middle\">Neft Uglevodorodlari</text><text x=\"250\" y=\"70\" fill=\"#10b981\" font-size=\"22\" font-weight=\"bold\" text-anchor=\"middle\">→</text><rect x=\"300\" y=\"40\" width=\"140\" height=\"50\" rx=\"6\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"370\" y=\"62\" fill=\"white\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Pseudomonas Shtammi</text><text x=\"370\" y=\"78\" fill=\"#a7f3d0\" font-size=\"9\" text-anchor=\"middle\">CO2 + H2O ga parchalash</text></svg>",
+        "question": "Qirg'oq zonasidagi qoldiq neft dog'larini xavfsiz yo'qotish uchun qaysi zamonaviy biometod ishlatiladi?",
+        "options": [
+          "Neft uglevodorodlarini yeyuvchi tabiiy mikroorganizmlar biopreparati (Rhodococcus, Pseudomonas) va azotli oziqlantirish",
+          "Qirg'oq bo'yini benzin sepib yoqib yuborish",
+          "Qirg'oqni xlorli eritma bilan dezinfeksiya qilish"
+        ],
+        "correct": 0,
+        "hint": "Bioremediatsiya bakteriyalari neftni xavfsiz suv va karbonat angidridga aylantirib, ekotizimni tiklaydi."
+      },
+      {
+        "id": "oil-6",
+        "title": "Kimyoviy Dispersantlar Xavfi",
+        "param": "Daryo ekotizimi: Baliqlar uvildiriqlashi davri",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"150\" cy=\"65\" r=\"24\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"150\" y=\"62\" fill=\"white\" font-size=\"18\">⚠️</text><text x=\"150\" y=\"80\" fill=\"#fca5a5\" font-size=\"8\" text-anchor=\"middle\">Dispersant</text><text x=\"320\" y=\"65\" fill=\"#cbd5e1\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Chuchuk suv daryolarida dispersant taqiqlanadi!</text></svg>",
+        "question": "Nima sababdan chuchuk suv daryolarida neftni maydalovchi kimyoviy dispersantlar qo'llanilishi taqiqlanadi?",
+        "options": [
+          "Dispersant neftni yo'qotmaydi, balki zaharli mikro-tomchilarga aylantirib suv tubidagi baliq va planktonlarni o'ldiradi",
+          "Chunki dispersant suvni qattiq muzlatib qo'yadi",
+          "Chunki u daryo rangini o'zgartirib yuboradi"
+        ],
+        "correct": 0,
+        "hint": "Kimyoviy dispersantlar dengizda ishlatilishi mumkin, ammo ichimlik va baliqchilik daryolarida o'ta xavfli toksik hisoblanadi."
+      },
+      {
+        "id": "oil-7",
+        "title": "Muz Ostidagi Neft Qatlami",
+        "param": "Daryo yuzi muzlagan (muz qalinligi 25 sm)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"50\" y=\"30\" width=\"400\" height=\"25\" fill=\"#93c5fd\"/><text x=\"250\" y=\"47\" fill=\"#1e3a8a\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Muz Qatlami (25 sm)</text><rect x=\"50\" y=\"55\" width=\"280\" height=\"15\" fill=\"#000000\"/><text x=\"190\" y=\"67\" fill=\"#fcd34d\" font-size=\"9\" font-weight=\"bold\" text-anchor=\"middle\">Muz ostidagi neft oqimi</text><rect x=\"360\" y=\"30\" width=\"60\" height=\"55\" fill=\"#0284c7\" stroke=\"#38bdf8\" stroke-width=\"2\"/><text x=\"390\" y=\"65\" fill=\"white\" font-size=\"9\" text-anchor=\"middle\">O'yilgan Tirqish</text></svg>",
+        "question": "Qishda muz ostida oqayotgan neftni qanday tutib qolish mumkin?",
+        "options": [
+          "Muzni zanjirli arra bilan o'yib tirqishlar (mayna) ochish va suv tubiga tushuvchi to'siqlar bilan neftni o'yiqqa to'plash",
+          "Muz eriguncha bahorgacha hech qanday chora ko'rmaslik",
+          "Daryoning butun muzini dinamit bilan portlatish"
+        ],
+        "correct": 0,
+        "hint": "Muz osti neft oqimi muz o'yiqlarida to'planadi va vakuumli nasoslar yordamida so'rib olinadi."
+      },
+      {
+        "id": "oil-8",
+        "title": "Daryo Tubiga Cho'kkan Neft Shlami",
+        "param": "Og'ir mazut suv tubiga cho'kkan (suv harorati 4°C)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 50 100 L 450 100\" stroke=\"#78350f\" stroke-width=\"8\"/><text x=\"250\" y=\"120\" fill=\"#d97706\" font-size=\"10\" text-anchor=\"middle\">Daryo tubi loyqasi va cho'kkan og'ir mazut</text><rect x=\"200\" y=\"45\" width=\"100\" height=\"45\" rx=\"6\" fill=\"#1e293b\" stroke=\"#38bdf8\" stroke-width=\"2\"/><text x=\"250\" y=\"70\" fill=\"#38bdf8\" font-size=\"10\" text-anchor=\"middle\">Gidravlik Ejektor</text></svg>",
+        "question": "Daryo tubiga o'tirib qolgan og'ir uglevodorodlarni loyqa ko'tarmasdan qanday yig'ish kerak?",
+        "options": [
+          "Past turbulentlikka ega g'avvos boshqaruvidagi vakuumli ejektor apparati bilan so'rib olish",
+          "Ekskavator cho'michi bilan daryo tubini qazib loyqani suvga yoyish",
+          "Daryo tubiga qum to'kib neftni ustidan bostirib qo'yish"
+        ],
+        "correct": 0,
+        "hint": "Noto'g'ri qazish neftni daryo bo'ylab oqizib, o'nlab kilometr pastdagi faunani zaharlaydi."
+      },
+      {
+        "id": "oil-9",
+        "title": "Uchuvchan Uglevodorodlar (BTEX) Bug'lanishi",
+        "param": "Benzol, toluol va ksilol havoga bug'lanmoqda",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><path d=\"M 150 70 Q 180 30 210 70 T 270 70 T 330 70\" fill=\"none\" stroke=\"#f59e0b\" stroke-width=\"2\" stroke-dasharray=\"4,4\"/><text x=\"250\" y=\"30\" fill=\"#fcd34d\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Toksik Uchuvchan Bug'lar (Portlash xavfi!)</text><circle cx=\"250\" cy=\"85\" r=\"25\" fill=\"#7f1d1d\"/><text x=\"250\" y=\"90\" fill=\"white\" font-size=\"16\" text-anchor=\"middle\">🔥</text></svg>",
+        "question": "Yengil neft to'kilganda daryo yuzasida kuchli zaharli bug' va portlash xavfi bor. Qutqaruvchilar nima qilishi kerak?",
+        "options": [
+          "Suv yuzasiga bug'lanishni to'suvchi ko'pik (AFFF) sepish va barcha ochiq olov manbalarini o'chirish",
+          "Daryo qirg'og'ida olov yoqib bug'larni tekshirish",
+          "Ventilyatorlar bilan bug'ni yaqin qishloq tomonga haydash"
+        ],
+        "correct": 0,
+        "hint": "Ko'pikli qatlam uchuvchan zaharli gazlarning havoga ko'tarilishini to'xtatib, yong'in xavfini bartaraf etadi."
+      },
+      {
+        "id": "oil-10",
+        "title": "Baliqchilik Xo'jaligini Muhofaza Qilish",
+        "param": "To'kilgan joydan 1.2 km quyida sun'iy baliq hovuzlari",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"340\" y=\"30\" width=\"120\" height=\"70\" rx=\"8\" fill=\"#047857\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"400\" y=\"60\" fill=\"white\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Baliq Zavodi</text><text x=\"400\" y=\"78\" fill=\"#a7f3d0\" font-size=\"9\" text-anchor=\"middle\">Suv Kirish Shlyuzi</text><line x1=\"280\" y1=\"20\" x2=\"300\" y2=\"110\" stroke=\"#f59e0b\" stroke-width=\"4\"/><text x=\"250\" y=\"65\" fill=\"#fcd34d\" font-size=\"10\" font-weight=\"bold\">Himoya To'sig'i</text></svg>",
+        "question": "Baliq chavoqlari yetishtiriladigan havzalarga neftli suv kirmasligi uchun:",
+        "options": [
+          "Kanal kirish shlyuzini to'liq berkitib, daryo bo'ylab qo'shimcha pnevmatik havo pardasi (Bubble curtain) qo'yish",
+          "Baliqlarga ko'proq ozuqa berib neftdan himoya qilish",
+          "Hovuzga xlor sepib neftni zararsizlantirish"
+        ],
+        "correct": 0,
+        "hint": "Pnevmatik havo pardalari (Bubble curtain) kemalar qatnoviga xalaqit bermasdan neft plyonkasini to'liq qaytaradi."
+      }
+    ]
+  },
+  "6": {
+    "id": 6,
+    "title": "6. Biogaz Reaktorini Sozlash",
+    "badge": "Biotexnologiya",
+    "icon": "fa-droplet",
+    "color": "emerald",
+    "category": "Saralash va Qayta ishlash",
+    "xp": 210,
+    "desc": "Reaktordagi harorat (37°C), pH (7.2) va organikani rostlab, elektr energiyasi hosil qiling.",
+    "scenarios": [
+      {
+        "id": "bio-1",
+        "title": "Mezofil Rejim Haroratini Barqarorlashtirish",
+        "param": "Joriy harorat: 31°C (Kritik tushish) | Maqsad: 37°C ± 1°C",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"10\" fill=\"#0f172a\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#f87171\" font-size=\"16\" font-weight=\"bold\" text-anchor=\"middle\">31°C</text><text x=\"250\" y=\"75\" fill=\"#38bdf8\" font-size=\"10\" text-anchor=\"middle\">Metanogenez susaygan</text><path d=\"M 80 65 L 170 65\" stroke=\"#f59e0b\" stroke-width=\"3\"/><text x=\"125\" y=\"55\" fill=\"#fcd34d\" font-size=\"10\" text-anchor=\"middle\">Issiq Suv Ko'ylagi</text></svg>",
+        "question": "Qishda bioreaktorda harorat 31°C ga tushib ketdi. Metan hosil bo'lishi 70% ga pasaydi. Operator qanday chora ko'radi?",
+        "options": [
+          "Reaktor tashqi isitish ko'ylagiga (rubashka) issiq suv aylanmasini oshirib, haroratni silliq 37°C ga ko'tarish",
+          "Reaktor ichiga to'g'ridan-to'g'ri qaynoq suv quyib zudlik bilan 60°C ga chiqarish",
+          "Isitishni o'chirib, bakteriyalar sovuqqa moslashishini kutish"
+        ],
+        "correct": 0,
+        "hint": "Mezofil metanogen bakteriyalar haroratning 1-2°C dan keskin sakrashiga o'ta sezgir, asta-sekin isitish zarur."
+      },
+      {
+        "id": "bio-2",
+        "title": "Reaktor Kislotaliligi (pH Balansi va Zakisleniye)",
+        "param": "Joriy pH: 6.1 (Kislotali xavf) | Norma: 6.8 - 7.4",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"60\" y=\"45\" width=\"380\" height=\"35\" rx=\"6\" fill=\"#1e293b\"/><rect x=\"60\" y=\"45\" width=\"120\" height=\"35\" rx=\"6\" fill=\"#ef4444\"/><text x=\"120\" y=\"68\" fill=\"white\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">pH 6.1 Kislotali</text><rect x=\"230\" y=\"45\" width=\"120\" height=\"35\" rx=\"6\" fill=\"#10b981\"/><text x=\"290\" y=\"68\" fill=\"#022c22\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">pH 7.2 Optimal</text></svg>",
+        "question": "Ortiqcha shakar va xamir qoldiqlari solinishi natijasida pH 6.1 ga tushib, 'achish' (zakisleniye) boshlandi. Qanday qutqariladi?",
+        "options": [
+          "Yangi organik xomashyo yuklashni to'xtatish va bufer sifatida so'ndirilgan ohak yoki soda eritmasi qo'shish",
+          "Reaktorga ko'proq nordon sut va sirka quyish",
+          "Reaktor qopqog'ini ochib havo kiritish"
+        ],
+        "correct": 0,
+        "hint": "pH 6.5 dan tushganda metanogen bakteriyalar nobud bo'ladi, zudlik bilan ishqoriy bufer (Ca(OH)2) kiritish lozim."
+      },
+      {
+        "id": "bio-3",
+        "title": "Biogaz Tarkibidagi Metan (CH4) Foizi",
+        "param": "Metan: 65% | Karbonat angidrid: 33% | H2S: 2%",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"150\" cy=\"65\" r=\"40\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"150\" y=\"60\" fill=\"#34d399\" font-size=\"16\" font-weight=\"bold\" text-anchor=\"middle\">65% CH4</text><text x=\"150\" y=\"80\" fill=\"white\" font-size=\"10\" text-anchor=\"middle\">Yuqori Kaloriya</text><circle cx=\"320\" cy=\"65\" r=\"30\" fill=\"#1e293b\" stroke=\"#64748b\" stroke-width=\"2\"/><text x=\"320\" y=\"68\" fill=\"#94a3b8\" font-size=\"12\" text-anchor=\"middle\">33% CO2</text></svg>",
+        "question": "Biogaz kogeneratsiya generatorida yonishi uchun uning tarkibidagi metan (CH4) miqdori kamida qancha bo'lishi kerak?",
+        "options": [
+          "Kamida 50-55% metan (optimal 60-65%), aks holda gaz dvigatelida yonish sodir bo'lmaydi",
+          "10% metan bo'lsa ham dvigatel to'liq quvvatda ishlayveradi",
+          "Biogazda metan bo'lishi shart emas, faqat CO2 yonsa kifoya"
+        ],
+        "correct": 0,
+        "hint": "Metan miqdori 50% dan past bo'lsa, gaz alangalanmaydi va generator avariya holatida o'chadi."
+      },
+      {
+        "id": "bio-4",
+        "title": "Vodorod Sulfid (H2S) Gazini Tozalash",
+        "param": "H2S darajasi: 2400 ppm (dvigatelni zanglatadi)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"8\" fill=\"#1e293b\" stroke=\"#f59e0b\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#fcd34d\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Desulfurizatsiya Kolonnasi</text><text x=\"250\" y=\"75\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">Fe2O3 Granulalari (&lt;50 ppm)</text></svg>",
+        "question": "Biogazdagi oltingugurt (H2S) dvigatel silindrlarini zanglatib ishdan chiqaradi. Uni qanday tozalash kerak?",
+        "options": [
+          "Biogazni temir oksidi (Fe2O3) granulali filtri yoki biologik skrubber orqali o'tkazib H2S ni 50 ppm dan pastga tushirish",
+          "Biogazga xom suv purkash",
+          "Gazni tozalash shart emas, to'g'ridan-to'g'ri generatorga berish"
+        ],
+        "correct": 0,
+        "hint": "H2S yonish kamerasida suv bug'i bilan birikib oltingugurt kislotasiga aylanadi va metallni yemirib yuboradi."
+      },
+      {
+        "id": "bio-5",
+        "title": "Ko-substrat: Qoramol Go'ngi va Oziq-ovqat",
+        "param": "Nisbat: 70% go'ng (bufer) + 30% oshxona organikasi (energiya)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"70\" y=\"40\" width=\"140\" height=\"50\" rx=\"6\" fill=\"#78350f\"/><text x=\"140\" y=\"68\" fill=\"#fcd34d\" font-size=\"11\" text-anchor=\"middle\">Go'ng (Barqaror Mikroflora)</text><text x=\"240\" y=\"70\" fill=\"#10b981\" font-size=\"20\" font-weight=\"bold\" text-anchor=\"middle\">+</text><rect x=\"270\" y=\"40\" width=\"160\" height=\"50\" rx=\"6\" fill=\"#047857\"/><text x=\"350\" y=\"68\" fill=\"#a7f3d0\" font-size=\"11\" text-anchor=\"middle\">Oshxona Chiqindisi (Yuqori Gaz)</text></svg>",
+        "question": "Nega sof oshxona chiqindisiga nisbatan unga go'ng qo'shib achitish (ko-fermentatsiya) ancha barqaror?",
+        "options": [
+          "Go'ng reaktorga zarur metanogen bakteriyalar va ammoniy buferini beradi, kislotalilik buzilishini oldini oladi",
+          "Chunki go'ng gaz hosil bo'lishini to'xtatadi",
+          "Chunki go'ng hidni yo'qotadi"
+        ],
+        "correct": 0,
+        "hint": "Ko-fermentatsiya (Co-digestion) jarayoni biogaz unumdorligini sof substratga nisbatan 2.5 barobar oshiradi."
+      },
+      {
+        "id": "bio-6",
+        "title": "Reaktor Aralashtirgichi (Mixer) Rejimi",
+        "param": "Qatlamlanish: Ustki qattiq qobiq (korka) va cho'kindi",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><circle cx=\"250\" cy=\"65\" r=\"40\" fill=\"#0f172a\" stroke=\"#38bdf8\" stroke-width=\"2\"/><path d=\"M 230 65 L 270 65 M 250 45 L 250 85\" stroke=\"#38bdf8\" stroke-width=\"3\"/><text x=\"250\" y=\"120\" fill=\"#38bdf8\" font-size=\"10\" text-anchor=\"middle\">Daqiqasiga 15 daqiqa sekin aylantirish</text></svg>",
+        "question": "Bioreaktor ichidagi mexanik aralashtirgich uzluksiz 24 soat maksimal tezlikda aylanishi kerakmi?",
+        "options": [
+          "Yo'q! Uzluksiz tez aylanish bakteriyalar koloniyalarini uzib yuboradi; har soatda 10-15 daqiqa sekin aylantirish kifoya",
+          "Ha, aralashtirgich motorini hech qachon to'xtatmaslik kerak",
+          "Aralashtirgichni umuman ishlatmaslik kerak"
+        ],
+        "correct": 0,
+        "hint": "Davriy sekin aralashtirish qobiq hosil bo'lishini to'xtatadi va mikroorganizmlar uchun tinch muhit beradi."
+      },
+      {
+        "id": "bio-7",
+        "title": "Organik Quruq Modda (ODM) Suyultirish",
+        "param": "Quruq modda: 22% (Juda quyuq) | Maqsad: 9-11% ODM",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"100\" y=\"40\" width=\"120\" height=\"50\" rx=\"6\" fill=\"#334155\"/><text x=\"160\" y=\"70\" fill=\"#94a3b8\" font-size=\"11\" text-anchor=\"middle\">22% ODM (Quyuq loy)</text><text x=\"250\" y=\"70\" fill=\"#38bdf8\" font-size=\"20\" font-weight=\"bold\" text-anchor=\"middle\">+ H2O</text><rect x=\"290\" y=\"40\" width=\"130\" height=\"50\" rx=\"6\" fill=\"#065f46\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"355\" y=\"70\" fill=\"#34d399\" font-size=\"11\" text-anchor=\"middle\">10% ODM (Suyuq oquvchan)</text></svg>",
+        "question": "Qoramol go'ngi juda quruq bo'lsa, nasoslar tiqilib qoladi. Qanday suyultiriladi?",
+        "options": [
+          "Reaktordan chiqqan suyuq fraksiya (fugat) yoki texnik suv bilan 1:1 aralashtirib 10% gacha suyultirish",
+          "Sho'r dengiz suvi quyish",
+          "Hech narsa qo'shmasdan nasosni zo'riqtirib haydash"
+        ],
+        "correct": 0,
+        "hint": "10% quruq modda gidravlik aylanish va bakteriyalarning substrat bilan aloqasi uchun ideal konsistensiya hisoblanadi."
+      },
+      {
+        "id": "bio-8",
+        "title": "VFA/TIC Indeksi Tahlili",
+        "param": "VFA/TIC nisbati: 0.28 (Barqaror zona)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"120\" y=\"35\" width=\"260\" height=\"60\" rx=\"8\" fill=\"#0f172a\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"250\" y=\"60\" fill=\"#10b981\" font-size=\"14\" font-weight=\"bold\" text-anchor=\"middle\">VFA/TIC = 0.28</text><text x=\"250\" y=\"80\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">Kislotalar va Buferning Zo'r Balansi</text></svg>",
+        "question": "Laboratoriya tahlilida VFA/TIC koeffitsiyenti 0.45 dan oshib ketdi. Bu nimani anglatadi?",
+        "options": [
+          "Reaktorga me'yordan ortiq oziqa yuklangan va kislotali buzilish xavfi bor; yuklashni zudlik bilan kamaytirish kerak",
+          "Reaktorda metan hosil bo'lishi 100% ga yetganini anglatadi",
+          "Bakteriyalar och qolganini va zudlik bilan 10 barobar ko'p oziqa solish kerakligini bildiradi"
+        ],
+        "correct": 0,
+        "hint": "VFA/TIC > 0.4 bo'lishi reaktorning 'qorin to'yishi' (overload) va kislotali krizis arafasida ekanligini ko'rsatadi."
+      },
+      {
+        "id": "bio-9",
+        "title": "Bio-o'g'it (Digestate) Separatsiyasi",
+        "param": "Chiqayotgan massa: Suyuq va qattiq fraksiya",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"180\" y=\"30\" width=\"140\" height=\"70\" rx=\"8\" fill=\"#1e293b\" stroke=\"#10b981\" stroke-width=\"2\"/><text x=\"250\" y=\"55\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Shnekli Separator</text><text x=\"250\" y=\"75\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">Qattiq (gumus) + Suyuq (N-P-K)</text></svg>",
+        "question": "Biogaz chiqqandan keyin qolgan qoldiq (efflyuent) qanday qimmatbaho mahsulotga aylanadi?",
+        "options": [
+          "Shnekli separator orqali qattiq bio-gumus (organik o'g'it) va suyuq azotli bio-o'g'itga ajratiladi",
+          "Zaharli chiqindi sifatida poligon chuquriga ko'miladi",
+          "Kanalizatsiyaga to'g'ridan-to'g'ri oqizib yuboriladi"
+        ],
+        "correct": 0,
+        "hint": "Fermentatsiyalangan bio-o'g'it tarkibida begona o't urug'lari va gelmint tuxumlari bo'lmaydi, eng toza organik o'g'itdir."
+      },
+      {
+        "id": "bio-10",
+        "title": "Avariya Mash'alasi (Gas Flare) va Bosim",
+        "param": "Gazgolder bosimi: 45 mbar (Maksimal ruxsat: 50 mbar)",
+        "svg": "<svg viewBox=\"0 0 500 130\" class=\"w-full h-auto rounded-xl bg-slate-950 border border-slate-800\"><rect x=\"120\" y=\"45\" width=\"160\" height=\"40\" rx=\"6\" fill=\"#1e293b\"/><text x=\"200\" y=\"70\" fill=\"#f87171\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Bosim: 45 mbar ⚠️</text><circle cx=\"380\" cy=\"65\" r=\"25\" fill=\"#7f1d1d\" stroke=\"#ef4444\" stroke-width=\"2\"/><text x=\"380\" y=\"70\" fill=\"white\" font-size=\"14\" text-anchor=\"middle\">🔥 Flare</text></svg>",
+        "question": "Kogenerator to'xtab qolganda gazgolderda metan bosimi kritik darajaga yetdi. Avtomatik tizim nima qiladi?",
+        "options": [
+          "Gidrozatvor klapanini ochib, ortiqcha biogazni xavfsiz avariya mash'alasi (flare)da yoqib yuboradi",
+          "Biogazni to'g'ridan-to'g'ri atmosferaga purkab yuboradi",
+          "Reaktor qopqog'ini portlatadi"
+        ],
+        "correct": 0,
+        "hint": "Metanni atmosferaga to'g'ridan-to'g'ri chiqarish CO2 dan 28 barobar kuchli issiqxona effekti beradi, shuning uchun mash'alada yoqiladi."
+      }
+    ]
+  }
+}
