@@ -683,7 +683,7 @@ const Eco2DAnimator = {
             <span class="uppercase tracking-wider">2D Avtomatlashtirilgan Saralash Konveyeri</span>
           </div>
           <div class="flex items-center gap-2 text-slate-400">
-            <span class="bg-slate-900 px-2 py-0.5 rounded text-emerald-400 font-mono">100 ta Chiqindi Bazasi</span>
+            <span class="bg-slate-900 px-2 py-0.5 rounded text-emerald-400 font-mono">200 ta Chiqindi Bazasi</span>
             <span class="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30">Smart Saralash</span>
           </div>
         </div>
