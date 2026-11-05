@@ -538,30 +538,52 @@
   // -----------------------------------------------------------------------
   // 5. 9 TA KONTEYNERNI RENDER QILISH VA DROP HUDUDLARI
   // -----------------------------------------------------------------------
+  const MASTER_ECO_CATEGORIES = [
+    { key: "plastik", name: "Plastik", color: "amber", icon: "🧴", binBg: "bg-amber-950/30 border-amber-500/40" },
+    { key: "qogoz", name: "Qog'oz & Karton", color: "blue", icon: "📦", binBg: "bg-blue-950/30 border-blue-500/40" },
+    { key: "shisha", name: "Shisha idish", color: "emerald", icon: "🍾", binBg: "bg-emerald-950/30 border-emerald-500/40" },
+    { key: "metall", name: "Metall", color: "cyan", icon: "🥫", binBg: "bg-cyan-950/30 border-cyan-500/40" },
+    { key: "organik", name: "Organik", color: "yellow", icon: "🍌", binBg: "bg-yellow-950/30 border-yellow-700/40" },
+    { key: "xavfli", name: "Xavfli chiqindi", color: "rose", icon: "🔋", binBg: "bg-rose-950/30 border-rose-500/40" },
+    { key: "elektronika", name: "Elektronika (E-waste)", color: "purple", icon: "📱", binBg: "bg-purple-950/30 border-purple-500/40" },
+    { key: "tekstil", name: "Tekstil / Kiyim", color: "pink", icon: "👕", binBg: "bg-pink-950/30 border-pink-500/40" },
+    { key: "utilizatsiya", name: "U (Utilizatsiya)", color: "slate", icon: "🗑️", binBg: "bg-slate-900/80 border-slate-600/50" }
+  ];
+
+  function getItemCatKey(item) {
+    if (!item) return 'utilizatsiya';
+    const raw = (item.categoryKey || item.cat || item.category || '').toLowerCase().trim();
+    if (raw === 'u' || raw.includes('utiliz') || raw.includes('qayta ishlanmaydi')) return 'utilizatsiya';
+    if (raw.includes('plast')) return 'plastik';
+    if (raw.includes('qog') || raw.includes('kart')) return 'qogoz';
+    if (raw.includes('shish')) return 'shisha';
+    if (raw.includes('met')) return 'metall';
+    if (raw.includes('organ')) return 'organik';
+    if (raw.includes('xavf')) return 'xavfli';
+    if (raw.includes('elektron')) return 'elektronika';
+    if (raw.includes('tekst') || raw.includes('kiyim')) return 'tekstil';
+    return raw || 'utilizatsiya';
+  }
+
+  function isItemMatchBin(item, binKey) {
+    const itemCat = getItemCatKey(item);
+    const bKey = (binKey || '').toLowerCase().trim();
+    if ((itemCat === 'utilizatsiya' || itemCat === 'u') && (bKey === 'utilizatsiya' || bKey === 'u')) return true;
+    return itemCat === bKey;
+  }
+
   function renderBins() {
     const binsGrid = document.getElementById('sorting-bins-grid');
     if (!binsGrid) return;
 
-    const categories = window.ECO_CATEGORIES || [
-      { key: "plastik", name: "Plastik", color: "amber", icon: "🧴", btnClass: "border-amber-500/50 bg-amber-500/10 text-amber-300", binBg: "bg-amber-950/30 border-amber-500/40" },
-      { key: "qogoz", name: "Qog'oz & Karton", color: "blue", icon: "📦", btnClass: "border-blue-500/50 bg-blue-500/10 text-blue-300", binBg: "bg-blue-950/30 border-blue-500/40" },
-      { key: "shisha", name: "Shisha idish", color: "emerald", icon: "🍾", btnClass: "border-emerald-500/50 bg-emerald-500/10 text-emerald-300", binBg: "bg-emerald-950/30 border-emerald-500/40" },
-      { key: "metall", name: "Metall", color: "cyan", icon: "🥫", btnClass: "border-cyan-500/50 bg-cyan-500/10 text-cyan-300", binBg: "bg-cyan-950/30 border-cyan-500/40" },
-      { key: "organik", name: "Organik", color: "yellow", icon: "🍌", btnClass: "border-yellow-700/50 bg-yellow-900/20 text-amber-200", binBg: "bg-yellow-950/30 border-yellow-700/40" },
-      { key: "xavfli", name: "Xavfli chiqindi", color: "rose", icon: "🔋", btnClass: "border-rose-500/50 bg-rose-500/10 text-rose-300", binBg: "bg-rose-950/30 border-rose-500/40" },
-      { key: "elektronika", name: "Elektronika (E-waste)", color: "purple", icon: "📱", btnClass: "border-purple-500/50 bg-purple-500/10 text-purple-300", binBg: "bg-purple-950/30 border-purple-500/40" },
-      { key: "tekstil", name: "Tekstil / Kiyim", color: "pink", icon: "👕", btnClass: "border-pink-500/50 bg-pink-500/10 text-pink-300", binBg: "bg-pink-950/30 border-pink-500/40" },
-      { key: "U", name: "U (Utilizatsiya)", color: "slate", icon: "🗑️", btnClass: "border-slate-500/60 bg-slate-800/80 text-slate-200", binBg: "bg-slate-900/80 border-slate-600/50" }
-    ];
-
-    binsGrid.innerHTML = categories.map((cat, idx) => {
+    binsGrid.innerHTML = MASTER_ECO_CATEGORIES.map((cat, idx) => {
       const shortcutNum = idx + 1; // 1 dan 9 gacha
       return `
         <div 
           id="sorting-bin-${cat.key}" 
           data-bin-key="${cat.key}" 
           onclick="EcoSortingEngine.handleBinClick('${cat.key}')"
-          class="sorting-drop-bin ${cat.binBg} border-2 rounded-2xl p-3 sm:p-3.5 transition-all duration-200 flex flex-col justify-between min-h-[110px] sm:min-h-[125px] relative group cursor-pointer hover:shadow-lg hover:-translate-y-0.5"
+          class="sorting-drop-bin ${cat.binBg} border-2 rounded-2xl p-3 sm:p-3.5 transition-all duration-200 flex flex-col justify-between min-h-[110px] sm:min-h-[125px] relative group cursor-pointer hover:shadow-lg hover:-translate-y-0.5 select-none"
         >
           <!-- Top Bin Header -->
           <div class="flex items-center justify-between gap-1 mb-1.5">
@@ -569,7 +591,7 @@
               <span class="text-xl sm:text-2xl shrink-0 transition-transform group-hover:scale-110">${cat.icon}</span>
               <div class="truncate">
                 <span class="text-xs sm:text-sm font-black text-white block truncate">${cat.name}</span>
-                <span class="text-[9px] text-slate-400 block">${cat.key === 'U' ? 'Qayta ishlanmaydi' : 'Qayta ishlanadi'}</span>
+                <span class="text-[9px] text-slate-400 block">${cat.key === 'utilizatsiya' ? 'Qayta ishlanmaydi' : 'Qayta ishlanadi'}</span>
               </div>
             </div>
             <span class="w-5 h-5 rounded-md bg-slate-950/80 border border-slate-700/80 text-slate-400 text-[10px] font-black flex items-center justify-center shrink-0">
@@ -610,6 +632,7 @@
     });
 
     // Trayni render qilish
+    renderBins();
     renderTrayItems();
     updateBinsContentUI();
     updatePlacedCountUI();
@@ -623,7 +646,9 @@
       if (timerRow) timerRow.classList.add('hidden');
     }
 
-    if (window.ecoAudio) window.ecoAudio.playClick();
+    if (window.ecoAudio && typeof window.ecoAudio.playClick === 'function') {
+      window.ecoAudio.playClick();
+    }
   }
 
   // -----------------------------------------------------------------------
@@ -656,19 +681,25 @@
 
     tray.innerHTML = unplacedItems.map((item, idx) => {
       const isSelected = EcoSortingState.selectedItemId === item.id;
-      const isTrap = item.isTrap;
-      const imgSrc = item.image || `images/waste/${item.slug}.svg`;
+      const isTrap = !!item.isTrap;
+      const imgSrc = item.svg ? null : (item.image || `images/waste/${item.slug}.svg`);
+
       return `
         <div 
           id="waste-card-${item.id}"
           data-item-id="${item.id}"
           style="touch-action: none; --idx: ${idx};"
-          class="waste-draggable-card waste-card-animated bg-slate-900 border ${isSelected ? 'ring-4 ring-cyan-400 border-cyan-400 scale-105' : 'border-slate-700/80 hover:border-emerald-400'} rounded-2xl p-2.5 sm:p-3 w-[140px] sm:w-[155px] flex flex-col items-center justify-between text-center transition-all duration-200 cursor-grab active:cursor-grabbing hover:shadow-2xl relative group shadow-md hover:-translate-y-1.5 overflow-hidden"
+          class="waste-draggable-card waste-card-animated bg-slate-900 border-2 ${isSelected ? 'ring-4 ring-emerald-400 border-emerald-400 scale-105 bg-emerald-950/50' : 'border-slate-700/80 hover:border-emerald-400'} rounded-2xl p-2.5 sm:p-3 w-[140px] sm:w-[155px] flex flex-col items-center justify-between text-center transition-all duration-200 cursor-pointer hover:shadow-2xl relative group shadow-md hover:-translate-y-1 select-none"
           onpointerdown="EcoSortingEngine.handlePointerDown(event, ${item.id})"
-          onclick="EcoSortingEngine.handleCardClick(event, ${item.id})"
         >
           <!-- Card Shimmer Sweep Effect -->
           <div class="waste-card-shimmer"></div>
+
+          ${isSelected ? `
+            <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 text-[9px] font-black uppercase px-2.5 py-0.5 rounded-full shadow-lg z-20 animate-pulse tracking-wider">
+              Tanlandi
+            </span>
+          ` : ''}
 
           <!-- Trap / Difficulty badge -->
           <div class="w-full flex items-center justify-between gap-1 mb-1 relative z-10">
@@ -683,17 +714,23 @@
           </div>
 
           <!-- Image with Fallback Emoji & Float Animation -->
-          <div class="w-16 h-16 sm:w-20 sm:h-20 my-1 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-center p-1.5 overflow-hidden relative group-hover:scale-110 transition-transform duration-300 z-10">
-            <img 
-              src="${imgSrc}" 
-              alt="${item.name}" 
-              class="waste-img-float w-full h-full object-contain filter drop-shadow-md"
-              loading="lazy"
-              onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"
-            />
-            <div class="hidden w-full h-full text-3xl sm:text-4xl items-center justify-center waste-img-float">
-              ${item.icon || '📦'}
-            </div>
+          <div class="w-16 h-16 sm:w-20 sm:h-20 my-1 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-center p-1.5 overflow-hidden relative group-hover:scale-105 transition-transform duration-300 z-10">
+            ${item.svg ? `
+              <div class="w-full h-full flex items-center justify-center waste-img-float">
+                ${item.svg}
+              </div>
+            ` : `
+              <img 
+                src="${imgSrc}" 
+                alt="${item.name}" 
+                class="waste-img-float w-full h-full object-contain filter drop-shadow-md"
+                loading="lazy"
+                onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"
+              />
+              <div class="hidden w-full h-full text-3xl sm:text-4xl items-center justify-center waste-img-float">
+                ${item.icon || item.emoji || '📦'}
+              </div>
+            `}
           </div>
 
           <!-- Name -->
@@ -702,23 +739,20 @@
           </span>
 
           <!-- Grab hint -->
-          <div class="mt-1 text-[9px] font-bold text-slate-500 group-hover:text-emerald-400 transition-colors flex items-center gap-1 z-10">
-            <i class="fa-solid fa-arrows-up-down-left-right text-[8px] animate-pulse"></i>
-            <span>Sudrang / Bosing</span>
+          <div class="mt-1 text-[9px] font-bold ${isSelected ? 'text-emerald-400' : 'text-slate-500'} group-hover:text-emerald-400 transition-colors flex items-center gap-1 z-10">
+            <i class="fa-solid ${isSelected ? 'fa-arrow-up' : 'fa-hand-pointer'} text-[8px] animate-bounce"></i>
+            <span>${isSelected ? "Qutini bosing!" : "Bosing / Sudrang"}</span>
           </div>
         </div>
       `;
     }).join('');
-    return;
-
   }
 
   // -----------------------------------------------------------------------
   // 8. KONTEYNERLARNING ICHIDAGI ELEMENTLARNI YANGILASH
   // -----------------------------------------------------------------------
   function updateBinsContentUI() {
-    const categories = window.ECO_CATEGORIES || [];
-    categories.forEach(cat => {
+    MASTER_ECO_CATEGORIES.forEach(cat => {
       const slotEl = document.getElementById(`bin-items-slot-${cat.key}`);
       const binEl = document.getElementById(`sorting-bin-${cat.key}`);
       if (!slotEl || !binEl) return;
@@ -743,7 +777,7 @@
             title="${it.name} (Qaytarib olish uchun bosing)"
             class="px-2 py-1 rounded-md bg-slate-900 hover:bg-rose-950/80 text-white hover:text-rose-300 border border-slate-700 hover:border-rose-500/60 text-[10px] font-bold flex items-center gap-1 transition-all group/item shadow-sm cursor-pointer"
           >
-            <span>${it.icon}</span>
+            <span>${it.icon || it.emoji || '♻️'}</span>
             <span class="max-w-[70px] truncate">${it.name}</span>
             <i class="fa-solid fa-xmark text-[9px] text-slate-400 group-hover/item:text-rose-400"></i>
           </button>
@@ -782,51 +816,98 @@
   }
 
   // -----------------------------------------------------------------------
-  // 9. POINTER EVENTS DRAG-AND-DROP ENGINE (Mouse, Finger Touch, Stylus)
+  // 9. POINTER EVENTS DRAG-AND-DROP & CLICK-TO-PLACE ENGINE
   // -----------------------------------------------------------------------
-  function handlePointerDown(e, itemId) {
-    if (e.button !== 0 && e.pointerType === 'mouse') return; // Faqat chap tugma
+  let pointerStartPos = null;
+  let dragGhost = null;
 
+  function handlePointerDown(e, itemId) {
+    if (e.button !== undefined && e.button !== 0) return;
     const card = document.getElementById(`waste-card-${itemId}`);
     if (!card) return;
 
-    EcoSortingState.dragActive = true;
-    EcoSortingState.dragItemId = itemId;
-    EcoSortingState.touchStartX = e.clientX;
-    EcoSortingState.touchStartY = e.clientY;
+    pointerStartPos = {
+      x: e.clientX,
+      y: e.clientY,
+      itemId: itemId,
+      hasMoved: false
+    };
 
-    // Pointer capture
-    try {
-      card.setPointerCapture(e.pointerId);
-    } catch (err) {}
+    const onMove = (moveEvt) => {
+      if (!pointerStartPos) return;
+      const dx = moveEvt.clientX - pointerStartPos.x;
+      const dy = moveEvt.clientY - pointerStartPos.y;
+      const dist = Math.hypot(dx, dy);
 
-    // Ghost/Clone sudrash elementini yaratish
-    const rect = card.getBoundingClientRect();
-    const ghost = card.cloneNode(true);
-    ghost.id = 'waste-drag-ghost';
-    ghost.style.position = 'fixed';
-    ghost.style.left = `${rect.left}px`;
-    ghost.style.top = `${rect.top}px`;
-    ghost.style.width = `${rect.width}px`;
-    ghost.style.height = `${rect.height}px`;
-    ghost.style.zIndex = '9999';
-    ghost.style.pointerEvents = 'none';
-    ghost.style.transform = 'scale(1.08) rotate(3deg)';
-    ghost.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.7)';
-    ghost.style.opacity = '0.95';
-    ghost.style.transition = 'transform 0.08s ease';
-    document.body.appendChild(ghost);
-    EcoSortingState.dragGhostEl = ghost;
+      if (dist > 8 && !pointerStartPos.hasMoved) {
+        pointerStartPos.hasMoved = true;
+        EcoSortingState.dragActive = true;
+        EcoSortingState.dragItemId = itemId;
 
-    card.style.opacity = '0.35';
+        const item = EcoSortingState.activeItems.find(i => i.id === itemId);
+        dragGhost = document.createElement('div');
+        dragGhost.id = 'waste-drag-ghost';
+        dragGhost.className = 'fixed pointer-events-none z-[9999] rounded-2xl bg-slate-900/95 border-2 border-emerald-400 p-2.5 flex items-center gap-2 shadow-2xl';
+        dragGhost.style.transform = 'translate(-50%, -50%) scale(1.1) rotate(3deg)';
+        dragGhost.innerHTML = `
+          <span class="text-2xl">${item ? (item.icon || item.emoji || '📦') : '📦'}</span>
+          <span class="text-xs font-black text-white">${item ? item.name : ''}</span>
+        `;
+        document.body.appendChild(dragGhost);
+        card.style.opacity = '0.35';
+      }
 
-    // Global harakat va qo'yib yuborish tinglovchilari
-    const onMove = (moveEvt) => handlePointerMove(moveEvt);
+      if (pointerStartPos.hasMoved && dragGhost) {
+        dragGhost.style.left = `${moveEvt.clientX}px`;
+        dragGhost.style.top = `${moveEvt.clientY}px`;
+
+        let foundKey = null;
+        document.querySelectorAll('.sorting-drop-bin').forEach(bin => {
+          const r = bin.getBoundingClientRect();
+          if (moveEvt.clientX >= r.left && moveEvt.clientX <= r.right && moveEvt.clientY >= r.top && moveEvt.clientY <= r.bottom) {
+            foundKey = bin.dataset.binKey;
+            bin.classList.add('ring-4', 'ring-emerald-400', 'scale-[1.04]', 'bg-emerald-950/50');
+          } else {
+            bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.04]', 'bg-emerald-950/50');
+          }
+        });
+        EcoSortingState.dragCandidateBinKey = foundKey;
+      }
+    };
+
     const onUp = (upEvt) => {
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
       window.removeEventListener('pointercancel', onUp);
-      handlePointerUp(upEvt, itemId, card);
+
+      document.querySelectorAll('.sorting-drop-bin').forEach(bin => {
+        bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.04]', 'bg-emerald-950/50');
+      });
+
+      if (dragGhost) {
+        dragGhost.remove();
+        dragGhost = null;
+      }
+      card.style.opacity = '1';
+
+      if (pointerStartPos && pointerStartPos.hasMoved) {
+        // Sudraldi va qo'yib yuborildi
+        EcoSortingState.dragActive = false;
+        const candidate = EcoSortingState.dragCandidateBinKey;
+        EcoSortingState.dragCandidateBinKey = null;
+
+        if (candidate) {
+          placeItemInBin(itemId, candidate);
+        } else {
+          card.classList.add('animate-shake');
+          setTimeout(() => card.classList.remove('animate-shake'), 400);
+        }
+      } else {
+        // Sudralmadi: Bu Click / Tap edi!
+        EcoSortingState.dragActive = false;
+        handleCardClick(null, itemId);
+      }
+      pointerStartPos = null;
     };
 
     window.addEventListener('pointermove', onMove);
@@ -834,91 +915,38 @@
     window.addEventListener('pointercancel', onUp);
   }
 
-  function handlePointerMove(e) {
-    if (!EcoSortingState.dragActive || !EcoSortingState.dragGhostEl) return;
-
-    const ghost = EcoSortingState.dragGhostEl;
-    const ghostWidth = ghost.offsetWidth || 140;
-    const ghostHeight = ghost.offsetHeight || 120;
-
-    ghost.style.left = `${e.clientX - ghostWidth / 2}px`;
-    ghost.style.top = `${e.clientY - ghostHeight / 2}px`;
-
-    // Sichqoncha/barmoq ostidagi konteynerni magnit effekti bilan aniqlash
-    const elementsUnder = document.elementsFromPoint(e.clientX, e.clientY) || [];
-    let foundBinKey = null;
-
-    for (const el of elementsUnder) {
-      const binEl = el.closest ? el.closest('.sorting-drop-bin') : null;
-      if (binEl && binEl.dataset.binKey) {
-        foundBinKey = binEl.dataset.binKey;
-        break;
-      }
-    }
-
-    // Barcha binlarning nurini yangilash
-    document.querySelectorAll('.sorting-drop-bin').forEach(bin => {
-      const key = bin.dataset.binKey;
-      if (key === foundBinKey) {
-        bin.classList.add('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'shadow-emerald-500/30', 'bg-emerald-950/40');
-      } else {
-        bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'shadow-emerald-500/30', 'bg-emerald-950/40');
-      }
-    });
-
-    EcoSortingState.dragCandidateBinKey = foundBinKey;
-  }
-
-  function handlePointerUp(e, itemId, originalCard) {
-    if (!EcoSortingState.dragActive) return;
-    EcoSortingState.dragActive = false;
-
-    // Nur va vizual belgilarni tozalash
-    document.querySelectorAll('.sorting-drop-bin').forEach(bin => {
-      bin.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.03]', 'shadow-emerald-500/30', 'bg-emerald-950/40');
-    });
-
-    if (EcoSortingState.dragGhostEl) {
-      EcoSortingState.dragGhostEl.remove();
-      EcoSortingState.dragGhostEl = null;
-    }
-
-    if (originalCard) {
-      originalCard.style.opacity = '1';
-    }
-
-    const candidateBin = EcoSortingState.dragCandidateBinKey;
-    EcoSortingState.dragCandidateBinKey = null;
-
-    if (candidateBin) {
-      // Konteyner ustiga tushdi!
-      placeItemInBin(itemId, candidateBin);
-    } else {
-      // Konteynerdan tashqariga tushdi — kartochka o'z joyiga silliq qaytadi
-      if (originalCard) {
-        originalCard.classList.add('animate-shake');
-        setTimeout(() => originalCard.classList.remove('animate-shake'), 400);
-      }
-    }
-  }
-
   // -----------------------------------------------------------------------
-  // 10. CLICK-TO-PLACE & KLAVIATURA BOSHQARUVI (Accessibility)
+  // 10. CLICK-TO-PLACE & KLAVIATURA BOSHQARUVI
   // -----------------------------------------------------------------------
   function handleCardClick(e, itemId) {
-    if (EcoSortingState.dragActive) return;
-
     if (EcoSortingState.selectedItemId === itemId) {
-      EcoSortingState.selectedItemId = null;
+      EcoSortingState.selectedItemId = null; // Bekor qilish
     } else {
       EcoSortingState.selectedItemId = itemId;
-      if (window.ecoAudio) window.ecoAudio.playClick();
+      if (window.ecoAudio && typeof window.ecoAudio.playClick === 'function') {
+        window.ecoAudio.playClick();
+      }
     }
     renderTrayItems();
+    updateBinsHighlightForClickToPlace();
+  }
+
+  function updateBinsHighlightForClickToPlace() {
+    const hasSelection = !!EcoSortingState.selectedItemId;
+    document.querySelectorAll('.sorting-drop-bin').forEach(bin => {
+      if (hasSelection) {
+        bin.classList.add('ring-2', 'ring-emerald-400/50');
+      } else {
+        bin.classList.remove('ring-2', 'ring-emerald-400/50');
+      }
+    });
   }
 
   function handleBinClick(binKey) {
-    if (!EcoSortingState.selectedItemId) return;
+    if (!EcoSortingState.selectedItemId) {
+      if (window.showToast) window.showToast("Avval saralanadigan chiqindini bosing, so'ngra qutini tanlang!");
+      return;
+    }
     placeItemInBin(EcoSortingState.selectedItemId, binKey);
   }
 
@@ -929,21 +957,24 @@
     EcoSortingState.placements[itemId] = binKey;
     EcoSortingState.selectedItemId = null;
 
-    if (window.ecoAudio) window.ecoAudio.playClick();
+    if (window.ecoAudio && typeof window.ecoAudio.playClick === 'function') {
+      window.ecoAudio.playClick();
+    }
 
     // Mashq rejimida bo'lsa darhol to'g'ri/xato ekanligini aytib turish
     if (EcoSortingState.mode === 'practice') {
-      const isCorrect = item.cat === binKey;
+      const isCorrect = isItemMatchBin(item, binKey);
       if (isCorrect) {
-        if (window.ecoAudio) window.ecoAudio.playSuccess();
-        if (window.showToast) window.showToast(`✅ To'g'ri! ${item.name} «${binKey.toUpperCase()}» toifasiga kiradi.`);
+        if (window.ecoAudio && typeof window.ecoAudio.playSuccess === 'function') window.ecoAudio.playSuccess();
+        if (window.showToast) window.showToast(`✅ To'g'ri! ${item.name} ushbu qutiga to'g'ri joylandi.`);
       } else {
-        if (window.ecoAudio) window.ecoAudio.playError();
-        if (window.showToast) window.showToast(`❌ Xato! ${item.hint || item.explanation}`);
+        if (window.ecoAudio && typeof window.ecoAudio.playError === 'function') window.ecoAudio.playError();
+        if (window.showToast) window.showToast(`❌ Xato! ${item.hint || item.explanation || "Bu qutiga kirmaydi"}`);
       }
     }
 
     renderTrayItems();
+    updateBinsHighlightForClickToPlace();
     updateBinsContentUI();
     updatePlacedCountUI();
   }
@@ -951,9 +982,12 @@
   function removeFromBin(itemId) {
     delete EcoSortingState.placements[itemId];
     EcoSortingState.selectedItemId = null;
-    if (window.ecoAudio) window.ecoAudio.playClick();
+    if (window.ecoAudio && typeof window.ecoAudio.playClick === 'function') {
+      window.ecoAudio.playClick();
+    }
 
     renderTrayItems();
+    updateBinsHighlightForClickToPlace();
     updateBinsContentUI();
     updatePlacedCountUI();
   }
@@ -962,7 +996,7 @@
     window.addEventListener('keydown', (e) => {
       // 1 dan 9 gacha raqamlar
       if (e.key >= '1' && e.key <= '9') {
-        const categories = window.ECO_CATEGORIES || [];
+        const categories = MASTER_ECO_CATEGORIES;
         const idx = parseInt(e.key, 10) - 1;
         const targetCat = categories[idx];
 
@@ -993,7 +1027,7 @@
 
     const elapsedSeconds = Math.max(1, Math.round((EcoSortingState.endTime - EcoSortingState.startTime) / 1000));
     const items = EcoSortingState.activeItems;
-    const categories = window.ECO_CATEGORIES || [];
+    const categories = MASTER_ECO_CATEGORIES;
 
     let correctCount = 0;
     const categoryStats = {};
@@ -1007,32 +1041,32 @@
 
     items.forEach(item => {
       const chosenCatKey = EcoSortingState.placements[item.id] || 'unplaced';
-      const isCorrect = chosenCatKey === item.cat;
+      const isCorrect = isItemMatchBin(item, chosenCatKey);
+      const itemCat = getItemCatKey(item);
 
-      if (!categoryStats[item.cat]) {
-        categoryStats[item.cat] = { total: 0, correct: 0, catName: item.cat };
-        const foundCat = categories.find(c => c.key === item.cat);
-        if (foundCat) categoryStats[item.cat].catName = foundCat.name;
+      if (!categoryStats[itemCat]) {
+        categoryStats[itemCat] = { total: 0, correct: 0, catName: itemCat };
+        const foundCat = MASTER_ECO_CATEGORIES.find(c => c.key === itemCat);
+        if (foundCat) categoryStats[itemCat].catName = foundCat.name;
       }
-      categoryStats[item.cat].total++;
+      categoryStats[itemCat].total++;
 
       if (isCorrect) {
         correctCount++;
-        categoryStats[item.cat].correct++;
+        categoryStats[itemCat].correct++;
       } else {
-        // Xato qilgan toifani saqlash (Adaptive Selection uchun!)
-        storedWeakCats[item.cat] = (storedWeakCats[item.cat] || 0) + 1;
+        storedWeakCats[itemCat] = (storedWeakCats[itemCat] || 0) + 1;
       }
 
-      const correctCatObj = categories.find(c => c.key === item.cat);
-      const chosenCatObj = categories.find(c => c.key === chosenCatKey);
+      const correctCatObj = MASTER_ECO_CATEGORIES.find(c => c.key === itemCat);
+      const chosenCatObj = MASTER_ECO_CATEGORIES.find(c => c.key === chosenCatKey);
 
       detailedList.push({
         item: item,
         chosenKey: chosenCatKey,
         chosenName: chosenCatObj ? chosenCatObj.name : 'Joylashtirilmadi',
-        correctKey: item.cat,
-        correctName: correctCatObj ? correctCatObj.name : item.cat,
+        correctKey: itemCat,
+        correctName: correctCatObj ? correctCatObj.name : itemCat,
         isCorrect: isCorrect
       });
     });
