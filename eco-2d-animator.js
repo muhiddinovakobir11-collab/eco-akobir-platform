@@ -88,6 +88,25 @@ const Eco2DAnimator = {
       .eco-spark { animation: eco2dSparkFlash 0.8s infinite ease-in-out; }
       .eco-float { animation: eco2dFloatItem 2.5s infinite ease-in-out; }
       .eco-wave { animation: eco2dWaveMotion 2s infinite ease-in-out; }
+      @keyframes eco2dHydraulicPress {
+        0%, 100% { transform: translateY(0); }
+        40% { transform: translateY(48px); }
+        60% { transform: translateY(48px); }
+        80% { transform: translateY(0); }
+      }
+      @keyframes eco2dCoinSpin {
+        0% { transform: rotateY(0deg) scale(1); }
+        50% { transform: rotateY(180deg) scale(1.1); }
+        100% { transform: rotateY(360deg) scale(1); }
+      }
+      @keyframes eco2dPulseScan {
+        0%, 100% { opacity: 0.3; transform: scaleX(0.9); }
+        50% { opacity: 1; transform: scaleX(1.1); }
+      }
+      .eco-hydraulic-piston { animation: eco2dHydraulicPress 3.5s infinite ease-in-out; }
+      .eco-coin-spin { transform-origin: center; animation: eco2dCoinSpin 4s infinite linear; }
+      .eco-scan-pulse { animation: eco2dPulseScan 1.6s infinite ease-in-out; }
+
     `;
   },
 
@@ -724,6 +743,16 @@ const Eco2DAnimator = {
   // Savol matni va kalit so'zlari bo'yicha eng mos 2D animatsiya turini aniqlash
   detectScene(item, gameId) {
     if (gameId === 1) return 'sorting';
+    if (gameId === 14) return 'optical';
+    if (gameId === 15) return 'compactor_shredder';
+    if (gameId === 16) return 'wastewater';
+    if (gameId === 17) return 'pyrolysis';
+    if (gameId === 18) return 'medical';
+    if (gameId === 19) return 'smelting_furnace';
+    if (gameId === 20) return 'zerowaste_home';
+    if (gameId === 21) return 'detective_investigation';
+    if (gameId === 22) return 'space_ecosystem';
+    if (gameId === 23) return 'waste_market_exchange';
 
     // Barcha savol va keys parametrlari bo'yicha chuqur semantik tahlil
     const fullText = [
@@ -1065,6 +1094,436 @@ const Eco2DAnimator = {
     `;
   },
 
+  // 16. Sanoat Eko-Kompaktor va Pichoqli Shreder (Game 15)
+  renderCompactorShredder(title, subtitle) {
+    return `
+      <div class="relative w-full rounded-2xl overflow-hidden border border-emerald-500/40 bg-slate-950 shadow-2xl p-2 select-none">
+        <div class="flex items-center justify-between px-2 py-1 mb-1 border-b border-slate-800 text-[10px] font-bold">
+          <div class="flex items-center gap-1.5 text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span>SANOAT PRESSI & SHREDDER: ${title}</span>
+          </div>
+          <span class="text-slate-400 font-mono text-[9px]">${subtitle || "Bosim: 180 Bar | Briketlash"}</span>
+        </div>
+
+        <svg viewBox="0 0 520 150" class="w-full h-auto overflow-hidden">
+          <defs>
+            <linearGradient id="pressGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#334155"/>
+              <stop offset="50%" stop-color="#64748b"/>
+              <stop offset="100%" stop-color="#1e293b"/>
+            </linearGradient>
+            <linearGradient id="baleGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#d97706"/>
+              <stop offset="100%" stop-color="#92400e"/>
+            </linearGradient>
+          </defs>
+
+          <!-- 1. HYDRAULIC BALING CHAMBER (Left: X=20 to 180) -->
+          <rect x="20" y="20" width="160" height="120" rx="8" fill="#090d16" stroke="#334155" stroke-width="2"/>
+          <rect x="30" y="30" width="140" height="100" fill="#0f172a" stroke="#1e293b"/>
+          
+          <!-- Moving Hydraulic Piston -->
+          <g class="eco-hydraulic-piston">
+            <rect x="85" y="0" width="30" height="50" fill="url(#pressGrad)" stroke="#475569" stroke-width="1.5"/>
+            <rect x="40" y="45" width="120" height="18" rx="3" fill="#475569" stroke="#94a3b8" stroke-width="1.5"/>
+            <text x="100" y="58" fill="#ffffff" font-size="8" font-weight="black" text-anchor="middle">PRESS 180 BAR</text>
+          </g>
+
+          <!-- Compressed Cardboard / Waste Bale -->
+          <rect x="40" y="98" width="120" height="30" rx="4" fill="url(#baleGrad)" stroke="#f59e0b" stroke-width="1.5"/>
+          <line x1="70" y1="98" x2="70" y2="128" stroke="#fef3c7" stroke-dasharray="2,2"/>
+          <line x1="100" y1="98" x2="100" y2="128" stroke="#fef3c7" stroke-dasharray="2,2"/>
+          <line x1="130" y1="98" x2="130" y2="128" stroke="#fef3c7" stroke-dasharray="2,2"/>
+          <text x="100" y="116" fill="#ffffff" font-size="9" font-weight="black" text-anchor="middle">Zich Briket (1:5)</text>
+
+          <!-- 2. DUAL-SHAFT ROTARY SHREDDER (Center: X=200 to 360) -->
+          <rect x="200" y="20" width="160" height="120" rx="8" fill="#090d16" stroke="#0ea5e9" stroke-width="1.5"/>
+          <text x="280" y="36" fill="#38bdf8" font-size="9" font-weight="black" text-anchor="middle">2-VALLLI AYLANUVCHI SHREDDER</text>
+          
+          <!-- Left Gear Blade -->
+          <g transform="translate(245, 75)">
+            <circle cx="0" cy="0" r="26" fill="#1e293b" stroke="#0284c7" stroke-width="2"/>
+            <g class="eco-spin">
+              <path d="M0 -28 L6 -15 L-6 -15 Z M28 0 L15 6 L15 -6 Z M0 28 L-6 15 L6 15 Z M-28 0 L-15 -6 L-15 6 Z" fill="#38bdf8"/>
+              <circle cx="0" cy="0" r="10" fill="#0f172a" stroke="#0284c7"/>
+            </g>
+          </g>
+
+          <!-- Right Gear Blade (Counter-rotating) -->
+          <g transform="translate(295, 75)">
+            <circle cx="0" cy="0" r="26" fill="#1e293b" stroke="#0284c7" stroke-width="2"/>
+            <g class="eco-spin" style="animation-direction: reverse;">
+              <path d="M0 -28 L6 -15 L-6 -15 Z M28 0 L15 6 L15 -6 Z M0 28 L-6 15 L6 15 Z M-28 0 L-15 -6 L-15 6 Z" fill="#38bdf8"/>
+              <circle cx="0" cy="0" r="10" fill="#0f172a" stroke="#0284c7"/>
+            </g>
+          </g>
+
+          <!-- Shredded output particles -->
+          <g class="eco-spark">
+            <circle cx="270" cy="75" r="3" fill="#facc15"/>
+            <circle cx="265" cy="82" r="2" fill="#fb923c"/>
+            <circle cx="275" cy="85" r="2.5" fill="#facc15"/>
+          </g>
+          <text x="280" y="125" fill="#94a3b8" font-size="8" text-anchor="middle">Fraktsiya: 10-12 mm toza chindiq</text>
+
+          <!-- 3. DIGITAL MONITOR & MANOMETER (Right: X=380 to 500) -->
+          <rect x="380" y="20" width="125" height="120" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+          <text x="442" y="38" fill="#34d399" font-size="9" font-weight="black" text-anchor="middle">BOSIM VA XAVFSIZLIK</text>
+          
+          <!-- Round Manometer -->
+          <circle cx="442" cy="75" r="25" fill="#022c22" stroke="#10b981" stroke-width="2"/>
+          <circle cx="442" cy="75" r="21" fill="#064e3b"/>
+          <line x1="442" y1="75" x2="456" y2="65" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round" class="eco-gauge-needle"/>
+          <circle cx="442" cy="75" r="4" fill="#ffffff"/>
+          <text x="442" y="93" fill="#6ee7b7" font-size="7" font-weight="bold" text-anchor="middle">180 BAR</text>
+
+          <!-- Safety Status -->
+          <rect x="395" y="110" width="95" height="18" rx="4" fill="#022c22" stroke="#059669"/>
+          <circle cx="406" cy="119" r="3.5" fill="#10b981" class="eco-hazard"/>
+          <text x="448" y="122" fill="#a7f3d0" font-size="8" font-weight="black" text-anchor="middle">NORMAL SIKL ✅</text>
+        </svg>
+      </div>
+    `;
+  },
+
+  // 17. Shisha va Rangli Metallarni Qayta Eritish Pechi (Game 19)
+  renderSmeltingFurnace(title, subtitle) {
+    return `
+      <div class="relative w-full rounded-2xl overflow-hidden border border-amber-500/40 bg-slate-950 shadow-2xl p-2 select-none">
+        <div class="flex items-center justify-between px-2 py-1 mb-1 border-b border-slate-800 text-[10px] font-bold">
+          <div class="flex items-center gap-1.5 text-amber-400">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+            <span>INDUKSION ERITISH PECHI (660°C - 1400°C): ${title}</span>
+          </div>
+          <span class="text-slate-400 font-mono text-[9px]">${subtitle || "Shisha Kullet & Alyuminiy"}</span>
+        </div>
+
+        <svg viewBox="0 0 520 150" class="w-full h-auto overflow-hidden">
+          <defs>
+            <radialGradient id="moltenGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fef08a"/>
+              <stop offset="40%" stop-color="#f59e0b"/>
+              <stop offset="100%" stop-color="#dc2626"/>
+            </radialGradient>
+          </defs>
+
+          <!-- 1. INDUCTION CRUCIBLE (Left: X=30 to 190) -->
+          <rect x="40" y="30" width="140" height="105" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
+          <rect x="55" y="45" width="110" height="80" rx="6" fill="#0f172a" stroke="#b45309" stroke-width="1.5"/>
+          
+          <!-- Induction Copper Coils -->
+          <line x1="33" y1="50" x2="33" y2="120" stroke="#f59e0b" stroke-width="5" stroke-linecap="round"/>
+          <line x1="187" y1="50" x2="187" y2="120" stroke="#f59e0b" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="33" cy="65" r="4" fill="#ef4444" class="eco-hazard"/>
+          <circle cx="187" cy="65" r="4" fill="#ef4444" class="eco-hazard"/>
+
+          <!-- Molten Pool (Lava glow) -->
+          <rect x="62" y="75" width="96" height="45" rx="4" fill="url(#moltenGrad)" class="eco-flame1"/>
+          <!-- Rising Heat Waves -->
+          <path d="M75,70 Q80,50 85,70" stroke="#fef08a" stroke-width="1.5" fill="none" class="eco-st1"/>
+          <path d="M105,70 Q110,48 115,70" stroke="#f59e0b" stroke-width="1.5" fill="none" class="eco-st2"/>
+          <path d="M135,70 Q140,52 145,70" stroke="#f87171" stroke-width="1.5" fill="none" class="eco-st3"/>
+          <text x="110" y="105" fill="#ffffff" font-size="9" font-weight="black" text-anchor="middle">SUYUQ ALYUMINIY (660°C)</text>
+
+          <!-- 2. MOLTEN STREAM & SLAG SEPARATOR (Center: X=200 to 330) -->
+          <path d="M180,95 L260,95 L270,115" stroke="url(#moltenGrad)" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <rect x="230" y="40" width="80" height="40" rx="6" fill="#0f172a" stroke="#475569"/>
+          <text x="270" y="55" fill="#94a3b8" font-size="8" font-weight="bold" text-anchor="middle">SHLAK / IFLOSLIK</text>
+          <text x="270" y="70" fill="#38bdf8" font-size="8" font-weight="bold" text-anchor="middle">Ajratgich Filtr</text>
+
+          <!-- 3. INGOT CASTING MOLDS (Right: X=340 to 500) -->
+          <rect x="340" y="25" width="160" height="110" rx="8" fill="#090d16" stroke="#334155" stroke-width="1.5"/>
+          <text x="420" y="42" fill="#f59e0b" font-size="9" font-weight="black" text-anchor="middle">SOVUTISH & QUYMA QOLIPLARI</text>
+          
+          <!-- Moving Ingots -->
+          <g>
+            <rect x="355" y="65" width="40" height="22" rx="3" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1"/>
+            <text x="375" y="79" fill="#0f172a" font-size="7" font-weight="black" text-anchor="middle">INGOT #1</text>
+
+            <rect x="405" y="65" width="40" height="22" rx="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+            <text x="425" y="79" fill="#0f172a" font-size="7" font-weight="black" text-anchor="middle">INGOT #2</text>
+
+            <rect x="455" y="65" width="40" height="22" rx="3" fill="#94a3b8" stroke="#64748b" stroke-width="1"/>
+            <text x="475" y="79" fill="#ffffff" font-size="7" font-weight="black" text-anchor="middle">INGOT #3</text>
+          </g>
+
+          <rect x="360" y="105" width="120" height="18" rx="4" fill="#022c22" stroke="#10b981"/>
+          <text x="420" y="117" fill="#6ee7b7" font-size="8" font-weight="bold" text-anchor="middle">⚡ 95% ENERGIYA TEJALDI</text>
+        </svg>
+      </div>
+    `;
+  },
+
+  // 18. Zero Waste Yashil Xonadon Master (Game 20)
+  renderZeroWasteHome(title, subtitle) {
+    return `
+      <div class="relative w-full rounded-2xl overflow-hidden border border-emerald-500/40 bg-slate-950 shadow-2xl p-2 select-none">
+        <div class="flex items-center justify-between px-2 py-1 mb-1 border-b border-slate-800 text-[10px] font-bold">
+          <div class="flex items-center gap-1.5 text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span>ZERO WASTE YASHIL XONADON SIKLI: ${title}</span>
+          </div>
+          <span class="text-slate-400 font-mono text-[9px]">${subtitle || "100% Chiqindisiz Oila"}</span>
+        </div>
+
+        <svg viewBox="0 0 520 150" class="w-full h-auto overflow-hidden">
+          <!-- 1. ROOFTOP SOLAR ENERGY (Left: X=20 to 160) -->
+          <polygon points="20,60 90,20 160,60" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+          <g>
+            <rect x="45" y="35" width="30" height="16" fill="#1e3a8a" stroke="#38bdf8"/>
+            <rect x="85" y="35" width="30" height="16" fill="#1e3a8a" stroke="#38bdf8"/>
+            <rect x="125" y="35" width="20" height="16" fill="#1e3a8a" stroke="#38bdf8"/>
+          </g>
+          <text x="90" y="75" fill="#34d399" font-size="8" font-weight="bold" text-anchor="middle">QUYOSH PANELI ☀️</text>
+          
+          <!-- Home Walls -->
+          <rect x="35" y="80" width="110" height="55" fill="#0f172a" stroke="#334155"/>
+          <rect x="75" y="95" width="30" height="40" fill="#1e293b" stroke="#64748b"/>
+          <circle cx="100" cy="115" r="2" fill="#facc15"/>
+
+          <!-- 2. KITCHEN VERMICOMPOST & BIO-GUMUS (Center: X=180 to 330) -->
+          <rect x="180" y="25" width="150" height="110" rx="8" fill="#090d16" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="255" y="42" fill="#fbbf24" font-size="9" font-weight="black" text-anchor="middle">OSHXONA BOKASHI & KOMPOST</text>
+          
+          <!-- Compost Tank Layers -->
+          <rect x="200" y="55" width="110" height="50" rx="5" fill="#451a03" stroke="#78350f"/>
+          <line x1="200" y1="72" x2="310" y2="72" stroke="#92400e" stroke-dasharray="3,3"/>
+          <line x1="200" y1="88" x2="310" y2="88" stroke="#78350f" stroke-dasharray="3,3"/>
+          <text x="255" y="68" fill="#fef08a" font-size="7" font-weight="bold" text-anchor="middle">🌱 Organik qoldiqlar (Sabzavot po'sti)</text>
+          <text x="255" y="84" fill="#a7f3d0" font-size="7" font-weight="bold" text-anchor="middle">🪱 Bio-gumus & Kaliforniya chuvalchangi</text>
+          <text x="255" y="100" fill="#fed7aa" font-size="7" font-weight="bold" text-anchor="middle">🌿 Toza ozuqaviy kompost</text>
+
+          <text x="255" y="125" fill="#86efac" font-size="8" text-anchor="middle">Chiqindi miqdori: 0 kg (To'liq yopiq)</text>
+
+          <!-- 3. ZERO-PACKAGING PANTRY & CLOTH BAGS (Right: X=350 to 500) -->
+          <rect x="350" y="25" width="150" height="110" rx="8" fill="#0f172a" stroke="#06b6d4" stroke-width="1.5"/>
+          <text x="425" y="42" fill="#22d3ee" font-size="9" font-weight="black" text-anchor="middle">QADOQSIZ XARID (ZERO WASTE)</text>
+          
+          <!-- Jars -->
+          <g>
+            <rect x="365" y="60" width="22" height="35" rx="3" fill="#1e293b" stroke="#38bdf8"/>
+            <text x="376" y="80" fill="#f8fafc" font-size="7" text-anchor="middle">Don</text>
+
+            <rect x="395" y="55" width="22" height="40" rx="3" fill="#1e293b" stroke="#38bdf8"/>
+            <text x="406" y="80" fill="#f8fafc" font-size="7" text-anchor="middle">Mosh</text>
+
+            <rect x="425" y="60" width="22" height="35" rx="3" fill="#1e293b" stroke="#38bdf8"/>
+            <text x="436" y="80" fill="#f8fafc" font-size="7" text-anchor="middle">Guruch</text>
+
+            <!-- Cloth Bag -->
+            <path d="M460,65 Q475,55 490,65 L490,95 L460,95 Z" fill="#b45309" stroke="#f59e0b"/>
+            <path d="M470,65 Q475,52 480,65" stroke="#fef3c7" fill="none" stroke-width="1.5"/>
+            <text x="475" y="85" fill="#fef08a" font-size="6" font-weight="bold" text-anchor="middle">Eko-sumka</text>
+          </g>
+
+          <rect x="365" y="110" width="120" height="16" rx="4" fill="#042f2e" stroke="#0d9488"/>
+          <text x="425" y="122" fill="#5eead4" font-size="7" font-weight="black" text-anchor="middle">Plastik paketlar: 0 dona ✅</text>
+        </svg>
+      </div>
+    `;
+  },
+
+  // 19. Eko-Detektiv: Kriminalistik Tergov Laboratoriyasi (Game 21)
+  renderDetectiveInvestigation(title, subtitle) {
+    return `
+      <div class="relative w-full rounded-2xl overflow-hidden border border-indigo-500/40 bg-slate-950 shadow-2xl p-2 select-none">
+        <div class="flex items-center justify-between px-2 py-1 mb-1 border-b border-slate-800 text-[10px] font-bold">
+          <div class="flex items-center gap-1.5 text-indigo-400">
+            <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
+            <span>KRIMINALISTIK EKO-TERGOV: ${title}</span>
+          </div>
+          <span class="text-slate-400 font-mono text-[9px]">${subtitle || "Shahar Xaritasi & Daryo Tahlili"}</span>
+        </div>
+
+        <svg viewBox="0 0 520 150" class="w-full h-auto overflow-hidden">
+          <!-- 1. POLLUTED RIVER CANAL MAP (Left: X=20 to 220) -->
+          <rect x="20" y="25" width="200" height="110" rx="8" fill="#090d16" stroke="#4f46e5" stroke-width="1.5"/>
+          <!-- River Flow -->
+          <path d="M20,60 Q70,40 120,80 T220,70" stroke="#0284c7" stroke-width="20" fill="none" class="eco-pipe-flow"/>
+          <path d="M110,65 Q140,85 180,75" stroke="#7e22ce" stroke-width="8" fill="none" opacity="0.8" class="eco-b1"/>
+          
+          <!-- Illegal Discharge Pipe -->
+          <rect x="90" y="25" width="16" height="30" fill="#475569" stroke="#94a3b8"/>
+          <circle cx="98" cy="55" r="5" fill="#f43f5e" class="eco-hazard"/>
+          <text x="98" y="20" fill="#f43f5e" font-size="8" font-weight="black" text-anchor="middle">NOQONUNIY QUYILMA!</text>
+
+          <!-- Radar Scan Circle over the pipe -->
+          <circle cx="98" cy="55" r="14" fill="none" stroke="#f43f5e" stroke-width="1" class="eco-radar-circle"/>
+          <circle cx="98" cy="55" r="28" fill="none" stroke="#f43f5e" stroke-width="0.8" class="eco-radar-circle2"/>
+
+          <!-- 2. FORENSIC CLUE ANALYZER (Center: X=235 to 370) -->
+          <rect x="235" y="25" width="140" height="110" rx="8" fill="#0f172a" stroke="#818cf8" stroke-width="1.5"/>
+          <text x="305" y="42" fill="#c7d2fe" font-size="9" font-weight="black" text-anchor="middle">SPEKTRAL KIMYO TAHLILI</text>
+          
+          <!-- Spectral Graph Bars -->
+          <g transform="translate(250, 55)">
+            <rect x="0" y="25" width="12" height="35" fill="#f43f5e"/>
+            <text x="6" y="20" fill="#f43f5e" font-size="6" text-anchor="middle">Pb</text>
+
+            <rect x="18" y="10" width="12" height="50" fill="#f59e0b"/>
+            <text x="24" y="5" fill="#f59e0b" font-size="6" text-anchor="middle">Cd</text>
+
+            <rect x="36" y="35" width="12" height="25" fill="#10b981"/>
+            <text x="42" y="30" fill="#10b981" font-size="6" text-anchor="middle">pH</text>
+
+            <rect x="54" y="5" width="12" height="55" fill="#a855f7"/>
+            <text x="60" y="0" fill="#a855f7" font-size="6" text-anchor="middle">Hg</text>
+
+            <rect x="72" y="40" width="12" height="20" fill="#38bdf8"/>
+            <text x="78" y="35" fill="#38bdf8" font-size="6" text-anchor="middle">BOD</text>
+          </g>
+          <text x="305" y="125" fill="#fb7185" font-size="7" font-weight="bold" text-anchor="middle">Og'ir metallar konsentratsiyasi yuqori!</text>
+
+          <!-- 3. DETECTIVE MAGNIFYING LENS (Right: X=385 to 500) -->
+          <rect x="385" y="25" width="115" height="110" rx="8" fill="#090d16" stroke="#6366f1" stroke-width="1.5"/>
+          <text x="442" y="42" fill="#a5b4fc" font-size="8" font-weight="black" text-anchor="middle">DALILLAR DOSYESI</text>
+
+          <!-- Fingerprint & Clue Icon -->
+          <g transform="translate(442, 75)">
+            <circle cx="0" cy="0" r="22" fill="#1e1b4b" stroke="#818cf8" stroke-width="2"/>
+            <circle cx="0" cy="0" r="15" fill="none" stroke="#a5b4fc" stroke-dasharray="3,2"/>
+            <circle cx="0" cy="0" r="8" fill="none" stroke="#c7d2fe"/>
+            <circle cx="0" cy="0" r="3" fill="#f43f5e"/>
+            <!-- Magnifier handle -->
+            <line x1="16" y1="16" x2="28" y2="28" stroke="#818cf8" stroke-width="3" stroke-linecap="round"/>
+          </g>
+
+          <text x="442" y="118" fill="#e0e7ff" font-size="8" font-weight="bold" text-anchor="middle">Dastlabki dalil: 100%</text>
+        </svg>
+      </div>
+    `;
+  },
+
+  // 20. Kosmik Kema Resurslari & Yopiq Sikl (ECLSS) (Game 22)
+  renderSpaceEcosystem(title, subtitle) {
+    return `
+      <div class="relative w-full rounded-2xl overflow-hidden border border-cyan-500/40 bg-slate-950 shadow-2xl p-2 select-none">
+        <div class="flex items-center justify-between px-2 py-1 mb-1 border-b border-slate-800 text-[10px] font-bold">
+          <div class="flex items-center gap-1.5 text-cyan-400">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span>KOSMIK KEMA ECLSS HAYOT TAMINOTI: ${title}</span>
+          </div>
+          <span class="text-slate-400 font-mono text-[9px]">${subtitle || "O2 / H2O / Biomassa Yopiq Sikli"}</span>
+        </div>
+
+        <svg viewBox="0 0 520 150" class="w-full h-auto overflow-hidden">
+          <!-- Space Stars -->
+          <circle cx="45" cy="20" r="1" fill="#ffffff"/>
+          <circle cx="120" cy="35" r="1.5" fill="#38bdf8"/>
+          <circle cx="210" cy="18" r="1" fill="#ffffff"/>
+          <circle cx="340" cy="22" r="1.5" fill="#fef08a"/>
+          <circle cx="480" cy="30" r="1" fill="#ffffff"/>
+
+          <!-- 1. SABATIER CO2 -> O2 REGENERATOR (Left: X=25 to 175) -->
+          <rect x="25" y="25" width="150" height="110" rx="8" fill="#031525" stroke="#0ea5e9" stroke-width="1.5"/>
+          <text x="100" y="42" fill="#38bdf8" font-size="9" font-weight="black" text-anchor="middle">SABATIER CO2 -> OXYGEN LOOP</text>
+          
+          <!-- Circulating Gas loop -->
+          <circle cx="100" cy="78" r="26" fill="#082f49" stroke="#0284c7" stroke-width="2"/>
+          <circle cx="100" cy="78" r="22" fill="#0c4a6e"/>
+          <text x="100" y="74" fill="#67e8f9" font-size="10" font-weight="black" text-anchor="middle">O2</text>
+          <text x="100" y="87" fill="#bae6fd" font-size="7" font-weight="bold" text-anchor="middle">Regeneratsiya</text>
+          
+          <!-- Pipes -->
+          <path d="M50,78 L74,78" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" class="eco-pipe-flow"/>
+          <path d="M126,78 L150,78" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" class="eco-pipe-flow"/>
+          <text x="100" y="122" fill="#a5f3fc" font-size="8" text-anchor="middle">Kislorod balansi: 98% barqaror</text>
+
+          <!-- 2. SPIRULINA ALGAE PHOTOBIOREACTOR (Center: X=190 to 330) -->
+          <rect x="190" y="25" width="140" height="110" rx="8" fill="#022c22" stroke="#10b981" stroke-width="1.5"/>
+          <text x="260" y="42" fill="#34d399" font-size="9" font-weight="black" text-anchor="middle">SPIRULINA BIO-REAKTOR</text>
+          
+          <!-- Algae Cylinder -->
+          <rect x="225" y="52" width="70" height="55" rx="10" fill="#064e3b" stroke="#059669" stroke-width="1.5"/>
+          <circle cx="240" cy="68" r="3" fill="#86efac" class="eco-b1"/>
+          <circle cx="260" cy="85" r="4" fill="#a7f3d0" class="eco-b2"/>
+          <circle cx="275" cy="65" r="3" fill="#86efac" class="eco-b3"/>
+          <text x="260" y="78" fill="#ffffff" font-size="8" font-weight="black" text-anchor="middle">BIOMASSA</text>
+          <text x="260" y="90" fill="#6ee7b7" font-size="7" text-anchor="middle">Fotosintez</text>
+
+          <text x="260" y="122" fill="#6ee7b7" font-size="8" text-anchor="middle">CO2 yutish + Oziq-ovqat</text>
+
+          <!-- 3. WATER VACUUM DISTILLATION (Right: X=345 to 495) -->
+          <rect x="345" y="25" width="150" height="110" rx="8" fill="#082f49" stroke="#06b6d4" stroke-width="1.5"/>
+          <text x="420" y="42" fill="#22d3ee" font-size="9" font-weight="black" text-anchor="middle">VAKUUMLI SUV DISTILLYATORI</text>
+
+          <!-- Distiller tank -->
+          <rect x="375" y="55" width="90" height="48" rx="6" fill="#0e7490" stroke="#0891b2"/>
+          <path d="M380,85 Q420,70 460,85" fill="#38bdf8" opacity="0.7" class="eco-wave"/>
+          <text x="420" y="75" fill="#ffffff" font-size="8" font-weight="black" text-anchor="middle">ICHIMLIK SUVI</text>
+          <text x="420" y="88" fill="#cffafe" font-size="7" text-anchor="middle">Qayta tiklash: 93%</text>
+
+          <text x="420" y="122" fill="#67e8f9" font-size="8" text-anchor="middle">Nol isrof (Closed Cycle)</text>
+        </svg>
+      </div>
+    `;
+  },
+
+  // 21. Chiqindi Bozori & Eko-Investitsiya Birjasi (Game 23)
+  renderWasteMarketExchange(title, subtitle) {
+    return `
+      <div class="relative w-full rounded-2xl overflow-hidden border border-teal-500/40 bg-slate-950 shadow-2xl p-2 select-none">
+        <div class="flex items-center justify-between px-2 py-1 mb-1 border-b border-slate-800 text-[10px] font-bold">
+          <div class="flex items-center gap-1.5 text-teal-400">
+            <span class="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
+            <span>XOMASHYO BIRJASI & EKO-INVESTITSIYA: ${title}</span>
+          </div>
+          <span class="text-slate-400 font-mono text-[9px]">${subtitle || "PET / Alyuminiy / Karton Kotirovkasi"}</span>
+        </div>
+
+        <svg viewBox="0 0 520 150" class="w-full h-auto overflow-hidden">
+          <!-- 1. DYNAMIC STOCK MARKET GRAPH (Left: X=20 to 220) -->
+          <rect x="20" y="25" width="200" height="110" rx="8" fill="#090d16" stroke="#0d9488" stroke-width="1.5"/>
+          <text x="120" y="42" fill="#2dd4bf" font-size="9" font-weight="black" text-anchor="middle">IKKILAMCHI XOMASHYO INDEKSI</text>
+
+          <!-- Grid Lines -->
+          <line x1="35" y1="55" x2="205" y2="55" stroke="#1e293b" stroke-dasharray="2,2"/>
+          <line x1="35" y1="80" x2="205" y2="80" stroke="#1e293b" stroke-dasharray="2,2"/>
+          <line x1="35" y1="105" x2="205" y2="105" stroke="#1e293b" stroke-dasharray="2,2"/>
+
+          <!-- Dynamic Rising Green Trend Line -->
+          <polyline points="35,100 65,85 95,92 125,70 155,75 185,50 205,58" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="185" cy="50" r="4" fill="#34d399" class="eco-hazard"/>
+          <text x="185" y="42" fill="#34d399" font-size="7" font-weight="black" text-anchor="middle">+14% 📈</text>
+
+          <text x="75" y="122" fill="#99f6e4" font-size="7">PET: 4500 so'm/kg</text>
+          <text x="160" y="122" fill="#fde047" font-size="7">Al: 18000 so'm/kg</text>
+
+          <!-- 2. AUTOMATED LOGISTICS TRUCK (Center: X=235 to 370) -->
+          <rect x="235" y="25" width="140" height="110" rx="8" fill="#0f172a" stroke="#14b8a6" stroke-width="1.5"/>
+          <text x="305" y="42" fill="#5eead4" font-size="9" font-weight="black" text-anchor="middle">ZAVODGA YUKLASH LOGISTIKASI</text>
+
+          <!-- Delivery Truck -->
+          <g transform="translate(255, 60)">
+            <rect x="0" y="10" width="55" height="32" rx="3" fill="#0f766e" stroke="#14b8a6" stroke-width="1.5"/>
+            <rect x="55" y="18" width="22" height="24" rx="2" fill="#115e59" stroke="#14b8a6"/>
+            <rect x="62" y="21" width="12" height="10" rx="1" fill="#99f6e4"/>
+            <!-- Wheels -->
+            <circle cx="16" cy="45" r="6" fill="#1e293b" stroke="#042f2e" stroke-width="2" class="eco-spin"/>
+            <circle cx="44" cy="45" r="6" fill="#1e293b" stroke="#042f2e" stroke-width="2" class="eco-spin"/>
+            <circle cx="68" cy="45" r="6" fill="#1e293b" stroke="#042f2e" stroke-width="2" class="eco-spin"/>
+          </g>
+          <text x="305" y="125" fill="#a7f3d0" font-size="7" font-weight="bold" text-anchor="middle">To'g'ridan-to'g'ri qayta ishlash</text>
+
+          <!-- 3. ECO-COIN MINT (Right: X=385 to 500) -->
+          <rect x="385" y="25" width="115" height="110" rx="8" fill="#090d16" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="442" y="42" fill="#fcd34d" font-size="8" font-weight="black" text-anchor="middle">DAROMAD & INVESTITSIYA</text>
+
+          <!-- Big Rotating Gold Coin -->
+          <g transform="translate(442, 75)">
+            <circle cx="0" cy="0" r="22" fill="#78350f" stroke="#f59e0b" stroke-width="3"/>
+            <circle cx="0" cy="0" r="17" fill="#b45309" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="0" y="6" fill="#fef08a" font-size="14" font-weight="black" text-anchor="middle" class="eco-coin-spin">ECO</text>
+          </g>
+
+          <text x="442" y="120" fill="#fef08a" font-size="8" font-weight="bold" text-anchor="middle">Yashil Foyda: +24%</text>
+        </svg>
+      </div>
+    `;
+  },
+
+
   // Asosiy chaqiruvchi metod
   getSceneHtml(item, gameId) {
     if (!item) return '';
@@ -1102,6 +1561,18 @@ const Eco2DAnimator = {
         return this.renderLogisticsTruck(title, subtitle);
       case 'legal':
         return this.renderLegalScale(title, subtitle);
+      case 'compactor_shredder':
+        return this.renderCompactorShredder(title, subtitle);
+      case 'smelting_furnace':
+        return this.renderSmeltingFurnace(title, subtitle);
+      case 'zerowaste_home':
+        return this.renderZeroWasteHome(title, subtitle);
+      case 'detective_investigation':
+        return this.renderDetectiveInvestigation(title, subtitle);
+      case 'space_ecosystem':
+        return this.renderSpaceEcosystem(title, subtitle);
+      case 'waste_market_exchange':
+        return this.renderWasteMarketExchange(title, subtitle);
       default:
         return this.renderChemicalElectrolysis(title, subtitle);
     }

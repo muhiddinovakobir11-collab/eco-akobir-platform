@@ -556,6 +556,11 @@ function renderDetectiveUI() {
         <h3 class="text-xl sm:text-2xl font-black text-white mb-2">${currentCase.title}</h3>
         <p class="text-xs sm:text-sm text-slate-300 mb-4 leading-relaxed">${currentCase.desc}</p>
 
+        <!-- 2D DETEKTIV ANIMATSION XARITASI VA LAB-SXEMASI -->
+        <div class="mb-4 rounded-2xl overflow-hidden border border-indigo-500/30 bg-slate-950 shadow-inner">
+          ${window.Eco2DAnimator ? window.Eco2DAnimator.getSceneHtml(currentCase, 21) : ''}
+        </div>
+
         <!-- Crime Scene Clue Box -->
         <div class="bg-slate-950 p-4 rounded-2xl border border-rose-500/30 flex items-start gap-3">
           <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg shrink-0">
@@ -833,6 +838,11 @@ function renderSpaceshipUI() {
         </div>
 
         <!-- 3 Meters -->
+        <!-- 2D KOSMIK ECLSS YOPIQ SIKL ANIMATSIYASI -->
+        <div class="mb-4 rounded-2xl overflow-hidden border border-cyan-500/30 bg-slate-950 shadow-inner">
+          ${window.Eco2DAnimator ? window.Eco2DAnimator.getSceneHtml(waste, 22) : ''}
+        </div>
+
         <div class="grid grid-cols-3 gap-3 text-center">
           <!-- Oxygen -->
           <div class="bg-slate-950 p-3 rounded-2xl border ${activeSpaceship.oxygen < 30 ? 'border-rose-500 animate-pulse' : 'border-slate-800'}">
@@ -1110,6 +1120,11 @@ function renderWasteMarketUI() {
             </span>
           </div>
         </div>
+      </div>
+
+      <!-- 2D BIRJA VA INVESTITSIYA ANIMATSIYASI -->
+      <div class="rounded-2xl overflow-hidden border border-teal-500/30 bg-slate-950 shadow-inner mb-4">
+        ${window.Eco2DAnimator ? window.Eco2DAnimator.getSceneHtml({ title: "Yashil Chiqindi Birjasi", param: "PET / Alyuminiy / Karton Savdosi" }, 23) : ''}
       </div>
 
       <!-- 1. OM BOR: Saralash va Yuvish -->
@@ -1573,6 +1588,11 @@ function renderStandardGameStep() {
       </div>
 
       <h3 class="text-xl font-black text-white mb-2">${item.title}</h3>
+      <!-- 2D ILMIY-ANIMATSION SXEMA (Savol Mazmuni Animatsiyasi) -->
+      <div id="new-pack-anim-scene" class="mb-4 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 shadow-inner">
+        ${window.Eco2DAnimator ? window.Eco2DAnimator.getSceneHtml(item, activeStandardSession.gameId) : ''}
+      </div>
+
       <p class="text-sm text-slate-300 font-bold mb-6 text-left leading-relaxed">${item.question}</p>
 
       <div class="space-y-3 mb-6 text-left">
