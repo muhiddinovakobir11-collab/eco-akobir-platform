@@ -9,6 +9,8 @@ const DEFAULT_ECO_VIDEOS = [
     id: "vid-1",
     title: "Chiqindini qayta ishlash bo'yicha ilmiy izlanishlar va amaliy tajribalar",
     category: "Saralash va Qayta ishlash",
+    categoryKey: "saralash",
+    tags: ["chiqindi", "saralash", "qayta ishlash", "ekologiya", "utilizatsiya"],
     duration: "16:45",
     xp: 75,
     videoUrl: "https://www.youtube.com/embed/M1ayYA0JPAo",
@@ -22,6 +24,8 @@ const DEFAULT_ECO_VIDEOS = [
     id: "vid-2",
     title: "Sanoat Korxonasida Ekologik Audit (ISO 14001:2015 Xalqaro Standarti)",
     category: "Ekologik Audit",
+    categoryKey: "audit",
+    tags: ["audit", "ekologik audit", "iso 14001", "standart", "sanoat", "nazorat"],
     duration: "22:15",
     xp: 85,
     videoUrl: "https://www.youtube.com/embed/1fQdXbinIOk",
@@ -35,6 +39,8 @@ const DEFAULT_ECO_VIDEOS = [
     id: "vid-3",
     title: "Plastik Chiqindilardan Piroliz Usulida Sintetik Neft va Yoqilg'i Olish",
     category: "Qayta ishlash",
+    categoryKey: "piroliz",
+    tags: ["piroliz", "neft", "plastik", "yoqilgi", "sintetik", "reaktor"],
     duration: "12:30",
     xp: 80,
     videoUrl: "https://www.youtube.com/embed/RIT3UyoDE9Q",
@@ -48,6 +54,8 @@ const DEFAULT_ECO_VIDEOS = [
     id: "vid-4",
     title: "O'zbekistonda Biogaz Qurilmasi Ishlab Chiqarishi va Metan Reaktori",
     category: "Biotexnologiya",
+    categoryKey: "biogaz",
+    tags: ["biogaz", "biotexnologiya", "metan", "organik", "reaktor", "samarqand"],
     duration: "09:40",
     xp: 75,
     videoUrl: "https://www.youtube.com/embed/mOWCiFZ4Eck",
@@ -61,6 +69,8 @@ const DEFAULT_ECO_VIDEOS = [
     id: "vid-5",
     title: "Tibbiyot Chiqindilarini 134°C Avtoklavda Zararsizlantirish va Sterilizatsiya",
     category: "Biologik Xavfsizlik",
+    categoryKey: "tibbiyot",
+    tags: ["tibbiyot", "xavfli", "avtoklav", "sterilizatsiya", "dezinfeksiya", "biologik"],
     duration: "11:20",
     xp: 75,
     videoUrl: "https://www.youtube.com/embed/yZ7Lmbjsx18",
@@ -74,6 +84,8 @@ const DEFAULT_ECO_VIDEOS = [
     id: "vid-6",
     title: "Zamonaviy Sanitar Chiqindi Poligonlari Qurilishi: Geomembrana va Filtrat Boshqaruvi",
     category: "Muhandislik",
+    categoryKey: "poligon",
+    tags: ["poligon", "geomembrana", "filtrat", "muhandislik", "sanitar", "metan"],
     duration: "14:10",
     xp: 85,
     videoUrl: "https://www.youtube.com/embed/pC1u6rJkyzA",
@@ -87,6 +99,8 @@ const DEFAULT_ECO_VIDEOS = [
     id: "vid-7",
     title: "Chiqindilarni Qayta Ishlash: Sirkulyar Iqtisodiyot Tamoyillari",
     category: "Saralash va Qayta ishlash",
+    categoryKey: "saralash",
+    tags: ["sirkulyar", "iqtisodiyot", "saralash", "qayta ishlash", "ekologiya"],
     duration: "10:50",
     xp: 70,
     videoUrl: "https://www.youtube.com/embed/UudZ0G-4abo",
@@ -100,6 +114,8 @@ const DEFAULT_ECO_VIDEOS = [
     id: "vid-8",
     title: "Payariqlik fuqaro o'z xonadonida biogaz ishlab chiqarmoqda",
     category: "Biotexnologiya",
+    categoryKey: "biogaz",
+    tags: ["biogaz", "xonadon", "metan", "payariq", "samarqand", "tajriba"],
     duration: "08:15",
     xp: 70,
     videoUrl: "https://www.youtube.com/embed/EEtH5RaTKvA",
@@ -111,21 +127,38 @@ const DEFAULT_ECO_VIDEOS = [
   },
   {
     id: "vid-9",
-    title: "Dozimetrik asboblar yordamida atrof muhitni radiatsya ta'sirni aniqlash",
-    category: "Radiatsiya & Ekologik Nazorat",
+    title: "Dozimetrik asboblar yordamida atrof muhitni radiatsiya ta'sirini aniqlash",
+    category: "Radiatsiya & Nazorat",
+    categoryKey: "radiatsiya",
+    tags: ["radiatsiya", "radiatsya", "dozimetr", "dozimetriya", "dozimetrik", "geyger", "geiger", "rentgen", "nurlanish", "fon", "atrof muhit", "asboblar", "radiascan", "fnirsi"],
     duration: "11:45",
     xp: 85,
-    videoUrl: "https://www.youtube.com/embed/hUHBmDYt9S0",
-    youtubeId: "hUHBmDYt9S0",
-    thumbnail: "https://img.youtube.com/vi/hUHBmDYt9S0/hqdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/VfH12AM2fD8",
+    youtubeId: "VfH12AM2fD8",
+    thumbnail: "https://img.youtube.com/vi/VfH12AM2fD8/hqdefault.jpg",
     channel: "Ekologik Nazorat va Dozimetriya",
-    desc: "Dozimetr va radiometrlar (Geyger-Myuller hisoblagichi) yordamida atrof-muhit, tuproq, qurilish materiallari va ochiq hududlarda tabiiy radiatsiya fonini (mZv/soat, mkR/soat) to'g'ri o'lchash, radiatsiyaviy xavfsizlik me'yorlarini aniqlash bo'yicha to'liq amaliy videodars.",
+    desc: "Dozimetr va radiometrlar (Geyger-Myuller hisoblagichi, RadiaScan) yordamida atrof-muhit, tuproq, qurilish materiallari va ochiq hududlarda tabiiy radiatsiya fonini (mZv/soat, mkR/soat) to'g'ri o'lchash, xavfsizlik me'yorlarini aniqlash bo'yicha to'liq amaliy videodars.",
     views: 4210
+  },
+  {
+    id: "vid-10",
+    title: "Dozimetr (Geiger counter) yordamida radiatsiyani o'lchash amaliyoti (FNIRSI GC-01)",
+    category: "Radiatsiya & Nazorat",
+    categoryKey: "radiatsiya",
+    tags: ["radiatsiya", "radiatsya", "dozimetr", "dozimetriya", "fnirsi", "geiger", "geyger", "radioaktiv", "rentgen", "nurlanish", "o'lchash"],
+    duration: "14:20",
+    xp: 90,
+    videoUrl: "https://www.youtube.com/embed/4GTz3UWipXo",
+    youtubeId: "4GTz3UWipXo",
+    thumbnail: "https://img.youtube.com/vi/4GTz3UWipXo/hqdefault.jpg",
+    channel: "Radiatsion Xavfsizlik & Monitoring",
+    desc: "Zamonaviy raqamli portativ dozimetr va Geyger hisoblagichi yordamida turli buyumlar, toshlar va atrof-muhitning radioaktiv nurlanish darajasini tekshirish hamda radiatsiyaviy xavfsizlikni baholash bo'yicha vizual amaliyot.",
+    views: 3890
   }
 ];
 
 const EcoVideoManager = {
-  STORAGE_KEY: 'eco_akobir_videos_v4',
+  STORAGE_KEY: 'eco_akobir_videos_v6',
   WATCHED_KEY: 'eco_akobir_watched_videos',
 
   // YouTube havolasini tozalab to'g'ri embed URL ga aylantirish
@@ -153,24 +186,35 @@ const EcoVideoManager = {
 
   getVideos() {
     try {
-      // Eski buzilgan keshni tozalash
-      localStorage.removeItem('eco_akobir_videos');
-      localStorage.removeItem('eco_akobir_videos_v2');
-      localStorage.removeItem('eco_akobir_videos_v3');
+      // Eski buzilgan kesh versiyalarini tozalash
+      ['eco_akobir_videos', 'eco_akobir_videos_v2', 'eco_akobir_videos_v3', 'eco_akobir_videos_v4', 'eco_akobir_videos_v5'].forEach(k => {
+        try { localStorage.removeItem(k); } catch(e){}
+      });
 
       const saved = localStorage.getItem(this.STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // Barcha default videolar keshda ham bo'lishini ta'minlash
+          let updated = false;
+          // Barcha standart videolar keshda ham bo'lishini 100% kafolatlash
           DEFAULT_ECO_VIDEOS.forEach(defVid => {
-            if (!parsed.some(v => v.youtubeId === defVid.youtubeId || v.title === defVid.title)) {
+            const exists = parsed.some(v => v.id === defVid.id || v.youtubeId === defVid.youtubeId || (v.title && v.title.toLowerCase() === defVid.title.toLowerCase()));
+            if (!exists) {
               parsed.push(defVid);
+              updated = true;
             }
           });
+          if (updated) {
+            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(parsed));
+          }
           return parsed;
         }
       }
+    } catch (e) {}
+
+    // Agar kesh bo'lmasa, standart ro'yxatni saqlab qaytarish
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(DEFAULT_ECO_VIDEOS));
     } catch (e) {}
     return [...DEFAULT_ECO_VIDEOS];
   },
@@ -179,7 +223,7 @@ const EcoVideoManager = {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(videos));
     } catch (e) {}
-    this.renderCatalog();
+    this.renderCatalog(currentVideoCatFilter, currentVideoSearchQuery);
   },
 
   getWatchedList() {
@@ -241,29 +285,78 @@ const EcoVideoManager = {
     const container = document.getElementById('videos-grid-container');
     if (!container) return;
 
-    let list = this.getVideos();
+    const allVideos = this.getVideos();
+    let list = [...allVideos];
 
-    if (filterCategory !== 'all') {
-      list = list.filter(v => v.category === filterCategory || v.category.toLowerCase().includes(filterCategory.toLowerCase()));
+    // 1. Kategoriya bo'yicha saralash
+    if (filterCategory && filterCategory !== 'all') {
+      const fLower = filterCategory.toLowerCase();
+      list = list.filter(v => {
+        const cat = (v.category || '').toLowerCase();
+        const catKey = (v.categoryKey || '').toLowerCase();
+        const tags = (v.tags || []).map(t => t.toLowerCase());
+        return cat.includes(fLower) || catKey.includes(fLower) || tags.includes(fLower);
+      });
     }
 
-    if (searchQuery.trim() !== '') {
-      const q = searchQuery.toLowerCase();
-      list = list.filter(v => v.title.toLowerCase().includes(q) || v.desc.toLowerCase().includes(q));
+    // 2. Kuchli va qulay qidiruv (Search) — tinish belgilarisiz, har bir so'z bo'yicha moslashuvchan
+    if (searchQuery && searchQuery.trim() !== '') {
+      // Tinish belgilari (&, +, -, /, vergul, nuqta)ni bo'sh joyga aylantirish
+      const rawQ = searchQuery.toLowerCase().trim();
+      const cleanQ = rawQ.replace(/[&,+\-_:;!?*()\[\]\/\\#@]/g, ' ').replace(/\s+/g, ' ').trim();
+      const tokens = cleanQ.split(' ').filter(t => t.length > 1);
+
+      list = list.filter(v => {
+        const fullContent = `${v.title || ''} ${v.desc || ''} ${v.category || ''} ${v.channel || ''} ${(v.tags || []).join(' ')}`.toLowerCase();
+        
+        // Agar to'liq qidiruv matni to'g'ridan-to'g'ri mavjud bo'lsa
+        if (fullContent.includes(rawQ) || fullContent.includes(cleanQ)) return true;
+
+        // So'zlar bo'yicha moslik (kamida 1 ta kalit so'z yoki ildiz mos kelsa)
+        if (tokens.length > 0) {
+          const matchesAny = tokens.some(tok => {
+            const stem = tok.length > 5 ? tok.slice(0, -2) : tok;
+            return fullContent.includes(tok) || fullContent.includes(stem);
+          });
+          return matchesAny;
+        }
+        return false;
+      });
     }
 
+    // Statistika paneli
     const watchedCount = this.getWatchedList().length;
     const statsEl = document.getElementById('videos-stats-count');
     if (statsEl) {
-      statsEl.textContent = `${list.length} ta dars (Ko'rilgan: ${watchedCount} ta)`;
+      if (list.length === allVideos.length) {
+        statsEl.textContent = `${list.length} ta dars (Ko'rilgan: ${watchedCount} ta)`;
+      } else {
+        statsEl.textContent = `${list.length} ta dars (${allVideos.length} tadan, Ko'rilgan: ${watchedCount} ta)`;
+      }
     }
 
+    // Qidiruvni tozalash tugmasini ko'rsatish/yashirish
+    const clearBtn = document.getElementById('clear-video-search-btn');
+    if (clearBtn) {
+      if (searchQuery && searchQuery.trim() !== '') {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+    }
+
+    // Bo'sh holat (Mos video topilmaganda)
     if (list.length === 0) {
       container.innerHTML = `
-        <div class="col-span-full py-12 text-center bg-slate-900/50 rounded-3xl border border-slate-800 p-8">
-          <i class="fa-solid fa-video-slash text-4xl text-slate-600 mb-3"></i>
+        <div class="col-span-full py-12 text-center bg-slate-900/50 rounded-3xl border border-slate-800 p-8 shadow-inner animate-fade-in">
+          <i class="fa-solid fa-video-slash text-5xl text-slate-600 mb-3 block"></i>
           <h4 class="text-base font-bold text-white mb-1">Mos video darslar topilmadi</h4>
-          <p class="text-xs text-slate-400">Qidiruv so'zini o'zgartiring yoki filtrlarni tozalang.</p>
+          <p class="text-xs text-slate-400 mb-4 max-w-md mx-auto">
+            "<span class="text-amber-400 font-bold">${searchQuery || filterCategory}</span>" so'zi bo'yicha hech qanday dars chiqmadi. Filtrlarni tozalab, barcha mavjud videolarni ko'rishingiz mumkin.
+          </p>
+          <button onclick="resetVideoFilters()" class="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-emerald-500/20 transition-all inline-flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95">
+            <i class="fa-solid fa-rotate-left"></i> Filtrlarni tozalash (Barcha ${allVideos.length} ta darsni ko'rish)
+          </button>
         </div>
       `;
       return;
@@ -271,9 +364,10 @@ const EcoVideoManager = {
 
     container.innerHTML = list.map(video => {
       const watched = this.isWatched(video.id);
+      const isRadiation = (video.category || '').toLowerCase().includes('radiat');
 
       return `
-        <div class="bg-slate-900/90 border ${watched ? 'border-emerald-500/40' : 'border-slate-800'} hover:border-emerald-500/70 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between group">
+        <div class="bg-slate-900/90 border ${isRadiation ? 'border-amber-500/40 hover:border-amber-400' : (watched ? 'border-emerald-500/40' : 'border-slate-800')} hover:border-emerald-500/70 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between group">
           
           <!-- Thumbnail & Play Button -->
           <div onclick="EcoVideoManager.openPlayerModal('${video.id}')" class="relative h-44 sm:h-48 overflow-hidden cursor-pointer bg-slate-950">
@@ -281,8 +375,8 @@ const EcoVideoManager = {
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
             
             <!-- Category Badge -->
-            <span class="absolute top-3 left-3 text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-slate-950/85 backdrop-blur-md text-emerald-400 border border-emerald-500/30 shadow-md">
-              ${video.category}
+            <span class="absolute top-3 left-3 text-[10px] font-black uppercase px-2.5 py-1 rounded-full ${isRadiation ? 'bg-amber-950/90 text-amber-300 border border-amber-500/40' : 'bg-slate-950/85 text-emerald-400 border border-emerald-500/30'} backdrop-blur-md shadow-md flex items-center gap-1">
+              ${isRadiation ? '<i class="fa-solid fa-radiation text-amber-400"></i>' : ''} ${video.category}
             </span>
 
             <!-- Duration Badge -->
@@ -292,8 +386,8 @@ const EcoVideoManager = {
 
             <!-- Center Play Icon -->
             <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-12 h-12 rounded-2xl bg-red-600/90 hover:bg-red-500 text-white flex items-center justify-center text-lg shadow-xl shadow-red-600/40 group-hover:scale-115 transition-all duration-300">
-                <i class="fa-brands fa-youtube ml-0.5 text-2xl"></i>
+              <div class="w-12 h-12 rounded-2xl ${isRadiation ? 'bg-amber-500 text-slate-950 shadow-amber-500/40' : 'bg-red-600/90 text-white shadow-red-600/40'} hover:scale-115 flex items-center justify-center text-lg shadow-xl transition-all duration-300">
+                <i class="fa-solid fa-play ml-0.5 text-lg"></i>
               </div>
             </div>
 
@@ -325,7 +419,7 @@ const EcoVideoManager = {
                 <i class="fa-solid fa-bolt"></i> +${video.xp} XP
               </span>
 
-              <button onclick="EcoVideoManager.openPlayerModal('${video.id}')" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+              <button onclick="EcoVideoManager.openPlayerModal('${video.id}')" class="px-3.5 py-1.5 rounded-xl ${isRadiation ? 'bg-amber-500/20 text-amber-300 hover:bg-amber-400 hover:text-slate-950 border border-amber-500/30' : 'bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-white'} text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
                 <i class="fa-solid fa-play text-[10px]"></i>
                 <span>Tomosha qilish</span>
               </button>
@@ -447,7 +541,7 @@ const EcoVideoManager = {
     if (window.ecoAudio) window.ecoAudio.playSuccess();
 
     this.closePlayerModal();
-    this.renderCatalog();
+    this.renderCatalog(currentVideoCatFilter, currentVideoSearchQuery);
   }
 };
 
@@ -459,11 +553,15 @@ let currentVideoSearchQuery = '';
 window.filterVideosByCategory = function(category, btnElement) {
   currentVideoCatFilter = category;
   document.querySelectorAll('.video-filter-btn').forEach(btn => {
-    btn.classList.remove('active-filter', 'bg-emerald-500', 'text-white', 'border-emerald-500');
+    btn.classList.remove('active-filter', 'bg-emerald-500', 'text-white', 'border-emerald-500', 'bg-amber-500', 'text-slate-950');
     btn.classList.add('bg-slate-800/80', 'text-slate-300', 'border-slate-700/80');
   });
   if (btnElement) {
-    btnElement.classList.add('active-filter', 'bg-emerald-500', 'text-white', 'border-emerald-500');
+    if (category === 'Radiatsiya') {
+      btnElement.classList.add('active-filter', 'bg-amber-500', 'text-slate-950', 'border-amber-400');
+    } else {
+      btnElement.classList.add('active-filter', 'bg-emerald-500', 'text-white', 'border-emerald-500');
+    }
     btnElement.classList.remove('bg-slate-800/80', 'text-slate-300', 'border-slate-700/80');
   }
   if (window.EcoVideoManager) {
@@ -477,6 +575,23 @@ window.handleVideoSearch = function(query) {
   if (window.EcoVideoManager) {
     window.EcoVideoManager.renderCatalog(currentVideoCatFilter, currentVideoSearchQuery);
   }
+};
+
+window.clearVideoSearch = function() {
+  const inp = document.getElementById('videos-search-input');
+  if (inp) inp.value = '';
+  const clearBtn = document.getElementById('clear-video-search-btn');
+  if (clearBtn) clearBtn.classList.add('hidden');
+  currentVideoSearchQuery = '';
+  if (window.EcoVideoManager) {
+    window.EcoVideoManager.renderCatalog(currentVideoCatFilter, '');
+  }
+};
+
+window.resetVideoFilters = function() {
+  window.clearVideoSearch();
+  const allBtn = document.querySelector('.video-filter-btn');
+  window.filterVideosByCategory('all', allBtn);
 };
 
 window.openVideoPlayerModal = function(id) {

@@ -776,15 +776,18 @@
           <button onclick="filterVideosByCategory('Biologik Xavfsizlik', this)" class="video-filter-btn px-3.5 py-1.5 rounded-xl font-bold bg-slate-800/80 text-slate-300 border border-slate-700/80 hover:border-rose-500 transition-all cursor-pointer">
             Tibbiyot Chiqindilari
           </button>
-          <button onclick="filterVideosByCategory('Radiatsiya', this)" class="video-filter-btn px-3.5 py-1.5 rounded-xl font-bold bg-slate-800/80 text-amber-300 border border-slate-700/80 hover:border-amber-400 transition-all cursor-pointer">
-            ☢️ Radiatsiya & Dozimetriya
+          <button onclick="filterVideosByCategory('Radiatsiya', this)" class="video-filter-btn px-3.5 py-1.5 rounded-xl font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500 hover:text-slate-950 transition-all cursor-pointer whitespace-nowrap shadow-sm flex items-center gap-1.5">
+            <i class="fa-solid fa-radiation text-amber-400"></i> Radiatsiya & Dozimetriya
           </button>
         </div>
 
-        <!-- Search Input -->
-        <div class="relative w-full md:w-72">
+        <!-- Search Input with Clear Button -->
+        <div class="relative w-full md:w-80">
           <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
-          <input type="text" id="videos-search-input" oninput="handleVideoSearch(this.value)" placeholder="Video darsni qidirish..." class="w-full bg-slate-950 border border-slate-800 pl-9 pr-4 py-2 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors">
+          <input type="text" id="videos-search-input" oninput="handleVideoSearch(this.value)" placeholder="Qidiruv: radiatsiya, dozimetr, audit..." class="w-full bg-slate-950 border border-slate-800 pl-9 pr-8 py-2 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors">
+          <button id="clear-video-search-btn" onclick="clearVideoSearch()" class="hidden absolute right-3 top-2.5 text-slate-400 hover:text-white text-xs cursor-pointer" title="Tozalash">
+            <i class="fa-solid fa-circle-xmark"></i>
+          </button>
         </div>
       </div>
 
@@ -1150,9 +1153,9 @@
   <script src="games-catalog-data.js?v=26"></script>
   <script src="extra-games.js?v=26"></script>
   <script src="new-games-pack.js?v=26"></script>
-  <script src="video-manager.js?v=26"></script>
+  <script src="video-manager.js?v=27"></script>
   <script src="eco-battle-arena.js?v=26"></script>
   <script src="device-adaptive.js?v=26"></script>
-  <script src="app.js?v=26"></script>
+  <script src="app.js?v=27"></script>
 </body>
 </html>
