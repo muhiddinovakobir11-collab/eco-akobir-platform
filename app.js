@@ -990,7 +990,7 @@ function quickLaunchGame(gameId) {
   }
 }
 
-// Apple Motion Style 5-Second Splash Controller
+// Apple Motion Style Splash Controller (Qotib qolmaslik kafolatlangan)
 let splashTimeout = null;
 let splashInterval = null;
 
@@ -1004,23 +1004,24 @@ function initAppleSplash() {
     return;
   }
 
-  // Smoothly fill bar across 5 seconds
+  // Smoothly fill bar across 2.5 seconds
   setTimeout(() => {
     if (bar) bar.style.width = '100%';
-  }, 100);
+  }, 50);
 
-  let secondsLeft = 5;
+  let secondsLeft = 2;
   splashInterval = setInterval(() => {
     secondsLeft--;
-    if (countdown) countdown.textContent = `${secondsLeft}s`;
+    if (countdown && secondsLeft >= 0) countdown.textContent = `${secondsLeft}s`;
     if (secondsLeft <= 0) {
       clearInterval(splashInterval);
+      dismissAppleSplash();
     }
   }, 1000);
 
   splashTimeout = setTimeout(() => {
     dismissAppleSplash();
-  }, 5000);
+  }, 2500);
 }
 
 function dismissAppleSplash() {
@@ -1031,16 +1032,21 @@ function dismissAppleSplash() {
   if (splash) {
     splash.classList.add('opacity-0', 'pointer-events-none');
     setTimeout(() => {
-      splash.remove();
+      if (splash.parentNode) splash.parentNode.removeChild(splash);
       checkUserAuth();
-    }, 1000);
+    }, 400);
   } else {
     checkUserAuth();
   }
 }
+window.initAppleSplash = initAppleSplash;
+window.dismissAppleSplash = dismissAppleSplash;
 
-// Global Initialization
-window.addEventListener('DOMContentLoaded', () => {
+// Global Initialization (DOM tayyorligini darhol tekshirish)
+function bootApp() {
+  if (window._appBooted) return;
+  window._appBooted = true;
+
   if (typeof loadEcoConfig === 'function') loadEcoConfig();
   initAppleSplash();
   updateProfileHeaderUI();
@@ -1073,7 +1079,17 @@ window.addEventListener('DOMContentLoaded', () => {
       renderModulesCatalog(playerProfile.selectedCategory || 'all', e.target.value);
     });
   }
-});
+}
+
+window.bootApp = bootApp;
+
+// DOMContentLoaded kutish va readyState tekshirish
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootApp);
+} else {
+  bootApp();
+}
+window.addEventListener('load', bootApp);
 
 // 10. Asoschi Akobir Aloqa Modali
 function openFounderModal() {

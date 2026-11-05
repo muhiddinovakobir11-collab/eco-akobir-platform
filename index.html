@@ -253,6 +253,54 @@
     </div>
   </div>
 
+  <!-- Inline Instant Splash Controller (Qotib qolishdan 100% kafolatlangan himoya) -->
+  <script>
+    (function() {
+      window.dismissAppleSplash = function() {
+        var s = document.getElementById('apple-splash-screen');
+        if (s) {
+          s.style.opacity = '0';
+          s.style.pointerEvents = 'none';
+          setTimeout(function() {
+            if (s && s.parentNode) s.parentNode.removeChild(s);
+            if (typeof window.checkUserAuth === 'function') window.checkUserAuth();
+          }, 400);
+        }
+        try { sessionStorage.setItem('eco_splash_shown', 'true'); } catch(e) {}
+      };
+
+      // Sessiyada bir marta ko'rilgan bo'lsa darhol yopish
+      try {
+        if (sessionStorage.getItem('eco_splash_shown')) {
+          var s = document.getElementById('apple-splash-screen');
+          if (s) s.style.display = 'none';
+          return;
+        }
+      } catch(e) {}
+
+      // Taymer va progress animatsiyasi (2.5 sekund)
+      var bar = document.getElementById('splash-progress-bar');
+      var count = document.getElementById('splash-countdown');
+      if (bar) {
+        setTimeout(function() { bar.style.width = '100%'; }, 50);
+      }
+      var sec = 2;
+      var splashTimer = setInterval(function() {
+        sec--;
+        if (count && sec >= 0) count.textContent = sec + 's';
+        if (sec <= 0) {
+          clearInterval(splashTimer);
+          window.dismissAppleSplash();
+        }
+      }, 1000);
+
+      // Mutlaq kafolat: 2.8 sekundda avtomatik ochiladi
+      setTimeout(function() {
+        window.dismissAppleSplash();
+      }, 2800);
+    })();
+  </script>
+
   <!-- Toast Alert -->
   <div id="global-toast" class="hidden fixed top-5 right-5 z-40 bg-slate-900 border-2 border-emerald-500/80 text-white px-5 py-3 rounded-2xl shadow-2xl text-sm font-semibold flex items-center shadow-emerald-950/50">
     Xabar matni
