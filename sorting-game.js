@@ -159,6 +159,7 @@ function stopSortingGameTimer() {
   }
 }
 window.stopSortingGameTimer = stopSortingGameTimer;
+window.gameSession = gameSession;
 
 function initSortingGame() {
   const container = document.getElementById('sorting-game-container');
@@ -167,12 +168,36 @@ function initSortingGame() {
   renderSortingGameUI(container);
 }
 
+function getActiveSortingContainer() {
+  const dynamic = document.getElementById('game-dynamic-content');
+  if (dynamic && dynamic.offsetParent !== null && dynamic.querySelector('#session-playfield')) {
+    return dynamic;
+  }
+  const sortingCont = document.getElementById('sorting-game-container');
+  if (sortingCont && sortingCont.offsetParent !== null && sortingCont.querySelector('#session-playfield')) {
+    return sortingCont;
+  }
+  return currentSortingContainer || dynamic || sortingCont || document;
+}
+
 function getSortingScopeEl(id) {
-  if (currentSortingContainer) {
+  const active = getActiveSortingContainer();
+  if (active && active.querySelector) {
+    const el = active.querySelector('#' + id);
+    if (el) return el;
+  }
+  if (currentSortingContainer && currentSortingContainer.querySelector) {
     const el = currentSortingContainer.querySelector('#' + id);
     if (el) return el;
   }
   return document.getElementById(id);
+}
+
+function updateSessionProgressUI() {
+  const total = (gameSession.activeBatch && gameSession.activeBatch.length) ? gameSession.activeBatch.length : 25;
+  const curr = Math.min(gameSession.currentIndex + 1, total);
+  document.querySelectorAll('#session-progress').forEach(el => el.textContent = `${curr} / ${total}`);
+  document.querySelectorAll('#session-score').forEach(el => el.textContent = `${gameSession.score} XP`);
 }
 
 function renderSortingGameUI(container) {
@@ -264,7 +289,7 @@ function renderSortingGameUI(container) {
           <!-- 9 Sorting Category Buttons -->
           <div id="categories-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 max-w-3xl mx-auto">
             ${CATEGORIES_MAP.map(cat => `
-              <button onclick="submitCategoryAnswer('${cat.key}')" data-cat-key="${cat.key}" class="category-choice-btn eco-smooth-float p-4 rounded-xl border ${cat.btnClass} transition-all duration-200 flex items-center gap-3 text-left group cursor-pointer active:scale-95 shadow-lg hover:-translate-y-1.5 hover:shadow-xl">
+              <button onclick="submitCategoryAnswer('${cat.key}', this)" data-cat-key="${cat.key}" class="category-choice-btn eco-smooth-float p-4 rounded-xl border ${cat.btnClass} transition-all duration-200 flex items-center gap-3 text-left group cursor-pointer active:scale-95 shadow-lg hover:-translate-y-1.5 hover:shadow-xl">
                 <span class="text-2xl eco-icon-levitate group-hover:scale-125 transition-transform shrink-0">${cat.icon}</span>
                 <div>
                   <div class="font-bold text-xs group-hover:underline">${cat.name}</div>
@@ -299,13 +324,9 @@ function startNew25Session() {
   gameSession.isFinished = false;
   gameSession.isAnsweringLocked = false;
 
-  const startScreen = getSortingScopeEl('session-start-screen');
-  const summaryScreen = getSortingScopeEl('session-summary-screen');
-  const questionCard = getSortingScopeEl('session-question-card');
-
-  if (startScreen) startScreen.classList.add('hidden');
-  if (summaryScreen) summaryScreen.classList.add('hidden');
-  if (questionCard) questionCard.classList.remove('hidden');
+  document.querySelectorAll('#session-start-screen').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('#session-summary-screen').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('#session-question-card').forEach(el => el.classList.remove('hidden'));
 
   updateSessionProgressUI();
   displayCurrentItem();
@@ -319,21 +340,19 @@ function displayCurrentItem() {
 
   gameSession.isAnsweringLocked = false;
 
-  const iconEl = getSortingScopeEl('card-item-icon');
-  const nameEl = getSortingScopeEl('card-item-name');
-  const counterEl = getSortingScopeEl('card-item-counter');
-  const feedbackEl = getSortingScopeEl('card-feedback');
+  const counterText = `Chiqindi ${gameSession.currentIndex + 1} / ${(gameSession.activeBatch ? gameSession.activeBatch.length : 25)}`;
+  document.querySelectorAll('#card-item-icon').forEach(el => el.textContent = item.icon);
+  document.querySelectorAll('#card-item-name').forEach(el => el.textContent = item.name);
+  document.querySelectorAll('#card-item-counter').forEach(el => el.textContent = counterText);
+  document.querySelectorAll('#card-feedback').forEach(el => {
+    el.className = "text-xs text-slate-400 italic min-h-[24px] flex items-center justify-center";
+    el.textContent = "Ushbu chiqindi qaysi toifaga kiradi? Tanlang:";
+  });
 
-  const animEl = getSortingScopeEl('sorting-card-anim');
-  if (animEl && window.Eco2DAnimator && typeof window.Eco2DAnimator.getSortingConveyorHtml === 'function') {
-    animEl.innerHTML = window.Eco2DAnimator.getSortingConveyorHtml(item);
-  }
-  if (iconEl) iconEl.textContent = item.icon;
-  if (nameEl) nameEl.textContent = item.name;
-  if (counterEl) counterEl.textContent = `Chiqindi ${gameSession.currentIndex + 1} / ${(gameSession.activeBatch ? gameSession.activeBatch.length : 25)}`;
-  if (feedbackEl) {
-    feedbackEl.className = "text-xs text-slate-400 italic min-h-[24px] flex items-center justify-center";
-    feedbackEl.textContent = "Ushbu chiqindi qaysi toifaga kiradi? Tanlang:";
+  const animContainers = document.querySelectorAll('#sorting-card-anim');
+  if (animContainers.length && window.Eco2DAnimator && typeof window.Eco2DAnimator.getSortingConveyorHtml === 'function') {
+    const animHtml = window.Eco2DAnimator.getSortingConveyorHtml(item);
+    animContainers.forEach(el => el.innerHTML = animHtml);
   }
 
   // Barcha tugmalarni asl holatiga qaytarish
@@ -344,7 +363,7 @@ function displayCurrentItem() {
 }
 
 function resetCategoryButtonsUI() {
-  const root = currentSortingContainer || document;
+  const root = getActiveSortingContainer() || document;
   const buttons = root.querySelectorAll('.category-choice-btn');
   buttons.forEach(btn => {
     btn.disabled = false;
@@ -357,7 +376,7 @@ function resetCategoryButtonsUI() {
 }
 
 function highlightCategoryButtons(correctCatKey, chosenCatKey) {
-  const root = currentSortingContainer || document;
+  const root = getActiveSortingContainer() || document;
   const buttons = root.querySelectorAll('.category-choice-btn');
   buttons.forEach(btn => {
     btn.disabled = true;
@@ -401,30 +420,26 @@ function startQuestionTimer() {
 }
 
 function updateTimerUI(seconds, percent) {
-  const timerSec = getSortingScopeEl('card-timer-seconds');
-  const timerBar = getSortingScopeEl('card-timer-bar');
-  const timerBadge = getSortingScopeEl('card-timer-badge');
-
-  if (timerSec) timerSec.textContent = seconds;
-  if (timerBar) {
+  document.querySelectorAll('#card-timer-seconds').forEach(el => el.textContent = seconds);
+  document.querySelectorAll('#card-timer-bar').forEach(timerBar => {
     timerBar.style.width = `${percent}%`;
     if (seconds <= 3) {
       timerBar.className = "h-full bg-rose-500 transition-all duration-100 ease-linear rounded-full";
-      if (timerBadge) {
-        timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-400 border border-rose-500/40 animate-pulse";
-      }
     } else if (seconds <= 6) {
       timerBar.className = "h-full bg-amber-500 transition-all duration-100 ease-linear rounded-full";
-      if (timerBadge) {
-        timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-400 border border-amber-500/40";
-      }
     } else {
       timerBar.className = "h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-100 ease-linear rounded-full";
-      if (timerBadge) {
-        timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
-      }
     }
-  }
+  });
+  document.querySelectorAll('#card-timer-badge').forEach(timerBadge => {
+    if (seconds <= 3) {
+      timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-400 border border-rose-500/40 animate-pulse";
+    } else if (seconds <= 6) {
+      timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-400 border border-amber-500/40";
+    } else {
+      timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
+    }
+  });
 }
 
 // Vaqt tugaganda avtomatik xato deb hisoblab keyingisiga o'tish
@@ -463,7 +478,7 @@ function handleQuestionTimeout() {
 
   updateSessionProgressUI();
 
-  // Keyingi savolga o'tish (500ms)
+  // Keyingi savolga tezkor o'tish (380ms)
   setTimeout(() => {
     gameSession.currentIndex++;
     if (gameSession.currentIndex >= gameSession.activeBatch.length) {
@@ -471,11 +486,11 @@ function handleQuestionTimeout() {
     } else {
       displayCurrentItem();
     }
-  }, 500);
+  }, 380);
 }
 
 // Foydalanuvchi javob belgilaganda: xato bo'lsa xato, to'g'ri bo'lsa to'g'ri ko'rsatish va keyingisiga o'tqazish
-function submitCategoryAnswer(selectedCategory) {
+function submitCategoryAnswer(selectedCategory, clickedBtnElement) {
   if (gameSession.isAnsweringLocked || gameSession.isFinished) return;
   gameSession.isAnsweringLocked = true;
 
@@ -486,14 +501,14 @@ function submitCategoryAnswer(selectedCategory) {
   if (!currentItem) return;
 
   const isCorrect = selectedCategory === currentItem.cat;
-  const feedbackEl = getSortingScopeEl('card-feedback');
 
   const correctCatObj = CATEGORIES_MAP.find(c => c.key === currentItem.cat);
   const correctName = correctCatObj ? correctCatObj.name : currentItem.cat;
 
-  // Tugmalarni topish
-  const clickedBtn = document.querySelector(`.category-choice-btn[data-cat-key="${selectedCategory}"]`);
-  const correctBtn = document.querySelector(`.category-choice-btn[data-cat-key="${currentItem.cat}"]`);
+  // Tugmalarni topish (clickedBtnElement mavjud bo'lsa darhol o'zi olinadi)
+  const root = getActiveSortingContainer() || document;
+  const clickedBtn = clickedBtnElement || root.querySelector(`.category-choice-btn[data-cat-key="${selectedCategory}"]`) || document.querySelector(`.category-choice-btn[data-cat-key="${selectedCategory}"]`);
+  const correctBtn = root.querySelector(`.category-choice-btn[data-cat-key="${currentItem.cat}"]`) || document.querySelector(`.category-choice-btn[data-cat-key="${currentItem.cat}"]`);
 
   // Tugmalarda vizual yashil/qizil belgilash
   highlightCategoryButtons(currentItem.cat, selectedCategory);
@@ -506,16 +521,16 @@ function submitCategoryAnswer(selectedCategory) {
     if (window.ecoAudio) window.ecoAudio.playSuccess();
     if (window.addPlayerXP) window.addPlayerXP(itemXP);
 
-    // 2-SEKUNDLIK PAQLDOQ (FIREWORKS & CONFETTI) PORTLASHI
+    // PAQLDOQ (FIREWORKS & CONFETTI) PORTLASHI
     if (window.EcoFxEngine) {
       const rect = clickedBtn ? clickedBtn.getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight / 2, width: 0, height: 0 };
       window.EcoFxEngine.triggerPaqldoq(rect.left + rect.width / 2, rect.top + rect.height / 2, itemXP);
     }
 
-    if (feedbackEl) {
+    document.querySelectorAll('#card-feedback').forEach(feedbackEl => {
       feedbackEl.className = "text-xs text-emerald-400 font-bold min-h-[24px] flex items-center justify-center animate-bounce";
       feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check mr-1.5 text-sm"></i> To'g'ri! ${currentItem.hint} (+${itemXP} XP)`;
-    }
+    });
 
     gameSession.results.push({
       item: currentItem,
@@ -526,15 +541,15 @@ function submitCategoryAnswer(selectedCategory) {
     gameSession.wrongCount++;
     if (window.ecoAudio) window.ecoAudio.playError();
 
-    // XATO JAVOBDA: SEYSMIK SILKINISH, QIZIL VINETKA, MAYDALANISH VA MAYOQ
+    // XATO JAVOBDA: SEYSMIK SILKINISH, QIZIL VINETKA
     if (window.EcoFxEngine) {
-      window.EcoFxEngine.triggerWrongFeedback(clickedBtn, correctBtn, getSortingScopeEl('session-playfield'));
+      window.EcoFxEngine.triggerWrongFeedback(clickedBtn, correctBtn, root.querySelector('#session-playfield') || document.getElementById('session-playfield'));
     }
 
-    if (feedbackEl) {
+    document.querySelectorAll('#card-feedback').forEach(feedbackEl => {
       feedbackEl.className = "text-xs text-rose-400 font-bold min-h-[24px] flex items-center justify-center";
       feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1.5 text-sm"></i> Noto'g'ri! To'g'ri toifa: «${correctName}». ${currentItem.hint}`;
-    }
+    });
 
     gameSession.results.push({
       item: currentItem,
@@ -546,7 +561,7 @@ function submitCategoryAnswer(selectedCategory) {
 
   updateSessionProgressUI();
 
-  // 2-sekundlik to'liq zavq olish va o'rganish vaqti (2000ms)
+  // Chaqqon, tezkor va silliq avtomatik keyingisiga o'tish (380ms) - qotib qolish yo'q!
   setTimeout(() => {
     gameSession.currentIndex++;
     if (gameSession.currentIndex >= gameSession.activeBatch.length) {
@@ -554,7 +569,7 @@ function submitCategoryAnswer(selectedCategory) {
     } else {
       displayCurrentItem();
     }
-  }, 2000);
+  }, 380);
 }
 
 function finish25Session() {
@@ -569,10 +584,9 @@ function finish25Session() {
     if (window.addPlayerXP) window.addPlayerXP(bonusXP);
   }
 
-  const card = document.getElementById('session-question-card');
-  const summary = document.getElementById('session-summary-screen');
-
-  if (card) card.classList.add('hidden');
+  document.querySelectorAll('#session-question-card').forEach(el => el.classList.add('hidden'));
+  const summary = getSortingScopeEl('session-summary-screen');
+  document.querySelectorAll('#session-summary-screen').forEach(el => el.classList.remove('hidden'));
   if (summary) {
     summary.classList.remove('hidden');
 

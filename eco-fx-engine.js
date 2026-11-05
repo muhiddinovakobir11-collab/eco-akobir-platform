@@ -343,7 +343,10 @@
   // 5. Global API orqali eksport qilish
   window.EcoFxEngine = {
     triggerPaqldoq: triggerPaqldoq,
-    triggerWrongFeedback: triggerWrongFeedback
+    triggerWrongFeedback: triggerWrongFeedback,
+    triggerWrongFx: function(el) {
+      triggerWrongFeedback(el, null, null);
+    }
   };
 
 })();

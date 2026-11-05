@@ -687,7 +687,7 @@ function handleExtendedOptionClick(choiceIndex, btnElement) {
 
   updateExtendedProgressUI();
 
-  // 2-sekundlik to'liq tomosha qilish vaqti (2000ms)
+  // Snappy, chaqqon o'tish (380ms)
   setTimeout(() => {
     extendedGameSession.currentIndex++;
     if (extendedGameSession.currentIndex >= extendedGameSession.scenarios.length) {
@@ -695,7 +695,7 @@ function handleExtendedOptionClick(choiceIndex, btnElement) {
     } else {
       displayCurrentExtendedScenario();
     }
-  }, 2000);
+  }, 380);
 }
 
 function handleExtendedTimeout() {
@@ -744,7 +744,7 @@ function handleExtendedTimeout() {
     } else {
       displayCurrentExtendedScenario();
     }
-  }, 500);
+  }, 380);
 }
 
 function updateExtendedProgressUI() {

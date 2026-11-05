@@ -392,7 +392,7 @@ function handleExpertiseChoice(choiceIndex, btnElement) {
 
   updateExpertiseProgressUI();
 
-  // 2-sekundlik to'liq tomosha qilish vaqti (2000ms)
+  // Snappy, chaqqon o'tish (380ms)
   setTimeout(() => {
     expertiseSession.currentIndex++;
     if (expertiseSession.currentIndex >= expertiseSession.activeBatch.length) {
@@ -400,7 +400,7 @@ function handleExpertiseChoice(choiceIndex, btnElement) {
     } else {
       displayCurrentExpertiseItem();
     }
-  }, 2000);
+  }, 380);
 }
 
 function handleExpertiseTimeout() {
@@ -450,7 +450,7 @@ function handleExpertiseTimeout() {
     } else {
       displayCurrentExpertiseItem();
     }
-  }, 500);
+  }, 380);
 }
 
 function updateExpertiseProgressUI() {

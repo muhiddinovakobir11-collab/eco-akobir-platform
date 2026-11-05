@@ -393,7 +393,7 @@ function handleAuditChoice(choiceIndex, btnElement) {
 
   updateAuditProgressUI();
 
-  // 2-sekundlik to'liq tomosha qilish vaqti (2000ms)
+  // Snappy, chaqqon o'tish (380ms)
   setTimeout(() => {
     auditSession.currentIndex++;
     if (auditSession.currentIndex >= auditSession.activeBatch.length) {
@@ -401,7 +401,7 @@ function handleAuditChoice(choiceIndex, btnElement) {
     } else {
       displayCurrentAuditItem();
     }
-  }, 2000);
+  }, 380);
 }
 
 function handleAuditTimeout() {
@@ -451,7 +451,7 @@ function handleAuditTimeout() {
     } else {
       displayCurrentAuditItem();
     }
-  }, 500);
+  }, 380);
 }
 
 function updateAuditProgressUI() {
