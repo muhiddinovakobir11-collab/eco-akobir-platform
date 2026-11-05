@@ -108,11 +108,24 @@ const DEFAULT_ECO_VIDEOS = [
     channel: "STV Samarkand",
     desc: "Oddiy sharoitda go'ng va organik chiqindilardan tekin gaz hamda elektr quvvati olish qurilmasining tuzilishi va afzalliklari.",
     views: 2650
+  },
+  {
+    id: "vid-9",
+    title: "Dozimetrik asboblar yordamida atrof muhitni radiatsya ta'sirni aniqlash",
+    category: "Radiatsiya & Ekologik Nazorat",
+    duration: "11:45",
+    xp: 85,
+    videoUrl: "https://www.youtube.com/embed/hUHBmDYt9S0",
+    youtubeId: "hUHBmDYt9S0",
+    thumbnail: "https://img.youtube.com/vi/hUHBmDYt9S0/hqdefault.jpg",
+    channel: "Ekologik Nazorat va Dozimetriya",
+    desc: "Dozimetr va radiometrlar (Geyger-Myuller hisoblagichi) yordamida atrof-muhit, tuproq, qurilish materiallari va ochiq hududlarda tabiiy radiatsiya fonini (mZv/soat, mkR/soat) to'g'ri o'lchash, radiatsiyaviy xavfsizlik me'yorlarini aniqlash bo'yicha to'liq amaliy videodars.",
+    views: 4210
   }
 ];
 
 const EcoVideoManager = {
-  STORAGE_KEY: 'eco_akobir_videos_v3',
+  STORAGE_KEY: 'eco_akobir_videos_v4',
   WATCHED_KEY: 'eco_akobir_watched_videos',
 
   // YouTube havolasini tozalab to'g'ri embed URL ga aylantirish
@@ -143,14 +156,19 @@ const EcoVideoManager = {
       // Eski buzilgan keshni tozalash
       localStorage.removeItem('eco_akobir_videos');
       localStorage.removeItem('eco_akobir_videos_v2');
+      localStorage.removeItem('eco_akobir_videos_v3');
 
       const saved = localStorage.getItem(this.STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // Agar keshda eski dummy URL bo'lsa yangilash
-          const hasDummy = parsed.some(v => v.videoUrl.includes('demo') || v.videoUrl.includes('videoseries'));
-          if (!hasDummy) return parsed;
+          // Barcha default videolar keshda ham bo'lishini ta'minlash
+          DEFAULT_ECO_VIDEOS.forEach(defVid => {
+            if (!parsed.some(v => v.youtubeId === defVid.youtubeId || v.title === defVid.title)) {
+              parsed.push(defVid);
+            }
+          });
+          return parsed;
         }
       }
     } catch (e) {}
@@ -226,7 +244,7 @@ const EcoVideoManager = {
     let list = this.getVideos();
 
     if (filterCategory !== 'all') {
-      list = list.filter(v => v.category === filterCategory);
+      list = list.filter(v => v.category === filterCategory || v.category.toLowerCase().includes(filterCategory.toLowerCase()));
     }
 
     if (searchQuery.trim() !== '') {
