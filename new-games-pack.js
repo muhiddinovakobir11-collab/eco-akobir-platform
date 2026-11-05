@@ -1487,6 +1487,20 @@ function initStandardNewInteractiveGame(gameId, container, difficulty = 'medium'
   activeStandardSession.score = 0;
   activeStandardSession.container = container;
 
+  const gameData = STANDARD_NEW_GAMES_DATA[gameId];
+  if (gameData && gameData.scenarios) {
+    if (!gameData._rawScenarios) {
+      gameData._rawScenarios = [...gameData.scenarios];
+    }
+    const shuffled = [...gameData._rawScenarios];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    shuffled.forEach(s => { delete s._shuffledOptions; });
+    gameData.scenarios = shuffled;
+  }
+
   renderStandardGameStep();
 }
 
@@ -1509,6 +1523,21 @@ function renderStandardGameStep() {
 
   const item = scenarios[idx];
 
+  // Variantlarni har safar random aralashtirish (Fisher-Yates)
+  if (!item._shuffledOptions) {
+    const list = item.options.map((optText, origIdx) => ({
+      text: optText,
+      originalIndex: origIdx,
+      isCorrect: origIdx === item.correct
+    }));
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+    item._shuffledOptions = list;
+  }
+  const options = item._shuffledOptions;
+
   c.innerHTML = `
     <div class="bg-slate-950/90 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-2xl mx-auto shadow-2xl animate-fade-in text-center">
       
@@ -1525,10 +1554,10 @@ function renderStandardGameStep() {
       <p class="text-sm text-slate-300 font-bold mb-6 text-left leading-relaxed">${item.question}</p>
 
       <div class="space-y-3 mb-6 text-left">
-        ${item.options.map((opt, oIdx) => `
+        ${options.map((optObj, oIdx) => `
           <button onclick="handleStandardOptionClick(${oIdx})" class="w-full p-4 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-500 hover:bg-slate-850 text-white text-xs font-bold transition-all flex items-start gap-3 cursor-pointer">
             <span class="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center text-xs shrink-0">${String.fromCharCode(65 + oIdx)}</span>
-            <span class="mt-0.5">${opt}</span>
+            <span class="mt-0.5">${optObj.text}</span>
           </button>
         `).join('')}
       </div>
@@ -1547,17 +1576,26 @@ function handleStandardOptionClick(selectedIdx) {
   if (!gameData) return;
 
   const item = gameData.scenarios[activeStandardSession.currentIndex];
-  if (selectedIdx === item.correct) {
+  const options = item._shuffledOptions;
+  const isCorrect = options ? options[selectedIdx].isCorrect : (selectedIdx === item.correct);
+
+  if (isCorrect) {
     activeStandardSession.score++;
     if (window.ecoAudio) window.ecoAudio.playSuccess();
+    if (window.EcoFxEngine) {
+      window.EcoFxEngine.triggerPaqldoq(window.innerWidth / 2, window.innerHeight / 2, 25);
+    }
   } else {
     if (window.ecoAudio) window.ecoAudio.playError();
+    if (window.EcoFxEngine) {
+      window.EcoFxEngine.triggerWrongFx(null);
+    }
   }
 
   activeStandardSession.currentIndex++;
   setTimeout(() => {
     renderStandardGameStep();
-  }, 300);
+  }, 400);
 }
 window.handleStandardOptionClick = handleStandardOptionClick;
 

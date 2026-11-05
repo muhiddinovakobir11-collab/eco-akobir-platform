@@ -723,20 +723,9 @@ const Eco2DAnimator = {
 
   // Savol matni va kalit so'zlari bo'yicha eng mos 2D animatsiya turini aniqlash
   detectScene(item, gameId) {
-    // Agar aniq 4-13 mini o'yin bo'lsa
-    if (gameId === 4) return 'logistics';
-    if (gameId === 5) return 'pyrolysis';
-    if (gameId === 6) return 'landfill';
-    if (gameId === 7) return 'wastewater';
-    if (gameId === 8) return 'medical';
-    if (gameId === 9) return 'biogas';
-    if (gameId === 10) return 'ewaste';
-    if (gameId === 11) return 'compost';
-    if (gameId === 12) return 'air';
-    if (gameId === 13) return 'optical';
     if (gameId === 1) return 'sorting';
 
-    // Game 2 (Audit) va Game 3 (Ekspertiza) savollari uchun matn tahlili
+    // Barcha savol va keys parametrlari bo'yicha chuqur semantik tahlil
     const fullText = [
       item.sector || '',
       item.title || '',
@@ -744,8 +733,18 @@ const Eco2DAnimator = {
       item.visualTitle || '',
       item.visualInfo || '',
       item.category || '',
-      item.description || ''
+      item.description || '',
+      item.param || ''
     ].join(' ').toLowerCase();
+
+    // 1. Maxsus 2D shovqin, trassa va akustik ekran animatsiyasi
+    if (fullText.includes('shovqin') || fullText.includes('akustik') || fullText.includes('magistral') || fullText.includes('trassa') || fullText.includes('drobika') || fullText.includes('dba')) {
+      return 'highway_noise';
+    }
+    // 2. Maxsus 2D deraza va sanitariya masofasi animatsiyasi (20m - 100m)
+    if (fullText.includes('sanqvam') || fullText.includes('deraza') || fullText.includes('maydoncha') || (fullText.includes('masofa') && (fullText.includes('turar-joy') || fullText.includes('bino') || fullText.includes('aholi') || fullText.includes('uy')))) {
+      return 'distance_sanitary';
+    }
 
     if (fullText.includes('simob') || fullText.includes('kaustik') || fullText.includes('xlor') || fullText.includes('kislota') || fullText.includes('kimyo') || fullText.includes('galvanik') || fullText.includes('toksik') || fullText.includes('reagent')) {
       return 'chemical';
@@ -781,9 +780,289 @@ const Eco2DAnimator = {
       return 'logistics';
     }
 
-    // Default audit/ekspertiza
+    // Fallback o'yin turi bo'yicha
+    if (gameId === 4) return 'logistics';
+    if (gameId === 5) return 'wastewater';
+    if (gameId === 6) return 'biogas';
+    if (gameId === 7) return 'ewaste';
+    if (gameId === 8) return 'landfill';
+    if (gameId === 9) return 'air';
+    if (gameId === 10) return 'legal';
+    if (gameId === 11) return 'highway_noise';
+    if (gameId === 12) return 'logistics';
+    if (gameId === 13) return 'optical';
     if (gameId === 3) return 'legal';
     return 'chemical';
+  },
+
+  // 13. Magistral Trassa Shovqini & Maktab Akustik To'sig'i 2D Animatsiyasi
+  renderHighwayNoiseBarrier(title, subtitle) {
+    return `
+      <div class="relative w-full rounded-2xl overflow-hidden border border-emerald-500/40 bg-slate-950 shadow-2xl p-2 select-none">
+        <div class="flex items-center justify-between px-2 py-1 mb-1 border-b border-slate-800 text-[10px] font-bold">
+          <div class="flex items-center gap-1.5 text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span class="uppercase tracking-wider">2D Magistral Akustik Ekran & Yashil To'siq</span>
+          </div>
+          <div class="flex items-center gap-2 text-slate-400">
+            <span class="bg-rose-950/60 text-rose-400 px-2 py-0.5 rounded border border-rose-500/30 font-mono">Trassa: 85 dBA</span>
+            <span class="text-slate-500">➜</span>
+            <span class="bg-emerald-950/60 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">Maktab: 55 dBA (-30dB)</span>
+          </div>
+        </div>
+        <svg viewBox="0 0 520 140" class="w-full h-auto">
+          <defs>
+            <style>
+              ${this.getCommonStyles()}
+              @keyframes ecoCarMove1 { 0% { transform: translateX(-40px); } 100% { transform: translateX(160px); } }
+              @keyframes ecoCarMove2 { 0% { transform: translateX(160px); } 100% { transform: translateX(-40px); } }
+              @keyframes ecoSoundWaveRing { 0% { r: 6; opacity: 0.9; } 100% { r: 42; opacity: 0; } }
+              @keyframes ecoTreeSwayMotion { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(3deg); } }
+              .eco-car-1 { animation: ecoCarMove1 3.5s infinite linear; }
+              .eco-car-2 { animation: ecoCarMove2 4.2s infinite linear; }
+              .eco-sound-ring1 { animation: ecoSoundWaveRing 1.6s infinite ease-out; }
+              .eco-sound-ring2 { animation: ecoSoundWaveRing 1.6s infinite ease-out 0.8s; }
+              .eco-tree-sway { transform-origin: bottom center; animation: ecoTreeSwayMotion 3s infinite ease-in-out; }
+            </style>
+            <linearGradient id="roadGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1e293b"/>
+              <stop offset="100%" stop-color="#0f172a"/>
+            </linearGradient>
+            <linearGradient id="acousticGlass" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8"/>
+              <stop offset="50%" stop-color="#0284c7" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#0369a1" stop-opacity="0.9"/>
+            </linearGradient>
+            <linearGradient id="schoolGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0284c7"/>
+              <stop offset="100%" stop-color="#0369a1"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Sky & Ground -->
+          <rect width="520" height="140" fill="#090d16" rx="10"/>
+
+          <!-- 1. HIGHWAY ZONE (Left: 0 to 140) -->
+          <rect x="10" y="55" width="125" height="70" rx="6" fill="url(#roadGrad)" stroke="#334155" stroke-width="1.5"/>
+          <line x1="15" y1="90" x2="130" y2="90" stroke="#facc15" stroke-width="2" stroke-dasharray="8,6"/>
+          <!-- Moving Car 1 -->
+          <g class="eco-car-1">
+            <rect x="0" y="65" width="32" height="14" rx="3" fill="#ef4444"/>
+            <rect x="6" y="62" width="18" height="6" rx="2" fill="#93c5fd" opacity="0.8"/>
+            <circle cx="7" cy="80" r="3.5" fill="#0f172a" stroke="#64748b"/>
+            <circle cx="25" cy="80" r="3.5" fill="#0f172a" stroke="#64748b"/>
+            <polygon points="32,70 52,62 52,78" fill="#fef08a" opacity="0.35"/>
+          </g>
+          <!-- Moving Car 2 -->
+          <g class="eco-car-2">
+            <rect x="0" y="100" width="34" height="15" rx="3" fill="#3b82f6"/>
+            <rect x="8" y="97" width="18" height="6" rx="2" fill="#93c5fd" opacity="0.8"/>
+            <circle cx="8" cy="116" r="3.5" fill="#0f172a" stroke="#64748b"/>
+            <circle cx="26" cy="116" r="3.5" fill="#0f172a" stroke="#64748b"/>
+          </g>
+          <!-- Sound waves from highway -->
+          <circle cx="115" cy="85" r="10" fill="none" stroke="#f43f5e" stroke-width="2" class="eco-sound-ring1"/>
+          <circle cx="115" cy="85" r="10" fill="none" stroke="#f43f5e" stroke-width="1.5" class="eco-sound-ring2"/>
+          <text x="70" y="45" fill="#f87171" font-size="10" font-weight="black" text-anchor="middle">🚗 Magistral (85 dBA)</text>
+
+          <!-- 2. ACOUSTIC SHIELD (X=145 to 165) -->
+          <rect x="145" y="32" width="12" height="95" rx="3" fill="url(#acousticGlass)" stroke="#38bdf8" stroke-width="2"/>
+          <line x1="151" y1="35" x2="151" y2="125" stroke="#bae6fd" stroke-width="1.5" stroke-dasharray="4,4"/>
+          <text x="151" y="24" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">Ekran</text>
+          <text x="151" y="136" fill="#38bdf8" font-size="8" font-weight="extrabold" text-anchor="middle">-18dB</text>
+
+          <!-- 3. MULTI-LAYER GREEN BUFFER BELT (X=165 to 330) -->
+          <rect x="165" y="105" width="170" height="25" fill="#14532d" opacity="0.5" rx="4"/>
+          <!-- Tree 1 -->
+          <g class="eco-tree-sway">
+            <line x1="195" y1="125" x2="195" y2="70" stroke="#78350f" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="195" cy="65" r="20" fill="#16a34a"/>
+            <circle cx="195" cy="50" r="15" fill="#22c55e"/>
+            <circle cx="188" cy="60" r="10" fill="#4ade80" opacity="0.6"/>
+          </g>
+          <!-- Tree 2 (Pine) -->
+          <g class="eco-tree-sway" style="animation-delay: 0.5s;">
+            <line x1="245" y1="125" x2="245" y2="60" stroke="#78350f" stroke-width="6" stroke-linecap="round"/>
+            <polygon points="245,30 225,65 265,65" fill="#15803d"/>
+            <polygon points="245,55 220,90 270,90" fill="#166534"/>
+            <polygon points="245,80 215,115 275,115" fill="#14532d"/>
+          </g>
+          <!-- Tree 3 -->
+          <g class="eco-tree-sway" style="animation-delay: 1.1s;">
+            <line x1="295" y1="125" x2="295" y2="72" stroke="#78350f" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="295" cy="68" r="18" fill="#16a34a"/>
+            <circle cx="295" cy="52" r="14" fill="#22c55e"/>
+          </g>
+          <!-- Shrubs -->
+          <ellipse cx="178" cy="115" rx="12" ry="8" fill="#15803d"/>
+          <ellipse cx="220" cy="116" rx="14" ry="9" fill="#16a34a"/>
+          <ellipse cx="270" cy="115" rx="15" ry="9" fill="#22c55e"/>
+          <ellipse cx="320" cy="116" rx="12" ry="8" fill="#15803d"/>
+          <text x="250" y="24" fill="#4ade80" font-size="9" font-weight="bold" text-anchor="middle">🌲 3 Qatorli Yashil Belbog' (Daraxtlar)</text>
+
+          <!-- Attenuated Sound Waves -->
+          <path d="M 325 65 Q 335 75 325 85" stroke="#4ade80" stroke-width="2" fill="none" opacity="0.6"/>
+          <path d="M 335 60 Q 348 75 335 90" stroke="#4ade80" stroke-width="1.5" fill="none" opacity="0.4"/>
+
+          <!-- 4. PROTECTED SCHOOL ZONE (X=355 to 505) -->
+          <rect x="355" y="42" width="150" height="85" rx="8" fill="url(#schoolGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+          <polygon points="350,42 430,22 510,42" fill="#0f172a" stroke="#0284c7" stroke-width="1.5"/>
+          <!-- Windows -->
+          <rect x="370" y="55" width="22" height="20" rx="3" fill="#fef08a" opacity="0.8"/>
+          <line x1="381" y1="55" x2="381" y2="75" stroke="#0f172a" stroke-width="1.5"/>
+          <rect x="405" y="55" width="22" height="20" rx="3" fill="#fef08a" opacity="0.8"/>
+          <line x1="416" y1="55" x2="416" y2="75" stroke="#0f172a" stroke-width="1.5"/>
+          <rect x="440" y="55" width="22" height="20" rx="3" fill="#fef08a" opacity="0.8"/>
+          <line x1="451" y1="55" x2="451" y2="75" stroke="#0f172a" stroke-width="1.5"/>
+          <rect x="475" y="55" width="20" height="20" rx="3" fill="#fef08a" opacity="0.8"/>
+
+          <!-- Entrance Door -->
+          <rect x="420" y="90" width="24" height="37" rx="3" fill="#0f172a"/>
+          <circle cx="438" cy="110" r="2" fill="#facc15"/>
+
+          <text x="430" y="36" fill="#ffffff" font-size="10" font-weight="black" text-anchor="middle">🏫 MAKTAB BINOSI</text>
+          <rect x="365" y="98" width="45" height="22" rx="4" fill="#052e16" stroke="#22c55e" stroke-width="1"/>
+          <text x="387" y="112" fill="#4ade80" font-size="9" font-weight="black" text-anchor="middle">55 dBA</text>
+          <text x="387" y="122" fill="#86efac" font-size="7" font-weight="bold" text-anchor="middle">XAVFSIZ</text>
+        </svg>
+      </div>
+    `;
+  },
+
+  // 14. Uy Derazasi & Chiqindi Maydonchasi Masofasi (SanQvaM) 2D Animatsiyasi
+  renderSanitaryDistanceMeter(title, subtitle) {
+    return `
+      <div class="relative w-full rounded-2xl overflow-hidden border border-cyan-500/40 bg-slate-950 shadow-2xl p-2 select-none">
+        <div class="flex items-center justify-between px-2 py-1 mb-1 border-b border-slate-800 text-[10px] font-bold">
+          <div class="flex items-center gap-1.5 text-cyan-400">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span class="uppercase tracking-wider">2D SanQvaM Sanitariya Masofasi Metri</span>
+          </div>
+          <div class="flex items-center gap-2 text-slate-400">
+            <span class="bg-cyan-950/60 text-cyan-300 px-2 py-0.5 rounded border border-cyan-500/30 font-mono">20m ≤ Masofa ≤ 100m</span>
+            <span class="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">SanQvaM 0300-14</span>
+          </div>
+        </div>
+        <svg viewBox="0 0 520 140" class="w-full h-auto">
+          <defs>
+            <style>
+              ${this.getCommonStyles()}
+              @keyframes ecoCurtainFlutter { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.85) skewY(2deg); } }
+              @keyframes ecoLaserTravel { 0% { stroke-dashoffset: 40; } 100% { stroke-dashoffset: 0; } }
+              @keyframes ecoLidMotion { 0%, 100% { transform: rotate(0deg); } 40%, 60% { transform: rotate(-25deg); } }
+              @keyframes ecoRfidRing { 0% { r: 4; opacity: 1; } 100% { r: 28; opacity: 0; } }
+              .eco-curtain { transform-origin: top left; animation: ecoCurtainFlutter 3s infinite ease-in-out; }
+              .eco-laser-line { stroke-dasharray: 8, 4; animation: ecoLaserTravel 1.2s infinite linear; }
+              .eco-container-lid { transform-origin: 360px 58px; animation: ecoLidMotion 4s infinite ease-in-out; }
+              .eco-rfid-pulse { animation: ecoRfidRing 2s infinite ease-out; }
+            </style>
+            <linearGradient id="bldgGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#334155"/>
+              <stop offset="100%" stop-color="#1e293b"/>
+            </linearGradient>
+            <linearGradient id="binGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#059669"/>
+              <stop offset="100%" stop-color="#047857"/>
+            </linearGradient>
+            <linearGradient id="laserGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#06b6d4"/>
+              <stop offset="50%" stop-color="#10b981"/>
+              <stop offset="100%" stop-color="#f59e0b"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Background -->
+          <rect width="520" height="140" fill="#090d16" rx="10"/>
+
+          <!-- 1. RESIDENTIAL BUILDING (Left: X=15 to 135) -->
+          <rect x="15" y="20" width="120" height="110" rx="8" fill="url(#bldgGrad)" stroke="#475569" stroke-width="1.5"/>
+          <text x="75" y="35" fill="#cbd5e1" font-size="9" font-weight="black" text-anchor="middle">KO'P QAVATLI UY</text>
+
+          <!-- Upper Windows -->
+          <rect x="28" y="45" width="22" height="22" rx="3" fill="#1e293b" stroke="#64748b"/>
+          <rect x="28" y="78" width="22" height="22" rx="3" fill="#1e293b" stroke="#64748b"/>
+          <rect x="90" y="78" width="22" height="22" rx="3" fill="#1e293b" stroke="#64748b"/>
+
+          <!-- Target Highlighted Window (Right 2nd floor, X=75 to 125) -->
+          <rect x="75" y="42" width="45" height="28" rx="4" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+          <rect x="77" y="44" width="41" height="24" rx="2" fill="#fef08a" opacity="0.85"/>
+          <path d="M 77 44 Q 85 55 80 68 L 77 68 Z" fill="#f43f5e" opacity="0.9" class="eco-curtain"/>
+          <line x1="97" y1="44" x2="97" y2="68" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="77" y1="56" x2="118" y2="56" stroke="#0f172a" stroke-width="1.5"/>
+          <text x="97" y="38" fill="#38bdf8" font-size="8" font-weight="extrabold" text-anchor="middle">🪟 Uy Derazasi</text>
+
+          <!-- Ground Line -->
+          <line x1="10" y1="130" x2="510" y2="130" stroke="#334155" stroke-width="2"/>
+
+          <!-- 2. LASER DISTANCE RULER (Middle: X=135 to 350) -->
+          <line x1="125" y1="56" x2="355" y2="56" stroke="url(#laserGrad)" stroke-width="3" class="eco-laser-line"/>
+          <polygon points="128,52 120,56 128,60" fill="#06b6d4"/>
+          <polygon points="350,52 358,56 350,60" fill="#f59e0b"/>
+
+          <!-- Range Measurement Floating Card -->
+          <rect x="180" y="38" width="140" height="36" rx="8" fill="#022c22" stroke="#10b981" stroke-width="2" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.5))"/>
+          <text x="250" y="52" fill="#34d399" font-size="10" font-weight="black" text-anchor="middle">20m ≤ Masofa ≤ 100m</text>
+          <text x="250" y="66" fill="#a7f3d0" font-size="8" font-weight="bold" text-anchor="middle">✔ Qonuniy SanQvaM Me'yori</text>
+
+          <!-- Ground ruler ticks -->
+          <line x1="145" y1="124" x2="350" y2="124" stroke="#64748b" stroke-width="1.5"/>
+          <line x1="145" y1="120" x2="145" y2="128" stroke="#64748b" stroke-width="2"/>
+          <line x1="195" y1="122" x2="195" y2="126" stroke="#64748b" stroke-width="1"/>
+          <line x1="245" y1="120" x2="245" y2="128" stroke="#64748b" stroke-width="2"/>
+          <line x1="295" y1="122" x2="295" y2="126" stroke="#64748b" stroke-width="1"/>
+          <line x1="345" y1="120" x2="345" y2="128" stroke="#64748b" stroke-width="2"/>
+          <text x="145" y="116" fill="#94a3b8" font-size="8" text-anchor="middle">0m</text>
+          <text x="245" y="116" fill="#34d399" font-size="8" font-weight="bold" text-anchor="middle">25 metr</text>
+          <text x="345" y="116" fill="#94a3b8" font-size="8" text-anchor="middle">50m</text>
+
+          <!-- Paved Walkway Path -->
+          <rect x="145" y="86" width="195" height="16" fill="#1e293b" stroke="#334155" stroke-dasharray="8,4" rx="3"/>
+          <text x="242" y="98" fill="#94a3b8" font-size="8" text-anchor="middle">🚶 Aholi piyoda yo'lagi (Toza & Asfaltsiz hid)</text>
+
+          <!-- 3. SMART WASTE CONTAINER STATION (Right: X=355 to 500) -->
+          <polygon points="350,30 435,22 515,30" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+          <line x1="355" y1="30" x2="355" y2="125" stroke="#475569" stroke-width="2"/>
+          <line x1="505" y1="30" x2="505" y2="125" stroke="#475569" stroke-width="2"/>
+
+          <!-- Smart Container 1 (Green Organics) -->
+          <g>
+            <rect x="365" y="60" width="42" height="65" rx="5" fill="url(#binGrad)" stroke="#10b981" stroke-width="1.5"/>
+            <rect x="363" y="55" width="46" height="7" rx="2" fill="#047857" stroke="#34d399" stroke-width="1" class="eco-container-lid"/>
+            <text x="386" y="85" fill="#ffffff" font-size="9" font-weight="black" text-anchor="middle">♻</text>
+            <text x="386" y="100" fill="#a7f3d0" font-size="7" font-weight="bold" text-anchor="middle">Qayta</text>
+            <circle cx="373" cy="125" r="4" fill="#1e293b" stroke="#64748b"/>
+            <circle cx="399" cy="125" r="4" fill="#1e293b" stroke="#64748b"/>
+          </g>
+
+          <!-- Smart Container 2 (Yellow Plastic) -->
+          <g>
+            <rect x="415" y="60" width="42" height="65" rx="5" fill="#b45309" stroke="#f59e0b" stroke-width="1.5"/>
+            <rect x="413" y="55" width="46" height="7" rx="2" fill="#d97706" stroke="#fbbf24" stroke-width="1"/>
+            <text x="436" y="85" fill="#ffffff" font-size="9" font-weight="black" text-anchor="middle">PL</text>
+            <text x="436" y="100" fill="#fde68a" font-size="7" font-weight="bold" text-anchor="middle">Plastik</text>
+            <circle cx="423" cy="125" r="4" fill="#1e293b" stroke="#64748b"/>
+            <circle cx="449" cy="125" r="4" fill="#1e293b" stroke="#64748b"/>
+          </g>
+
+          <!-- Smart Container 3 (Blue Glass/Metal) -->
+          <g>
+            <rect x="465" y="60" width="38" height="65" rx="5" fill="#1e3a8a" stroke="#3b82f6" stroke-width="1.5"/>
+            <rect x="463" y="55" width="42" height="7" rx="2" fill="#2563eb" stroke="#60a5fa" stroke-width="1"/>
+            <text x="484" y="85" fill="#ffffff" font-size="9" font-weight="black" text-anchor="middle">GL</text>
+            <text x="484" y="100" fill="#bfdbfe" font-size="7" font-weight="bold" text-anchor="middle">Shisha</text>
+            <circle cx="472" cy="125" r="4" fill="#1e293b" stroke="#64748b"/>
+            <circle cx="496" cy="125" r="4" fill="#1e293b" stroke="#64748b"/>
+          </g>
+
+          <!-- RFID / IoT Sensor -->
+          <rect x="425" y="15" width="20" height="10" rx="2" fill="#0f172a" stroke="#38bdf8" stroke-width="1"/>
+          <line x1="435" y1="15" x2="435" y2="8" stroke="#38bdf8" stroke-width="1.5"/>
+          <circle cx="435" cy="8" r="2.5" fill="#38bdf8"/>
+          <circle cx="435" cy="8" r="6" fill="none" stroke="#38bdf8" stroke-width="1" class="eco-rfid-pulse"/>
+          <text x="435" y="4" fill="#38bdf8" font-size="7" font-weight="bold" text-anchor="middle">IoT</text>
+        </svg>
+      </div>
+    `;
   },
 
   // Asosiy chaqiruvchi metod
@@ -795,6 +1074,10 @@ const Eco2DAnimator = {
     const subtitle = item.visualInfo || item.description || item.param || "";
 
     switch (scene) {
+      case 'highway_noise':
+        return this.renderHighwayNoiseBarrier(title, subtitle);
+      case 'distance_sanitary':
+        return this.renderSanitaryDistanceMeter(title, subtitle);
       case 'chemical':
         return this.renderChemicalElectrolysis(title, subtitle);
       case 'pyrolysis':

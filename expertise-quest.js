@@ -175,9 +175,14 @@ function startNew25ExpertiseSession() {
     return;
   }
 
-  // Fisher-Yates shuffle
+  // Tozalash va Fisher-Yates shuffle
+  pool.forEach(q => { delete q._shuffledAnswers; });
   const batchSize = (window.ECO_CONFIG && window.ECO_CONFIG.expertiseBatchSize) ? window.ECO_CONFIG.expertiseBatchSize : 25;
-  const shuffled = [...pool].sort(() => 0.5 - Math.random());
+  const shuffled = [...pool];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
   expertiseSession.activeBatch = shuffled.slice(0, batchSize);
   expertiseSession.currentIndex = 0;
   expertiseSession.score = 0;
@@ -230,11 +235,25 @@ function displayCurrentExpertiseItem() {
   if (questionEl) questionEl.textContent = item.question;
   if (feedbackEl) feedbackEl.classList.add('hidden');
 
+  // Variantlarni har safar random aralashtirish (Fisher-Yates)
+  if (!item._shuffledAnswers) {
+    const list = item.answers.map((ans, origIdx) => ({
+      ...ans,
+      originalIndex: origIdx
+    }));
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+    item._shuffledAnswers = list;
+  }
+  const answers = item._shuffledAnswers;
+
   if (optionsEl) {
-    optionsEl.innerHTML = item.answers.map((opt, idx) => `
+    optionsEl.innerHTML = answers.map((opt, idx) => `
       <button onclick="handleExpertiseChoice(${idx}, this)" class="expertise-choice-btn eco-smooth-float w-full text-left p-3.5 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-purple-500/60 transition-all text-xs text-slate-200 flex items-start gap-3 group cursor-pointer active:scale-98 shadow-md hover:shadow-xl hover:-translate-y-1">
         <span class="w-6 h-6 rounded-full bg-slate-800 group-hover:bg-purple-500 group-hover:text-white font-bold text-xs flex items-center justify-center shrink-0 border border-slate-700 transition-colors">
-          ${idx + 1}
+          ${String.fromCharCode(65 + idx)}
         </span>
         <span class="leading-relaxed">${opt.text}</span>
       </button>
@@ -304,7 +323,8 @@ function handleExpertiseChoice(choiceIndex, btnElement) {
   const currentItem = expertiseSession.activeBatch[expertiseSession.currentIndex];
   if (!currentItem) return;
 
-  const opt = currentItem.answers[choiceIndex];
+  const answers = currentItem._shuffledAnswers || currentItem.answers;
+  const opt = answers[choiceIndex];
   const isCorrect = opt.correct;
 
   const root = currentExpertiseContainer || document;
@@ -313,7 +333,7 @@ function handleExpertiseChoice(choiceIndex, btnElement) {
 
   buttons.forEach((b, idx) => {
     b.disabled = true;
-    if (currentItem.answers[idx].correct) {
+    if (answers[idx].correct) {
       correctBtn = b;
       b.classList.add('ring-4', 'ring-emerald-400', 'bg-emerald-600/30', 'text-emerald-300');
     } else if (idx === choiceIndex && !isCorrect) {
@@ -398,9 +418,10 @@ function handleExpertiseTimeout() {
 
   const root = currentExpertiseContainer || document;
   const buttons = root.querySelectorAll('.expertise-choice-btn');
+  const answers = currentItem._shuffledAnswers || currentItem.answers;
   buttons.forEach((b, idx) => {
     b.disabled = true;
-    if (currentItem.answers[idx].correct) {
+    if (answers[idx].correct) {
       b.classList.add('ring-4', 'ring-emerald-400', 'bg-emerald-600/30', 'text-emerald-300');
     } else {
       b.classList.add('opacity-40');

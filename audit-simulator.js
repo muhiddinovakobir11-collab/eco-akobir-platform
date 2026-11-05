@@ -175,9 +175,14 @@ function startNew25AuditSession() {
     return;
   }
 
-  // Fisher-Yates shuffle
+  // Tozalash va Fisher-Yates shuffle
+  pool.forEach(q => { delete q._shuffledOptions; });
   const batchSize = (window.ECO_CONFIG && window.ECO_CONFIG.auditBatchSize) ? window.ECO_CONFIG.auditBatchSize : 25;
-  const shuffled = [...pool].sort(() => 0.5 - Math.random());
+  const shuffled = [...pool];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
   auditSession.activeBatch = shuffled.slice(0, batchSize);
   auditSession.currentIndex = 0;
   auditSession.score = 0;
@@ -230,11 +235,25 @@ function displayCurrentAuditItem() {
   if (questionEl) questionEl.textContent = item.question;
   if (feedbackEl) feedbackEl.classList.add('hidden');
 
+  // Variantlarni har safar random aralashtirish (Fisher-Yates)
+  if (!item._shuffledOptions) {
+    const list = item.options.map((opt, origIdx) => ({
+      ...opt,
+      originalIndex: origIdx
+    }));
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+    item._shuffledOptions = list;
+  }
+  const options = item._shuffledOptions;
+
   if (optionsEl) {
-    optionsEl.innerHTML = item.options.map((opt, idx) => `
+    optionsEl.innerHTML = options.map((opt, idx) => `
       <button onclick="handleAuditChoice(${idx}, this)" class="audit-choice-btn eco-smooth-float w-full text-left p-3.5 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/60 transition-all text-xs text-slate-200 flex items-start gap-3 group cursor-pointer active:scale-98 shadow-md hover:shadow-xl hover:-translate-y-1">
         <span class="w-6 h-6 rounded-full bg-slate-800 group-hover:bg-amber-500 group-hover:text-slate-950 font-bold text-xs flex items-center justify-center shrink-0 border border-slate-700 transition-colors">
-          ${idx === 0 ? 'A' : 'B'}
+          ${String.fromCharCode(65 + idx)}
         </span>
         <span class="leading-relaxed">${opt.text}</span>
       </button>
@@ -304,7 +323,8 @@ function handleAuditChoice(choiceIndex, btnElement) {
   const currentItem = auditSession.activeBatch[auditSession.currentIndex];
   if (!currentItem) return;
 
-  const choice = currentItem.options[choiceIndex];
+  const options = currentItem._shuffledOptions || currentItem.options;
+  const choice = options[choiceIndex];
   const isCorrect = choice.isCorrect;
 
   // Tugmalarni bloklash va rang berish
@@ -314,7 +334,7 @@ function handleAuditChoice(choiceIndex, btnElement) {
 
   buttons.forEach((b, idx) => {
     b.disabled = true;
-    if (currentItem.options[idx].isCorrect) {
+    if (options[idx].isCorrect) {
       correctBtn = b;
       b.classList.add('ring-4', 'ring-emerald-400', 'bg-emerald-600/30', 'text-emerald-300');
     } else if (idx === choiceIndex && !isCorrect) {
@@ -399,9 +419,10 @@ function handleAuditTimeout() {
 
   const root = currentAuditContainer || document;
   const buttons = root.querySelectorAll('.audit-choice-btn');
+  const options = currentItem._shuffledOptions || currentItem.options;
   buttons.forEach((b, idx) => {
     b.disabled = true;
-    if (currentItem.options[idx].isCorrect) {
+    if (options[idx].isCorrect) {
       b.classList.add('ring-4', 'ring-emerald-400', 'bg-emerald-600/30', 'text-emerald-300');
     } else {
       b.classList.add('opacity-40');

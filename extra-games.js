@@ -388,7 +388,8 @@ function renderExtendedInteractiveGame(gameId, target) {
 
   extendedGameSession.gameId = gameId;
   extendedGameSession.meta = meta;
-  extendedGameSession.scenarios = data.scenarios || [];
+  extendedGameSession.rawScenarios = data.scenarios ? [...data.scenarios] : [];
+  extendedGameSession.scenarios = [...extendedGameSession.rawScenarios];
 
   target.innerHTML = `
     <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
@@ -503,6 +504,18 @@ function renderExtendedInteractiveGame(gameId, target) {
 function startExtendedGameSession() {
   stopExtraGameTimer();
 
+  // Savollarni random tarzda aralashtirish (Fisher-Yates)
+  const pool = (extendedGameSession.rawScenarios && extendedGameSession.rawScenarios.length > 0)
+    ? extendedGameSession.rawScenarios
+    : extendedGameSession.scenarios;
+  const shuffledScenarios = [...pool];
+  for (let i = shuffledScenarios.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledScenarios[i], shuffledScenarios[j]] = [shuffledScenarios[j], shuffledScenarios[i]];
+  }
+  shuffledScenarios.forEach(s => { delete s._shuffledOptions; });
+  extendedGameSession.scenarios = shuffledScenarios;
+
   extendedGameSession.currentIndex = 0;
   extendedGameSession.score = 0;
   extendedGameSession.correctCount = 0;
@@ -566,16 +579,30 @@ function displayCurrentExtendedScenario() {
     fbBox.innerHTML = "";
   }
 
+  // Variantlarni har safar tasodifiy random aralashtirish (Fisher-Yates)
+  if (!item._shuffledOptions) {
+    const opts = (item.options || []).map((optText, origIdx) => ({
+      text: optText,
+      originalIndex: origIdx,
+      isCorrect: origIdx === item.correct
+    }));
+    for (let i = opts.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [opts[i], opts[j]] = [opts[j], opts[i]];
+    }
+    item._shuffledOptions = opts;
+  }
+
   // Render options
   const optContainer = document.getElementById('ext-card-options');
   if (optContainer) {
-    optContainer.innerHTML = item.options.map((optText, optIdx) => `
+    optContainer.innerHTML = item._shuffledOptions.map((optObj, optIdx) => `
       <button onclick="handleExtendedOptionClick(${optIdx}, this)" 
         class="ext-opt-btn eco-smooth-float w-full p-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500 hover:bg-slate-850 text-left text-xs font-semibold text-slate-200 transition-all flex items-start gap-3 cursor-pointer group shadow-md hover:shadow-xl hover:-translate-y-1">
         <span class="w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-[11px] font-black text-cyan-400 group-hover:bg-cyan-500 group-hover:text-slate-950 shrink-0">
           ${String.fromCharCode(65 + optIdx)}
         </span>
-        <span class="flex-1 pt-0.5 leading-relaxed">${optText}</span>
+        <span class="flex-1 pt-0.5 leading-relaxed">${optObj.text}</span>
       </button>
     `).join('');
   }
@@ -592,14 +619,16 @@ function handleExtendedOptionClick(choiceIndex, btnElement) {
   const item = extendedGameSession.scenarios[extendedGameSession.currentIndex];
   if (!item) return;
 
-  const isCorrect = choiceIndex === item.correct;
+  const options = item._shuffledOptions || (item.options || []).map((t, i) => ({ text: t, originalIndex: i, isCorrect: i === item.correct }));
+  const chosenOpt = options[choiceIndex];
+  const isCorrect = chosenOpt ? chosenOpt.isCorrect : false;
   const allBtns = document.querySelectorAll('.ext-opt-btn');
   let correctBtn = null;
 
   // Highlight choices
   allBtns.forEach((btn, idx) => {
     btn.classList.add('pointer-events-none');
-    if (idx === item.correct) {
+    if (options[idx] && options[idx].isCorrect) {
       correctBtn = btn;
       btn.className = "ext-opt-btn w-full p-3.5 rounded-xl bg-emerald-500/20 border-2 border-emerald-500 text-left text-xs font-bold text-white transition-all flex items-start gap-3";
     } else if (idx === choiceIndex && !isCorrect) {
@@ -632,7 +661,7 @@ function handleExtendedOptionClick(choiceIndex, btnElement) {
 
     extendedGameSession.results.push({
       item: item,
-      userChoice: choiceIndex,
+      userChoice: chosenOpt ? chosenOpt.text : choiceIndex,
       isCorrect: true
     });
   } else {
@@ -651,7 +680,7 @@ function handleExtendedOptionClick(choiceIndex, btnElement) {
 
     extendedGameSession.results.push({
       item: item,
-      userChoice: choiceIndex,
+      userChoice: chosenOpt ? chosenOpt.text : choiceIndex,
       isCorrect: false
     });
   }
@@ -682,10 +711,11 @@ function handleExtendedTimeout() {
   extendedGameSession.wrongCount++;
   if (window.ecoAudio) window.ecoAudio.playError();
 
+  const options = item._shuffledOptions || (item.options || []).map((t, i) => ({ text: t, originalIndex: i, isCorrect: i === item.correct }));
   const allBtns = document.querySelectorAll('.ext-opt-btn');
   allBtns.forEach((btn, idx) => {
     btn.classList.add('pointer-events-none');
-    if (idx === item.correct) {
+    if (options[idx] && options[idx].isCorrect) {
       btn.className = "ext-opt-btn w-full p-3.5 rounded-xl bg-emerald-500/20 border-2 border-emerald-500 text-left text-xs font-bold text-white transition-all flex items-start gap-3";
     } else {
       btn.classList.add('opacity-40');
