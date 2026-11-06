@@ -746,6 +746,19 @@
         return;
       }
 
+      // 4. Yashil Xarita (5x5) maxsus moduli
+      if (this.config.battleMode === 'green_map' && window.EcoBattleGreenMapMode) {
+        window.EcoBattleGreenMapMode.start({
+          t1Name: this.config.t1Name,
+          t2Name: this.config.t2Name,
+          t1Avatar: this.config.t1Avatar,
+          t2Avatar: this.config.t2Avatar,
+          matchTime: 75,
+          questionCount: this.config.questionCount || 25
+        });
+        return;
+      }
+
       this.active = true;
       this.paused = false;
       this.tugOfWarPercent = 50;
