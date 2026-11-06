@@ -964,7 +964,7 @@ function switchMainTab(tabId) {
     window.EcoBattleArena.unbindKeyboard();
   }
 
-  const tabs = ['modules-tab', 'games-tab', 'battle-tab', 'sorting-tab', 'audit-tab', 'expertise-tab', 'teacher-tab', 'videos-tab'];
+  const tabs = ['games-tab', 'battle-tab', 'sorting-tab', 'audit-tab', 'expertise-tab', 'teacher-tab', 'videos-tab'];
   tabs.forEach(t => {
     const el = document.getElementById(t);
     const navBtn = document.getElementById(`nav-${t}`);
@@ -1086,7 +1086,6 @@ function bootApp() {
   initAppleSplash();
   updateProfileHeaderUI();
   syncLeaderboardWithPlayer();
-  renderModulesCatalog('all');
   renderLeaderboard();
   
   if (typeof renderGamesHub === 'function') renderGamesHub();
@@ -1096,26 +1095,7 @@ function bootApp() {
   if (typeof initExpertiseQuest === 'function') initExpertiseQuest();
   if (window.EcoVideoManager && typeof window.EcoVideoManager.renderCatalog === 'function') window.EcoVideoManager.renderCatalog();
 
-  // Category filter clicks
-  const filterBtns = document.querySelectorAll('.cat-filter-btn');
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      filterBtns.forEach(b => b.classList.remove('active-filter', 'bg-emerald-500', 'text-white'));
-      btn.classList.add('active-filter', 'bg-emerald-500', 'text-white');
-      const cat = btn.getAttribute('data-cat');
-      playerProfile.selectedCategory = cat;
-      renderModulesCatalog(cat);
-      if (window.ecoAudio) window.ecoAudio.playClick();
-    });
-  });
 
-  // Search input
-  const searchInput = document.getElementById('modules-search-input');
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      renderModulesCatalog(playerProfile.selectedCategory || 'all', e.target.value);
-    });
-  }
 }
 
 window.bootApp = bootApp;
