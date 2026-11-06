@@ -451,13 +451,23 @@
       }
     },
 
-    // 5. Tergov doskasi slotiga bog'lash
+    // 5. Tergov doskasi slotiga bog'lash (Animatsiyalar bilan)
     handleSlotClick(teamId, slotIndex) {
       if (!this.active || this.paused) return;
       const team = teamId === 1 ? this.state.t1 : this.state.t2;
-      if (team.isStunned) return;
+      if (team.isStunned || team.isEvaluating) return;
+
+      const fb = document.getElementById(`forensics-feedback-${teamId}`);
 
       if (!team.selectedCard) {
+        if (fb) {
+          fb.innerHTML = `
+            <div class="forensics-shake-anim p-2.5 rounded-xl bg-amber-950/70 border border-amber-500/50 text-amber-300 text-xs text-center font-bold mb-2.5">
+              ⚠️ Avval quyidagi kartochkalar ichidan dalilni tanlang!
+            </div>
+          `;
+          setTimeout(() => { if (fb) fb.innerHTML = ''; }, 1600);
+        }
         return;
       }
 
@@ -472,6 +482,23 @@
           window.ecoAudio.playWrong();
         }
 
+        if (fb) {
+          fb.innerHTML = `
+            <div class="forensics-shake-anim p-3 rounded-2xl bg-gradient-to-r from-rose-950/95 via-slate-900 to-red-950/95 border-2 border-rose-500 text-rose-200 shadow-[0_0_30px_rgba(244,63,94,0.6)] flex items-center gap-3 mb-3">
+              <span class="text-3xl animate-bounce">🚨</span>
+              <div>
+                <div class="text-xs font-black text-rose-300 flex items-center gap-2">
+                  <span>SOXTA HUJJAT / KORRUPSIYA QOPQONI!</span>
+                  <span class="bg-rose-500 text-white px-2 py-0.2 rounded-full text-[9px] font-black">2s QOTISH</span>
+                </div>
+                <div class="text-[10px] text-slate-300 mt-0.5">
+                  Advokat e'tiroz bildirdi! Ushbu soxta dalil tergovdan chetlatildi.
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
         this.renderArena();
 
         team.stunTimer = setTimeout(() => {
@@ -481,9 +508,10 @@
         return;
       }
 
-      // 2. Haqiqiy dalil: slot mosligini tekshirish (slot 0 -> slotTarget 1, slot 1 -> slotTarget 2, ...)
+      // 2. Haqiqiy dalil: slot mosligini tekshirish
       const requiredTarget = slotIndex + 1;
       if (card.slotTarget === requiredTarget) {
+        team.isEvaluating = true;
         // To'g'ri dalil bog'landi!
         team.placedSlots[slotIndex] = card;
         team.availableCards = team.availableCards.filter(c => c.id !== card.id);
@@ -494,27 +522,61 @@
           window.ecoAudio.playCorrect();
         }
 
+        if (fb) {
+          fb.innerHTML = `
+            <div class="forensics-pop-anim p-3 rounded-2xl bg-gradient-to-r from-emerald-950/95 via-slate-900 to-teal-950/95 border-2 border-emerald-400 text-emerald-200 shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl animate-spin-slow">📌</span>
+                <div>
+                  <div class="text-xs font-black text-white flex items-center gap-2">
+                    <span class="text-emerald-300">✅ DALIL DOSKAGA BOG'LANDI!</span>
+                    <span class="bg-emerald-400 text-slate-950 px-2 py-0.5 rounded-full text-[9px] font-black">+200 XP</span>
+                  </div>
+                  <div class="text-[10px] text-slate-200 mt-0.5">
+                    <b>${card.name}</b> tergov zanjiriga qizil rishta bilan ulandi!
+                  </div>
+                </div>
+              </div>
+              <span class="text-xs font-black text-amber-400 font-mono">SLOT ${slotIndex + 1} ✓</span>
+            </div>
+          `;
+        }
+
         // Agar barcha 4 ta dalil to'liq bog'langan bo'lsa — Keys hal qilindi!
         if (team.placedSlots.every(Boolean)) {
           team.solvedCases += 1;
-          team.score += 400; // Bonus za sud aktini rasmiylashtirish
+          team.score += 400;
 
           if (team.solvedCases >= 2) {
-            this.finishMatch(teamId, "Barcha ekologik jinoyatlar to'liq fosh etildi va sud hukmi chiqarildi!");
+            setTimeout(() => {
+              team.isEvaluating = false;
+              this.finishMatch(teamId, "Barcha ekologik jinoyatlar to'liq fosh etildi va sud hukmi chiqarildi!");
+            }, 900);
             return;
           }
 
-          // Keyingi keysga o'tish
           setTimeout(() => {
+            team.isEvaluating = false;
             this.loadCase(this.state.currentCaseIndex + 1);
-          }, 800);
+          }, 950);
         } else {
-          this.renderArena();
+          setTimeout(() => {
+            team.isEvaluating = false;
+            this.renderArena();
+          }, 650);
         }
       } else {
         // Noto'g'ri slotga qo'yishga urinish
         if (window.ecoAudio && typeof window.ecoAudio.playWrong === 'function') {
           window.ecoAudio.playWrong();
+        }
+        if (fb) {
+          fb.innerHTML = `
+            <div class="forensics-shake-anim p-2.5 rounded-xl bg-rose-950/80 border border-rose-500/60 text-rose-300 text-xs text-center font-bold mb-2.5">
+              ⚠️ Noto'g'ri slot! <b>${card.name}</b> boshqa toifadagi dalil hisoblanadi.
+            </div>
+          `;
+          setTimeout(() => { if (fb) fb.innerHTML = ''; }, 1600);
         }
       }
     },

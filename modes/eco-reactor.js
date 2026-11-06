@@ -42,7 +42,7 @@
         animation: gaugeHazardBlink 0.8s ease-in-out infinite;
       }
       .reactor-control-btn {
-        transition: all 0.16s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
         border-bottom-width: 4px !important;
       }
       .reactor-control-btn:hover {
@@ -51,6 +51,38 @@
       .reactor-control-btn:active {
         transform: translateY(2px) scale(0.97);
         border-bottom-width: 1px !important;
+      }
+      @keyframes reactorShake {
+        0%, 100% { transform: translateX(0); }
+        15% { transform: translateX(-9px) rotate(-1.5deg); }
+        35% { transform: translateX(9px) rotate(1.5deg); }
+        55% { transform: translateX(-6px); }
+        75% { transform: translateX(6px); }
+      }
+      .reactor-shake-anim {
+        animation: reactorShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both !important;
+      }
+      @keyframes reactorPopScale {
+        0% { transform: scale(0.90); opacity: 0; }
+        50% { transform: scale(1.06); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      .reactor-pop-anim {
+        animation: reactorPopScale 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
+      }
+      @keyframes reactorNeonPulseGreen {
+        0%, 100% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.5), inset 0 0 10px rgba(16, 185, 129, 0.3); }
+        50% { box-shadow: 0 0 35px rgba(16, 185, 129, 0.9), inset 0 0 20px rgba(16, 185, 129, 0.6); }
+      }
+      .reactor-glow-green {
+        animation: reactorNeonPulseGreen 0.7s ease-in-out infinite;
+      }
+      @keyframes reactorNeonPulseRed {
+        0%, 100% { box-shadow: 0 0 15px rgba(244, 63, 94, 0.5), inset 0 0 10px rgba(244, 63, 94, 0.3); }
+        50% { box-shadow: 0 0 35px rgba(244, 63, 94, 0.9), inset 0 0 20px rgba(244, 63, 94, 0.6); }
+      }
+      .reactor-glow-red {
+        animation: reactorNeonPulseRed 0.6s ease-in-out infinite;
       }
     `;
     document.head.appendChild(style);
@@ -364,7 +396,7 @@
               <!-- Datchik 1: Harorat -->
               <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2 text-center shadow-inner relative overflow-hidden">
                 <span class="text-[9px] font-extrabold text-slate-400 uppercase block mb-0.5">Harorat T</span>
-                <div class="font-mono text-base font-black ${tempColor}">
+                <div id="t${teamId}-temp-val" class="font-mono text-base font-black ${tempColor}">
                   ${teamState.temp}°C
                 </div>
                 <div class="w-full bg-slate-800 h-1.5 rounded-full mt-1 overflow-hidden">
@@ -376,7 +408,7 @@
               <!-- Datchik 2: pH Kislotalilik -->
               <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2 text-center shadow-inner relative overflow-hidden">
                 <span class="text-[9px] font-extrabold text-slate-400 uppercase block mb-0.5">Kislotalilik pH</span>
-                <div class="font-mono text-base font-black ${phColor}">
+                <div id="t${teamId}-ph-val" class="font-mono text-base font-black ${phColor}">
                   ${teamState.pH} pH
                 </div>
                 <div class="w-full bg-slate-800 h-1.5 rounded-full mt-1 overflow-hidden">
@@ -388,7 +420,7 @@
               <!-- Datchik 3: Gaz Bosimi -->
               <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2 text-center shadow-inner relative overflow-hidden">
                 <span class="text-[9px] font-extrabold text-slate-400 uppercase block mb-0.5">Bosim P</span>
-                <div class="font-mono text-base font-black ${presColor}">
+                <div id="t${teamId}-pressure-val" class="font-mono text-base font-black ${presColor}">
                   ${teamState.pressure} Bar
                 </div>
                 <div class="w-full bg-slate-800 h-1.5 rounded-full mt-1 overflow-hidden">
@@ -404,7 +436,7 @@
                 <span class="text-slate-300 flex items-center gap-1.5">
                   <i class="fa-solid fa-shield-halved text-amber-400"></i> Reaktor Barqarorligi:
                 </span>
-                <span class="${teamState.stability >= 75 ? 'text-emerald-400' : (teamState.stability >= 40 ? 'text-amber-400' : 'text-rose-400 font-black animate-pulse')}">
+                <span id="t${teamId}-stability-val" class="${teamState.stability >= 75 ? 'text-emerald-400' : (teamState.stability >= 40 ? 'text-amber-400' : 'text-rose-400 font-black animate-pulse')}">
                   ${teamState.stability}% / 100%
                 </span>
               </div>
@@ -432,8 +464,11 @@
               </div>
             </div>
 
+            <!-- JAVOB NATIJASI ANIMATSIYA BLOKI (DYNAMIC FEEDBACK BANNER) -->
+            <div id="reactor-feedback-${teamId}" class="min-h-0 transition-all"></div>
+
             <!-- KIBER-PULT REAGENT VA KLAPAN TUGMALARI -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div id="reactor-options-grid-${teamId}" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               ${inc.options.map((opt, optIdx) => {
                 const keys = isT1 ? ['A', 'S', 'D', 'F'] : ['J', 'K', 'L', ';'];
                 const keyChar = keys[optIdx] || (optIdx + 1);
@@ -441,8 +476,9 @@
                 return `
                   <button 
                     type="button" 
+                    id="reactor-t${teamId}-opt-${optIdx}"
                     onclick="EcoBattleReactorMode.handleChoice(${teamId}, ${optIdx})"
-                    class="reactor-control-btn w-full p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800/90 border-2 border-slate-700/80 hover:border-amber-400 text-left cursor-pointer shadow-md group flex items-center justify-between gap-2"
+                    class="reactor-control-btn reactor-t${teamId}-btn w-full p-2.5 rounded-xl bg-slate-900 hover:bg-slate-850 border-2 border-slate-700/80 hover:border-amber-400 text-left cursor-pointer shadow-md group flex items-center justify-between gap-2"
                   >
                     <div class="flex flex-col overflow-hidden">
                       <span class="text-xs font-black text-white group-hover:text-amber-300 transition-colors leading-tight truncate">
@@ -452,7 +488,7 @@
                         ${opt.formula}
                       </span>
                     </div>
-                    <span class="w-6 h-6 rounded-lg bg-slate-950 border border-slate-700 text-xs font-mono font-black text-amber-400 flex items-center justify-center shrink-0 shadow-inner">
+                    <span id="reactor-t${teamId}-badge-${optIdx}" class="reactor-key-badge w-6 h-6 rounded-lg bg-slate-950 border border-slate-700 text-xs font-mono font-black text-amber-400 flex items-center justify-center shrink-0 shadow-inner">
                       ${keyChar}
                     </span>
                   </button>
@@ -472,19 +508,38 @@
       `;
     },
 
-    // 4. Variant tanlash
+    // 4. Variant tanlash (To'liq animatsiyali reaksiyalar bilan)
     handleChoice(teamId, optionIndex) {
       if (!this.active || this.paused) return;
       const team = teamId === 1 ? this.state.t1 : this.state.t2;
       const opponent = teamId === 1 ? this.state.t2 : this.state.t1;
-      if (team.isStunned) return;
+      if (team.isStunned || team.isEvaluating) return;
+      team.isEvaluating = true;
 
       const inc = INCIDENTS_DATABASE[team.incidentIndex % INCIDENTS_DATABASE.length];
       const selected = inc.options[optionIndex];
-      if (!selected) return;
+      if (!selected) {
+        team.isEvaluating = false;
+        return;
+      }
+
+      // DOM elementlarini topish
+      const clickedBtn = document.getElementById(`reactor-t${teamId}-opt-${optionIndex}`);
+      const correctIdx = inc.options.findIndex(o => o.isCorrect);
+      const correctBtn = document.getElementById(`reactor-t${teamId}-opt-${correctIdx}`);
+      const feedbackContainer = document.getElementById(`reactor-feedback-${teamId}`);
+      const allBtns = document.querySelectorAll(`.reactor-t${teamId}-btn`);
+
+      // Tugmalarni vaqtincha bosishdan saqlash
+      allBtns.forEach(btn => {
+        btn.disabled = true;
+        btn.classList.add('pointer-events-none');
+      });
 
       if (selected.isCorrect) {
-        // To'g'ri chora: Reaktor parametrlari yashil zonaga yaqinlashadi
+        // ==============================================================
+        // TO'G'RI JAVOB ANIMATSIYASI
+        // ==============================================================
         team.score += 150;
         team.streak += 1;
         team.temp = Math.max(480, Math.min(650, team.temp + selected.effect.temp));
@@ -495,33 +550,140 @@
         opponent.pressure = Math.min(9.5, Number((opponent.pressure + 0.6).toFixed(2)));
         opponent.temp = Math.min(1100, opponent.temp + 45);
 
+        // 1. Bosilgan tugmani yashil neon va sakrash bilan animatsiya qilish
+        if (clickedBtn) {
+          clickedBtn.classList.remove('bg-slate-900', 'border-slate-700/80');
+          clickedBtn.classList.add('bg-emerald-600/40', 'border-emerald-400', 'ring-4', 'ring-emerald-400/60', 'reactor-pop-anim', 'text-white', 'shadow-[0_0_30px_rgba(16,185,129,0.5)]');
+          const badge = document.getElementById(`reactor-t${teamId}-badge-${optionIndex}`);
+          if (badge) {
+            badge.className = "px-2 py-0.5 rounded-lg bg-emerald-400 text-slate-950 font-black text-xs animate-bounce shadow-md flex items-center gap-1";
+            badge.innerHTML = `<i class="fa-solid fa-check"></i> TO'G'RI!`;
+          }
+        }
+
+        // 2. Jonli Reaksiya Bannerini ko'rsatish
+        if (feedbackContainer) {
+          feedbackContainer.innerHTML = `
+            <div class="reactor-pop-anim p-3 rounded-2xl bg-gradient-to-r from-emerald-950/95 via-slate-900 to-teal-950/95 border-2 border-emerald-400 text-emerald-200 shadow-[0_0_35px_rgba(16,185,129,0.5)] flex items-center justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-2xl border border-emerald-400/50 shadow-inner">
+                  ⚗️
+                </div>
+                <div>
+                  <div class="text-xs font-black text-white flex items-center gap-2">
+                    <span class="text-emerald-300">✅ REAKSIYA NEYTRALLANDI!</span>
+                    <span class="bg-emerald-400 text-slate-950 px-2 py-0.5 rounded-full text-[9px] font-black shadow-sm">+150 XP</span>
+                  </div>
+                  <div class="text-[10.5px] text-slate-200 mt-0.5">
+                    ${selected.exp}
+                  </div>
+                  <div class="text-[9.5px] text-emerald-400 font-mono mt-0.5">
+                    Harorat: <b>${selected.effect.temp}°C</b> | pH: <b>+${selected.effect.pH}</b> | Bosim: <b>${selected.effect.pressure} Bar</b>
+                  </div>
+                </div>
+              </div>
+              <div class="text-right shrink-0">
+                <span class="text-xs font-black text-amber-400 block font-mono">COMBO x${team.streak} 🔥</span>
+                <span class="text-[9px] font-bold text-emerald-400">+Barqarorlik</span>
+              </div>
+            </div>
+          `;
+        }
+
+        // 3. Zarralar (Paqldoq) va audio
+        if (window.EcoFxEngine && clickedBtn) {
+          const r = clickedBtn.getBoundingClientRect();
+          window.EcoFxEngine.triggerPaqldoq(r.left + r.width / 2, r.top + r.height / 2, 12);
+        }
         if (window.ecoAudio && typeof window.ecoAudio.playCorrect === 'function') {
           window.ecoAudio.playCorrect();
         }
 
-        // Keyingi avariyaviy keysga o'tish
-        team.incidentIndex += 1;
         this.recalculateStability(team);
-        this.renderArena();
+
+        // 4. Foydalanuvchi animatsiyani tomosha qilishi uchun 900ms silliq kechikish
+        setTimeout(() => {
+          team.incidentIndex += 1;
+          team.isEvaluating = false;
+          this.renderArena();
+        }, 900);
+
       } else {
-        // Noto'g'ri chora: Reaktor bosimi sakraydi, 1.5s stun!
+        // ==============================================================
+        // NOTO'G'RI JAVOB ANIMATSIYASI
+        // ==============================================================
         team.streak = 0;
         team.temp = Math.min(1200, team.temp + selected.effect.temp);
         team.pH = Math.max(1.0, Math.min(13.5, Number((team.pH + selected.effect.pH).toFixed(2))));
         team.pressure = Math.min(9.8, Number((team.pressure + selected.effect.pressure).toFixed(2)));
-        team.isStunned = true;
+
+        // 1. Bosilgan tugmani qizil qizish va silkinish bilan ko'rsatish
+        if (clickedBtn) {
+          clickedBtn.classList.remove('bg-slate-900', 'border-slate-700/80');
+          clickedBtn.classList.add('bg-rose-600/40', 'border-rose-500', 'ring-4', 'ring-rose-500/60', 'reactor-shake-anim', 'text-white', 'shadow-[0_0_30px_rgba(244,63,94,0.5)]');
+          const badge = document.getElementById(`reactor-t${teamId}-badge-${optionIndex}`);
+          if (badge) {
+            badge.className = "px-2 py-0.5 rounded-lg bg-rose-500 text-white font-black text-xs flex items-center gap-1 shadow-md";
+            badge.innerHTML = `<i class="fa-solid fa-xmark"></i> XATO!`;
+          }
+        }
+
+        // 2. Haqiqiy to'g'ri reaktivni yashil ko'rsatib o'rgatish
+        if (correctBtn) {
+          correctBtn.classList.add('ring-2', 'ring-emerald-400', 'border-emerald-400', 'bg-emerald-500/20');
+          const cBadge = document.getElementById(`reactor-t${teamId}-badge-${correctIdx}`);
+          if (cBadge) {
+            cBadge.className = "px-1.5 py-0.5 rounded-lg bg-emerald-500/30 text-emerald-300 font-bold text-[9px] border border-emerald-500/40";
+            cBadge.innerText = "To'g'risi";
+          }
+        }
+
+        // 3. Avariyaviy Xavf Bannerini ko'rsatish
+        if (feedbackContainer) {
+          feedbackContainer.innerHTML = `
+            <div class="reactor-shake-anim p-3 rounded-2xl bg-gradient-to-r from-rose-950/95 via-slate-900 to-red-950/95 border-2 border-rose-500 text-rose-200 shadow-[0_0_35px_rgba(244,63,94,0.5)] flex items-center justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-300 flex items-center justify-center text-2xl border border-rose-500/40 animate-pulse">
+                  ⚠️
+                </div>
+                <div>
+                  <div class="text-xs font-black text-white flex items-center gap-2">
+                    <span class="text-rose-400">❌ KIMYOVIY TO'QNASHUV!</span>
+                    <span class="bg-rose-500 text-white px-2 py-0.5 rounded-full text-[9px] font-black">XAVF</span>
+                  </div>
+                  <div class="text-[10.5px] text-slate-200 mt-0.5">
+                    ${selected.exp}
+                  </div>
+                  <div class="text-[9.5px] text-rose-300 font-mono mt-0.5">
+                    Bosim <b class="text-rose-400">+${selected.effect.pressure} Bar</b> oshdi | Reaktor qizidi!
+                  </div>
+                </div>
+              </div>
+              <div class="text-right shrink-0">
+                <span class="text-xs font-black text-rose-400 block font-mono">1.5s QOTISH ⏳</span>
+                <span class="text-[9px] text-slate-400">Avariya klapani</span>
+              </div>
+            </div>
+          `;
+        }
 
         if (window.ecoAudio && typeof window.ecoAudio.playWrong === 'function') {
           window.ecoAudio.playWrong();
         }
 
         this.recalculateStability(team);
-        this.renderArena();
 
-        team.stunTimer = setTimeout(() => {
-          team.isStunned = false;
+        // 4. 1300ms dan so'ng stun holatiga o'tish
+        setTimeout(() => {
+          team.isStunned = true;
           this.renderArena();
-        }, 1500);
+
+          team.stunTimer = setTimeout(() => {
+            team.isStunned = false;
+            team.isEvaluating = false;
+            this.renderArena();
+          }, 1500);
+        }, 1300);
       }
     },
 
