@@ -23,6 +23,36 @@
     const style = document.createElement('style');
     style.id = 'eco-spot-polluter-styles';
     style.textContent = `
+      .flashlight-container {
+        cursor: crosshair;
+        box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.9);
+      }
+      .flashlight-lens {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        transition: background 0.05s linear;
+        mix-blend-mode: multiply;
+      }
+      @keyframes radarPing {
+        0% { transform: scale(0.6); opacity: 1; }
+        100% { transform: scale(2.2); opacity: 0; }
+      }
+      .violation-marker {
+        animation: radarPing 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+      .hud-crosshair {
+        pointer-events: none;
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        border: 1px dashed rgba(250, 204, 21, 0.5);
+        border-radius: 9999px;
+        transform: translate(-50%, -50%);
+        transition: left 0.06s ease-out, top 0.06s ease-out;
+      }
+    `;
+    style.textContent = `
       .flashlight-lens {
         position: absolute;
         inset: 0;

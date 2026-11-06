@@ -63,20 +63,75 @@
 
       /* Taktil 1-2 gradus egilgan kartalar uslubi */
       .tilted-card {
-        transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, border-color 0.2s ease;
+        transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, border-color 0.2s ease, filter 0.2s ease;
         will-change: transform;
       }
-      .tilted-card-1 { transform: rotate(-1.3deg); }
-      .tilted-card-2 { transform: rotate(1.2deg); }
-      .tilted-card-3 { transform: rotate(-1.5deg); }
-      .tilted-card-4 { transform: rotate(1.4deg); }
+      .tilted-card-1 { transform: rotate(-1.1deg); }
+      .tilted-card-2 { transform: rotate(1.1deg); }
+      .tilted-card-3 { transform: rotate(-1.3deg); }
+      .tilted-card-4 { transform: rotate(1.2deg); }
       .tilted-card-5 { transform: rotate(-1.1deg); }
-      .tilted-card-6 { transform: rotate(1.5deg); }
+      .tilted-card-6 { transform: rotate(1.3deg); }
 
       .tilted-card:hover {
-        transform: rotate(0deg) translateY(-8px) scale(1.025) !important;
-        box-shadow: 0 22px 35px -8px rgba(0, 0, 0, 0.7), 0 0 20px 2px rgba(16, 185, 129, 0.25) !important;
+        transform: rotate(0deg) translateY(-6px) scale(1.02) !important;
+        box-shadow: 0 22px 35px -8px rgba(0, 0, 0, 0.8), 0 0 24px 4px var(--card-glow, rgba(16, 185, 129, 0.35)) !important;
         z-index: 10;
+      }
+
+      /* Kahoot-style Chunky 3D Chuqurlik */
+      .kahoot-card-3d {
+        position: relative;
+        border-radius: 1.25rem;
+        transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .kahoot-card-3d:active {
+        transform: translateY(3px) scale(0.985) !important;
+      }
+
+      /* Mini Arcade Stage Previews */
+      @keyframes miniRadarSweep {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .mini-radar-sweep {
+        animation: miniRadarSweep 3.5s linear infinite;
+        transform-origin: center center;
+      }
+      @keyframes trophicPulse {
+        0%, 100% { transform: scale(1); opacity: 0.85; }
+        50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 8px #c084fc); }
+      }
+      .trophic-pulse-node {
+        animation: trophicPulse 2s ease-in-out infinite;
+      }
+      @keyframes comboSparkGlow {
+        0%, 100% { opacity: 0.7; filter: drop-shadow(0 0 2px #84cc16); }
+        50% { opacity: 1; filter: drop-shadow(0 0 10px #facc15); }
+      }
+      .combo-spark-glow {
+        animation: comboSparkGlow 1.2s ease-in-out infinite;
+      }
+      @keyframes ropeTugPulse {
+        0%, 100% { transform: translateX(0); }
+        50% { transform: translateX(6px); }
+      }
+      .rope-tug-anim {
+        animation: ropeTugPulse 1.8s ease-in-out infinite;
+      }
+
+      /* Kahoot Geometric Game Badge */
+      .kahoot-geo-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 9999px;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       }
 
       /* Jismoniy stiker yorliq */
@@ -90,9 +145,9 @@
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        transform: rotate(-5deg);
-        box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.45);
-        border: 1px dashed rgba(255, 255, 255, 0.3);
+        transform: rotate(-4deg);
+        box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.5);
+        border: 1px dashed rgba(255, 255, 255, 0.35);
       }
 
       /* Taktil bounce tugma */
@@ -230,165 +285,392 @@
           </div>
 
           <!-- JANG REJIMINI TANLASH (6 TA TAKTIL REJIM!) -->
-          <div class="max-w-5xl mx-auto mb-7">
-            <div class="flex items-center justify-between mb-3 px-1">
-              <span class="text-xs font-black uppercase text-slate-300 tracking-wider flex items-center gap-2">
-                <i class="fa-solid fa-gamepad text-emerald-400"></i> Jang Rejimini Tanlang (6 xil bellashuv):
+          <div class="max-w-6xl mx-auto mb-8">
+            <div class="flex items-center justify-between mb-4 px-1">
+              <span class="text-sm font-black uppercase text-white tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-gamepad text-emerald-400 text-base"></i> Jang Rejimini Tanlang (6 ta Maxsus O'yin):
               </span>
-              <span class="text-[10px] text-slate-500 font-bold hidden sm:inline">
-                * Har bir rejim o'ziga xos mexanika va ranglariga ega
+              <span class="text-xs text-amber-300 font-black hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30">
+                <i class="fa-solid fa-fire text-amber-400 animate-pulse"></i> Kahoot-uslubidagi Jonli 1v1 Bellashuv
               </span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               
               <!-- 1. Konveyer Poygasi -->
               <div 
-                onclick="EcoBattleArena.setBattleMode('conveyor', this)" 
-                class="tilted-card tilted-card-1 border-2 ${this.config.battleMode === 'conveyor' ? 'border-amber-400 bg-amber-950/50 ring-4 ring-amber-500/30' : 'border-slate-800 bg-slate-950/70 hover:border-amber-500/60'} rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden"
+                onclick="EcoBattleArena.setBattleMode('conveyor')" 
+                style="--card-glow: rgba(245, 158, 11, 0.4);"
+                class="tilted-card tilted-card-1 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'conveyor' ? 'border-amber-400 border-b-amber-600 bg-gradient-to-b from-amber-950/60 via-slate-950 to-slate-950 ring-4 ring-amber-500/40 shadow-2xl shadow-amber-500/20' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-amber-500/70 hover:border-b-amber-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <div class="w-11 h-11 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-2xl border border-amber-500/40 group-hover:scale-110 transition-transform">
-                      ⚡
-                    </div>
-                    <span class="eco-sticker-badge bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950">
-                      Tavsiya
+                  <!-- Header -->
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="kahoot-geo-badge bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950">
+                      ▲ POYGA
+                    </span>
+                    <span class="eco-sticker-badge bg-gradient-to-r from-amber-500 to-yellow-300 text-slate-950">
+                      🔥 TAVSIYA
                     </span>
                   </div>
-                  <h4 class="text-sm font-black text-white group-hover:text-amber-300 transition-colors">1. Chiqindi Konveyeri</h4>
+
+                  <!-- MINI GAME STAGE PREVIEW (Konveyer tasviri) -->
+                  <div class="w-full h-24 rounded-xl bg-slate-900/90 border border-amber-500/30 p-2 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9px] font-black text-amber-300">
+                      <span>CHIQINDI OQIMI</span>
+                      <span class="text-amber-400/80">⚡ 0.8s REAKSIYA</span>
+                    </div>
+                    <!-- Conveyor Track -->
+                    <div class="conveyor-belt-track w-full h-8 rounded-lg border border-slate-700 flex items-center justify-around px-2 relative overflow-hidden">
+                      <span class="text-lg waste-conveyor-float">🧴</span>
+                      <span class="text-lg waste-conveyor-float" style="animation-delay: 0.6s;">🍾</span>
+                      <span class="text-lg waste-conveyor-float" style="animation-delay: 1.2s;">🔋</span>
+                    </div>
+                    <!-- Mini 4 Bins -->
+                    <div class="grid grid-cols-4 gap-1 text-[8px] font-black text-center text-slate-300">
+                      <span class="py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">Plastik</span>
+                      <span class="py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/40">Qog'oz</span>
+                      <span class="py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Shisha</span>
+                      <span class="py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40">Xavfli</span>
+                    </div>
+                  </div>
+
+                  <h4 class="text-base font-black text-white group-hover:text-amber-300 transition-colors flex items-center gap-2">
+                    <span>1. Chiqindi Konveyeri</span>
+                  </h4>
                   <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
                     200 ta SVG chiqindidan doimiy oqim. 4 talik toifalar poygasi (A/S/D/F vs J/K/L/;).
                   </p>
                 </div>
-                <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-amber-400/90">
-                  <span>⚡ 4-talik Tezkor Poyga</span>
-                  <span class="text-slate-500">200 Ta Baza</span>
+
+                <div class="mt-4 pt-3 border-t border-slate-800/90">
+                  <div class="flex items-center justify-between text-[10px] font-bold text-amber-400/90 mb-2">
+                    <span>⚡ 200 SVG Baza</span>
+                    <span class="text-slate-400">👥 1v1 Split</span>
+                  </div>
+                  <div class="w-full py-2 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'conveyor' ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 shadow-md' : 'bg-slate-900 group-hover:bg-amber-500/20 text-slate-300 group-hover:text-amber-300 border border-slate-800'}">
+                    ${this.config.battleMode === 'conveyor' ? '✅ TANLANGAN REJIM' : "🕹️ O'YINNI TANLASH"}
+                  </div>
                 </div>
               </div>
 
               <!-- 2. Akademik Eko-Duel -->
               <div 
-                onclick="EcoBattleArena.setBattleMode('quiz', this)" 
-                class="tilted-card tilted-card-2 border-2 ${this.config.battleMode === 'quiz' ? 'border-cyan-400 bg-cyan-950/50 ring-4 ring-cyan-500/30' : 'border-slate-800 bg-slate-950/70 hover:border-cyan-500/60'} rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden"
+                onclick="EcoBattleArena.setBattleMode('quiz')" 
+                style="--card-glow: rgba(6, 182, 212, 0.4);"
+                class="tilted-card tilted-card-2 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'quiz' ? 'border-cyan-400 border-b-cyan-600 bg-gradient-to-b from-cyan-950/60 via-slate-950 to-slate-950 ring-4 ring-cyan-500/40 shadow-2xl shadow-cyan-500/20' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-cyan-500/70 hover:border-b-cyan-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <div class="w-11 h-11 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl border border-cyan-500/40 group-hover:scale-110 transition-transform">
-                      🧠
-                    </div>
-                    <span class="eco-sticker-badge bg-gradient-to-r from-cyan-500 to-sky-400 text-slate-950">
-                      Bilim
+                  <!-- Header -->
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="kahoot-geo-badge bg-gradient-to-r from-cyan-500 to-sky-400 text-slate-950">
+                      ◆ DUEL
+                    </span>
+                    <span class="eco-sticker-badge bg-gradient-to-r from-cyan-500 to-blue-400 text-slate-950">
+                      🧠 BILIM
                     </span>
                   </div>
-                  <h4 class="text-sm font-black text-white group-hover:text-cyan-300 transition-colors">2. Akademik Eko-Duel</h4>
+
+                  <!-- MINI GAME STAGE PREVIEW (Duel podiyasi) -->
+                  <div class="w-full h-24 rounded-xl bg-slate-900/90 border border-cyan-500/30 p-2 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9px] font-black text-cyan-300">
+                      <span>1v1 JONLI TEST</span>
+                      <span class="text-cyan-400/80">⏱️ 15s TAYMER</span>
+                    </div>
+                    <!-- Clash Podium -->
+                    <div class="flex items-center justify-around py-1">
+                      <div class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-lg shadow-lg">
+                        🛡️
+                      </div>
+                      <div class="px-2 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 text-[10px] font-black animate-pulse">
+                        ⚡ VS ⚡
+                      </div>
+                      <div class="w-9 h-9 rounded-xl bg-rose-500/20 border border-rose-500/50 flex items-center justify-center text-lg shadow-lg">
+                        ⚡
+                      </div>
+                    </div>
+                    <div class="text-center text-[9px] font-extrabold text-slate-400">
+                      ISO 14001 • Audit • Ekspertiza
+                    </div>
+                  </div>
+
+                  <h4 class="text-base font-black text-white group-hover:text-cyan-300 transition-colors flex items-center gap-2">
+                    <span>2. Akademik Eko-Duel</span>
+                  </h4>
                   <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
                     ISO 14001, sanoat auditi va ekologik ekspertiza testlari bo'yicha intellektual bellashuv.
                   </p>
                 </div>
-                <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-cyan-400/90">
-                  <span>🎓 Nazariya & Audit</span>
-                  <span class="text-slate-500">ISO 14001</span>
+
+                <div class="mt-4 pt-3 border-t border-slate-800/90">
+                  <div class="flex items-center justify-between text-[10px] font-bold text-cyan-400/90 mb-2">
+                    <span>📜 Nazariya & Standart</span>
+                    <span class="text-slate-400">🔥 Streak x5</span>
+                  </div>
+                  <div class="w-full py-2 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'quiz' ? 'bg-gradient-to-r from-cyan-500 to-sky-400 text-slate-950 shadow-md' : 'bg-slate-900 group-hover:bg-cyan-500/20 text-slate-300 group-hover:text-cyan-300 border border-slate-800'}">
+                    ${this.config.battleMode === 'quiz' ? '✅ TANLANGAN REJIM' : "🕹️ O'YINNI TANLASH"}
+                  </div>
                 </div>
               </div>
 
               <!-- 3. Toza Arqon (Tug-of-War) -->
               <div 
-                onclick="EcoBattleArena.setBattleMode('tug_of_war', this)" 
-                class="tilted-card tilted-card-3 border-2 ${this.config.battleMode === 'tug_of_war' ? 'border-emerald-400 bg-emerald-950/50 ring-4 ring-emerald-500/30' : 'border-slate-800 bg-slate-950/70 hover:border-emerald-500/60'} rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden"
+                onclick="EcoBattleArena.setBattleMode('tug_of_war')" 
+                style="--card-glow: rgba(239, 68, 68, 0.4);"
+                class="tilted-card tilted-card-3 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'tug_of_war' ? 'border-rose-400 border-b-rose-600 bg-gradient-to-b from-rose-950/60 via-slate-950 to-slate-950 ring-4 ring-rose-500/40 shadow-2xl shadow-rose-500/20' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-rose-500/70 hover:border-b-rose-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <div class="w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-500/40 group-hover:scale-110 transition-transform">
-                      🪢
-                    </div>
-                    <span class="eco-sticker-badge bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950">
-                      Jang
+                  <!-- Header -->
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="kahoot-geo-badge bg-gradient-to-r from-rose-500 to-red-600 text-white">
+                      ■ NOKAUT
+                    </span>
+                    <span class="eco-sticker-badge bg-gradient-to-r from-rose-500 to-pink-500 text-white">
+                      💥 ARQON
                     </span>
                   </div>
-                  <h4 class="text-sm font-black text-white group-hover:text-emerald-300 transition-colors">3. Toza Arqon</h4>
+
+                  <!-- MINI GAME STAGE PREVIEW (Arqon tortishuv) -->
+                  <div class="w-full h-24 rounded-xl bg-slate-900/90 border border-rose-500/30 p-2 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9px] font-black text-rose-300">
+                      <span>CHEGARA ITARISH</span>
+                      <span class="text-rose-400 font-extrabold animate-pulse">🔥 2X KUCH (10s)</span>
+                    </div>
+                    <!-- Rope Visual -->
+                    <div class="relative w-full h-6 flex items-center justify-center rope-tug-anim">
+                      <div class="w-full h-2 bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500 rounded-full"></div>
+                      <div class="absolute left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 border-2 border-white flex items-center justify-center text-[10px] font-black shadow-lg">
+                        💥
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px] font-black px-1 text-slate-400">
+                      <span class="text-emerald-400">◄ Zumrad</span>
+                      <span class="text-amber-400">1.5s Stan Jazosi</span>
+                      <span class="text-rose-400">Yoqut ►</span>
+                    </div>
+                  </div>
+
+                  <h4 class="text-base font-black text-white group-hover:text-rose-300 transition-colors flex items-center gap-2">
+                    <span>3. Toza Arqon</span>
+                  </h4>
                   <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
                     To'g'ri javob chegarani raqibga suradi! Oxirgi 10 soniyada zarba kuchi 2x kuchayadi.
                   </p>
                 </div>
-                <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-emerald-400/90">
-                  <span>🔥 Chegara Itarish</span>
-                  <span class="text-slate-500">2x Super-Kuch</span>
+
+                <div class="mt-4 pt-3 border-t border-slate-800/90">
+                  <div class="flex items-center justify-between text-[10px] font-bold text-rose-400/90 mb-2">
+                    <span>🪢 Chegara Itarish</span>
+                    <span class="text-slate-400">⚡ Nokaut Chegarasi</span>
+                  </div>
+                  <div class="w-full py-2 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'tug_of_war' ? 'bg-gradient-to-r from-rose-500 to-red-600 text-white shadow-md' : 'bg-slate-900 group-hover:bg-rose-500/20 text-slate-300 group-hover:text-rose-300 border border-slate-800'}">
+                    ${this.config.battleMode === 'tug_of_war' ? '✅ TANLANGAN REJIM' : "🕹️ O'YINNI TANLASH"}
+                  </div>
                 </div>
               </div>
 
-              <!-- 4. Yashil Xarita (Territory 5x5) -->
+              <!-- 4. Yashil Xarita (Territory 5x5 War) — MUKAMMAL VIZUAL O'YIN KARTASI -->
               <div 
-                onclick="EcoBattleArena.setBattleMode('green_map', this)" 
-                class="tilted-card tilted-card-4 border-2 ${this.config.battleMode === 'green_map' ? 'border-lime-400 bg-lime-950/50 ring-4 ring-lime-500/30' : 'border-slate-800 bg-slate-950/70 hover:border-lime-500/60'} rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden"
+                onclick="EcoBattleArena.setBattleMode('green_map')" 
+                style="--card-glow: rgba(16, 185, 129, 0.45);"
+                class="tilted-card tilted-card-4 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'green_map' ? 'border-lime-400 border-b-lime-600 bg-gradient-to-b from-emerald-950/60 via-slate-950 to-slate-950 ring-4 ring-lime-500/40 shadow-2xl shadow-lime-500/20' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-lime-500/70 hover:border-b-lime-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <div class="w-11 h-11 rounded-xl bg-lime-500/20 text-lime-400 flex items-center justify-center text-2xl border border-lime-500/40 group-hover:scale-110 transition-transform">
-                      🗺️
-                    </div>
-                    <span class="eco-sticker-badge bg-gradient-to-r from-lime-500 to-emerald-400 text-slate-950">
-                      Strategiya
+                  <!-- Header -->
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="kahoot-geo-badge bg-gradient-to-r from-lime-500 to-emerald-500 text-slate-950">
+                      ● STRATEGIYA
+                    </span>
+                    <span class="eco-sticker-badge bg-gradient-to-r from-lime-400 to-emerald-400 text-slate-950">
+                      🌲 TOP-JANG
                     </span>
                   </div>
-                  <h4 class="text-sm font-black text-white group-hover:text-lime-300 transition-colors">4. Yashil Xarita (5x5)</h4>
+
+                  <!-- MINI GAME STAGE PREVIEW (Haqiqiy 5x5 Maydon Mockup) -->
+                  <div class="w-full h-24 rounded-xl bg-slate-900/90 border border-lime-500/30 p-2 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9px] font-black text-lime-300">
+                      <span>5x5 MAYDON URUSHI</span>
+                      <span class="text-amber-300 combo-spark-glow">⚡ +300 COMBO QATOR!</span>
+                    </div>
+
+                    <!-- Visual 5x5 Mini Grid -->
+                    <div class="grid grid-cols-5 gap-1 w-full max-w-[170px] mx-auto py-0.5">
+                      <span class="w-5 h-3.5 rounded-xs bg-emerald-500/40 border border-emerald-400/80 flex items-center justify-center text-[8px]">🌲</span>
+                      <span class="w-5 h-3.5 rounded-xs bg-slate-800 border border-slate-700"></span>
+                      <span class="w-5 h-3.5 rounded-xs bg-rose-500/40 border border-rose-400/80 flex items-center justify-center text-[8px]">🏭</span>
+                      <span class="w-5 h-3.5 rounded-xs bg-emerald-500/40 border border-emerald-400/80 flex items-center justify-center text-[8px]">🌲</span>
+                      <span class="w-5 h-3.5 rounded-xs bg-slate-800 border border-slate-700"></span>
+                      <!-- Diagonal Combo Beam Mockup -->
+                      <span class="w-5 h-3.5 rounded-xs bg-amber-400/40 border border-amber-300 flex items-center justify-center text-[8px]">🌲</span>
+                      <span class="w-5 h-3.5 rounded-xs bg-amber-400/40 border border-amber-300 flex items-center justify-center text-[8px]">🌲</span>
+                      <span class="w-5 h-3.5 rounded-xs bg-amber-400/40 border border-amber-300 flex items-center justify-center text-[8px]">🌲</span>
+                      <span class="w-5 h-3.5 rounded-xs bg-amber-400/40 border border-amber-300 flex items-center justify-center text-[8px]">🌲</span>
+                      <span class="w-5 h-3.5 rounded-xs bg-amber-400/40 border border-amber-300 flex items-center justify-center text-[8px]">🌲</span>
+                    </div>
+
+                    <!-- Territory Bar -->
+                    <div class="w-full flex items-center gap-1.5 text-[8px] font-black px-1">
+                      <span class="text-emerald-400">🌲 Zumrad (64%)</span>
+                      <div class="flex-1 h-1.5 rounded-full bg-slate-800 overflow-hidden flex">
+                        <div class="h-full bg-emerald-500" style="width: 64%;"></div>
+                        <div class="h-full bg-rose-500" style="width: 36%;"></div>
+                      </div>
+                      <span class="text-rose-400">Yoqut (36%) 🏭</span>
+                    </div>
+                  </div>
+
+                  <h4 class="text-base font-black text-white group-hover:text-lime-300 transition-colors flex items-center gap-2">
+                    <span>4. Yashil Xarita (5x5 War)</span>
+                  </h4>
                   <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
                     5x5 maydonda Daraxt ekish va Zavod qurish jangi. Qatorlarni to'ldirib combo oling!
                   </p>
                 </div>
-                <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-lime-400/90">
-                  <span>🌲 Daraxt vs 🏭 Zavod</span>
-                  <span class="text-slate-500">Combo Bonus</span>
+
+                <div class="mt-4 pt-3 border-t border-slate-800/90">
+                  <div class="flex items-center justify-between text-[10px] font-bold text-lime-400/90 mb-2">
+                    <span>🌲 Daraxt vs 🏭 Zavod</span>
+                    <span class="text-slate-400">⚡ 25 Katakli Jang</span>
+                  </div>
+                  <div class="w-full py-2 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'green_map' ? 'bg-gradient-to-r from-lime-500 to-emerald-500 text-slate-950 shadow-md' : 'bg-slate-900 group-hover:bg-lime-500/20 text-slate-300 group-hover:text-lime-300 border border-slate-800'}">
+                    ${this.config.battleMode === 'green_map' ? '✅ TANLANGAN REJIM' : "🕹️ O'YINNI TANLASH"}
+                  </div>
                 </div>
               </div>
 
-              <!-- 5. Oziq Zanjiri (Food Chain) -->
+              <!-- 5. Oziq Zanjiri (Trophic Web Arcade) — MUKAMMAL VIZUAL O'YIN KARTASI -->
               <div 
-                onclick="EcoBattleArena.setBattleMode('food_chain', this)" 
-                class="tilted-card tilted-card-5 border-2 ${this.config.battleMode === 'food_chain' ? 'border-purple-400 bg-purple-950/50 ring-4 ring-purple-500/30' : 'border-slate-800 bg-slate-950/70 hover:border-purple-500/60'} rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden"
+                onclick="EcoBattleArena.setBattleMode('food_chain')" 
+                style="--card-glow: rgba(168, 85, 247, 0.45);"
+                class="tilted-card tilted-card-5 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'food_chain' ? 'border-purple-400 border-b-purple-600 bg-gradient-to-b from-purple-950/60 via-slate-950 to-slate-950 ring-4 ring-purple-500/40 shadow-2xl shadow-purple-500/20' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-purple-500/70 hover:border-b-purple-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <div class="w-11 h-11 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-2xl border border-purple-500/40 group-hover:scale-110 transition-transform">
-                      🦅
-                    </div>
-                    <span class="eco-sticker-badge bg-gradient-to-r from-purple-500 to-pink-400 text-slate-950">
-                      Ekotizim
+                  <!-- Header -->
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="kahoot-geo-badge bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                      ★ EKOTIZIM
+                    </span>
+                    <span class="eco-sticker-badge bg-gradient-to-r from-purple-500 to-indigo-400 text-white">
+                      🔗 ZANJIR
                     </span>
                   </div>
-                  <h4 class="text-sm font-black text-white group-hover:text-purple-300 transition-colors">5. Oziq Zanjiri</h4>
+
+                  <!-- MINI GAME STAGE PREVIEW (Trofik zanjir va tuzoq) -->
+                  <div class="w-full h-24 rounded-xl bg-slate-900/90 border border-purple-500/30 p-2 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9px] font-black text-purple-300">
+                      <span>TROFIK ZANJIRNI ULASH</span>
+                      <span class="text-rose-400 font-extrabold animate-pulse">⚠️ TUZOQ: PLASTIK!</span>
+                    </div>
+
+                    <!-- Interactive Chain Diagram Flow -->
+                    <div class="flex items-center justify-between px-1 py-1">
+                      <div class="trophic-pulse-node w-7 h-7 rounded-lg bg-yellow-500/20 border border-yellow-400/80 flex items-center justify-center text-xs" title="1-Produtsent">
+                        ☀️
+                      </div>
+                      <span class="text-purple-400 text-xs font-black">➔</span>
+                      <div class="trophic-pulse-node w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-400/80 flex items-center justify-center text-xs" style="animation-delay: 0.4s;" title="2-O'simlik">
+                        🌿
+                      </div>
+                      <span class="text-purple-400 text-xs font-black">➔</span>
+                      <div class="trophic-pulse-node w-7 h-7 rounded-lg bg-amber-500/20 border border-amber-400/80 flex items-center justify-center text-xs" style="animation-delay: 0.8s;" title="3-Iste'molchi">
+                        🦗
+                      </div>
+                      <span class="text-purple-400 text-xs font-black">➔</span>
+                      <div class="trophic-pulse-node w-7 h-7 rounded-lg bg-rose-500/20 border border-rose-400/80 flex items-center justify-center text-xs" style="animation-delay: 1.2s;" title="4-Yirtqich">
+                        🦅
+                      </div>
+                    </div>
+
+                    <!-- Trap Warning Badge -->
+                    <div class="flex items-center justify-between text-[8px] font-black px-1 bg-purple-950/60 rounded border border-purple-500/30 py-0.5">
+                      <span class="text-purple-300">🧬 4 Tali Rishta Halqasi</span>
+                      <span class="text-rose-400">🚫 Qopqon: Chiqindi Xalta</span>
+                    </div>
+                  </div>
+
+                  <h4 class="text-base font-black text-white group-hover:text-purple-300 transition-colors flex items-center gap-2">
+                    <span>5. Oziq Zanjiri (Food Chain)</span>
+                  </h4>
                   <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
                     Trofik pog'onalarni ulab zanjir hosil qiling. Qopqon plastik va zaharli kartalardan ehtiyot bo'ling!
                   </p>
                 </div>
-                <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-purple-400/90">
-                  <span>🔗 Rishta Chiziqlari</span>
-                  <span class="text-slate-500">Trofik Pog'ona</span>
+
+                <div class="mt-4 pt-3 border-t border-slate-800/90">
+                  <div class="flex items-center justify-between text-[10px] font-bold text-purple-400/90 mb-2">
+                    <span>🔗 Rishta Chiziqlari</span>
+                    <span class="text-slate-400">🧬 30 Ekotizim</span>
+                  </div>
+                  <div class="w-full py-2 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'food_chain' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md' : 'bg-slate-900 group-hover:bg-purple-500/20 text-slate-300 group-hover:text-purple-300 border border-slate-800'}">
+                    ${this.config.battleMode === 'food_chain' ? '✅ TANLANGAN REJIM' : "🕹️ O'YINNI TANLASH"}
+                  </div>
                 </div>
               </div>
 
-              <!-- 6. Ifloslantiruvchini Top (Spot Polluter) -->
+              <!-- 6. Ifloslantiruvchini Top (Spot Polluter) — MUKAMMAL VIZUAL O'YIN KARTASI -->
               <div 
-                onclick="EcoBattleArena.setBattleMode('spot_polluter', this)" 
-                class="tilted-card tilted-card-6 border-2 ${this.config.battleMode === 'spot_polluter' ? 'border-yellow-400 bg-yellow-950/50 ring-4 ring-yellow-500/30' : 'border-slate-800 bg-slate-950/70 hover:border-yellow-500/60'} rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden"
+                onclick="EcoBattleArena.setBattleMode('spot_polluter')" 
+                style="--card-glow: rgba(234, 179, 8, 0.45);"
+                class="tilted-card tilted-card-6 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'spot_polluter' ? 'border-yellow-400 border-b-yellow-600 bg-gradient-to-b from-yellow-950/60 via-slate-950 to-slate-950 ring-4 ring-yellow-500/40 shadow-2xl shadow-yellow-500/20' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-yellow-500/70 hover:border-b-yellow-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <div class="w-11 h-11 rounded-xl bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-2xl border border-yellow-500/40 group-hover:scale-110 transition-transform">
-                      🔦
-                    </div>
-                    <span class="eco-sticker-badge bg-gradient-to-r from-yellow-500 to-amber-400 text-slate-950">
-                      Detektiv
+                  <!-- Header -->
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="kahoot-geo-badge bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-950">
+                      ✚ DETEKTIV
+                    </span>
+                    <span class="eco-sticker-badge bg-gradient-to-r from-yellow-400 to-amber-400 text-slate-950">
+                      🔦 RADAR
                     </span>
                   </div>
-                  <h4 class="text-sm font-black text-white group-hover:text-yellow-300 transition-colors">6. Ifloslantiruvchini Top</h4>
+
+                  <!-- MINI GAME STAGE PREVIEW (Qorong'i fonar nuri va radar) -->
+                  <div class="w-full h-24 rounded-xl bg-slate-950 border border-yellow-500/30 p-2 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9px] font-black text-yellow-300 z-10">
+                      <span>RADARDA 5 TA BUZILISH</span>
+                      <span class="text-rose-400 font-extrabold">🚨 3s FREEZE JAZOSI</span>
+                    </div>
+
+                    <!-- Flashlight Spotlight Beam Simulation -->
+                    <div class="relative w-full h-10 flex items-center justify-center">
+                      <!-- Dark terrain with silhouettes -->
+                      <div class="absolute inset-0 bg-slate-900/90 rounded border border-slate-800 flex items-center justify-around px-3 opacity-60">
+                        <span class="text-sm">🏭</span>
+                        <span class="text-xs">⛰️</span>
+                        <span class="text-sm">🚢</span>
+                      </div>
+                      <!-- Moving circular spotlight beam -->
+                      <div class="mini-radar-sweep relative w-12 h-12 rounded-full bg-yellow-400/30 border-2 border-yellow-300 flex items-center justify-center text-sm shadow-[0_0_18px_rgba(250,204,21,0.8)] z-10 animate-pulse">
+                        🛢️
+                      </div>
+                      <div class="absolute right-6 text-xs text-rose-400 font-black z-10">
+                        🎯
+                      </div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-[8px] font-black px-1 text-slate-400 z-10">
+                      <span class="text-yellow-300">🔦 Interaktiv Nur</span>
+                      <span class="text-amber-400">Zaharli Bochkalar • Tutun</span>
+                      <span class="text-rose-400">Adashmang!</span>
+                    </div>
+                  </div>
+
+                  <h4 class="text-base font-black text-white group-hover:text-yellow-300 transition-colors flex items-center gap-2">
+                    <span>6. Ifloslantiruvchini Top</span>
+                  </h4>
                   <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
                     Qorong'i xaritada fonar nuri bilan 5 ta yashirin buzilishni toping. Adashish 3 soniya qotiradi!
                   </p>
                 </div>
-                <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-yellow-400/90">
-                  <span>🔦 Fonar Nuri</span>
-                  <span class="text-slate-500">3s Freeze</span>
+
+                <div class="mt-4 pt-3 border-t border-slate-800/90">
+                  <div class="flex items-center justify-between text-[10px] font-bold text-yellow-400/90 mb-2">
+                    <span>🔦 Fonar Nuri & Radar</span>
+                    <span class="text-slate-400">🚨 3s Freeze Jazo</span>
+                  </div>
+                  <div class="w-full py-2 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'spot_polluter' ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-950 shadow-md' : 'bg-slate-900 group-hover:bg-yellow-500/20 text-slate-300 group-hover:text-yellow-300 border border-slate-800'}">
+                    ${this.config.battleMode === 'spot_polluter' ? '✅ TANLANGAN REJIM' : "🕹️ O'YINNI TANLASH"}
+                  </div>
                 </div>
               </div>
 

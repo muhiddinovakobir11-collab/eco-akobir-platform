@@ -26,24 +26,31 @@
       .map-grid-cell {
         transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
         will-change: transform;
+        border-bottom-width: 3px !important;
       }
       .map-grid-cell:hover {
-        transform: scale(1.06) translateY(-2px);
+        transform: scale(1.08) translateY(-2px);
         z-index: 5;
       }
+      .map-grid-cell:active {
+        transform: scale(0.96) translateY(1px);
+        border-bottom-width: 1px !important;
+      }
       .cell-tree {
-        background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, rgba(6, 78, 59, 0.6) 100%) !important;
+        background: radial-gradient(circle, rgba(16, 185, 129, 0.45) 0%, rgba(6, 78, 59, 0.85) 100%) !important;
         border-color: #10b981 !important;
-        box-shadow: 0 0 12px rgba(16, 185, 129, 0.45);
+        border-bottom-color: #047857 !important;
+        box-shadow: 0 0 14px rgba(16, 185, 129, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.25);
       }
       .cell-factory {
-        background: radial-gradient(circle, rgba(244, 63, 94, 0.35) 0%, rgba(136, 19, 55, 0.6) 100%) !important;
+        background: radial-gradient(circle, rgba(244, 63, 94, 0.45) 0%, rgba(136, 19, 55, 0.85) 100%) !important;
         border-color: #f43f5e !important;
-        box-shadow: 0 0 12px rgba(244, 63, 94, 0.45);
+        border-bottom-color: #be123c !important;
+        box-shadow: 0 0 14px rgba(244, 63, 94, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.25);
       }
       @keyframes popInCell {
-        0% { transform: scale(0.4) rotate(-15deg); opacity: 0; }
-        70% { transform: scale(1.18) rotate(5deg); opacity: 1; }
+        0% { transform: scale(0.3) rotate(-15deg); opacity: 0; }
+        70% { transform: scale(1.22) rotate(6deg); opacity: 1; }
         100% { transform: scale(1) rotate(0deg); opacity: 1; }
       }
       .cell-pop {
@@ -51,10 +58,26 @@
       }
       @keyframes lineComboPulse {
         0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px transparent); }
-        50% { transform: scale(1.12); filter: drop-shadow(0 0 16px #fde047); }
+        50% { transform: scale(1.15); filter: drop-shadow(0 0 20px #facc15); }
       }
       .line-combo-active {
-        animation: lineComboPulse 0.8s ease-in-out infinite;
+        animation: lineComboPulse 0.75s ease-in-out infinite;
+      }
+
+      /* Kahoot 3D Option Buttons */
+      .kahoot-btn-3d {
+        position: relative;
+        border-bottom-width: 4px;
+        transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+      }
+      .kahoot-btn-3d:hover {
+        filter: brightness(1.1);
+        transform: translateY(-2px);
+      }
+      .kahoot-btn-3d:active {
+        transform: translateY(2px) scale(0.985);
+        border-bottom-width: 1px;
       }
     `;
     document.head.appendChild(style);
@@ -303,20 +326,27 @@
                   ${q.q || q.question}
                 </h4>
 
-                <div class="space-y-2">
+                <div class="space-y-2.5">
                   ${q.options.map((opt, idx) => {
                     const keys = ['A', 'S', 'D', 'F'];
+                    const styles = [
+                      { bg: 'bg-gradient-to-r from-red-600 to-rose-500 border-red-800 text-white', sym: '▲' },
+                      { bg: 'bg-gradient-to-r from-blue-600 to-cyan-600 border-blue-800 text-white', sym: '◆' },
+                      { bg: 'bg-gradient-to-r from-amber-500 to-yellow-400 border-amber-700 text-slate-950 font-black', sym: '●' },
+                      { bg: 'bg-gradient-to-r from-emerald-600 to-teal-500 border-emerald-800 text-white', sym: '■' }
+                    ][idx % 4];
+
                     return `
                       <button 
                         type="button" 
                         onclick="EcoBattleGreenMapMode.handleAnswer(1, ${idx})" 
-                        class="w-full text-left p-2.5 rounded-xl bg-slate-900 hover:bg-slate-850 active:scale-[0.98] border border-slate-800 hover:border-emerald-500/80 transition-all cursor-pointer flex items-center justify-between group text-xs text-slate-200"
+                        class="kahoot-btn-3d w-full text-left p-3 rounded-xl ${styles.bg} border-2 border-b-4 transition-all cursor-pointer flex items-center justify-between group shadow-md"
                       >
-                        <div class="flex items-center gap-2.5">
-                          <span class="w-5 h-5 rounded-md bg-emerald-500/20 text-emerald-400 font-mono font-black flex items-center justify-center text-[10px] border border-emerald-500/40 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-colors">
-                            ${keys[idx]}
+                        <div class="flex items-center gap-3">
+                          <span class="w-7 h-7 rounded-lg bg-black/25 flex items-center justify-center text-xs font-mono font-black border border-white/30 shrink-0">
+                            ${keys[idx]} ${styles.sym}
                           </span>
-                          <span class="font-medium group-hover:text-white line-clamp-2">${opt}</span>
+                          <span class="font-bold text-xs sm:text-sm line-clamp-2 leading-tight">${opt}</span>
                         </div>
                       </button>
                     `;
@@ -397,20 +427,27 @@
                   ${q.q || q.question}
                 </h4>
 
-                <div class="space-y-2">
+                <div class="space-y-2.5">
                   ${q.options.map((opt, idx) => {
                     const keys = ['J', 'K', 'L', ';'];
+                    const styles = [
+                      { bg: 'bg-gradient-to-r from-red-600 to-rose-500 border-red-800 text-white', sym: '▲' },
+                      { bg: 'bg-gradient-to-r from-blue-600 to-cyan-600 border-blue-800 text-white', sym: '◆' },
+                      { bg: 'bg-gradient-to-r from-amber-500 to-yellow-400 border-amber-700 text-slate-950 font-black', sym: '●' },
+                      { bg: 'bg-gradient-to-r from-emerald-600 to-teal-500 border-emerald-800 text-white', sym: '■' }
+                    ][idx % 4];
+
                     return `
                       <button 
                         type="button" 
                         onclick="EcoBattleGreenMapMode.handleAnswer(2, ${idx})" 
-                        class="w-full text-left p-2.5 rounded-xl bg-slate-900 hover:bg-slate-850 active:scale-[0.98] border border-slate-800 hover:border-rose-500/80 transition-all cursor-pointer flex items-center justify-between group text-xs text-slate-200"
+                        class="kahoot-btn-3d w-full text-left p-3 rounded-xl ${styles.bg} border-2 border-b-4 transition-all cursor-pointer flex items-center justify-between group shadow-md"
                       >
-                        <div class="flex items-center gap-2.5">
-                          <span class="w-5 h-5 rounded-md bg-rose-500/20 text-rose-400 font-mono font-black flex items-center justify-center text-[10px] border border-rose-500/40 group-hover:bg-rose-500 group-hover:text-slate-950 transition-colors">
-                            ${keys[idx]}
+                        <div class="flex items-center gap-3">
+                          <span class="w-7 h-7 rounded-lg bg-black/25 flex items-center justify-center text-xs font-mono font-black border border-white/30 shrink-0">
+                            ${keys[idx]} ${styles.sym}
                           </span>
-                          <span class="font-medium group-hover:text-white line-clamp-2">${opt}</span>
+                          <span class="font-bold text-xs sm:text-sm line-clamp-2 leading-tight">${opt}</span>
                         </div>
                       </button>
                     `;

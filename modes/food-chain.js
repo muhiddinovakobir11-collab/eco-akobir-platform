@@ -23,6 +23,45 @@
     const style = document.createElement('style');
     style.id = 'eco-food-chain-styles';
     style.textContent = `
+      .food-card {
+        border-bottom-width: 4px !important;
+        transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+        cursor: pointer;
+      }
+      .food-card:hover {
+        transform: translateY(-3px) scale(1.02);
+        filter: brightness(1.1);
+      }
+      .food-card:active {
+        transform: translateY(2px) scale(0.98);
+        border-bottom-width: 1px !important;
+      }
+      .food-card.selected {
+        border-color: #a855f7 !important;
+        border-bottom-color: #7e22ce !important;
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.35) 0%, rgba(88, 28, 135, 0.6) 100%) !important;
+        box-shadow: 0 0 16px rgba(168, 85, 247, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+        transform: scale(1.04) translateY(-2px);
+      }
+      .chain-slot {
+        border-bottom-width: 4px !important;
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .chain-slot.filled {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(6, 78, 59, 0.7) 100%) !important;
+        border-color: #10b981 !important;
+        border-bottom-color: #047857 !important;
+        box-shadow: 0 0 14px rgba(16, 185, 129, 0.5);
+      }
+      @keyframes linkLaserBeam {
+        0%, 100% { opacity: 0.6; filter: drop-shadow(0 0 2px #a855f7); }
+        50% { opacity: 1; filter: drop-shadow(0 0 8px #38bdf8); }
+      }
+      .chain-link-arrow {
+        animation: linkLaserBeam 1.2s ease-in-out infinite;
+      }
+    `;
+    style.textContent = `
       .chain-slot {
         transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         will-change: transform;
@@ -432,13 +471,24 @@
                     ? 'selected' 
                     : (isTrapCard ? 'border-slate-800 bg-slate-950/70 hover:border-rose-500/50' : 'border-slate-800 bg-slate-950/70 hover:border-emerald-500/50');
 
+                  const keyShortcuts = isT1 ? ['A','S','D','F','G','Z'] : ['J','K','L',';','H','N'];
+                  const keyChar = keyShortcuts[cardIdx] || (cardIdx + 1);
+
                   return `
                     <div 
                       onclick="EcoBattleFoodChainMode.handleCardClick(${teamId}, '${card.id}')"
-                      class="food-card ${borderCls} rounded-xl p-2.5 border flex items-center gap-2"
+                      class="food-card ${borderCls} rounded-xl p-2.5 border-2 flex items-center justify-between group shadow-md"
                     >
-                      <span class="text-xl shrink-0">${card.icon}</span>
-                      <span class="text-[11px] font-bold text-slate-200 line-clamp-2 leading-tight">${card.name}</span>
+                      <div class="flex items-center gap-2 overflow-hidden">
+                        <span class="text-2xl shrink-0 group-hover:scale-110 transition-transform">${card.icon}</span>
+                        <div class="flex flex-col overflow-hidden text-left">
+                          <span class="text-xs font-black text-white group-hover:text-purple-300 transition-colors truncate">${card.name}</span>
+                          <span class="text-[9px] font-extrabold ${isTrapCard ? 'text-rose-400' : 'text-purple-400'}">${isTrapCard ? '⚠️ Noorganik Qopqon' : 'Trofik Bo'g'in'}</span>
+                        </div>
+                      </div>
+                      <span class="w-5 h-5 rounded bg-black/40 border border-slate-700 text-[10px] font-mono font-black text-slate-400 flex items-center justify-center shrink-0">
+                        ${keyChar}
+                      </span>
                     </div>
                   `;
                 }).join('')}
