@@ -2029,47 +2029,1381 @@
   "spot_polluter": [
     {
       "id": "sp1",
-      "name": "Daryo Bo'yidagi Sanoat Zonasi",
+      "name": "Markaziy Voha: Daryo Bo'yidagi Sanoat Zonasi #1",
       "violations": [
         {
-          "id": "v1",
-          "name": "Daryoga oqayotgan tozalanmagan oqova quvuri",
+          "id": "v_sp1_1",
+          "name": "Tozalanmagan oqova quvuri",
+          "x": 23,
+          "y": 68,
+          "radius": 9,
+          "desc": "Sanoat oqovasi daryoga filtrsiz quyilmoqda."
+        },
+        {
+          "id": "v_sp1_2",
+          "name": "Qora tutunli filtrsiz mo'ri",
+          "x": 60,
+          "y": 20,
+          "radius": 9,
+          "desc": "Atmosferaga SO2 va qora qurum tashlanmoqda."
+        },
+        {
+          "id": "v_sp1_3",
+          "name": "Sohildagi eskirgan akkumulyatorlar",
+          "x": 37,
+          "y": 81,
+          "radius": 9,
+          "desc": "Qo'rg'oshin va kislota daryo bo'yiga sizmoqda."
+        },
+        {
+          "id": "v_sp1_4",
+          "name": "Kamalakrang neft dog'i",
+          "x": 47,
+          "y": 64,
+          "radius": 9,
+          "desc": "Suv yuzasida kislorod almashinuvini to'suvchi neft pardasi."
+        },
+        {
+          "id": "v_sp1_5",
+          "name": "To'qaydagi noqonuniy plastik poligon",
+          "x": 77,
+          "y": 51,
+          "radius": 9,
+          "desc": "Aholining chiqindilari to'planib qolgan."
+        }
+      ]
+    },
+    {
+      "id": "sp2",
+      "name": "Markaziy Voha: Metallurgiya va Eritish Zavodi #1",
+      "violations": [
+        {
+          "id": "v_sp2_1",
+          "name": "Gaz tozalash filtri o'chirilgan pech",
+          "x": 25,
+          "y": 21,
+          "radius": 9,
+          "desc": "Filtr ishlamay og'ir metall changlari tarqalmoqda."
+        },
+        {
+          "id": "v_sp2_2",
+          "name": "Shlak va qora quyqa uyumi",
+          "x": 70,
+          "y": 66,
+          "radius": 9,
+          "desc": "Ochiq havoda shamol bilan uchuvchi zaharli chang."
+        },
+        {
+          "id": "v_sp2_3",
+          "name": "Sovutish suvi kanaliga kislota oqishi",
+          "x": 40,
+          "y": 56,
+          "radius": 9,
+          "desc": "Kislotali suv yer osti sizot suvlariga o'tmoqda."
+        },
+        {
+          "id": "v_sp2_4",
+          "name": "Eskirgan transformator moyi oqishi (PXB)",
+          "x": 15,
+          "y": 76,
+          "radius": 9,
+          "desc": "Polixlorlangan bifenillar o'ta xavfli kantserogen modda."
+        },
+        {
+          "id": "v_sp2_5",
+          "name": "Ruxsat etilmagan metall lom chiqindixonasi",
+          "x": 80,
+          "y": 31,
+          "radius": 9,
+          "desc": "Tuproq qoplamini buzuvchi tartibsiz metall parchalari."
+        }
+      ]
+    },
+    {
+      "id": "sp3",
+      "name": "Markaziy Voha: Kimyo Sanoat Majmuasi (Navoiy) #1",
+      "violations": [
+        {
+          "id": "v_sp3_1",
+          "name": "Ammiak quvurining zichmasligi (Gaz sizishi)",
+          "x": 45,
+          "y": 26,
+          "radius": 9,
+          "desc": "Atmosferaga o'tkir hidli zaharli ammiak tarqalishi."
+        },
+        {
+          "id": "v_sp3_2",
+          "name": "Fosfor gipsi ochiq tog'i",
+          "x": 75,
+          "y": 46,
+          "radius": 9,
+          "desc": "Atrofga radiatsiyaviy va kislotali chang tarqatuvchi chiqindi."
+        },
+        {
+          "id": "v_sp3_3",
+          "name": "Kislota rezervuari korroziyasi",
+          "x": 20,
+          "y": 61,
+          "radius": 9,
+          "desc": "Himoya qoplamasiz saqlanayotgan sulfat kislota idishi."
+        },
+        {
+          "id": "v_sp3_4",
+          "name": "Zaharli oqova hovuzi geomembranasiz",
+          "x": 55,
+          "y": 81,
+          "radius": 9,
+          "desc": "Yer osti ichimlik suvlarini zaharlash xavfi."
+        },
+        {
+          "id": "v_sp3_5",
+          "name": "Yaroqsiz kimyoviy reagentlar ombori",
+          "x": 10,
+          "y": 36,
+          "radius": 9,
+          "desc": "Yomg'ir suvi tushib reaksiyaga kirishuvchi reagentlar."
+        }
+      ]
+    },
+    {
+      "id": "sp4",
+      "name": "Markaziy Voha: Neftni Qayta Ishlash Zavodi (Farg'ona) #1",
+      "violations": [
+        {
+          "id": "v_sp4_1",
+          "name": "Fakel quvurida to'liq yonmagan uglevodorod",
+          "x": 35,
+          "y": 14,
+          "radius": 9,
+          "desc": "Metan va organik gazlarning havoga to'g'ridan chiqishi."
+        },
+        {
+          "id": "v_sp4_2",
+          "name": "Neft shlamining ochiq chuquri",
+          "x": 65,
+          "y": 71,
+          "radius": 9,
+          "desc": "Neft qoldiqlari ochiq havoda bug'lanib yerni zaharlaydi."
+        },
+        {
+          "id": "v_sp4_3",
+          "name": "Magistral neft quvurining yorilishi",
+          "x": 17,
+          "y": 51,
+          "radius": 9,
+          "desc": "Qora oltin tuproqqa singib o'simliklarni quritadi."
+        },
+        {
+          "id": "v_sp4_4",
+          "name": "Kanalizatsiya qudug'ida benzin hidi",
+          "x": 50,
+          "y": 84,
+          "radius": 9,
+          "desc": "Portlash xavfi yuqori bo'lgan organik oqovalar."
+        },
+        {
+          "id": "v_sp4_5",
+          "name": "Neft qoldiqlari yoqilgan qora maydon",
+          "x": 80,
+          "y": 16,
+          "radius": 9,
+          "desc": "Atmosferaga kanserogen dioksinlar tashlanishi."
+        }
+      ]
+    },
+    {
+      "id": "sp5",
+      "name": "Markaziy Voha: To'qimachilik va Bo'yash Fabrikasi #1",
+      "violations": [
+        {
+          "id": "v_sp5_1",
+          "name": "Anilin bo'yoqli qizil rangli oqova",
+          "x": 30,
+          "y": 71,
+          "radius": 9,
+          "desc": "Rangli zaharli moddalar daryoni qizil rangga bo'yagan."
+        },
+        {
+          "id": "v_sp5_2",
+          "name": "Xlorli oqartiruvchi gaz hidi",
+          "x": 60,
+          "y": 31,
+          "radius": 9,
+          "desc": "Ishchilar va qo'shni mahalla havosini buzuvchi xlor."
+        },
+        {
+          "id": "v_sp5_3",
+          "name": "To'qimachilik sintetik qiyqindilari yoqilishi",
+          "x": 75,
+          "y": 16,
+          "radius": 9,
+          "desc": "Sintetik mato yonib zaharli fosgen ajratadi."
+        },
+        {
+          "id": "v_sp5_4",
+          "name": "Katta miqdorda shlakli suv tindirilmasdan chiqarilishi",
+          "x": 13,
+          "y": 56,
+          "radius": 9,
+          "desc": "Suvning loyqaligi va harorati normadan 3 barobar yuqori."
+        },
+        {
+          "id": "v_sp5_5",
+          "name": "Kimyoviy bo'yoq bochkalari ochiq osmon ostida",
+          "x": 45,
+          "y": 44,
+          "radius": 9,
+          "desc": "Bochkalar teshilib yerga singayotgan bo'yoqlar."
+        }
+      ]
+    },
+    {
+      "id": "sp6",
+      "name": "Markaziy Voha: Issiqlik Elektr Stansiyasi (IES) #1",
+      "violations": [
+        {
+          "id": "v_sp6_1",
+          "name": "Mazut yoqilishidan chiqqan oltingugurtli gaz",
+          "x": 50,
+          "y": 16,
+          "radius": 9,
+          "desc": "Kislotali yomg'ir hosil qiluvchi SO3 tashlanmasi."
+        },
+        {
+          "id": "v_sp6_2",
+          "name": "Kul-shlak saqlagichining to'lib toshishi",
+          "x": 77,
+          "y": 61,
+          "radius": 9,
+          "desc": "Kul zarralari shamolda kilometrlarga uchmoqda."
+        },
+        {
+          "id": "v_sp6_3",
+          "name": "Issiq suvning daryoga termal tashlanishi",
+          "x": 25,
+          "y": 76,
+          "radius": 9,
+          "desc": "Suv harorati ko'tarilib baliqlarning nobud bo'lishi."
+        },
+        {
+          "id": "v_sp6_4",
+          "name": "Mazut saqlash idishidan moy sizishi",
+          "x": 15,
+          "y": 41,
+          "radius": 9,
+          "desc": "Tuproq va yer osti qatlamini qoplagan mazut."
+        },
+        {
+          "id": "v_sp6_5",
+          "name": "Eskirgan siklon chang tutqichlarining yorilishi",
+          "x": 65,
+          "y": 34,
+          "radius": 9,
+          "desc": "Chang tutuvchi filtrlar samarasiz ishlamoqda."
+        }
+      ]
+    },
+    {
+      "id": "sp7",
+      "name": "Markaziy Voha: Sement Ishlab Chiqarish Zavodi (Bekobod) #1",
+      "violations": [
+        {
+          "id": "v_sp7_1",
+          "name": "Klinker pechining chang tutqichsiz ishlashi",
+          "x": 43,
+          "y": 18,
+          "radius": 9,
+          "desc": "Oq sement changi butun hududni qoplagan."
+        },
+        {
+          "id": "v_sp7_2",
+          "name": "Ochiq maydonda saqlanayotgan ohaktosh",
+          "x": 20,
+          "y": 46,
+          "radius": 9,
+          "desc": "Shamol kuchi bilan ko'chib yuruvchi mineral chang."
+        },
+        {
+          "id": "v_sp7_3",
+          "name": "Sement qoplarining noqonuniy yoqilishi",
+          "x": 80,
+          "y": 76,
+          "radius": 9,
+          "desc": "Qog'oz va polimer qoplarning tutunli yoqilishi."
+        },
+        {
+          "id": "v_sp7_4",
+          "name": "Gidrotozalash tizimining loyqa suvlari",
+          "x": 30,
+          "y": 81,
+          "radius": 9,
+          "desc": "Yuqori ishqoriy (pH>11) sementli oqova."
+        },
+        {
+          "id": "v_sp7_5",
+          "name": "Karyer portlatishidan so'ng rekultivatsiya qilinmagan yer",
+          "x": 70,
+          "y": 36,
+          "radius": 9,
+          "desc": "Tuproq unumdor qatlami yo'q qilib tashlangan."
+        }
+      ]
+    },
+    {
+      "id": "sp8",
+      "name": "Markaziy Voha: Charm-poyabzal Qayta Ishlash Zavodi #1",
+      "violations": [
+        {
+          "id": "v_sp8_1",
+          "name": "Xrom (Cr VI) qoldig'i bo'lgan oqova",
+          "x": 35,
+          "y": 66,
+          "radius": 9,
+          "desc": "Olti valentli xrom o'ta xavfli kantserogen moddadir."
+        },
+        {
+          "id": "v_sp8_2",
+          "name": "Terini oshlashdan chiqqan hidli o'lik oqsillar",
+          "x": 15,
+          "y": 36,
+          "radius": 9,
+          "desc": "Sanitar-himoya zonasida kuchli badbo'y hid."
+        },
+        {
+          "id": "v_sp8_3",
+          "name": "Xromlangan charm qiyqindilarining ochiq poligoni",
+          "x": 73,
+          "y": 56,
+          "radius": 9,
+          "desc": "Xromli chiqindi yer osti suvlarini zaharlamoqda."
+        },
+        {
+          "id": "v_sp8_4",
+          "name": "Sulfidli reagentlarning kanalizatsiyaga quyilishi",
+          "x": 55,
+          "y": 78,
+          "radius": 9,
+          "desc": "Vodorod sulfid gazi quvurlarni yemiradi."
+        },
+        {
+          "id": "v_sp8_5",
+          "name": "Chirigan teri qoldiqlari ustida hasharotlar to'planishi",
+          "x": 80,
+          "y": 26,
+          "radius": 9,
+          "desc": "Sanitariya-epidemiologiya talablari buzilgan."
+        }
+      ]
+    },
+    {
+      "id": "sp9",
+      "name": "Markaziy Voha: Chorvachilik va Parrandachilik Agro-Klasteri #1",
+      "violations": [
+        {
+          "id": "v_sp9_1",
+          "name": "Lagunadan go'ng suvi daryoga to'kilishi",
+          "x": 27,
+          "y": 74,
+          "radius": 9,
+          "desc": "Ortiqcha azot va fosfor suvda evtrofikatsiyani keltirib chiqaradi."
+        },
+        {
+          "id": "v_sp9_2",
+          "name": "Biogaz tutilmasdan havoga metan chiqishi",
+          "x": 55,
+          "y": 21,
+          "radius": 9,
+          "desc": "Kuchli parnik gazi atmosferani isitmoqda."
+        },
+        {
+          "id": "v_sp9_3",
+          "name": "Parranda go'ngining ochiq dalada to'planishi",
+          "x": 75,
+          "y": 46,
+          "radius": 9,
+          "desc": "Ammiak bug'lanib yer osti suviga nitratlar singadi."
+        },
+        {
+          "id": "v_sp9_4",
+          "name": "O'lgan parranda jasadlarining noqonuniy ko'milishi",
+          "x": 15,
+          "y": 56,
+          "radius": 9,
+          "desc": "Veterinariya sanitariya qoidalari buzilgan."
+        },
+        {
+          "id": "v_sp9_5",
+          "name": "Veterinariya dori vositalari oqovasi",
+          "x": 43,
+          "y": 84,
+          "radius": 9,
+          "desc": "Antibiotiklar daryodagi tabiiy florani yo'q qiladi."
+        }
+      ]
+    },
+    {
+      "id": "sp10",
+      "name": "Markaziy Voha: Tog'-kon Shag'al va Qum Kareri (Daryo O'zani) #1",
+      "violations": [
+        {
+          "id": "v_sp10_1",
+          "name": "Ekskavator daryo o'zanini noqonuniy kovlashi",
+          "x": 40,
+          "y": 64,
+          "radius": 9,
+          "desc": "Daryo tubi chuqurlashib suv sathi tushib ketgan."
+        },
+        {
+          "id": "v_sp10_2",
+          "name": "Daryo bo'yidagi yulg'un va to'qayning yo'q qilinishi",
+          "x": 20,
+          "y": 41,
+          "radius": 9,
+          "desc": "Tabiiy biologik to'siq buzilib qirg'oq yuvilmoqda."
+        },
+        {
+          "id": "v_sp10_3",
+          "name": "Dizel yonilg'isining to'g'ridan-to'g'ri daryoga oqishi",
+          "x": 65,
+          "y": 71,
+          "radius": 9,
+          "desc": "Texnikalardan oqqan solyarka baliqlarni nobud qiladi."
+        },
+        {
+          "id": "v_sp10_4",
+          "name": "Shag'al yuvish loyqasi tozalanmay qaytarilishi",
+          "x": 50,
+          "y": 81,
+          "radius": 9,
+          "desc": "Daryo suvi loyqalanib kislorod darajasi keskin tushgan."
+        },
+        {
+          "id": "v_sp10_5",
+          "name": "Yuk mashinalarining chang qoplamasiz harakati",
+          "x": 75,
+          "y": 26,
+          "radius": 9,
+          "desc": "Aholi yashash punktiga chang va shovqin tarqalishi."
+        }
+      ]
+    },
+    {
+      "id": "sp11",
+      "name": "Sirdaryo Havzasi: Daryo Bo'yidagi Sanoat Zonasi #2",
+      "violations": [
+        {
+          "id": "v_sp11_1",
+          "name": "Tozalanmagan oqova quvuri",
           "x": 28,
           "y": 72,
-          "radius": 8,
-          "desc": "Zaharli oqova suv to'g'ridan-to'g'ri daryo ekotizimini o'ldirmoqda."
+          "radius": 9,
+          "desc": "Sanoat oqovasi daryoga filtrsiz quyilmoqda."
         },
         {
-          "id": "v2",
-          "name": "Qora tutun purkayotgan filtrsiz mo'ri",
+          "id": "v_sp11_2",
+          "name": "Qora tutunli filtrsiz mo'ri",
           "x": 65,
           "y": 24,
-          "radius": 7,
-          "desc": "Havoga normadan ortiq oltingugurt va qora qurum tashlanmoqda."
+          "radius": 9,
+          "desc": "Atmosferaga SO2 va qora qurum tashlanmoqda."
         },
         {
-          "id": "v3",
-          "name": "Sohilga tashlab ketilgan eskirgan akkumulyator",
+          "id": "v_sp11_3",
+          "name": "Sohildagi eskirgan akkumulyatorlar",
           "x": 42,
           "y": 85,
-          "radius": 6,
-          "desc": "Qo'rg'oshin va sulfat kislota tuproqqa sizib bormoqda."
+          "radius": 9,
+          "desc": "Qo'rg'oshin va kislota daryo bo'yiga sizmoqda."
         },
         {
-          "id": "v4",
-          "name": "Suv ustidagi kamalakrang neft dog'i",
+          "id": "v_sp11_4",
+          "name": "Kamalakrang neft dog'i",
           "x": 52,
           "y": 68,
           "radius": 9,
-          "desc": "Neft pardasi kislorod kirishini to'sib baliqlarni nobud qiladi."
+          "desc": "Suv yuzasida kislorod almashinuvini to'suvchi neft pardasi."
         },
         {
-          "id": "v5",
-          "name": "To'qay ichidagi noqonuniy plastik chiqindixona",
+          "id": "v_sp11_5",
+          "name": "To'qaydagi noqonuniy plastik poligon",
           "x": 82,
           "y": 55,
-          "radius": 8,
-          "desc": "Aholining noqonuniy tashlagan maishiy chiqindilari to'planib qolgan."
+          "radius": 9,
+          "desc": "Aholining chiqindilari to'planib qolgan."
+        }
+      ]
+    },
+    {
+      "id": "sp12",
+      "name": "Sirdaryo Havzasi: Metallurgiya va Eritish Zavodi #2",
+      "violations": [
+        {
+          "id": "v_sp12_1",
+          "name": "Gaz tozalash filtri o'chirilgan pech",
+          "x": 30,
+          "y": 25,
+          "radius": 9,
+          "desc": "Filtr ishlamay og'ir metall changlari tarqalmoqda."
+        },
+        {
+          "id": "v_sp12_2",
+          "name": "Shlak va qora quyqa uyumi",
+          "x": 75,
+          "y": 70,
+          "radius": 9,
+          "desc": "Ochiq havoda shamol bilan uchuvchi zaharli chang."
+        },
+        {
+          "id": "v_sp12_3",
+          "name": "Sovutish suvi kanaliga kislota oqishi",
+          "x": 45,
+          "y": 60,
+          "radius": 9,
+          "desc": "Kislotali suv yer osti sizot suvlariga o'tmoqda."
+        },
+        {
+          "id": "v_sp12_4",
+          "name": "Eskirgan transformator moyi oqishi (PXB)",
+          "x": 20,
+          "y": 80,
+          "radius": 9,
+          "desc": "Polixlorlangan bifenillar o'ta xavfli kantserogen modda."
+        },
+        {
+          "id": "v_sp12_5",
+          "name": "Ruxsat etilmagan metall lom chiqindixonasi",
+          "x": 85,
+          "y": 35,
+          "radius": 9,
+          "desc": "Tuproq qoplamini buzuvchi tartibsiz metall parchalari."
+        }
+      ]
+    },
+    {
+      "id": "sp13",
+      "name": "Sirdaryo Havzasi: Kimyo Sanoat Majmuasi (Navoiy) #2",
+      "violations": [
+        {
+          "id": "v_sp13_1",
+          "name": "Ammiak quvurining zichmasligi (Gaz sizishi)",
+          "x": 50,
+          "y": 30,
+          "radius": 9,
+          "desc": "Atmosferaga o'tkir hidli zaharli ammiak tarqalishi."
+        },
+        {
+          "id": "v_sp13_2",
+          "name": "Fosfor gipsi ochiq tog'i",
+          "x": 80,
+          "y": 50,
+          "radius": 9,
+          "desc": "Atrofga radiatsiyaviy va kislotali chang tarqatuvchi chiqindi."
+        },
+        {
+          "id": "v_sp13_3",
+          "name": "Kislota rezervuari korroziyasi",
+          "x": 25,
+          "y": 65,
+          "radius": 9,
+          "desc": "Himoya qoplamasiz saqlanayotgan sulfat kislota idishi."
+        },
+        {
+          "id": "v_sp13_4",
+          "name": "Zaharli oqova hovuzi geomembranasiz",
+          "x": 60,
+          "y": 85,
+          "radius": 9,
+          "desc": "Yer osti ichimlik suvlarini zaharlash xavfi."
+        },
+        {
+          "id": "v_sp13_5",
+          "name": "Yaroqsiz kimyoviy reagentlar ombori",
+          "x": 15,
+          "y": 40,
+          "radius": 9,
+          "desc": "Yomg'ir suvi tushib reaksiyaga kirishuvchi reagentlar."
+        }
+      ]
+    },
+    {
+      "id": "sp14",
+      "name": "Sirdaryo Havzasi: Neftni Qayta Ishlash Zavodi (Farg'ona) #2",
+      "violations": [
+        {
+          "id": "v_sp14_1",
+          "name": "Fakel quvurida to'liq yonmagan uglevodorod",
+          "x": 40,
+          "y": 18,
+          "radius": 9,
+          "desc": "Metan va organik gazlarning havoga to'g'ridan chiqishi."
+        },
+        {
+          "id": "v_sp14_2",
+          "name": "Neft shlamining ochiq chuquri",
+          "x": 70,
+          "y": 75,
+          "radius": 9,
+          "desc": "Neft qoldiqlari ochiq havoda bug'lanib yerni zaharlaydi."
+        },
+        {
+          "id": "v_sp14_3",
+          "name": "Magistral neft quvurining yorilishi",
+          "x": 22,
+          "y": 55,
+          "radius": 9,
+          "desc": "Qora oltin tuproqqa singib o'simliklarni quritadi."
+        },
+        {
+          "id": "v_sp14_4",
+          "name": "Kanalizatsiya qudug'ida benzin hidi",
+          "x": 55,
+          "y": 88,
+          "radius": 9,
+          "desc": "Portlash xavfi yuqori bo'lgan organik oqovalar."
+        },
+        {
+          "id": "v_sp14_5",
+          "name": "Neft qoldiqlari yoqilgan qora maydon",
+          "x": 85,
+          "y": 20,
+          "radius": 9,
+          "desc": "Atmosferaga kanserogen dioksinlar tashlanishi."
+        }
+      ]
+    },
+    {
+      "id": "sp15",
+      "name": "Sirdaryo Havzasi: To'qimachilik va Bo'yash Fabrikasi #2",
+      "violations": [
+        {
+          "id": "v_sp15_1",
+          "name": "Anilin bo'yoqli qizil rangli oqova",
+          "x": 35,
+          "y": 75,
+          "radius": 9,
+          "desc": "Rangli zaharli moddalar daryoni qizil rangga bo'yagan."
+        },
+        {
+          "id": "v_sp15_2",
+          "name": "Xlorli oqartiruvchi gaz hidi",
+          "x": 65,
+          "y": 35,
+          "radius": 9,
+          "desc": "Ishchilar va qo'shni mahalla havosini buzuvchi xlor."
+        },
+        {
+          "id": "v_sp15_3",
+          "name": "To'qimachilik sintetik qiyqindilari yoqilishi",
+          "x": 80,
+          "y": 20,
+          "radius": 9,
+          "desc": "Sintetik mato yonib zaharli fosgen ajratadi."
+        },
+        {
+          "id": "v_sp15_4",
+          "name": "Katta miqdorda shlakli suv tindirilmasdan chiqarilishi",
+          "x": 18,
+          "y": 60,
+          "radius": 9,
+          "desc": "Suvning loyqaligi va harorati normadan 3 barobar yuqori."
+        },
+        {
+          "id": "v_sp15_5",
+          "name": "Kimyoviy bo'yoq bochkalari ochiq osmon ostida",
+          "x": 50,
+          "y": 48,
+          "radius": 9,
+          "desc": "Bochkalar teshilib yerga singayotgan bo'yoqlar."
+        }
+      ]
+    },
+    {
+      "id": "sp16",
+      "name": "Sirdaryo Havzasi: Issiqlik Elektr Stansiyasi (IES) #2",
+      "violations": [
+        {
+          "id": "v_sp16_1",
+          "name": "Mazut yoqilishidan chiqqan oltingugurtli gaz",
+          "x": 55,
+          "y": 20,
+          "radius": 9,
+          "desc": "Kislotali yomg'ir hosil qiluvchi SO3 tashlanmasi."
+        },
+        {
+          "id": "v_sp16_2",
+          "name": "Kul-shlak saqlagichining to'lib toshishi",
+          "x": 82,
+          "y": 65,
+          "radius": 9,
+          "desc": "Kul zarralari shamolda kilometrlarga uchmoqda."
+        },
+        {
+          "id": "v_sp16_3",
+          "name": "Issiq suvning daryoga termal tashlanishi",
+          "x": 30,
+          "y": 80,
+          "radius": 9,
+          "desc": "Suv harorati ko'tarilib baliqlarning nobud bo'lishi."
+        },
+        {
+          "id": "v_sp16_4",
+          "name": "Mazut saqlash idishidan moy sizishi",
+          "x": 20,
+          "y": 45,
+          "radius": 9,
+          "desc": "Tuproq va yer osti qatlamini qoplagan mazut."
+        },
+        {
+          "id": "v_sp16_5",
+          "name": "Eskirgan siklon chang tutqichlarining yorilishi",
+          "x": 70,
+          "y": 38,
+          "radius": 9,
+          "desc": "Chang tutuvchi filtrlar samarasiz ishlamoqda."
+        }
+      ]
+    },
+    {
+      "id": "sp17",
+      "name": "Sirdaryo Havzasi: Sement Ishlab Chiqarish Zavodi (Bekobod) #2",
+      "violations": [
+        {
+          "id": "v_sp17_1",
+          "name": "Klinker pechining chang tutqichsiz ishlashi",
+          "x": 48,
+          "y": 22,
+          "radius": 9,
+          "desc": "Oq sement changi butun hududni qoplagan."
+        },
+        {
+          "id": "v_sp17_2",
+          "name": "Ochiq maydonda saqlanayotgan ohaktosh",
+          "x": 25,
+          "y": 50,
+          "radius": 9,
+          "desc": "Shamol kuchi bilan ko'chib yuruvchi mineral chang."
+        },
+        {
+          "id": "v_sp17_3",
+          "name": "Sement qoplarining noqonuniy yoqilishi",
+          "x": 85,
+          "y": 80,
+          "radius": 9,
+          "desc": "Qog'oz va polimer qoplarning tutunli yoqilishi."
+        },
+        {
+          "id": "v_sp17_4",
+          "name": "Gidrotozalash tizimining loyqa suvlari",
+          "x": 35,
+          "y": 85,
+          "radius": 9,
+          "desc": "Yuqori ishqoriy (pH>11) sementli oqova."
+        },
+        {
+          "id": "v_sp17_5",
+          "name": "Karyer portlatishidan so'ng rekultivatsiya qilinmagan yer",
+          "x": 75,
+          "y": 40,
+          "radius": 9,
+          "desc": "Tuproq unumdor qatlami yo'q qilib tashlangan."
+        }
+      ]
+    },
+    {
+      "id": "sp18",
+      "name": "Sirdaryo Havzasi: Charm-poyabzal Qayta Ishlash Zavodi #2",
+      "violations": [
+        {
+          "id": "v_sp18_1",
+          "name": "Xrom (Cr VI) qoldig'i bo'lgan oqova",
+          "x": 40,
+          "y": 70,
+          "radius": 9,
+          "desc": "Olti valentli xrom o'ta xavfli kantserogen moddadir."
+        },
+        {
+          "id": "v_sp18_2",
+          "name": "Terini oshlashdan chiqqan hidli o'lik oqsillar",
+          "x": 20,
+          "y": 40,
+          "radius": 9,
+          "desc": "Sanitar-himoya zonasida kuchli badbo'y hid."
+        },
+        {
+          "id": "v_sp18_3",
+          "name": "Xromlangan charm qiyqindilarining ochiq poligoni",
+          "x": 78,
+          "y": 60,
+          "radius": 9,
+          "desc": "Xromli chiqindi yer osti suvlarini zaharlamoqda."
+        },
+        {
+          "id": "v_sp18_4",
+          "name": "Sulfidli reagentlarning kanalizatsiyaga quyilishi",
+          "x": 60,
+          "y": 82,
+          "radius": 9,
+          "desc": "Vodorod sulfid gazi quvurlarni yemiradi."
+        },
+        {
+          "id": "v_sp18_5",
+          "name": "Chirigan teri qoldiqlari ustida hasharotlar to'planishi",
+          "x": 85,
+          "y": 30,
+          "radius": 9,
+          "desc": "Sanitariya-epidemiologiya talablari buzilgan."
+        }
+      ]
+    },
+    {
+      "id": "sp19",
+      "name": "Sirdaryo Havzasi: Chorvachilik va Parrandachilik Agro-Klasteri #2",
+      "violations": [
+        {
+          "id": "v_sp19_1",
+          "name": "Lagunadan go'ng suvi daryoga to'kilishi",
+          "x": 32,
+          "y": 78,
+          "radius": 9,
+          "desc": "Ortiqcha azot va fosfor suvda evtrofikatsiyani keltirib chiqaradi."
+        },
+        {
+          "id": "v_sp19_2",
+          "name": "Biogaz tutilmasdan havoga metan chiqishi",
+          "x": 60,
+          "y": 25,
+          "radius": 9,
+          "desc": "Kuchli parnik gazi atmosferani isitmoqda."
+        },
+        {
+          "id": "v_sp19_3",
+          "name": "Parranda go'ngining ochiq dalada to'planishi",
+          "x": 80,
+          "y": 50,
+          "radius": 9,
+          "desc": "Ammiak bug'lanib yer osti suviga nitratlar singadi."
+        },
+        {
+          "id": "v_sp19_4",
+          "name": "O'lgan parranda jasadlarining noqonuniy ko'milishi",
+          "x": 20,
+          "y": 60,
+          "radius": 9,
+          "desc": "Veterinariya sanitariya qoidalari buzilgan."
+        },
+        {
+          "id": "v_sp19_5",
+          "name": "Veterinariya dori vositalari oqovasi",
+          "x": 48,
+          "y": 88,
+          "radius": 9,
+          "desc": "Antibiotiklar daryodagi tabiiy florani yo'q qiladi."
+        }
+      ]
+    },
+    {
+      "id": "sp20",
+      "name": "Sirdaryo Havzasi: Tog'-kon Shag'al va Qum Kareri (Daryo O'zani) #2",
+      "violations": [
+        {
+          "id": "v_sp20_1",
+          "name": "Ekskavator daryo o'zanini noqonuniy kovlashi",
+          "x": 45,
+          "y": 68,
+          "radius": 9,
+          "desc": "Daryo tubi chuqurlashib suv sathi tushib ketgan."
+        },
+        {
+          "id": "v_sp20_2",
+          "name": "Daryo bo'yidagi yulg'un va to'qayning yo'q qilinishi",
+          "x": 25,
+          "y": 45,
+          "radius": 9,
+          "desc": "Tabiiy biologik to'siq buzilib qirg'oq yuvilmoqda."
+        },
+        {
+          "id": "v_sp20_3",
+          "name": "Dizel yonilg'isining to'g'ridan-to'g'ri daryoga oqishi",
+          "x": 70,
+          "y": 75,
+          "radius": 9,
+          "desc": "Texnikalardan oqqan solyarka baliqlarni nobud qiladi."
+        },
+        {
+          "id": "v_sp20_4",
+          "name": "Shag'al yuvish loyqasi tozalanmay qaytarilishi",
+          "x": 55,
+          "y": 85,
+          "radius": 9,
+          "desc": "Daryo suvi loyqalanib kislorod darajasi keskin tushgan."
+        },
+        {
+          "id": "v_sp20_5",
+          "name": "Yuk mashinalarining chang qoplamasiz harakati",
+          "x": 80,
+          "y": 30,
+          "radius": 9,
+          "desc": "Aholi yashash punktiga chang va shovqin tarqalishi."
+        }
+      ]
+    },
+    {
+      "id": "sp21",
+      "name": "Janubiy Sanoat Zonasi: Daryo Bo'yidagi Sanoat Zonasi #3",
+      "violations": [
+        {
+          "id": "v_sp21_1",
+          "name": "Tozalanmagan oqova quvuri",
+          "x": 33,
+          "y": 76,
+          "radius": 9,
+          "desc": "Sanoat oqovasi daryoga filtrsiz quyilmoqda."
+        },
+        {
+          "id": "v_sp21_2",
+          "name": "Qora tutunli filtrsiz mo'ri",
+          "x": 70,
+          "y": 28,
+          "radius": 9,
+          "desc": "Atmosferaga SO2 va qora qurum tashlanmoqda."
+        },
+        {
+          "id": "v_sp21_3",
+          "name": "Sohildagi eskirgan akkumulyatorlar",
+          "x": 47,
+          "y": 89,
+          "radius": 9,
+          "desc": "Qo'rg'oshin va kislota daryo bo'yiga sizmoqda."
+        },
+        {
+          "id": "v_sp21_4",
+          "name": "Kamalakrang neft dog'i",
+          "x": 57,
+          "y": 72,
+          "radius": 9,
+          "desc": "Suv yuzasida kislorod almashinuvini to'suvchi neft pardasi."
+        },
+        {
+          "id": "v_sp21_5",
+          "name": "To'qaydagi noqonuniy plastik poligon",
+          "x": 87,
+          "y": 59,
+          "radius": 9,
+          "desc": "Aholining chiqindilari to'planib qolgan."
+        }
+      ]
+    },
+    {
+      "id": "sp22",
+      "name": "Janubiy Sanoat Zonasi: Metallurgiya va Eritish Zavodi #3",
+      "violations": [
+        {
+          "id": "v_sp22_1",
+          "name": "Gaz tozalash filtri o'chirilgan pech",
+          "x": 35,
+          "y": 29,
+          "radius": 9,
+          "desc": "Filtr ishlamay og'ir metall changlari tarqalmoqda."
+        },
+        {
+          "id": "v_sp22_2",
+          "name": "Shlak va qora quyqa uyumi",
+          "x": 80,
+          "y": 74,
+          "radius": 9,
+          "desc": "Ochiq havoda shamol bilan uchuvchi zaharli chang."
+        },
+        {
+          "id": "v_sp22_3",
+          "name": "Sovutish suvi kanaliga kislota oqishi",
+          "x": 50,
+          "y": 64,
+          "radius": 9,
+          "desc": "Kislotali suv yer osti sizot suvlariga o'tmoqda."
+        },
+        {
+          "id": "v_sp22_4",
+          "name": "Eskirgan transformator moyi oqishi (PXB)",
+          "x": 25,
+          "y": 84,
+          "radius": 9,
+          "desc": "Polixlorlangan bifenillar o'ta xavfli kantserogen modda."
+        },
+        {
+          "id": "v_sp22_5",
+          "name": "Ruxsat etilmagan metall lom chiqindixonasi",
+          "x": 90,
+          "y": 39,
+          "radius": 9,
+          "desc": "Tuproq qoplamini buzuvchi tartibsiz metall parchalari."
+        }
+      ]
+    },
+    {
+      "id": "sp23",
+      "name": "Janubiy Sanoat Zonasi: Kimyo Sanoat Majmuasi (Navoiy) #3",
+      "violations": [
+        {
+          "id": "v_sp23_1",
+          "name": "Ammiak quvurining zichmasligi (Gaz sizishi)",
+          "x": 55,
+          "y": 34,
+          "radius": 9,
+          "desc": "Atmosferaga o'tkir hidli zaharli ammiak tarqalishi."
+        },
+        {
+          "id": "v_sp23_2",
+          "name": "Fosfor gipsi ochiq tog'i",
+          "x": 85,
+          "y": 54,
+          "radius": 9,
+          "desc": "Atrofga radiatsiyaviy va kislotali chang tarqatuvchi chiqindi."
+        },
+        {
+          "id": "v_sp23_3",
+          "name": "Kislota rezervuari korroziyasi",
+          "x": 30,
+          "y": 69,
+          "radius": 9,
+          "desc": "Himoya qoplamasiz saqlanayotgan sulfat kislota idishi."
+        },
+        {
+          "id": "v_sp23_4",
+          "name": "Zaharli oqova hovuzi geomembranasiz",
+          "x": 65,
+          "y": 89,
+          "radius": 9,
+          "desc": "Yer osti ichimlik suvlarini zaharlash xavfi."
+        },
+        {
+          "id": "v_sp23_5",
+          "name": "Yaroqsiz kimyoviy reagentlar ombori",
+          "x": 20,
+          "y": 44,
+          "radius": 9,
+          "desc": "Yomg'ir suvi tushib reaksiyaga kirishuvchi reagentlar."
+        }
+      ]
+    },
+    {
+      "id": "sp24",
+      "name": "Janubiy Sanoat Zonasi: Neftni Qayta Ishlash Zavodi (Farg'ona) #3",
+      "violations": [
+        {
+          "id": "v_sp24_1",
+          "name": "Fakel quvurida to'liq yonmagan uglevodorod",
+          "x": 45,
+          "y": 22,
+          "radius": 9,
+          "desc": "Metan va organik gazlarning havoga to'g'ridan chiqishi."
+        },
+        {
+          "id": "v_sp24_2",
+          "name": "Neft shlamining ochiq chuquri",
+          "x": 75,
+          "y": 79,
+          "radius": 9,
+          "desc": "Neft qoldiqlari ochiq havoda bug'lanib yerni zaharlaydi."
+        },
+        {
+          "id": "v_sp24_3",
+          "name": "Magistral neft quvurining yorilishi",
+          "x": 27,
+          "y": 59,
+          "radius": 9,
+          "desc": "Qora oltin tuproqqa singib o'simliklarni quritadi."
+        },
+        {
+          "id": "v_sp24_4",
+          "name": "Kanalizatsiya qudug'ida benzin hidi",
+          "x": 60,
+          "y": 90,
+          "radius": 9,
+          "desc": "Portlash xavfi yuqori bo'lgan organik oqovalar."
+        },
+        {
+          "id": "v_sp24_5",
+          "name": "Neft qoldiqlari yoqilgan qora maydon",
+          "x": 90,
+          "y": 24,
+          "radius": 9,
+          "desc": "Atmosferaga kanserogen dioksinlar tashlanishi."
+        }
+      ]
+    },
+    {
+      "id": "sp25",
+      "name": "Janubiy Sanoat Zonasi: To'qimachilik va Bo'yash Fabrikasi #3",
+      "violations": [
+        {
+          "id": "v_sp25_1",
+          "name": "Anilin bo'yoqli qizil rangli oqova",
+          "x": 40,
+          "y": 79,
+          "radius": 9,
+          "desc": "Rangli zaharli moddalar daryoni qizil rangga bo'yagan."
+        },
+        {
+          "id": "v_sp25_2",
+          "name": "Xlorli oqartiruvchi gaz hidi",
+          "x": 70,
+          "y": 39,
+          "radius": 9,
+          "desc": "Ishchilar va qo'shni mahalla havosini buzuvchi xlor."
+        },
+        {
+          "id": "v_sp25_3",
+          "name": "To'qimachilik sintetik qiyqindilari yoqilishi",
+          "x": 85,
+          "y": 24,
+          "radius": 9,
+          "desc": "Sintetik mato yonib zaharli fosgen ajratadi."
+        },
+        {
+          "id": "v_sp25_4",
+          "name": "Katta miqdorda shlakli suv tindirilmasdan chiqarilishi",
+          "x": 23,
+          "y": 64,
+          "radius": 9,
+          "desc": "Suvning loyqaligi va harorati normadan 3 barobar yuqori."
+        },
+        {
+          "id": "v_sp25_5",
+          "name": "Kimyoviy bo'yoq bochkalari ochiq osmon ostida",
+          "x": 55,
+          "y": 52,
+          "radius": 9,
+          "desc": "Bochkalar teshilib yerga singayotgan bo'yoqlar."
+        }
+      ]
+    },
+    {
+      "id": "sp26",
+      "name": "Janubiy Sanoat Zonasi: Issiqlik Elektr Stansiyasi (IES) #3",
+      "violations": [
+        {
+          "id": "v_sp26_1",
+          "name": "Mazut yoqilishidan chiqqan oltingugurtli gaz",
+          "x": 60,
+          "y": 24,
+          "radius": 9,
+          "desc": "Kislotali yomg'ir hosil qiluvchi SO3 tashlanmasi."
+        },
+        {
+          "id": "v_sp26_2",
+          "name": "Kul-shlak saqlagichining to'lib toshishi",
+          "x": 87,
+          "y": 69,
+          "radius": 9,
+          "desc": "Kul zarralari shamolda kilometrlarga uchmoqda."
+        },
+        {
+          "id": "v_sp26_3",
+          "name": "Issiq suvning daryoga termal tashlanishi",
+          "x": 35,
+          "y": 84,
+          "radius": 9,
+          "desc": "Suv harorati ko'tarilib baliqlarning nobud bo'lishi."
+        },
+        {
+          "id": "v_sp26_4",
+          "name": "Mazut saqlash idishidan moy sizishi",
+          "x": 25,
+          "y": 49,
+          "radius": 9,
+          "desc": "Tuproq va yer osti qatlamini qoplagan mazut."
+        },
+        {
+          "id": "v_sp26_5",
+          "name": "Eskirgan siklon chang tutqichlarining yorilishi",
+          "x": 75,
+          "y": 42,
+          "radius": 9,
+          "desc": "Chang tutuvchi filtrlar samarasiz ishlamoqda."
+        }
+      ]
+    },
+    {
+      "id": "sp27",
+      "name": "Janubiy Sanoat Zonasi: Sement Ishlab Chiqarish Zavodi (Bekobod) #3",
+      "violations": [
+        {
+          "id": "v_sp27_1",
+          "name": "Klinker pechining chang tutqichsiz ishlashi",
+          "x": 53,
+          "y": 26,
+          "radius": 9,
+          "desc": "Oq sement changi butun hududni qoplagan."
+        },
+        {
+          "id": "v_sp27_2",
+          "name": "Ochiq maydonda saqlanayotgan ohaktosh",
+          "x": 30,
+          "y": 54,
+          "radius": 9,
+          "desc": "Shamol kuchi bilan ko'chib yuruvchi mineral chang."
+        },
+        {
+          "id": "v_sp27_3",
+          "name": "Sement qoplarining noqonuniy yoqilishi",
+          "x": 90,
+          "y": 84,
+          "radius": 9,
+          "desc": "Qog'oz va polimer qoplarning tutunli yoqilishi."
+        },
+        {
+          "id": "v_sp27_4",
+          "name": "Gidrotozalash tizimining loyqa suvlari",
+          "x": 40,
+          "y": 89,
+          "radius": 9,
+          "desc": "Yuqori ishqoriy (pH>11) sementli oqova."
+        },
+        {
+          "id": "v_sp27_5",
+          "name": "Karyer portlatishidan so'ng rekultivatsiya qilinmagan yer",
+          "x": 80,
+          "y": 44,
+          "radius": 9,
+          "desc": "Tuproq unumdor qatlami yo'q qilib tashlangan."
+        }
+      ]
+    },
+    {
+      "id": "sp28",
+      "name": "Janubiy Sanoat Zonasi: Charm-poyabzal Qayta Ishlash Zavodi #3",
+      "violations": [
+        {
+          "id": "v_sp28_1",
+          "name": "Xrom (Cr VI) qoldig'i bo'lgan oqova",
+          "x": 45,
+          "y": 74,
+          "radius": 9,
+          "desc": "Olti valentli xrom o'ta xavfli kantserogen moddadir."
+        },
+        {
+          "id": "v_sp28_2",
+          "name": "Terini oshlashdan chiqqan hidli o'lik oqsillar",
+          "x": 25,
+          "y": 44,
+          "radius": 9,
+          "desc": "Sanitar-himoya zonasida kuchli badbo'y hid."
+        },
+        {
+          "id": "v_sp28_3",
+          "name": "Xromlangan charm qiyqindilarining ochiq poligoni",
+          "x": 83,
+          "y": 64,
+          "radius": 9,
+          "desc": "Xromli chiqindi yer osti suvlarini zaharlamoqda."
+        },
+        {
+          "id": "v_sp28_4",
+          "name": "Sulfidli reagentlarning kanalizatsiyaga quyilishi",
+          "x": 65,
+          "y": 86,
+          "radius": 9,
+          "desc": "Vodorod sulfid gazi quvurlarni yemiradi."
+        },
+        {
+          "id": "v_sp28_5",
+          "name": "Chirigan teri qoldiqlari ustida hasharotlar to'planishi",
+          "x": 90,
+          "y": 34,
+          "radius": 9,
+          "desc": "Sanitariya-epidemiologiya talablari buzilgan."
+        }
+      ]
+    },
+    {
+      "id": "sp29",
+      "name": "Janubiy Sanoat Zonasi: Chorvachilik va Parrandachilik Agro-Klasteri #3",
+      "violations": [
+        {
+          "id": "v_sp29_1",
+          "name": "Lagunadan go'ng suvi daryoga to'kilishi",
+          "x": 37,
+          "y": 82,
+          "radius": 9,
+          "desc": "Ortiqcha azot va fosfor suvda evtrofikatsiyani keltirib chiqaradi."
+        },
+        {
+          "id": "v_sp29_2",
+          "name": "Biogaz tutilmasdan havoga metan chiqishi",
+          "x": 65,
+          "y": 29,
+          "radius": 9,
+          "desc": "Kuchli parnik gazi atmosferani isitmoqda."
+        },
+        {
+          "id": "v_sp29_3",
+          "name": "Parranda go'ngining ochiq dalada to'planishi",
+          "x": 85,
+          "y": 54,
+          "radius": 9,
+          "desc": "Ammiak bug'lanib yer osti suviga nitratlar singadi."
+        },
+        {
+          "id": "v_sp29_4",
+          "name": "O'lgan parranda jasadlarining noqonuniy ko'milishi",
+          "x": 25,
+          "y": 64,
+          "radius": 9,
+          "desc": "Veterinariya sanitariya qoidalari buzilgan."
+        },
+        {
+          "id": "v_sp29_5",
+          "name": "Veterinariya dori vositalari oqovasi",
+          "x": 53,
+          "y": 90,
+          "radius": 9,
+          "desc": "Antibiotiklar daryodagi tabiiy florani yo'q qiladi."
+        }
+      ]
+    },
+    {
+      "id": "sp30",
+      "name": "Janubiy Sanoat Zonasi: Tog'-kon Shag'al va Qum Kareri (Daryo O'zani) #3",
+      "violations": [
+        {
+          "id": "v_sp30_1",
+          "name": "Ekskavator daryo o'zanini noqonuniy kovlashi",
+          "x": 50,
+          "y": 72,
+          "radius": 9,
+          "desc": "Daryo tubi chuqurlashib suv sathi tushib ketgan."
+        },
+        {
+          "id": "v_sp30_2",
+          "name": "Daryo bo'yidagi yulg'un va to'qayning yo'q qilinishi",
+          "x": 30,
+          "y": 49,
+          "radius": 9,
+          "desc": "Tabiiy biologik to'siq buzilib qirg'oq yuvilmoqda."
+        },
+        {
+          "id": "v_sp30_3",
+          "name": "Dizel yonilg'isining to'g'ridan-to'g'ri daryoga oqishi",
+          "x": 75,
+          "y": 79,
+          "radius": 9,
+          "desc": "Texnikalardan oqqan solyarka baliqlarni nobud qiladi."
+        },
+        {
+          "id": "v_sp30_4",
+          "name": "Shag'al yuvish loyqasi tozalanmay qaytarilishi",
+          "x": 60,
+          "y": 89,
+          "radius": 9,
+          "desc": "Daryo suvi loyqalanib kislorod darajasi keskin tushgan."
+        },
+        {
+          "id": "v_sp30_5",
+          "name": "Yuk mashinalarining chang qoplamasiz harakati",
+          "x": 85,
+          "y": 34,
+          "radius": 9,
+          "desc": "Aholi yashash punktiga chang va shovqin tarqalishi."
         }
       ]
     }

@@ -772,6 +772,18 @@
         return;
       }
 
+      // 6. Ifloslantiruvchini Top (Spot Polluter) maxsus moduli
+      if (this.config.battleMode === 'spot_polluter' && window.EcoBattleSpotPolluterMode) {
+        window.EcoBattleSpotPolluterMode.start({
+          t1Name: this.config.t1Name,
+          t2Name: this.config.t2Name,
+          t1Avatar: this.config.t1Avatar,
+          t2Avatar: this.config.t2Avatar,
+          matchTime: 90
+        });
+        return;
+      }
+
       this.active = true;
       this.paused = false;
       this.tugOfWarPercent = 50;
