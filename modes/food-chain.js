@@ -184,12 +184,13 @@
 
       // Savollarni questions manager orqali olish
       if (window.EcoBattleCoreQuestions) {
-        this.state.challenges = await window.EcoBattleCoreQuestions.getQuestionsForMode('food_chain', 15);
-      } else {
-        this.state.challenges = [];
+        const fetched = await window.EcoBattleCoreQuestions.getQuestionsForMode('food_chain', 15);
+        if (Array.isArray(fetched) && fetched.length > 0 && fetched[0].steps) {
+          this.state.challenges = fetched;
+        }
       }
 
-      if (!this.state.challenges || this.state.challenges.length === 0) {
+      if (!this.state.challenges || this.state.challenges.length === 0 || !this.state.challenges[0].steps) {
         this.state.challenges = this.getFallbackChallenges();
       }
 
@@ -259,7 +260,7 @@
           name: step,
           stepIndex: sIdx,
           isTrap: false,
-          icon: this.getStepIcon(sIdx, ch.steps.length)
+          icon: this.getStepIcon(sIdx, ch.steps.length, step)
         });
       });
 
@@ -269,7 +270,7 @@
           name: trap,
           stepIndex: -1,
           isTrap: true,
-          icon: "⚠️"
+          icon: this.getTrapIcon(trap)
         });
       });
 
@@ -285,12 +286,32 @@
       this.renderArena();
     },
 
-    getStepIcon(idx, total) {
-      if (idx === 0) return "☀️";
-      if (idx === 1) return "🌱";
-      if (idx === total - 1) return "🦅";
-      if (idx === total - 2) return "🐺";
+    getStepIcon(idx, total, name = "") {
+      const s = (name || "").toLowerCase();
+      if (s.includes("quyosh") || idx === 0) return "☀️";
+      if (s.includes("suv o'ti") || s.includes("fitoplankton") || s.includes("mox") || s.includes("yashil")) return "🌿";
+      if (s.includes("daraxt") || s.includes("yulg'un") || s.includes("to'rang'i") || s.includes("buta")) return "🌳";
+      if (s.includes("daphniya") || s.includes("qisqichbaqa") || s.includes("plankton")) return "🦐";
+      if (s.includes("baliq") || s.includes("karp") || s.includes("zog'ora") || s.includes("marinka")) return "🐟";
+      if (s.includes("qush") || s.includes("burgut") || s.includes("kalxat") || s.includes("lochin") || s.includes("qoravoy") || idx === total - 1) return "🦅";
+      if (s.includes("bo'ri") || s.includes("qashqir") || s.includes("tulki") || s.includes("mushuk")) return "🐺";
+      if (s.includes("quyon") || s.includes("kemiruvchi") || s.includes("sichqon")) return "🐇";
+      if (s.includes("qurbaqa")) return "🐸";
+      if (s.includes("ilon")) return "🐍";
+      if (s.includes("chig'anoq") || s.includes("mollyuska")) return "🐚";
+      if (idx === 1) return "🌿";
       return "🦗";
+    },
+
+    getTrapIcon(name = "") {
+      const t = (name || "").toLowerCase();
+      if (t.includes("plastik") || t.includes("xalta") || t.includes("paket")) return "🛍️";
+      if (t.includes("kimyoviy") || t.includes("oqova") || t.includes("zahar") || t.includes("toksin")) return "🧪";
+      if (t.includes("shina") || t.includes("rezina") || t.includes("avtomobil")) return "🛞";
+      if (t.includes("batareya") || t.includes("akkumulyator")) return "🔋";
+      if (t.includes("shisha") || t.includes("butilka")) return "🍾";
+      if (t.includes("metall") || t.includes("sim")) return "🥫";
+      return "🚫";
     },
 
     shuffle(arr) {
@@ -483,7 +504,7 @@
                         <span class="text-2xl shrink-0 group-hover:scale-110 transition-transform">${card.icon}</span>
                         <div class="flex flex-col overflow-hidden text-left">
                           <span class="text-xs font-black text-white group-hover:text-purple-300 transition-colors truncate">${card.name}</span>
-                          <span class="text-[9px] font-extrabold ${isTrapCard ? 'text-rose-400' : 'text-purple-400'}">${isTrapCard ? '⚠️ Noorganik Qopqon' : 'Trofik Bo'g'in'}</span>
+                          <span class="text-[9px] font-extrabold ${isTrapCard ? 'text-rose-400' : 'text-purple-400'}">${isTrapCard ? '⚠️ Noorganik Qopqon' : "Trofik Bo'g'in"}</span>
                         </div>
                       </div>
                       <span class="w-5 h-5 rounded bg-black/40 border border-slate-700 text-[10px] font-mono font-black text-slate-400 flex items-center justify-center shrink-0">

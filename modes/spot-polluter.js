@@ -131,12 +131,13 @@
       this.state.timeRemaining = this.config.matchTime || 90;
 
       if (window.EcoBattleCoreQuestions) {
-        this.state.scenes = await window.EcoBattleCoreQuestions.getQuestionsForMode('spot_polluter', 30);
-      } else {
-        this.state.scenes = [];
+        const fetched = await window.EcoBattleCoreQuestions.getQuestionsForMode('spot_polluter', 30);
+        if (Array.isArray(fetched) && fetched.length > 0 && fetched[0].violations) {
+          this.state.scenes = fetched;
+        }
       }
 
-      if (!this.state.scenes || this.state.scenes.length === 0) {
+      if (!this.state.scenes || this.state.scenes.length === 0 || !this.state.scenes[0].violations) {
         this.state.scenes = this.getFallbackScenes();
       }
 
@@ -310,11 +311,11 @@
             <!-- 1. DETALLASHTIRILGAN EKOLOGIK SAHNA (SVG ILUSTRATSIYA) -->
             ${this.renderSceneSVG(scene, teamState.foundIds)}
 
-            <!-- 2. QORONG'U FONAR TUMANI (Spotlight Mask) -->
+            <!-- 2. YORQIN FONAR NUR TUMANI (Bright Spotlight Mask) -->
             <div 
               id="${lensId}" 
               class="flashlight-lens"
-              style="background: radial-gradient(circle 85px at ${teamState.lightX}% ${teamState.lightY}%, transparent 0%, rgba(10, 15, 30, 0.94) 100%);"
+              style="background: radial-gradient(circle 120px at ${teamState.lightX}% ${teamState.lightY}%, rgba(255,255,255,0.08) 0%, rgba(234,179,8,0.15) 30%, rgba(15,23,42,0.45) 65%, rgba(10,15,30,0.92) 100%);"
             ></div>
 
             <!-- 3. TOPILGAN BUZILISHLAR RADAR BELGILARI (Faqat topilganlari nurlanadi) -->

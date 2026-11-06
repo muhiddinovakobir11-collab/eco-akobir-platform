@@ -300,7 +300,7 @@
               <!-- 1. Konveyer Poygasi -->
               <div 
                 onclick="EcoBattleArena.setBattleMode('conveyor')" 
-                style="--card-glow: rgba(245, 158, 11, 0.4);"
+                style="--card-glow: rgba(245, 158, 11, 0.45);"
                 class="tilted-card tilted-card-1 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'conveyor' ? 'border-amber-400 border-b-amber-600 bg-gradient-to-b from-amber-950/60 via-slate-950 to-slate-950 ring-4 ring-amber-500/40 shadow-2xl shadow-amber-500/20' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-amber-500/70 hover:border-b-amber-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
@@ -315,23 +315,34 @@
                   </div>
 
                   <!-- MINI GAME STAGE PREVIEW (Konveyer tasviri) -->
-                  <div class="w-full h-24 rounded-xl bg-slate-900/90 border border-amber-500/30 p-2 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
-                    <div class="flex items-center justify-between px-1 text-[9px] font-black text-amber-300">
-                      <span>CHIQINDI OQIMI</span>
-                      <span class="text-amber-400/80">⚡ 0.8s REAKSIYA</span>
+                  <div class="w-full h-28 rounded-xl bg-gradient-to-b from-slate-950 to-amber-950/40 border border-amber-500/40 p-2.5 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9.5px] font-black text-amber-300">
+                      <span>⚡ 200 TA SVG CHIQINDI OQIMI</span>
+                      <span class="text-amber-400 font-extrabold bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/30 text-[8.5px]">0.8s REAKSIYA</span>
                     </div>
-                    <!-- Conveyor Track -->
-                    <div class="conveyor-belt-track w-full h-8 rounded-lg border border-slate-700 flex items-center justify-around px-2 relative overflow-hidden">
-                      <span class="text-lg waste-conveyor-float">🧴</span>
-                      <span class="text-lg waste-conveyor-float" style="animation-delay: 0.6s;">🍾</span>
-                      <span class="text-lg waste-conveyor-float" style="animation-delay: 1.2s;">🔋</span>
+
+                    <!-- Animated Conveyor Track -->
+                    <div class="conveyor-belt-track w-full h-9 rounded-lg border border-slate-700 flex items-center justify-around px-2 relative overflow-hidden my-1 shadow-md">
+                      <div class="flex items-center gap-1 bg-amber-500/20 border border-amber-400/80 px-2 py-0.5 rounded waste-conveyor-float">
+                        <span class="text-sm">🧴</span>
+                        <span class="text-[8px] font-bold text-amber-300">Plastik</span>
+                      </div>
+                      <div class="flex items-center gap-1 bg-blue-500/20 border border-blue-400/80 px-2 py-0.5 rounded waste-conveyor-float" style="animation-delay: 0.5s;">
+                        <span class="text-sm">📦</span>
+                        <span class="text-[8px] font-bold text-blue-300">Qog'oz</span>
+                      </div>
+                      <div class="flex items-center gap-1 bg-emerald-500/20 border border-emerald-400/80 px-2 py-0.5 rounded waste-conveyor-float" style="animation-delay: 1s;">
+                        <span class="text-sm">🍾</span>
+                        <span class="text-[8px] font-bold text-emerald-300">Shisha</span>
+                      </div>
                     </div>
+
                     <!-- Mini 4 Bins -->
-                    <div class="grid grid-cols-4 gap-1 text-[8px] font-black text-center text-slate-300">
-                      <span class="py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">Plastik</span>
-                      <span class="py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/40">Qog'oz</span>
-                      <span class="py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Shisha</span>
-                      <span class="py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40">Xavfli</span>
+                    <div class="grid grid-cols-4 gap-1 text-[8px] font-black text-center">
+                      <span class="py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/50">Plastik (A)</span>
+                      <span class="py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/50">Qog'oz (S)</span>
+                      <span class="py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/50">Shisha (D)</span>
+                      <span class="py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/50">Xavfli (F)</span>
                     </div>
                   </div>
 
@@ -348,8 +359,8 @@
                     <span>⚡ 200 SVG Baza</span>
                     <span class="text-slate-400">👥 1v1 Split</span>
                   </div>
-                  <div class="w-full py-2 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'conveyor' ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 shadow-md' : 'bg-slate-900 group-hover:bg-amber-500/20 text-slate-300 group-hover:text-amber-300 border border-slate-800'}">
-                    ${this.config.battleMode === 'conveyor' ? '✅ TANLANGAN REJIM' : "🕹️ O'YINNI TANLASH"}
+                  <div class="w-full py-2.5 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'conveyor' ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-1.5 animate-pulse' : 'bg-slate-900 group-hover:bg-amber-500/20 text-slate-300 group-hover:text-amber-300 border border-slate-800 flex items-center justify-center gap-1.5'}">
+                    ${this.config.battleMode === 'conveyor' ? '<span>⚡ HOZIR BOSHLASH</span> <i class="fa-solid fa-arrow-right"></i>' : "<span>🕹️ O'YINNI TANLASH</span>"}
                   </div>
                 </div>
               </div>
@@ -357,7 +368,7 @@
               <!-- 2. Akademik Eko-Duel -->
               <div 
                 onclick="EcoBattleArena.setBattleMode('quiz')" 
-                style="--card-glow: rgba(6, 182, 212, 0.4);"
+                style="--card-glow: rgba(6, 182, 212, 0.45);"
                 class="tilted-card tilted-card-2 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'quiz' ? 'border-cyan-400 border-b-cyan-600 bg-gradient-to-b from-cyan-950/60 via-slate-950 to-slate-950 ring-4 ring-cyan-500/40 shadow-2xl shadow-cyan-500/20' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-cyan-500/70 hover:border-b-cyan-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
@@ -372,25 +383,34 @@
                   </div>
 
                   <!-- MINI GAME STAGE PREVIEW (Duel podiyasi) -->
-                  <div class="w-full h-24 rounded-xl bg-slate-900/90 border border-cyan-500/30 p-2 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
-                    <div class="flex items-center justify-between px-1 text-[9px] font-black text-cyan-300">
-                      <span>1v1 JONLI TEST</span>
-                      <span class="text-cyan-400/80">⏱️ 15s TAYMER</span>
+                  <div class="w-full h-28 rounded-xl bg-gradient-to-b from-slate-950 to-cyan-950/40 border border-cyan-500/40 p-2.5 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9.5px] font-black text-cyan-300">
+                      <span>1v1 JONLI TEST BELLASHUVI</span>
+                      <span class="text-cyan-300 font-extrabold bg-cyan-500/10 px-1.5 py-0.5 rounded border border-cyan-500/30 text-[8.5px]">⏱️ 12s TAYMER</span>
                     </div>
+
                     <!-- Clash Podium -->
-                    <div class="flex items-center justify-around py-1">
-                      <div class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-lg shadow-lg">
-                        🛡️
+                    <div class="grid grid-cols-4 gap-1.5 my-1">
+                      <div class="bg-rose-500/25 border border-rose-400/80 rounded-lg p-1 text-center">
+                        <span class="text-xs">🔺</span>
+                        <span class="block text-[7.5px] font-black text-rose-300 mt-0.5">Variant A</span>
                       </div>
-                      <div class="px-2 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 text-[10px] font-black animate-pulse">
-                        ⚡ VS ⚡
+                      <div class="bg-blue-500/25 border border-blue-400/80 rounded-lg p-1 text-center">
+                        <span class="text-xs">🔷</span>
+                        <span class="block text-[7.5px] font-black text-blue-300 mt-0.5">Variant B</span>
                       </div>
-                      <div class="w-9 h-9 rounded-xl bg-rose-500/20 border border-rose-500/50 flex items-center justify-center text-lg shadow-lg">
-                        ⚡
+                      <div class="bg-amber-500/25 border border-amber-400/80 rounded-lg p-1 text-center">
+                        <span class="text-xs">🟡</span>
+                        <span class="block text-[7.5px] font-black text-amber-300 mt-0.5">Variant C</span>
+                      </div>
+                      <div class="bg-emerald-500/25 border border-emerald-400/80 rounded-lg p-1 text-center">
+                        <span class="text-xs">🟢</span>
+                        <span class="block text-[7.5px] font-black text-emerald-300 mt-0.5">Variant D</span>
                       </div>
                     </div>
-                    <div class="text-center text-[9px] font-extrabold text-slate-400">
-                      ISO 14001 • Audit • Ekspertiza
+
+                    <div class="text-center text-[8.5px] font-extrabold text-cyan-300/90 bg-cyan-950/60 rounded border border-cyan-500/30 py-0.5">
+                      ISO 14001 • Sanoat Auditi • Ekologik Ekspertiza
                     </div>
                   </div>
 
@@ -407,8 +427,8 @@
                     <span>📜 Nazariya & Standart</span>
                     <span class="text-slate-400">🔥 Streak x5</span>
                   </div>
-                  <div class="w-full py-2 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'quiz' ? 'bg-gradient-to-r from-cyan-500 to-sky-400 text-slate-950 shadow-md' : 'bg-slate-900 group-hover:bg-cyan-500/20 text-slate-300 group-hover:text-cyan-300 border border-slate-800'}">
-                    ${this.config.battleMode === 'quiz' ? '✅ TANLANGAN REJIM' : "🕹️ O'YINNI TANLASH"}
+                  <div class="w-full py-2.5 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'quiz' ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-1.5 animate-pulse' : 'bg-slate-900 group-hover:bg-cyan-500/20 text-slate-300 group-hover:text-cyan-300 border border-slate-800 flex items-center justify-center gap-1.5'}">
+                    ${this.config.battleMode === 'quiz' ? '<span>⚡ HOZIR BOSHLASH</span> <i class="fa-solid fa-arrow-right"></i>' : "<span>🕹️ O'YINNI TANLASH</span>"}
                   </div>
                 </div>
               </div>
@@ -416,7 +436,7 @@
               <!-- 3. Toza Arqon (Tug-of-War) -->
               <div 
                 onclick="EcoBattleArena.setBattleMode('tug_of_war')" 
-                style="--card-glow: rgba(239, 68, 68, 0.4);"
+                style="--card-glow: rgba(239, 68, 68, 0.45);"
                 class="tilted-card tilted-card-3 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'tug_of_war' ? 'border-rose-400 border-b-rose-600 bg-gradient-to-b from-rose-950/60 via-slate-950 to-slate-950 ring-4 ring-rose-500/40 shadow-2xl shadow-rose-500/20' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-rose-500/70 hover:border-b-rose-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
@@ -431,22 +451,35 @@
                   </div>
 
                   <!-- MINI GAME STAGE PREVIEW (Arqon tortishuv) -->
-                  <div class="w-full h-24 rounded-xl bg-slate-900/90 border border-rose-500/30 p-2 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
-                    <div class="flex items-center justify-between px-1 text-[9px] font-black text-rose-300">
-                      <span>CHEGARA ITARISH</span>
-                      <span class="text-rose-400 font-extrabold animate-pulse">🔥 2X KUCH (10s)</span>
+                  <div class="w-full h-28 rounded-xl bg-gradient-to-b from-slate-950 to-rose-950/40 border border-rose-500/40 p-2.5 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9.5px] font-black text-rose-300">
+                      <span>CHEGARA ITARISH (TUG-OF-WAR)</span>
+                      <span class="text-rose-400 font-extrabold animate-pulse bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/30 text-[8.5px]">🔥 2X KUCH</span>
                     </div>
-                    <!-- Rope Visual -->
-                    <div class="relative w-full h-6 flex items-center justify-center rope-tug-anim">
-                      <div class="w-full h-2 bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500 rounded-full"></div>
-                      <div class="absolute left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 border-2 border-white flex items-center justify-center text-[10px] font-black shadow-lg">
-                        💥
+
+                    <!-- Interactive Rope Clash Visual -->
+                    <div class="relative w-full h-11 flex items-center justify-between px-2 my-1">
+                      <div class="flex items-center gap-1 bg-emerald-500/20 border border-emerald-400/80 px-2 py-1 rounded-lg">
+                        <span class="text-sm">🧝</span>
+                        <span class="text-[7.5px] font-black text-emerald-300">Zumrad</span>
+                      </div>
+
+                      <div class="flex-1 mx-2 relative flex items-center">
+                        <div class="w-full h-2.5 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]"></div>
+                        <div class="absolute left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-slate-950 border-2 border-amber-400 flex items-center justify-center text-[10px] shadow-lg">
+                          ⚡
+                        </div>
+                      </div>
+
+                      <div class="flex items-center gap-1 bg-rose-500/20 border border-rose-400/80 px-2 py-1 rounded-lg">
+                        <span class="text-[7.5px] font-black text-rose-300">Yoqut</span>
+                        <span class="text-sm">🧙</span>
                       </div>
                     </div>
-                    <div class="flex items-center justify-between text-[9px] font-black px-1 text-slate-400">
-                      <span class="text-emerald-400">◄ Zumrad</span>
-                      <span class="text-amber-400">1.5s Stan Jazosi</span>
-                      <span class="text-rose-400">Yoqut ►</span>
+
+                    <div class="flex items-center justify-between text-[8px] font-black px-2 py-0.5 bg-rose-950/60 rounded border border-rose-500/30 text-rose-300">
+                      <span>To'g'ri javob chegarani suradi!</span>
+                      <span class="text-amber-300">10s da 2x Kuch</span>
                     </div>
                   </div>
 
@@ -463,13 +496,13 @@
                     <span>🪢 Chegara Itarish</span>
                     <span class="text-slate-400">⚡ Nokaut Chegarasi</span>
                   </div>
-                  <div class="w-full py-2 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'tug_of_war' ? 'bg-gradient-to-r from-rose-500 to-red-600 text-white shadow-md' : 'bg-slate-900 group-hover:bg-rose-500/20 text-slate-300 group-hover:text-rose-300 border border-slate-800'}">
-                    ${this.config.battleMode === 'tug_of_war' ? '✅ TANLANGAN REJIM' : "🕹️ O'YINNI TANLASH"}
+                  <div class="w-full py-2.5 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'tug_of_war' ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-1.5 animate-pulse' : 'bg-slate-900 group-hover:bg-rose-500/20 text-slate-300 group-hover:text-rose-300 border border-slate-800 flex items-center justify-center gap-1.5'}">
+                    ${this.config.battleMode === 'tug_of_war' ? '<span>⚡ HOZIR BOSHLASH</span> <i class="fa-solid fa-arrow-right"></i>' : "<span>🕹️ O'YINNI TANLASH</span>"}
                   </div>
                 </div>
               </div>
 
-              <!-- 4. Yashil Xarita (Territory 5x5 War) — MUKAMMAL VIZUAL O'YIN KARTASI -->
+              <!-- 4. Yashil Xarita (Territory 5x5 War) -->
               <div 
                 onclick="EcoBattleArena.setBattleMode('green_map')" 
                 style="--card-glow: rgba(16, 185, 129, 0.45);"
@@ -486,36 +519,36 @@
                     </span>
                   </div>
 
-                  <!-- MINI GAME STAGE PREVIEW (Haqiqiy 5x5 Maydon Mockup) -->
-                  <div class="w-full h-24 rounded-xl bg-slate-900/90 border border-lime-500/30 p-2 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
-                    <div class="flex items-center justify-between px-1 text-[9px] font-black text-lime-300">
-                      <span>5x5 MAYDON URUSHI</span>
-                      <span class="text-amber-300 combo-spark-glow">⚡ +300 COMBO QATOR!</span>
+                  <!-- MINI GAME STAGE PREVIEW (5x5 Maydon Mockup) -->
+                  <div class="w-full h-28 rounded-xl bg-gradient-to-b from-slate-950 to-emerald-950/40 border border-lime-500/40 p-2.5 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9.5px] font-black text-lime-300">
+                      <span>🌲 5x5 STRATEGIK MAYDON URUSHI</span>
+                      <span class="text-amber-300 font-extrabold bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/30 text-[8.5px]">⚡ +300 COMBO!</span>
                     </div>
 
-                    <!-- Visual 5x5 Mini Grid -->
-                    <div class="grid grid-cols-5 gap-1 w-full max-w-[170px] mx-auto py-0.5">
-                      <span class="w-5 h-3.5 rounded-xs bg-emerald-500/40 border border-emerald-400/80 flex items-center justify-center text-[8px]">🌲</span>
-                      <span class="w-5 h-3.5 rounded-xs bg-slate-800 border border-slate-700"></span>
-                      <span class="w-5 h-3.5 rounded-xs bg-rose-500/40 border border-rose-400/80 flex items-center justify-center text-[8px]">🏭</span>
-                      <span class="w-5 h-3.5 rounded-xs bg-emerald-500/40 border border-emerald-400/80 flex items-center justify-center text-[8px]">🌲</span>
-                      <span class="w-5 h-3.5 rounded-xs bg-slate-800 border border-slate-700"></span>
-                      <!-- Diagonal Combo Beam Mockup -->
-                      <span class="w-5 h-3.5 rounded-xs bg-amber-400/40 border border-amber-300 flex items-center justify-center text-[8px]">🌲</span>
-                      <span class="w-5 h-3.5 rounded-xs bg-amber-400/40 border border-amber-300 flex items-center justify-center text-[8px]">🌲</span>
-                      <span class="w-5 h-3.5 rounded-xs bg-amber-400/40 border border-amber-300 flex items-center justify-center text-[8px]">🌲</span>
-                      <span class="w-5 h-3.5 rounded-xs bg-amber-400/40 border border-amber-300 flex items-center justify-center text-[8px]">🌲</span>
-                      <span class="w-5 h-3.5 rounded-xs bg-amber-400/40 border border-amber-300 flex items-center justify-center text-[8px]">🌲</span>
+                    <!-- Visual 5x5 Grid Simulation -->
+                    <div class="grid grid-cols-5 gap-1 w-full max-w-[200px] mx-auto my-0.5">
+                      <div class="h-4 rounded bg-emerald-500/30 border border-emerald-400 flex items-center justify-center text-[9px]">🌲</div>
+                      <div class="h-4 rounded bg-slate-800/80 border border-slate-700"></div>
+                      <div class="h-4 rounded bg-rose-500/30 border border-rose-400 flex items-center justify-center text-[9px]">🏭</div>
+                      <div class="h-4 rounded bg-emerald-500/30 border border-emerald-400 flex items-center justify-center text-[9px]">🌲</div>
+                      <div class="h-4 rounded bg-slate-800/80 border border-slate-700"></div>
+                      <!-- Combo Row -->
+                      <div class="h-4 rounded bg-amber-400/40 border-2 border-amber-300 flex items-center justify-center text-[9px] shadow-[0_0_8px_rgba(250,204,21,0.6)]">🌲</div>
+                      <div class="h-4 rounded bg-amber-400/40 border-2 border-amber-300 flex items-center justify-center text-[9px] shadow-[0_0_8px_rgba(250,204,21,0.6)]">🌲</div>
+                      <div class="h-4 rounded bg-amber-400/40 border-2 border-amber-300 flex items-center justify-center text-[9px] shadow-[0_0_8px_rgba(250,204,21,0.6)]">🌲</div>
+                      <div class="h-4 rounded bg-amber-400/40 border-2 border-amber-300 flex items-center justify-center text-[9px] shadow-[0_0_8px_rgba(250,204,21,0.6)]">🌲</div>
+                      <div class="h-4 rounded bg-amber-400/40 border-2 border-amber-300 flex items-center justify-center text-[9px] shadow-[0_0_8px_rgba(250,204,21,0.6)]">🌲</div>
                     </div>
 
                     <!-- Territory Bar -->
-                    <div class="w-full flex items-center gap-1.5 text-[8px] font-black px-1">
-                      <span class="text-emerald-400">🌲 Zumrad (64%)</span>
-                      <div class="flex-1 h-1.5 rounded-full bg-slate-800 overflow-hidden flex">
-                        <div class="h-full bg-emerald-500" style="width: 64%;"></div>
-                        <div class="h-full bg-rose-500" style="width: 36%;"></div>
+                    <div class="flex items-center gap-2 text-[8px] font-black px-2 py-0.5 bg-slate-900/90 rounded border border-slate-800">
+                      <span class="text-emerald-400">🌲 Zumrad (68%)</span>
+                      <div class="flex-1 h-2 rounded-full bg-slate-800 overflow-hidden flex">
+                        <div class="h-full bg-emerald-500" style="width: 68%;"></div>
+                        <div class="h-full bg-rose-500" style="width: 32%;"></div>
                       </div>
-                      <span class="text-rose-400">Yoqut (36%) 🏭</span>
+                      <span class="text-rose-400">Yoqut (32%) 🏭</span>
                     </div>
                   </div>
 
@@ -532,8 +565,8 @@
                     <span>🌲 Daraxt vs 🏭 Zavod</span>
                     <span class="text-slate-400">⚡ 25 Katakli Jang</span>
                   </div>
-                  <div class="w-full py-2 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'green_map' ? 'bg-gradient-to-r from-lime-500 to-emerald-500 text-slate-950 shadow-md' : 'bg-slate-900 group-hover:bg-lime-500/20 text-slate-300 group-hover:text-lime-300 border border-slate-800'}">
-                    ${this.config.battleMode === 'green_map' ? '✅ TANLANGAN REJIM' : "🕹️ O'YINNI TANLASH"}
+                  <div class="w-full py-2.5 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'green_map' ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-1.5 animate-pulse' : 'bg-slate-900 group-hover:bg-lime-500/20 text-slate-300 group-hover:text-lime-300 border border-slate-800 flex items-center justify-center gap-1.5'}">
+                    ${this.config.battleMode === 'green_map' ? '<span>⚡ HOZIR BOSHLASH</span> <i class="fa-solid fa-arrow-right"></i>' : "<span>🕹️ O'YINNI TANLASH</span>"}
                   </div>
                 </div>
               </div>
@@ -541,8 +574,8 @@
               <!-- 5. Oziq Zanjiri (Trophic Web Arcade) — MUKAMMAL VIZUAL O'YIN KARTASI -->
               <div 
                 onclick="EcoBattleArena.setBattleMode('food_chain')" 
-                style="--card-glow: rgba(168, 85, 247, 0.45);"
-                class="tilted-card tilted-card-5 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'food_chain' ? 'border-purple-400 border-b-purple-600 bg-gradient-to-b from-purple-950/60 via-slate-950 to-slate-950 ring-4 ring-purple-500/40 shadow-2xl shadow-purple-500/20' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-purple-500/70 hover:border-b-purple-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
+                style="--card-glow: rgba(168, 85, 247, 0.5);"
+                class="tilted-card tilted-card-5 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'food_chain' ? 'border-purple-400 border-b-purple-600 bg-gradient-to-b from-purple-950/70 via-slate-950 to-slate-950 ring-4 ring-purple-500/50 shadow-2xl shadow-purple-500/30' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-purple-500/70 hover:border-b-purple-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
                   <!-- Header -->
@@ -556,35 +589,47 @@
                   </div>
 
                   <!-- MINI GAME STAGE PREVIEW (Trofik zanjir va tuzoq) -->
-                  <div class="w-full h-24 rounded-xl bg-slate-900/90 border border-purple-500/30 p-2 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
-                    <div class="flex items-center justify-between px-1 text-[9px] font-black text-purple-300">
-                      <span>TROFIK ZANJIRNI ULASH</span>
-                      <span class="text-rose-400 font-extrabold animate-pulse">⚠️ TUZOQ: PLASTIK!</span>
+                  <div class="w-full h-28 rounded-xl bg-gradient-to-b from-slate-950 to-purple-950/50 border border-purple-500/50 p-2.5 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9.5px] font-black text-purple-300">
+                      <span class="flex items-center gap-1">🔗 TROFIK ZANJIRNI ULASH (1 ➔ 4)</span>
+                      <span class="text-rose-400 font-extrabold animate-pulse bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/30 text-[8.5px]">⚠️ TUZOQ: PLASTIK!</span>
                     </div>
 
-                    <!-- Interactive Chain Diagram Flow -->
-                    <div class="flex items-center justify-between px-1 py-1">
-                      <div class="trophic-pulse-node w-7 h-7 rounded-lg bg-yellow-500/20 border border-yellow-400/80 flex items-center justify-center text-xs" title="1-Produtsent">
-                        ☀️
+                    <!-- Crystal-Clear Illustrated Trophic Chain -->
+                    <div class="grid grid-cols-4 gap-1.5 items-center my-1 relative">
+                      <!-- Node 1: Quyosh -->
+                      <div class="relative z-10 flex flex-col items-center bg-slate-900/95 border-2 border-amber-400/90 rounded-lg py-1 px-0.5 shadow-md shadow-amber-500/20">
+                        <span class="text-base leading-none">☀️</span>
+                        <span class="text-[8px] font-black text-amber-300 uppercase leading-none mt-1">1. Quyosh</span>
+                        <span class="text-[6.5px] text-slate-400 font-bold leading-none mt-0.5">Energiya</span>
                       </div>
-                      <span class="text-purple-400 text-xs font-black">➔</span>
-                      <div class="trophic-pulse-node w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-400/80 flex items-center justify-center text-xs" style="animation-delay: 0.4s;" title="2-O'simlik">
-                        🌿
+
+                      <!-- Node 2: O'simlik -->
+                      <div class="relative z-10 flex flex-col items-center bg-slate-900/95 border-2 border-emerald-400/90 rounded-lg py-1 px-0.5 shadow-md shadow-emerald-500/20">
+                        <span class="text-base leading-none">🌿</span>
+                        <span class="text-[8px] font-black text-emerald-300 uppercase leading-none mt-1">2. Fitomassa</span>
+                        <span class="text-[6.5px] text-slate-400 font-bold leading-none mt-0.5">Produtsent</span>
                       </div>
-                      <span class="text-purple-400 text-xs font-black">➔</span>
-                      <div class="trophic-pulse-node w-7 h-7 rounded-lg bg-amber-500/20 border border-amber-400/80 flex items-center justify-center text-xs" style="animation-delay: 0.8s;" title="3-Iste'molchi">
-                        🦗
+
+                      <!-- Node 3: O'txo'r -->
+                      <div class="relative z-10 flex flex-col items-center bg-slate-900/95 border-2 border-cyan-400/90 rounded-lg py-1 px-0.5 shadow-md shadow-cyan-500/20">
+                        <span class="text-base leading-none">🦗</span>
+                        <span class="text-[8px] font-black text-cyan-300 uppercase leading-none mt-1">3. Hasharot</span>
+                        <span class="text-[6.5px] text-slate-400 font-bold leading-none mt-0.5">O'txo'r</span>
                       </div>
-                      <span class="text-purple-400 text-xs font-black">➔</span>
-                      <div class="trophic-pulse-node w-7 h-7 rounded-lg bg-rose-500/20 border border-rose-400/80 flex items-center justify-center text-xs" style="animation-delay: 1.2s;" title="4-Yirtqich">
-                        🦅
+
+                      <!-- Node 4: Yirtqich -->
+                      <div class="relative z-10 flex flex-col items-center bg-slate-900/95 border-2 border-pink-400/90 rounded-lg py-1 px-0.5 shadow-md shadow-pink-500/20">
+                        <span class="text-base leading-none">🦅</span>
+                        <span class="text-[8px] font-black text-pink-300 uppercase leading-none mt-1">4. Burgut</span>
+                        <span class="text-[6.5px] text-slate-400 font-bold leading-none mt-0.5">Yirtqich</span>
                       </div>
                     </div>
 
                     <!-- Trap Warning Badge -->
-                    <div class="flex items-center justify-between text-[8px] font-black px-1 bg-purple-950/60 rounded border border-purple-500/30 py-0.5">
-                      <span class="text-purple-300">🧬 4 Tali Rishta Halqasi</span>
-                      <span class="text-rose-400">🚫 Qopqon: Chiqindi Xalta</span>
+                    <div class="flex items-center justify-between text-[8px] font-black px-2 py-0.5 bg-rose-950/70 rounded border border-rose-500/40 text-rose-300">
+                      <span class="flex items-center gap-1">🚫 Qopqon: Polietilen Xalta & Toksin</span>
+                      <span class="text-amber-300 font-mono">⚡ 1.5s Stun</span>
                     </div>
                   </div>
 
@@ -601,8 +646,8 @@
                     <span>🔗 Rishta Chiziqlari</span>
                     <span class="text-slate-400">🧬 30 Ekotizim</span>
                   </div>
-                  <div class="w-full py-2 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'food_chain' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md' : 'bg-slate-900 group-hover:bg-purple-500/20 text-slate-300 group-hover:text-purple-300 border border-slate-800'}">
-                    ${this.config.battleMode === 'food_chain' ? '✅ TANLANGAN REJIM' : "🕹️ O'YINNI TANLASH"}
+                  <div class="w-full py-2.5 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'food_chain' ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-1.5 animate-pulse' : 'bg-slate-900 group-hover:bg-purple-500/20 text-slate-300 group-hover:text-purple-300 border border-slate-800 flex items-center justify-center gap-1.5'}">
+                    ${this.config.battleMode === 'food_chain' ? '<span>⚡ HOZIR BOSHLASH</span> <i class="fa-solid fa-arrow-right"></i>' : "<span>🕹️ O'YINNI TANLASH</span>"}
                   </div>
                 </div>
               </div>
@@ -610,8 +655,8 @@
               <!-- 6. Ifloslantiruvchini Top (Spot Polluter) — MUKAMMAL VIZUAL O'YIN KARTASI -->
               <div 
                 onclick="EcoBattleArena.setBattleMode('spot_polluter')" 
-                style="--card-glow: rgba(234, 179, 8, 0.45);"
-                class="tilted-card tilted-card-6 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'spot_polluter' ? 'border-yellow-400 border-b-yellow-600 bg-gradient-to-b from-yellow-950/60 via-slate-950 to-slate-950 ring-4 ring-yellow-500/40 shadow-2xl shadow-yellow-500/20' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-yellow-500/70 hover:border-b-yellow-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
+                style="--card-glow: rgba(234, 179, 8, 0.5);"
+                class="tilted-card tilted-card-6 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'spot_polluter' ? 'border-yellow-400 border-b-yellow-600 bg-gradient-to-b from-yellow-950/70 via-slate-950 to-slate-950 ring-4 ring-yellow-500/50 shadow-2xl shadow-yellow-500/30' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-yellow-500/70 hover:border-b-yellow-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
                   <!-- Header -->
@@ -625,33 +670,48 @@
                   </div>
 
                   <!-- MINI GAME STAGE PREVIEW (Qorong'i fonar nuri va radar) -->
-                  <div class="w-full h-24 rounded-xl bg-slate-950 border border-yellow-500/30 p-2 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
-                    <div class="flex items-center justify-between px-1 text-[9px] font-black text-yellow-300 z-10">
-                      <span>RADARDA 5 TA BUZILISH</span>
-                      <span class="text-rose-400 font-extrabold">🚨 3s FREEZE JAZOSI</span>
+                  <div class="w-full h-28 rounded-xl bg-gradient-to-b from-slate-950 to-yellow-950/50 border border-yellow-500/50 p-2.5 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9.5px] font-black text-yellow-300 z-10">
+                      <span class="flex items-center gap-1">📡 RADAR VA FONAR DETEKTIVI</span>
+                      <span class="text-rose-400 font-extrabold animate-pulse bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/30 text-[8.5px]">🚨 3s FREEZE</span>
                     </div>
 
-                    <!-- Flashlight Spotlight Beam Simulation -->
-                    <div class="relative w-full h-10 flex items-center justify-center">
-                      <!-- Dark terrain with silhouettes -->
-                      <div class="absolute inset-0 bg-slate-900/90 rounded border border-slate-800 flex items-center justify-around px-3 opacity-60">
-                        <span class="text-sm">🏭</span>
-                        <span class="text-xs">⛰️</span>
-                        <span class="text-sm">🚢</span>
+                    <!-- High-Tech Radar HUD Preview -->
+                    <div class="relative w-full h-12 rounded-lg bg-slate-950 border border-yellow-500/30 overflow-hidden flex items-center justify-between px-2.5 my-1">
+                      <!-- Grid Radar Rings (SVG Background) -->
+                      <svg class="absolute inset-0 w-full h-full opacity-35 pointer-events-none" viewBox="0 0 300 50">
+                        <circle cx="150" cy="25" r="16" fill="none" stroke="#eab308" stroke-width="1" stroke-dasharray="3,3"/>
+                        <circle cx="150" cy="25" r="30" fill="none" stroke="#eab308" stroke-width="1" stroke-dasharray="4,4"/>
+                        <line x1="0" y1="25" x2="300" y2="25" stroke="#eab308" stroke-width="0.8"/>
+                        <line x1="150" y1="0" x2="150" y2="50" stroke="#eab308" stroke-width="0.8"/>
+                      </svg>
+
+                      <!-- Target 1: Quvur Sizishi -->
+                      <div class="relative z-10 flex items-center gap-1 bg-slate-900/90 border border-emerald-500/60 px-1.5 py-0.5 rounded shadow">
+                        <span class="text-xs">🧪</span>
+                        <span class="text-[7.5px] font-bold text-emerald-300">Oqova</span>
                       </div>
-                      <!-- Moving circular spotlight beam -->
-                      <div class="mini-radar-sweep relative w-12 h-12 rounded-full bg-yellow-400/30 border-2 border-yellow-300 flex items-center justify-center text-sm shadow-[0_0_18px_rgba(250,204,21,0.8)] z-10 animate-pulse">
-                        🛢️
+
+                      <!-- Center: Flashlight Beam on Toxic Barrels -->
+                      <div class="relative z-10 flex items-center gap-1.5 bg-yellow-500/25 border-2 border-yellow-400 px-2 py-0.5 rounded-xl shadow-[0_0_15px_rgba(234,179,8,0.7)] animate-pulse">
+                        <span class="text-sm">🛢️</span>
+                        <div class="flex flex-col text-left">
+                          <span class="text-[8px] font-black text-yellow-300 leading-none">ZAHARLI BOCHKA</span>
+                          <span class="text-[6.5px] font-bold text-rose-400 leading-none mt-0.5">🎯 TOPILDI +150XP</span>
+                        </div>
                       </div>
-                      <div class="absolute right-6 text-xs text-rose-400 font-black z-10">
-                        🎯
+
+                      <!-- Target 3: Qora Tutun -->
+                      <div class="relative z-10 flex items-center gap-1 bg-slate-900/90 border border-rose-500/60 px-1.5 py-0.5 rounded shadow">
+                        <span class="text-xs">🏭</span>
+                        <span class="text-[7.5px] font-bold text-rose-300">Tutun</span>
                       </div>
                     </div>
 
-                    <div class="flex items-center justify-between text-[8px] font-black px-1 text-slate-400 z-10">
-                      <span class="text-yellow-300">🔦 Interaktiv Nur</span>
-                      <span class="text-amber-400">Zaharli Bochkalar • Tutun</span>
-                      <span class="text-rose-400">Adashmang!</span>
+                    <!-- Bottom Detective Rules -->
+                    <div class="flex items-center justify-between text-[8px] font-black px-2 py-0.5 bg-yellow-950/70 rounded border border-yellow-500/40 text-yellow-300">
+                      <span class="flex items-center gap-1">🔦 Fonar bilan 5 ta buzilishni toping</span>
+                      <span class="text-rose-400 font-mono">⚠️ Xato = 3s Qotish</span>
                     </div>
                   </div>
 
@@ -668,16 +728,11 @@
                     <span>🔦 Fonar Nuri & Radar</span>
                     <span class="text-slate-400">🚨 3s Freeze Jazo</span>
                   </div>
-                  <div class="w-full py-2 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'spot_polluter' ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-950 shadow-md' : 'bg-slate-900 group-hover:bg-yellow-500/20 text-slate-300 group-hover:text-yellow-300 border border-slate-800'}">
-                    ${this.config.battleMode === 'spot_polluter' ? '✅ TANLANGAN REJIM' : "🕹️ O'YINNI TANLASH"}
+                  <div class="w-full py-2.5 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'spot_polluter' ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-1.5 animate-pulse' : 'bg-slate-900 group-hover:bg-yellow-500/20 text-slate-300 group-hover:text-yellow-300 border border-slate-800 flex items-center justify-center gap-1.5'}">
+                    ${this.config.battleMode === 'spot_polluter' ? '<span>⚡ HOZIR BOSHLASH</span> <i class="fa-solid fa-arrow-right"></i>' : "<span>🕹️ O'YINNI TANLASH</span>"}
                   </div>
                 </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- Jamoalar Sozlamalari (Split Card) -->
+              </div><!-- Jamoalar Sozlamalari (Split Card) -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto mb-7">
             
             <!-- 1-Jamoa (Chap / Zumrad) -->
@@ -831,6 +886,14 @@
       const t2Input = document.getElementById('t2-name-input');
       if (t1Input) this.config.t1Name = t1Input.value.trim() || this.config.t1Name;
       if (t2Input) this.config.t2Name = t2Input.value.trim() || this.config.t2Name;
+
+      // Agar ushbu rejim allaqachon tanlangan bo'lsa, darhol o'yinni boshlaymiz!
+      if (this.config.battleMode === mode) {
+        if (window.ecoAudio && typeof window.ecoAudio.playClick === 'function') window.ecoAudio.playClick();
+        this.startBattleFromSetup();
+        return;
+      }
+
       this.config.battleMode = mode;
       this.renderSetup();
       if (window.EcoBattleCoreFx) {
