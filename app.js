@@ -338,7 +338,7 @@ function updateProfileHeaderUI() {
   if (levelEl) levelEl.textContent = `Daraja ${playerProfile.level}`;
   if (xpEl) xpEl.textContent = `${playerProfile.xp} XP`;
   if (coinsEl) coinsEl.textContent = playerProfile.ecoCoins;
-  if (completedCount) completedCount.textContent = `${playerProfile.completedModules.length}/20`;
+  if (completedCount) completedCount.textContent = "24 ta";
 
   if (progressBar) {
     const levelXP = playerProfile.xp % 300;

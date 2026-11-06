@@ -60,6 +60,70 @@
       .battle-glow-team2 {
         box-shadow: 0 0 25px rgba(244, 63, 94, 0.35);
       }
+
+      /* Taktil 1-2 gradus egilgan kartalar uslubi */
+      .tilted-card {
+        transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, border-color 0.2s ease;
+        will-change: transform;
+      }
+      .tilted-card-1 { transform: rotate(-1.3deg); }
+      .tilted-card-2 { transform: rotate(1.2deg); }
+      .tilted-card-3 { transform: rotate(-1.5deg); }
+      .tilted-card-4 { transform: rotate(1.4deg); }
+      .tilted-card-5 { transform: rotate(-1.1deg); }
+      .tilted-card-6 { transform: rotate(1.5deg); }
+
+      .tilted-card:hover {
+        transform: rotate(0deg) translateY(-8px) scale(1.025) !important;
+        box-shadow: 0 22px 35px -8px rgba(0, 0, 0, 0.7), 0 0 20px 2px rgba(16, 185, 129, 0.25) !important;
+        z-index: 10;
+      }
+
+      /* Jismoniy stiker yorliq */
+      .eco-sticker-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 9px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transform: rotate(-5deg);
+        box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.45);
+        border: 1px dashed rgba(255, 255, 255, 0.3);
+      }
+
+      /* Taktil bounce tugma */
+      .eco-tactile-btn {
+        transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+      }
+      .eco-tactile-btn:active {
+        transform: scale(0.94) !important;
+      }
+
+      /* Orqa fonda asta suzuvchi zarrachalar */
+      @keyframes ambientFloat {
+        0%, 100% { transform: translateY(0) translateX(0); opacity: 0.25; }
+        50% { transform: translateY(-25px) translateX(15px); opacity: 0.5; }
+      }
+      .arena-ambient-particle {
+        position: absolute;
+        pointer-events: none;
+        user-select: none;
+        animation: ambientFloat 6s ease-in-out infinite;
+        will-change: transform, opacity;
+      }
+
+      /* Accessibility: Reduced Motion */
+      @media (prefers-reduced-motion: reduce) {
+        .tilted-card, .tilted-card:hover, .eco-tactile-btn, .arena-ambient-particle, .waste-conveyor-float, .conveyor-belt-track {
+          animation: none !important;
+          transform: none !important;
+          transition: none !important;
+        }
+      }
     `;
     document.head.appendChild(s);
   })();
@@ -144,7 +208,13 @@
       if (!target) return;
 
       target.innerHTML = `
-        <div class="bg-slate-900 border border-emerald-500/30 rounded-3xl p-5 sm:p-8 shadow-2xl relative select-none">
+        <div class="bg-slate-900 border border-emerald-500/30 rounded-3xl p-5 sm:p-8 shadow-2xl relative select-none overflow-hidden">
+          
+          <!-- Ambient drifting micro particles -->
+          <span class="arena-ambient-particle text-emerald-400/30 text-xl" style="top: 15%; left: 8%;">🍃</span>
+          <span class="arena-ambient-particle text-amber-400/25 text-lg" style="top: 45%; right: 10%; animation-delay: 2s;">🍂</span>
+          <span class="arena-ambient-particle text-cyan-400/30 text-xl" style="bottom: 20%; left: 14%; animation-delay: 3.5s;">💧</span>
+          <span class="arena-ambient-particle text-rose-400/25 text-lg" style="bottom: 30%; right: 18%; animation-delay: 1.2s;">✨</span>
           
           <!-- Banner -->
           <div class="text-center max-w-2xl mx-auto mb-7">
@@ -159,49 +229,169 @@
             </p>
           </div>
 
-          <!-- JANG REJIMINI TANLASH (YANGI KONVEYER POYGASI!) -->
-          <div class="max-w-3xl mx-auto mb-7">
-            <span class="text-xs font-black uppercase text-slate-300 tracking-wider block mb-3 text-center">
-              Jang Rejimini Tanlang:
-            </span>
+          <!-- JANG REJIMINI TANLASH (6 TA TAKTIL REJIM!) -->
+          <div class="max-w-5xl mx-auto mb-7">
+            <div class="flex items-center justify-between mb-3 px-1">
+              <span class="text-xs font-black uppercase text-slate-300 tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-gamepad text-emerald-400"></i> Jang Rejimini Tanlang (6 xil bellashuv):
+              </span>
+              <span class="text-[10px] text-slate-500 font-bold hidden sm:inline">
+                * Har bir rejim o'ziga xos mexanika va ranglariga ega
+              </span>
+            </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              <!-- 1. Konveyer Poygasi (Asosiy) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              
+              <!-- 1. Konveyer Poygasi -->
               <div 
                 onclick="EcoBattleArena.setBattleMode('conveyor', this)" 
-                class="battle-mode-card border-2 ${this.config.battleMode === 'conveyor' ? 'border-amber-400 bg-amber-950/40 ring-4 ring-amber-500/30' : 'border-slate-800 bg-slate-950/60 hover:border-slate-700'} rounded-2xl p-4 cursor-pointer transition-all flex items-start gap-3.5 group shadow-lg"
+                class="tilted-card tilted-card-1 border-2 ${this.config.battleMode === 'conveyor' ? 'border-amber-400 bg-amber-950/50 ring-4 ring-amber-500/30' : 'border-slate-800 bg-slate-950/70 hover:border-amber-500/60'} rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
-                <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-2xl border border-amber-500/40 shrink-0 group-hover:scale-110 transition-transform">
-                  ⚡
-                </div>
                 <div>
-                  <div class="flex items-center gap-2">
-                    <h4 class="text-sm font-black text-white group-hover:text-amber-300 transition-colors">1v1 Chiqindi Konveyeri</h4>
-                    <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500 text-slate-950">Tavsiya</span>
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="w-11 h-11 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-2xl border border-amber-500/40 group-hover:scale-110 transition-transform">
+                      ⚡
+                    </div>
+                    <span class="eco-sticker-badge bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950">
+                      Tavsiya
+                    </span>
                   </div>
-                  <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                    200 ta boy chiqindi bazasidan har ikki tomonga 2D konveyer orqali chiqindilar oqib keladi. 4 talik toifalar poygasi!
+                  <h4 class="text-sm font-black text-white group-hover:text-amber-300 transition-colors">1. Chiqindi Konveyeri</h4>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
+                    200 ta SVG chiqindidan doimiy oqim. 4 talik toifalar poygasi (A/S/D/F vs J/K/L/;).
                   </p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-amber-400/90">
+                  <span>⚡ 4-talik Tezkor Poyga</span>
+                  <span class="text-slate-500">200 Ta Baza</span>
                 </div>
               </div>
 
-              <!-- 2. Akademik Test Dueli -->
+              <!-- 2. Akademik Eko-Duel -->
               <div 
                 onclick="EcoBattleArena.setBattleMode('quiz', this)" 
-                class="battle-mode-card border-2 ${this.config.battleMode === 'quiz' ? 'border-cyan-400 bg-cyan-950/40 ring-4 ring-cyan-500/30' : 'border-slate-800 bg-slate-950/60 hover:border-slate-700'} rounded-2xl p-4 cursor-pointer transition-all flex items-start gap-3.5 group shadow-lg"
+                class="tilted-card tilted-card-2 border-2 ${this.config.battleMode === 'quiz' ? 'border-cyan-400 bg-cyan-950/50 ring-4 ring-cyan-500/30' : 'border-slate-800 bg-slate-950/70 hover:border-cyan-500/60'} rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
-                <div class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl border border-cyan-500/40 shrink-0 group-hover:scale-110 transition-transform">
-                  🧠
-                </div>
                 <div>
-                  <div class="flex items-center gap-2">
-                    <h4 class="text-sm font-black text-white group-hover:text-cyan-300 transition-colors">1v1 Akademik Eko-Duel</h4>
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="w-11 h-11 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl border border-cyan-500/40 group-hover:scale-110 transition-transform">
+                      🧠
+                    </div>
+                    <span class="eco-sticker-badge bg-gradient-to-r from-cyan-500 to-sky-400 text-slate-950">
+                      Bilim
+                    </span>
                   </div>
-                  <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                    20 ta o'quv moduli, ISO 14001 sanoat auditi va davlat ekologik ekspertizasi testlari bo'yicha split-screen intellektual jang.
+                  <h4 class="text-sm font-black text-white group-hover:text-cyan-300 transition-colors">2. Akademik Eko-Duel</h4>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
+                    ISO 14001, sanoat auditi va ekologik ekspertiza testlari bo'yicha intellektual bellashuv.
                   </p>
                 </div>
+                <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-cyan-400/90">
+                  <span>🎓 Nazariya & Audit</span>
+                  <span class="text-slate-500">ISO 14001</span>
+                </div>
               </div>
+
+              <!-- 3. Toza Arqon (Tug-of-War) -->
+              <div 
+                onclick="EcoBattleArena.setBattleMode('tug_of_war', this)" 
+                class="tilted-card tilted-card-3 border-2 ${this.config.battleMode === 'tug_of_war' ? 'border-emerald-400 bg-emerald-950/50 ring-4 ring-emerald-500/30' : 'border-slate-800 bg-slate-950/70 hover:border-emerald-500/60'} rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden"
+              >
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-500/40 group-hover:scale-110 transition-transform">
+                      🪢
+                    </div>
+                    <span class="eco-sticker-badge bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950">
+                      Jang
+                    </span>
+                  </div>
+                  <h4 class="text-sm font-black text-white group-hover:text-emerald-300 transition-colors">3. Toza Arqon</h4>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
+                    To'g'ri javob chegarani raqibga suradi! Oxirgi 10 soniyada zarba kuchi 2x kuchayadi.
+                  </p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-emerald-400/90">
+                  <span>🔥 Chegara Itarish</span>
+                  <span class="text-slate-500">2x Super-Kuch</span>
+                </div>
+              </div>
+
+              <!-- 4. Yashil Xarita (Territory 5x5) -->
+              <div 
+                onclick="EcoBattleArena.setBattleMode('green_map', this)" 
+                class="tilted-card tilted-card-4 border-2 ${this.config.battleMode === 'green_map' ? 'border-lime-400 bg-lime-950/50 ring-4 ring-lime-500/30' : 'border-slate-800 bg-slate-950/70 hover:border-lime-500/60'} rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden"
+              >
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="w-11 h-11 rounded-xl bg-lime-500/20 text-lime-400 flex items-center justify-center text-2xl border border-lime-500/40 group-hover:scale-110 transition-transform">
+                      🗺️
+                    </div>
+                    <span class="eco-sticker-badge bg-gradient-to-r from-lime-500 to-emerald-400 text-slate-950">
+                      Strategiya
+                    </span>
+                  </div>
+                  <h4 class="text-sm font-black text-white group-hover:text-lime-300 transition-colors">4. Yashil Xarita (5x5)</h4>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
+                    5x5 maydonda Daraxt ekish va Zavod qurish jangi. Qatorlarni to'ldirib combo oling!
+                  </p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-lime-400/90">
+                  <span>🌲 Daraxt vs 🏭 Zavod</span>
+                  <span class="text-slate-500">Combo Bonus</span>
+                </div>
+              </div>
+
+              <!-- 5. Oziq Zanjiri (Food Chain) -->
+              <div 
+                onclick="EcoBattleArena.setBattleMode('food_chain', this)" 
+                class="tilted-card tilted-card-5 border-2 ${this.config.battleMode === 'food_chain' ? 'border-purple-400 bg-purple-950/50 ring-4 ring-purple-500/30' : 'border-slate-800 bg-slate-950/70 hover:border-purple-500/60'} rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden"
+              >
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="w-11 h-11 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-2xl border border-purple-500/40 group-hover:scale-110 transition-transform">
+                      🦅
+                    </div>
+                    <span class="eco-sticker-badge bg-gradient-to-r from-purple-500 to-pink-400 text-slate-950">
+                      Ekotizim
+                    </span>
+                  </div>
+                  <h4 class="text-sm font-black text-white group-hover:text-purple-300 transition-colors">5. Oziq Zanjiri</h4>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
+                    Trofik pog'onalarni ulab zanjir hosil qiling. Qopqon plastik va zaharli kartalardan ehtiyot bo'ling!
+                  </p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-purple-400/90">
+                  <span>🔗 Rishta Chiziqlari</span>
+                  <span class="text-slate-500">Trofik Pog'ona</span>
+                </div>
+              </div>
+
+              <!-- 6. Ifloslantiruvchini Top (Spot Polluter) -->
+              <div 
+                onclick="EcoBattleArena.setBattleMode('spot_polluter', this)" 
+                class="tilted-card tilted-card-6 border-2 ${this.config.battleMode === 'spot_polluter' ? 'border-yellow-400 bg-yellow-950/50 ring-4 ring-yellow-500/30' : 'border-slate-800 bg-slate-950/70 hover:border-yellow-500/60'} rounded-2xl p-4 cursor-pointer transition-all flex flex-col justify-between group shadow-xl relative overflow-hidden"
+              >
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="w-11 h-11 rounded-xl bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-2xl border border-yellow-500/40 group-hover:scale-110 transition-transform">
+                      🔦
+                    </div>
+                    <span class="eco-sticker-badge bg-gradient-to-r from-yellow-500 to-amber-400 text-slate-950">
+                      Detektiv
+                    </span>
+                  </div>
+                  <h4 class="text-sm font-black text-white group-hover:text-yellow-300 transition-colors">6. Ifloslantiruvchini Top</h4>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
+                    Qorong'i xaritada fonar nuri bilan 5 ta yashirin buzilishni toping. Adashish 3 soniya qotiradi!
+                  </p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold text-yellow-400/90">
+                  <span>🔦 Fonar Nuri</span>
+                  <span class="text-slate-500">3s Freeze</span>
+                </div>
+              </div>
+
             </div>
           </div>
 
