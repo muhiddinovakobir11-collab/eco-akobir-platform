@@ -295,19 +295,34 @@ const Eco2DAnimator = {
   // 1. Piroliz va Dioksin Reaktori Animatsiyasi
   renderPyrolysisReactor(id, title, info, gameId) {
     const isAudit = gameId === 2;
-    const badge = isAudit ? "SANOAT AUDITI — I TOIFA" : "ZVOS EKSPERTIZASI — I TOIFA";
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-amber-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-amber-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="pyrolysis_reactor" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-amber-400">
             <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
             <span class="uppercase tracking-wider">🔥 Piroliz va Termik Destruksiya Reaktori #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[9px]">${badge}</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border-amber-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'pyrolysis_reactor', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'pyrolysis_reactor', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <defs>
             <linearGradient id="pyrWall" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#334155"/>
@@ -364,24 +379,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">📊 Parametr: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 2. Skrubber va Gaz Tozalash Minorasi Animatsiyasi
   renderGasScrubber(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-cyan-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-cyan-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="gas_scrubber" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-cyan-400">
             <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
             <span class="uppercase tracking-wider">💧 Kimyoviy Skrubber & Neytrallash Minorasi #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[9px]">GAZ ABSORBSIYASI</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border-cyan-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'gas_scrubber', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'gas_scrubber', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Inflow duct -->
           <rect x="30" y="75" width="80" height="24" rx="4" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5"/>
           <text x="70" y="91" font-size="9" fill="#67e8f9" font-weight="bold" text-anchor="middle">ZAHARLI GAZ</text>
@@ -428,24 +494,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">🔬 Ko'rsatkich: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 3. Oqava Suv Aeratenki va Loy Tindirgichi Animatsiyasi
   renderWastewaterBasin(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-teal-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-teal-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="wastewater_basin" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-teal-400">
             <span class="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
             <span class="uppercase tracking-wider">🌊 Biologik Aeratenk & Cho'ktirgich Havzasi #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-teal-500/10 text-teal-300 border border-teal-500/30 text-[9px]">SUV MUHOFAZASI</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-teal-500/10 text-teal-300 border-teal-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'wastewater_basin', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'wastewater_basin', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Inflow pipe -->
           <path d="M 20 60 L 80 60 L 80 85" stroke="#14b8a6" stroke-width="4" fill="none" class="eco-pipe-dash"/>
           <text x="50" y="52" font-size="8" fill="#5eead4" font-weight="bold">XOM OQAVA</text>
@@ -484,24 +601,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">🧪 Suv tahlili: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 4. Sanitar-Himoya Zonasi (SHZ) Lazer Masofa Radari Animatsiyasi
   renderSanitaryRadar(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-purple-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-purple-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="sanitary_radar" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-purple-400">
             <span class="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
             <span class="uppercase tracking-wider">📏 Sanitar-Himoya Zonasi (SHZ) & Masofa Radari #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/30 text-[9px]">SanQvaM ME'YORI</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border-purple-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'sanitary_radar', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'sanitary_radar', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Industrial Plant Silhouette on Left -->
           <rect x="25" y="45" width="75" height="70" rx="4" fill="#1e1b4b" stroke="#818cf8" stroke-width="1.5"/>
           <polygon points="40,45 55,20 65,20 65,45" fill="#312e81"/>
@@ -547,24 +715,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">📐 Masofa tahlili: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 5. Akustik Shovqin To'sig'i va Desibel To'lqinlari Animatsiyasi
   renderNoiseBarrier(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-rose-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-rose-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="noise_barrier" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-rose-400">
             <span class="w-2 h-2 rounded-full bg-rose-400 animate-ping"></span>
             <span class="uppercase tracking-wider">🔊 Akustik Shovqin To'sig'i & Desibel Ekranlash #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[9px]">AKUSTIKA & dB(A)</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-rose-500/10 text-rose-300 border-rose-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'noise_barrier', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'noise_barrier', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Highway / Train Track Source -->
           <rect x="30" y="85" width="130" height="30" rx="6" fill="#1e293b" stroke="#64748b"/>
           <line x1="30" y1="100" x2="160" y2="100" stroke="#facc15" stroke-width="2" stroke-dasharray="8,6"/>
@@ -600,24 +819,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">📊 Akustika: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 6. Elektrofiltr va Quvurdan Chang Tozalash
   renderElectrostaticFilter(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-blue-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-blue-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="electrostatic_filter" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-blue-400">
             <span class="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span>
             <span class="uppercase tracking-wider">⚡ 5-Polyusli Elektrofiltr & Kul Tutqich #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-300 border border-blue-500/30 text-[9px]">SAMARADORLIK 99.5%</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-blue-500/10 text-blue-300 border-blue-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'electrostatic_filter', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'electrostatic_filter', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Flue gas inlet duct -->
           <rect x="30" y="65" width="70" height="40" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
           <circle cx="50" cy="80" r="3" fill="#64748b"/>
@@ -654,24 +924,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">⚡ Elektrofiltr ma'lumoti: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 7. Kimyoviy Elektroliz va Toksik Galvanika
   renderChemicalElectrolysis(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-yellow-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-yellow-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="chemical_electrolysis" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-yellow-400">
             <span class="w-2 h-2 rounded-full bg-yellow-400 animate-ping"></span>
             <span class="uppercase tracking-wider">🧪 Kimyoviy Elektroliz & Og'ir Metallar Vannasi #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-300 border border-yellow-500/30 text-[9px]">TOKSIK I/II TOIFA</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-300 border-yellow-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'chemical_electrolysis', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'chemical_electrolysis', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Heavy Chemical Vat -->
           <rect x="60" y="30" width="220" height="90" rx="10" fill="#0f172a" stroke="#eab308" stroke-width="2"/>
           <rect x="65" y="60" width="210" height="55" rx="6" fill="#ca8a04" opacity="0.45"/>
@@ -711,24 +1032,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">🧪 Kimyo: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 8. QMQ Sanitar Poligoni va Geomembrana Filtrat Drenaji
   renderLandfillMembrane(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-emerald-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-emerald-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="landfill_membrane" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-emerald-400">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <span class="uppercase tracking-wider">♻️ Sanitar Poligon & HDPE Geomembrana Filtrat Drenaji #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[9px]">CHIQINDILAR</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border-emerald-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'landfill_membrane', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'landfill_membrane', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Landfill Strata Cross Section -->
           <polygon points="30,40 280,40 250,110 60,110" fill="#292524" stroke="#78716c"/>
           <text x="155" y="60" font-size="9" fill="#d6d3d1" font-weight="bold" text-anchor="middle">ZICHLANGAN CHIQINDI QATLAMI</text>
@@ -765,24 +1137,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">♻️ Poligon tahlili: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 9. Tibbiy Chiqindi Avtoklavi va Biohazard Zararsizlantirish
   renderMedicalAutoclave(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-red-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-red-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="medical_autoclave" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-red-400">
             <span class="w-2 h-2 rounded-full bg-red-400 animate-ping"></span>
             <span class="uppercase tracking-wider">☣️ Tibbiy Chiqindi Bosimli Avtoklav & Dezinfeksiya #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-red-500/10 text-red-300 border border-red-500/30 text-[9px]">B/V SINF BIOXAVF</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-red-500/10 text-red-300 border-red-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'medical_autoclave', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'medical_autoclave', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Autoclave Cylindrical Pressure Chamber -->
           <rect x="50" y="25" width="180" height="95" rx="24" fill="#0f172a" stroke="#ef4444" stroke-width="2.5"/>
           <text x="140" y="45" font-size="9" fill="#fca5a5" font-weight="bold" text-anchor="middle">GERMETIK BUG' KAMERASI</text>
@@ -813,24 +1236,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">☣️ Tibbiy holat: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 10. Tabiat Bog'i, Daryo va Baliq Yo'lagi (Ryboxod) Animatsiyasi
   renderNatureReserve(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-emerald-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-emerald-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="nature_reserve" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-emerald-400">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <span class="uppercase tracking-wider">🌿 Milliy Tabiat Bog'i & Daryo Ekotizimi #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[9px]">QIZIL KITOB & FAUNA</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border-emerald-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'nature_reserve', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'nature_reserve', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Mountain Backdrop -->
           <polygon points="20,100 80,30 140,100" fill="#064e3b" opacity="0.6"/>
           <polygon points="100,100 170,20 240,100" fill="#047857" opacity="0.8"/>
@@ -862,24 +1336,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">🌲 Tabiiy obyekt: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 11. E-Chiqindi va Litiy Batareya Qayta Ishlash
   renderEWasteRecycler(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-cyan-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-cyan-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="ewaste_recycler" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-cyan-400">
             <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
             <span class="uppercase tracking-wider">🔋 E-Chiqindi & Litiy-Ion Batareyalarni Maydalash #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[9px]">QORA MASSA / LI-ION</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border-cyan-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'ewaste_recycler', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'ewaste_recycler', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Battery Feeding Conveyor -->
           <rect x="30" y="70" width="100" height="25" rx="4" fill="#1e293b" stroke="#06b6d4"/>
           <rect x="50" y="60" width="20" height="10" rx="2" fill="#22c55e"/>
@@ -916,24 +1441,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">🔋 Batareya tahlili: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 12. Metallurgiya Quyuv Pechi va Eritish
   renderFoundrySmelter(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-orange-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-orange-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="foundry_smelter" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-orange-400">
             <span class="w-2 h-2 rounded-full bg-orange-400 animate-ping"></span>
             <span class="uppercase tracking-wider">🏭 Induksion Eritish Pechi & Metallurgik Shlak #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-orange-500/10 text-orange-300 border border-orange-500/30 text-[9px]">ERITISH & 1500°C</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-orange-500/10 text-orange-300 border-orange-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'foundry_smelter', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'foundry_smelter', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Tilting Crucible Smelter -->
           <path d="M 70 35 L 170 35 L 155 105 L 85 105 Z" fill="#1c1917" stroke="#f97316" stroke-width="2"/>
           <path d="M 80 50 L 160 50 L 150 95 L 90 95 Z" fill="#ea580c" opacity="0.8"/>
@@ -962,24 +1538,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">🔥 Metallurgik holat: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 13. Qayta Tiklanuvchi Energiya (Shamol & Quyosh)
   renderCleanEnergy(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-emerald-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-emerald-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="clean_energy" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-emerald-400">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <span class="uppercase tracking-wider">💨 Shamol & Quyosh Elektr Stansiyasi Ornitologik Monitoring #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[9px]">YASHIL ENERGIYA</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border-emerald-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'clean_energy', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'clean_energy', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Wind Turbine Tower -->
           <line x1="120" y1="40" x2="120" y2="120" stroke="#e2e8f0" stroke-width="4"/>
           <!-- Rotating Turbine Blades -->
@@ -1010,24 +1637,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">⚡ Qayta tiklanuvchi: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 14. Kompostlash va Bioko'mir (Biochar)
   renderCompostBiochar(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-lime-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-lime-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="compost_biochar" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-lime-400">
             <span class="w-2 h-2 rounded-full bg-lime-400 animate-ping"></span>
             <span class="uppercase tracking-wider">🌱 Organik Kompost Maydoni & Piroliz Biochar #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-lime-500/10 text-lime-300 border border-lime-500/30 text-[9px]">GUMUS & UGLEROD</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-lime-500/10 text-lime-300 border-lime-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'compost_biochar', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'compost_biochar', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Compost Windrow Mound -->
           <path d="M 40 115 Q 110 40 180 115 Z" fill="#3f2e18" stroke="#84cc16" stroke-width="2"/>
           <text x="110" y="90" font-size="8.5" fill="#bef264" font-weight="bold" text-anchor="middle">AEROB BURT</text>
@@ -1058,24 +1736,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">🌱 Kompost ko'rsatkichi: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 15. Radiatsion Skaner va Metallolom Dozimetri
   renderRadiationScanner(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-yellow-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-yellow-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="radiation_scanner" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-yellow-400">
             <span class="w-2 h-2 rounded-full bg-yellow-400 animate-ping"></span>
             <span class="uppercase tracking-wider">☢️ Portal Dozimetr & Metallolom Radiatsiya Skaneri #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-300 border border-yellow-500/30 text-[9px]">GEYGER MKR/SOAT</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-300 border-yellow-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'radiation_scanner', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'radiation_scanner', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Portal Dosimeter Gate Arch -->
           <path d="M 60 120 L 60 25 L 200 25 L 200 120" stroke="#facc15" stroke-width="6" fill="none"/>
           <line x1="60" y1="25" x2="200" y2="25" stroke="#000000" stroke-width="2" stroke-dasharray="8,6"/>
@@ -1105,24 +1834,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">☢️ Radiatsion holat: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 16. Magistral Quvur va Avariyaviy Zulfin (Klapan)
   renderPipelineValve(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-amber-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-amber-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="pipeline_valve" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-amber-400">
             <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
             <span class="uppercase tracking-wider">🛢️ Magistral Neft/Gaz Quvuri & Avtomatik Zulfin #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[9px]">BOSIM 64 ATM</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border-amber-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'pipeline_valve', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'pipeline_valve', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Heavy Steel Pipeline -->
           <rect x="30" y="65" width="300" height="30" rx="4" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
           <line x1="30" y1="80" x2="330" y2="80" stroke="#f59e0b" stroke-width="2" class="eco-pipe-dash"/>
@@ -1149,24 +1929,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">🛢️ Quvur holati: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 17. To'qimachilik Oqovalarini Ozon bilan Rangsizlantirish
   renderTextileOzone(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-indigo-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-indigo-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="textile_ozone" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-indigo-400">
             <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
             <span class="uppercase tracking-wider">🎨 To'qimachilik Oqovasi & Ozon bilan Rangsizlantirish #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 text-[9px]">O3 DEKOLORIZATSIYA</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border-indigo-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'textile_ozone', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'textile_ozone', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Dark Colored Effluent Tank -->
           <rect x="40" y="35" width="110" height="85" rx="8" fill="#311042" stroke="#818cf8" stroke-width="2"/>
           <text x="95" y="52" font-size="8" fill="#e0e7ff" font-weight="bold" text-anchor="middle">BO'YOQLI SUV</text>
@@ -1193,24 +2024,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">🎨 Oqava tahlili: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 18. Siklon va Yengli Chang Tutqich
   renderDustCyclone(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-slate-600/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-slate-600/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="dust_cyclone" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-slate-300">
             <span class="w-2 h-2 rounded-full bg-slate-300 animate-ping"></span>
             <span class="uppercase tracking-wider">🌪️ Siklon Separator & Yengli Chang Tutqich #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-slate-500/10 text-slate-300 border border-slate-500/30 text-[9px]">CHANG PDK: 20 mg/m³</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-slate-500/10 text-slate-300 border-slate-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'dust_cyclone', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'dust_cyclone', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Inflow duct -->
           <rect x="30" y="45" width="60" height="24" fill="#334155" stroke="#94a3b8"/>
           
@@ -1241,24 +2123,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">🌪️ Chang tahlili: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 19. Shlam Saqlagich va Tog'-Kon Dambasi
   renderTailingsDam(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-stone-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-stone-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="tailings_dam" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-stone-300">
             <span class="w-2 h-2 rounded-full bg-stone-300 animate-ping"></span>
             <span class="uppercase tracking-wider">⛰️ Shlam Saqlagich Dambasi & Pyezometrik Barqarorlik #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-stone-500/10 text-stone-300 border border-stone-500/30 text-[9px]">TOG'-KON DOK-QARI</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-stone-500/10 text-stone-300 border-stone-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'tailings_dam', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'tailings_dam', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Engineered Rockfill Embankment -->
           <polygon points="50,115 150,45 220,45 290,115" fill="#44403c" stroke="#78716c" stroke-width="2"/>
           <text x="185" y="65" font-size="8.5" fill="#e7e5e4" font-weight="bold" text-anchor="middle">DAMBA TO'G'ONI</text>
@@ -1283,24 +2216,75 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">⛰️ Damba holati: ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
 
   // 20. Shahar Yashil Belbog'i va Shamol Atirguli (Roza Vetrov)
   renderGreenBelt(id, title, info, gameId) {
+    const isAudit = gameId === 2;
+    const badge = isAudit ? "SANOAT AUDITI" : "ZVOS EKSPERTIZASI";
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-teal-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-teal-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 shadow-2xl p-2.5 select-none mb-3" data-scene-type="green_belt" data-id="${id}">
         <style>${this.getCommonStyles()}</style>
+
+        <!-- Top Header with 2D / 3D Mode Switcher -->
         <div class="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-teal-400">
             <span class="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
             <span class="uppercase tracking-wider">🌳 Yashil Belbog' & Shamol Atirguli (Roza Vetrov) #${id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-teal-500/10 text-teal-300 border border-teal-500/30 text-[9px]">SHAHAR EKOLOGIYASI</span>
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded bg-teal-500/10 text-teal-300 border-teal-500/30 text-[9px] font-bold">${badge}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'green_belt', ${id})" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-amber-400 hover:text-white hover:bg-slate-800 flex items-center gap-1 cursor-pointer">
+                <span class="animate-pulse">🔄</span> 3D (360°)
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
+        <!-- 2D Canvas Container with Clickable 3D Overlay Badge -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'green_belt', ${id})" title="3D har tomondan ko'rish uchun bosing">
+          <svg viewBox="0 0 600 150" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800/80">
           <!-- Wind Rose Compass on Left -->
           <circle cx="85" cy="70" r="38" fill="#0f172a" stroke="#0d9488" stroke-width="1.5"/>
           <path d="M 85 35 L 85 105 M 50 70 L 120 70" stroke="#14b8a6" stroke-width="1"/>
@@ -1329,6 +2313,40 @@ const Eco2DAnimator = {
           <rect x="15" y="125" width="570" height="20" rx="6" fill="#090d16" stroke="#1e293b"/>
           <text x="25" y="139" font-size="9.5" fill="#e2e8f0" font-weight="semibold">🌳 Yashil belbog': ${this.cleanText(info, 75)}</text>
         </svg>
+          <!-- Floating 3D Callout Hint -->
+          <div class="absolute bottom-6 right-4 sm:right-6 px-2.5 py-1 rounded-xl bg-slate-900/95 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/50 text-amber-300 text-[9.5px] font-black flex items-center gap-1.5 shadow-xl transition-all pointer-events-none group-hover:scale-105">
+            <span class="text-xs">🔄</span> 3D Har tomondan ko'rish (360°)
+          </div>
+        </div>
+
+        <!-- 3D Canvas Container (Hidden by default, shown when 3D is active) -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
@@ -1367,7 +2385,110 @@ const Eco2DAnimator = {
 
   getSortingConveyorHtml(wasteItem) {
     return this.renderSortingConveyor(wasteItem);
-  }
+  },
+
+  // --- INTERAKTIV 3D REJIMGA O'TISH & BOSHQARUV USULLARI ---
+  switchTo3D(triggerEl, sceneType, id) {
+    if (!triggerEl) return;
+    const card = triggerEl.closest('.eco-anim-card');
+    if (!card) return;
+
+    const sType = sceneType || card.getAttribute('data-scene-type') || 'pyrolysis_reactor';
+    const sId = id || card.getAttribute('data-id') || 1;
+
+    const box2D = card.querySelector('.eco-scene-2d-box');
+    const box3D = card.querySelector('.eco-scene-3d-box');
+    const btn2D = card.querySelector('.eco-btn-2d');
+    const btn3D = card.querySelector('.eco-btn-3d');
+    const mountEl = card.querySelector('.eco-3d-mount');
+
+    if (box2D) box2D.classList.add('hidden');
+    if (box3D) box3D.classList.remove('hidden');
+
+    if (btn2D) {
+      btn2D.classList.remove('active', 'bg-emerald-500', 'text-slate-950');
+      btn2D.classList.add('text-slate-400', 'hover:bg-slate-800');
+    }
+    if (btn3D) {
+      btn3D.classList.add('active', 'bg-amber-500', 'text-slate-950');
+      btn3D.classList.remove('text-amber-400');
+    }
+
+    // Mount 3D Three.js Scene
+    if (window.Eco3DVisualizer && mountEl) {
+      window.Eco3DVisualizer.mount(mountEl, sType, { id: sId });
+    }
+  },
+
+  switchTo2D(triggerEl) {
+    if (!triggerEl) return;
+    const card = triggerEl.closest('.eco-anim-card');
+    if (!card) return;
+
+    const box2D = card.querySelector('.eco-scene-2d-box');
+    const box3D = card.querySelector('.eco-scene-3d-box');
+    const btn2D = card.querySelector('.eco-btn-2d');
+    const btn3D = card.querySelector('.eco-btn-3d');
+    const mountEl = card.querySelector('.eco-3d-mount');
+
+    if (box3D) box3D.classList.add('hidden');
+    if (box2D) box2D.classList.remove('hidden');
+
+    if (btn3D) {
+      btn3D.classList.remove('active', 'bg-amber-500', 'text-slate-950');
+      btn3D.classList.add('text-amber-400');
+    }
+    if (btn2D) {
+      btn2D.classList.add('active', 'bg-emerald-500', 'text-slate-950');
+      btn2D.classList.remove('text-slate-400');
+    }
+
+    if (window.Eco3DVisualizer && mountEl) {
+      window.Eco3DVisualizer.unmount(mountEl);
+    }
+  },
+
+  toggle3DRotate(btnEl) {
+    if (!btnEl) return;
+    const card = btnEl.closest('.eco-anim-card');
+    if (!card) return;
+    const mountEl = card.querySelector('.eco-3d-mount');
+    if (!mountEl || !window.Eco3DVisualizer) return;
+    const inst = window.Eco3DVisualizer.activeInstances.get(mountEl);
+    if (inst && inst.controls) {
+      inst.controls.autoRotate = !inst.controls.autoRotate;
+      btnEl.textContent = inst.controls.autoRotate ? "🔄 Avto: Yoqiq" : "⏸️ Avto: To'xtagan";
+      btnEl.classList.toggle('text-amber-300', inst.controls.autoRotate);
+      btnEl.classList.toggle('text-slate-400', !inst.controls.autoRotate);
+    }
+  },
+
+  zoom3D(btnEl, delta) {
+    if (!btnEl) return;
+    const card = btnEl.closest('.eco-anim-card');
+    if (!card) return;
+    const mountEl = card.querySelector('.eco-3d-mount');
+    if (!mountEl || !window.Eco3DVisualizer) return;
+    const inst = window.Eco3DVisualizer.activeInstances.get(mountEl);
+    if (inst && inst.controls) {
+      inst.controls.targetRadius = Math.max(16, Math.min(85, inst.controls.targetRadius + delta));
+    }
+  },
+
+  reset3D(btnEl) {
+    if (!btnEl) return;
+    const card = btnEl.closest('.eco-anim-card');
+    if (!card) return;
+    const mountEl = card.querySelector('.eco-3d-mount');
+    if (!mountEl || !window.Eco3DVisualizer) return;
+    const inst = window.Eco3DVisualizer.activeInstances.get(mountEl);
+    if (inst && inst.controls) {
+      inst.controls.theta = 0;
+      inst.controls.phi = 0.45;
+      inst.controls.targetRadius = 42;
+      inst.controls.autoRotate = true;
+    }
+  },
 };
 
 window.Eco2DAnimator = Eco2DAnimator;
