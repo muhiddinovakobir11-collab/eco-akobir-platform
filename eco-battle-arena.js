@@ -571,168 +571,166 @@
                 </div>
               </div>
 
-              <!-- 5. Oziq Zanjiri (Trophic Web Arcade) — MUKAMMAL VIZUAL O'YIN KARTASI -->
+              <!-- 5. Neytrallash Reaktori (Industrial Eco-Reactor Thermodynamics) -->
               <div 
-                onclick="EcoBattleArena.setBattleMode('food_chain')" 
-                style="--card-glow: rgba(168, 85, 247, 0.5);"
-                class="tilted-card tilted-card-5 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'food_chain' ? 'border-purple-400 border-b-purple-600 bg-gradient-to-b from-purple-950/70 via-slate-950 to-slate-950 ring-4 ring-purple-500/50 shadow-2xl shadow-purple-500/30' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-purple-500/70 hover:border-b-purple-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
+                onclick="EcoBattleArena.setBattleMode('eco_reactor')" 
+                style="--card-glow: rgba(245, 158, 11, 0.55);"
+                class="tilted-card tilted-card-5 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'eco_reactor' || this.config.battleMode === 'food_chain' ? 'border-amber-400 border-b-amber-600 bg-gradient-to-b from-amber-950/70 via-slate-950 to-slate-950 ring-4 ring-amber-500/50 shadow-2xl shadow-amber-500/30' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-amber-500/70 hover:border-b-amber-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
-                  <!-- Header -->
+                  <!-- Header Badges -->
                   <div class="flex items-center justify-between mb-3">
-                    <span class="kahoot-geo-badge bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                      ★ EKOTIZIM
+                    <span class="kahoot-geo-badge bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-slate-950">
+                      ⚡ KIBER-LAB
                     </span>
-                    <span class="eco-sticker-badge bg-gradient-to-r from-purple-500 to-indigo-400 text-white">
-                      🔗 ZANJIR
+                    <span class="eco-sticker-badge bg-gradient-to-r from-amber-400 to-orange-400 text-slate-950">
+                      ⚗️ REAKTOR
                     </span>
                   </div>
 
-                  <!-- MINI GAME STAGE PREVIEW (Trofik zanjir va tuzoq) -->
-                  <div class="w-full h-28 rounded-xl bg-gradient-to-b from-slate-950 to-purple-950/50 border border-purple-500/50 p-2.5 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
-                    <div class="flex items-center justify-between px-1 text-[9.5px] font-black text-purple-300">
-                      <span class="flex items-center gap-1">🔗 TROFIK ZANJIRNI ULASH (1 ➔ 4)</span>
-                      <span class="text-rose-400 font-extrabold animate-pulse bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/30 text-[8.5px]">⚠️ TUZOQ: PLASTIK!</span>
+                  <!-- MINI GAME STAGE PREVIEW (Reaktor datchiklari & klapanlar) -->
+                  <div class="w-full h-28 rounded-xl bg-gradient-to-b from-slate-950 to-amber-950/50 border border-amber-500/50 p-2.5 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
+                    <div class="flex items-center justify-between px-1 text-[9.5px] font-black text-amber-300">
+                      <span class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                        ⚗️ TERMODINAMIK & TOKSIK BALANS
+                      </span>
+                      <span class="text-rose-400 font-extrabold animate-pulse bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/30 text-[8.5px]">XAVF: 7.8 BAR!</span>
                     </div>
 
-                    <!-- Crystal-Clear Illustrated Trophic Chain -->
-                    <div class="grid grid-cols-4 gap-1.5 items-center my-1 relative">
-                      <!-- Node 1: Quyosh -->
-                      <div class="relative z-10 flex flex-col items-center bg-slate-900/95 border-2 border-amber-400/90 rounded-lg py-1 px-0.5 shadow-md shadow-amber-500/20">
-                        <span class="text-base leading-none">☀️</span>
-                        <span class="text-[8px] font-black text-amber-300 uppercase leading-none mt-1">1. Quyosh</span>
-                        <span class="text-[6.5px] text-slate-400 font-bold leading-none mt-0.5">Energiya</span>
+                    <!-- 3 Live Reactor Gauges Preview -->
+                    <div class="grid grid-cols-3 gap-1.5 my-1">
+                      <div class="bg-slate-900/90 border border-cyan-400/60 rounded-lg p-1 text-center shadow">
+                        <span class="text-[7.5px] font-black text-slate-400 uppercase block leading-none">Harorat T</span>
+                        <span class="text-[11px] font-mono font-black text-cyan-300">580°C</span>
+                        <div class="w-full h-1 bg-slate-800 rounded-full mt-0.5 overflow-hidden">
+                          <div class="h-full bg-cyan-400" style="width: 58%;"></div>
+                        </div>
                       </div>
 
-                      <!-- Node 2: O'simlik -->
-                      <div class="relative z-10 flex flex-col items-center bg-slate-900/95 border-2 border-emerald-400/90 rounded-lg py-1 px-0.5 shadow-md shadow-emerald-500/20">
-                        <span class="text-base leading-none">🌿</span>
-                        <span class="text-[8px] font-black text-emerald-300 uppercase leading-none mt-1">2. Fitomassa</span>
-                        <span class="text-[6.5px] text-slate-400 font-bold leading-none mt-0.5">Produtsent</span>
+                      <div class="bg-slate-900/90 border border-amber-400/60 rounded-lg p-1 text-center shadow">
+                        <span class="text-[7.5px] font-black text-slate-400 uppercase block leading-none">Kislota pH</span>
+                        <span class="text-[11px] font-mono font-black text-amber-300">7.2 pH</span>
+                        <div class="w-full h-1 bg-slate-800 rounded-full mt-0.5 overflow-hidden">
+                          <div class="h-full bg-amber-400" style="width: 52%;"></div>
+                        </div>
                       </div>
 
-                      <!-- Node 3: O'txo'r -->
-                      <div class="relative z-10 flex flex-col items-center bg-slate-900/95 border-2 border-cyan-400/90 rounded-lg py-1 px-0.5 shadow-md shadow-cyan-500/20">
-                        <span class="text-base leading-none">🦗</span>
-                        <span class="text-[8px] font-black text-cyan-300 uppercase leading-none mt-1">3. Hasharot</span>
-                        <span class="text-[6.5px] text-slate-400 font-bold leading-none mt-0.5">O'txo'r</span>
-                      </div>
-
-                      <!-- Node 4: Yirtqich -->
-                      <div class="relative z-10 flex flex-col items-center bg-slate-900/95 border-2 border-pink-400/90 rounded-lg py-1 px-0.5 shadow-md shadow-pink-500/20">
-                        <span class="text-base leading-none">🦅</span>
-                        <span class="text-[8px] font-black text-pink-300 uppercase leading-none mt-1">4. Burgut</span>
-                        <span class="text-[6.5px] text-slate-400 font-bold leading-none mt-0.5">Yirtqich</span>
+                      <div class="bg-slate-900/90 border border-rose-400/60 rounded-lg p-1 text-center shadow">
+                        <span class="text-[7.5px] font-black text-slate-400 uppercase block leading-none">Bosim P</span>
+                        <span class="text-[11px] font-mono font-black text-rose-300">2.8 Bar</span>
+                        <div class="w-full h-1 bg-slate-800 rounded-full mt-0.5 overflow-hidden">
+                          <div class="h-full bg-rose-400" style="width: 48%;"></div>
+                        </div>
                       </div>
                     </div>
 
-                    <!-- Trap Warning Badge -->
-                    <div class="flex items-center justify-between text-[8px] font-black px-2 py-0.5 bg-rose-950/70 rounded border border-rose-500/40 text-rose-300">
-                      <span class="flex items-center gap-1">🚫 Qopqon: Polietilen Xalta & Toksin</span>
-                      <span class="text-amber-300 font-mono">⚡ 1.5s Stun</span>
+                    <!-- Reactor Action Bar -->
+                    <div class="flex items-center justify-between text-[8px] font-black px-2 py-0.5 bg-amber-950/70 rounded border border-amber-500/40 text-amber-300">
+                      <span>🧪 Reagentlar: Ca(OH)₂ • Suyuq N₂ • Ugol</span>
+                      <span class="text-rose-400">⚡ Hujum Klapani</span>
                     </div>
                   </div>
 
-                  <h4 class="text-base font-black text-white group-hover:text-purple-300 transition-colors flex items-center gap-2">
-                    <span>5. Oziq Zanjiri (Food Chain)</span>
+                  <h4 class="text-base font-black text-white group-hover:text-amber-300 transition-colors flex items-center gap-2">
+                    <span>5. Neytrallash Reaktori</span>
                   </h4>
                   <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
-                    Trofik pog'onalarni ulab zanjir hosil qiling. Qopqon plastik va zaharli kartalardan ehtiyot bo'ling!
+                    Kritik sanoat avariyasini bartaraf eting. Reagentlar dozalab, harorat, pH va bosimni muvozanatda ushlang!
                   </p>
                 </div>
 
                 <div class="mt-4 pt-3 border-t border-slate-800/90">
-                  <div class="flex items-center justify-between text-[10px] font-bold text-purple-400/90 mb-2">
-                    <span>🔗 Rishta Chiziqlari</span>
-                    <span class="text-slate-400">🧬 30 Ekotizim</span>
+                  <div class="flex items-center justify-between text-[10px] font-bold text-amber-400/90 mb-2">
+                    <span>🌡️ 3 ta Jonli Datchik</span>
+                    <span class="text-slate-400">⚗️ Kimyoviy Dozalash</span>
                   </div>
-                  <div class="w-full py-2.5 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'food_chain' ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-1.5 animate-pulse' : 'bg-slate-900 group-hover:bg-purple-500/20 text-slate-300 group-hover:text-purple-300 border border-slate-800 flex items-center justify-center gap-1.5'}">
-                    ${this.config.battleMode === 'food_chain' ? '<span>⚡ HOZIR BOSHLASH</span> <i class="fa-solid fa-arrow-right"></i>' : "<span>🕹️ O'YINNI TANLASH</span>"}
+                  <div class="w-full py-2.5 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'eco_reactor' || this.config.battleMode === 'food_chain' ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-1.5 animate-pulse' : 'bg-slate-900 group-hover:bg-amber-500/20 text-slate-300 group-hover:text-amber-300 border border-slate-800 flex items-center justify-center gap-1.5'}">
+                    ${this.config.battleMode === 'eco_reactor' || this.config.battleMode === 'food_chain' ? '<span>⚡ HOZIR BOSHLASH</span> <i class="fa-solid fa-arrow-right"></i>' : "<span>🕹️ O'YINNI TANLASH</span>"}
                   </div>
                 </div>
               </div>
 
-              <!-- 6. Ifloslantiruvchini Top (Spot Polluter) — MUKAMMAL VIZUAL O'YIN KARTASI -->
+              <!-- 6. Sud-Ekologik Tergovi (Eco-Forensics Crime Pinboard) -->
               <div 
-                onclick="EcoBattleArena.setBattleMode('spot_polluter')" 
-                style="--card-glow: rgba(234, 179, 8, 0.5);"
-                class="tilted-card tilted-card-6 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'spot_polluter' ? 'border-yellow-400 border-b-yellow-600 bg-gradient-to-b from-yellow-950/70 via-slate-950 to-slate-950 ring-4 ring-yellow-500/50 shadow-2xl shadow-yellow-500/30' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-yellow-500/70 hover:border-b-yellow-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
+                onclick="EcoBattleArena.setBattleMode('eco_forensics')" 
+                style="--card-glow: rgba(234, 179, 8, 0.55);"
+                class="tilted-card tilted-card-6 kahoot-card-3d border-2 border-b-[6px] ${this.config.battleMode === 'eco_forensics' || this.config.battleMode === 'spot_polluter' ? 'border-yellow-400 border-b-yellow-600 bg-gradient-to-b from-yellow-950/70 via-slate-950 to-slate-950 ring-4 ring-yellow-500/50 shadow-2xl shadow-yellow-500/30' : 'border-slate-800 border-b-slate-900 bg-slate-950/80 hover:border-yellow-500/70 hover:border-b-yellow-600'} rounded-2xl p-4 cursor-pointer flex flex-col justify-between group shadow-xl relative overflow-hidden"
               >
                 <div>
-                  <!-- Header -->
+                  <!-- Header Badges -->
                   <div class="flex items-center justify-between mb-3">
                     <span class="kahoot-geo-badge bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-950">
-                      ✚ DETEKTIV
+                      🔍 SUD EKSPERTIZASI
                     </span>
                     <span class="eco-sticker-badge bg-gradient-to-r from-yellow-400 to-amber-400 text-slate-950">
-                      🔦 RADAR
+                      📂 QORA QUTI
                     </span>
                   </div>
 
-                  <!-- MINI GAME STAGE PREVIEW (Qorong'i fonar nuri va radar) -->
+                  <!-- MINI GAME STAGE PREVIEW (Forensic Pinboard doskasi & Qizil iplar) -->
                   <div class="w-full h-28 rounded-xl bg-gradient-to-b from-slate-950 to-yellow-950/50 border border-yellow-500/50 p-2.5 relative overflow-hidden mb-3 flex flex-col justify-between shadow-inner">
-                    <div class="flex items-center justify-between px-1 text-[9.5px] font-black text-yellow-300 z-10">
-                      <span class="flex items-center gap-1">📡 RADAR VA FONAR DETEKTIVI</span>
-                      <span class="text-rose-400 font-extrabold animate-pulse bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/30 text-[8.5px]">🚨 3s FREEZE</span>
+                    <div class="flex items-center justify-between px-1 text-[9.5px] font-black text-yellow-300">
+                      <span class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-thumbtack text-rose-400"></i>
+                        📌 JINOYATNI FOSH QILISH PINBOARDI
+                      </span>
+                      <span class="text-rose-400 font-extrabold bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/30 text-[8.5px]">4 DALIL TUGUNI</span>
                     </div>
 
-                    <!-- High-Tech Radar HUD Preview -->
-                    <div class="relative w-full h-12 rounded-lg bg-slate-950 border border-yellow-500/30 overflow-hidden flex items-center justify-between px-2.5 my-1">
-                      <!-- Grid Radar Rings (SVG Background) -->
-                      <svg class="absolute inset-0 w-full h-full opacity-35 pointer-events-none" viewBox="0 0 300 50">
-                        <circle cx="150" cy="25" r="16" fill="none" stroke="#eab308" stroke-width="1" stroke-dasharray="3,3"/>
-                        <circle cx="150" cy="25" r="30" fill="none" stroke="#eab308" stroke-width="1" stroke-dasharray="4,4"/>
-                        <line x1="0" y1="25" x2="300" y2="25" stroke="#eab308" stroke-width="0.8"/>
-                        <line x1="150" y1="0" x2="150" y2="50" stroke="#eab308" stroke-width="0.8"/>
-                      </svg>
-
-                      <!-- Target 1: Quvur Sizishi -->
-                      <div class="relative z-10 flex items-center gap-1 bg-slate-900/90 border border-emerald-500/60 px-1.5 py-0.5 rounded shadow">
+                    <!-- 4 Forensic Nodes with Red Thread Link -->
+                    <div class="grid grid-cols-4 gap-1.5 items-center my-1 relative">
+                      <div class="bg-slate-900/90 border border-yellow-500/70 rounded-lg p-1 text-center shadow">
                         <span class="text-xs">🧪</span>
-                        <span class="text-[7.5px] font-bold text-emerald-300">Oqova</span>
+                        <span class="block text-[7px] font-black text-yellow-300 leading-none mt-0.5">1. Toksik Lab</span>
                       </div>
 
-                      <!-- Center: Flashlight Beam on Toxic Barrels -->
-                      <div class="relative z-10 flex items-center gap-1.5 bg-yellow-500/25 border-2 border-yellow-400 px-2 py-0.5 rounded-xl shadow-[0_0_15px_rgba(234,179,8,0.7)] animate-pulse">
-                        <span class="text-sm">🛢️</span>
-                        <div class="flex flex-col text-left">
-                          <span class="text-[8px] font-black text-yellow-300 leading-none">ZAHARLI BOCHKA</span>
-                          <span class="text-[6.5px] font-bold text-rose-400 leading-none mt-0.5">🎯 TOPILDI +150XP</span>
-                        </div>
+                      <div class="bg-slate-900/90 border border-yellow-500/70 rounded-lg p-1 text-center shadow">
+                        <span class="text-xs">⚖️</span>
+                        <span class="block text-[7px] font-black text-yellow-300 leading-none mt-0.5">2. Qonun Modda</span>
                       </div>
 
-                      <!-- Target 3: Qora Tutun -->
-                      <div class="relative z-10 flex items-center gap-1 bg-slate-900/90 border border-rose-500/60 px-1.5 py-0.5 rounded shadow">
-                        <span class="text-xs">🏭</span>
-                        <span class="text-[7.5px] font-bold text-rose-300">Tutun</span>
+                      <div class="bg-slate-900/90 border border-yellow-500/70 rounded-lg p-1 text-center shadow">
+                        <span class="text-xs">🕵️</span>
+                        <span class="block text-[7px] font-black text-yellow-300 leading-none mt-0.5">3. Aybdor Shaxs</span>
+                      </div>
+
+                      <div class="bg-slate-900/90 border border-yellow-500/70 rounded-lg p-1 text-center shadow">
+                        <span class="text-xs">🔨</span>
+                        <span class="block text-[7px] font-black text-yellow-300 leading-none mt-0.5">4. Sud Jarimasi</span>
                       </div>
                     </div>
 
-                    <!-- Bottom Detective Rules -->
+                    <!-- Danger warning note -->
                     <div class="flex items-center justify-between text-[8px] font-black px-2 py-0.5 bg-yellow-950/70 rounded border border-yellow-500/40 text-yellow-300">
-                      <span class="flex items-center gap-1">🔦 Fonar bilan 5 ta buzilishni toping</span>
-                      <span class="text-rose-400 font-mono">⚠️ Xato = 3s Qotish</span>
+                      <span class="text-rose-300">⚠️ Pora va soxta aktlar bor!</span>
+                      <span class="text-amber-400 font-mono">Xato = 2s Advokat Protesti</span>
                     </div>
                   </div>
 
                   <h4 class="text-base font-black text-white group-hover:text-yellow-300 transition-colors flex items-center gap-2">
-                    <span>6. Ifloslantiruvchini Top</span>
+                    <span>6. Sud-Ekologik Tergovi</span>
                   </h4>
                   <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">
-                    Qorong'i xaritada fonar nuri bilan 5 ta yashirin buzilishni toping. Adashish 3 soniya qotiradi!
+                    Yirik ekologik jinoyatlarni fosh qiling. Lab spektroskopiyasi, qonun moddasi va aybdorni doskaga bog'lab sudga bering!
                   </p>
                 </div>
 
                 <div class="mt-4 pt-3 border-t border-slate-800/90">
                   <div class="flex items-center justify-between text-[10px] font-bold text-yellow-400/90 mb-2">
-                    <span>🔦 Fonar Nuri & Radar</span>
-                    <span class="text-slate-400">🚨 3s Freeze Jazo</span>
+                    <span>📌 Tergov Pinboard</span>
+                    <span class="text-slate-400">⚖️ 4 Dalil Zanjiri</span>
                   </div>
-                  <div class="w-full py-2.5 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'spot_polluter' ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-1.5 animate-pulse' : 'bg-slate-900 group-hover:bg-yellow-500/20 text-slate-300 group-hover:text-yellow-300 border border-slate-800 flex items-center justify-center gap-1.5'}">
-                    ${this.config.battleMode === 'spot_polluter' ? '<span>⚡ HOZIR BOSHLASH</span> <i class="fa-solid fa-arrow-right"></i>' : "<span>🕹️ O'YINNI TANLASH</span>"}
+                  <div class="w-full py-2.5 rounded-xl text-center text-xs font-black transition-all ${this.config.battleMode === 'eco_forensics' || this.config.battleMode === 'spot_polluter' ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-1.5 animate-pulse' : 'bg-slate-900 group-hover:bg-yellow-500/20 text-slate-300 group-hover:text-yellow-300 border border-slate-800 flex items-center justify-center gap-1.5'}">
+                    ${this.config.battleMode === 'eco_forensics' || this.config.battleMode === 'spot_polluter' ? '<span>⚡ HOZIR BOSHLASH</span> <i class="fa-solid fa-arrow-right"></i>' : "<span>🕹️ O'YINNI TANLASH</span>"}
                   </div>
                 </div>
-              </div><!-- Jamoalar Sozlamalari (Split Card) -->
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Jamoalar Sozlamalari (Split Card) -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto mb-7">
             
             <!-- 1-Jamoa (Chap / Zumrad) -->
@@ -1101,22 +1099,21 @@
         return;
       }
 
-      // 5. Oziq Zanjiri (Food Chain) maxsus moduli
-      if (this.config.battleMode === 'food_chain' && window.EcoBattleFoodChainMode) {
-        window.EcoBattleFoodChainMode.start({
+      // 5. Neytrallash Reaktori (Eco-Reactor)
+      if ((this.config.battleMode === 'eco_reactor' || this.config.battleMode === 'food_chain') && window.EcoBattleReactorMode) {
+        window.EcoBattleReactorMode.start({
           t1Name: this.config.t1Name,
           t2Name: this.config.t2Name,
           t1Avatar: this.config.t1Avatar,
           t2Avatar: this.config.t2Avatar,
-          matchTime: 90,
-          totalRounds: 5
+          matchTime: 90
         });
         return;
       }
 
-      // 6. Ifloslantiruvchini Top (Spot Polluter) maxsus moduli
-      if (this.config.battleMode === 'spot_polluter' && window.EcoBattleSpotPolluterMode) {
-        window.EcoBattleSpotPolluterMode.start({
+      // 6. Sud-Ekologik Tergovi (Eco-Forensics)
+      if ((this.config.battleMode === 'eco_forensics' || this.config.battleMode === 'spot_polluter') && window.EcoBattleForensicsMode) {
+        window.EcoBattleForensicsMode.start({
           t1Name: this.config.t1Name,
           t2Name: this.config.t2Name,
           t1Avatar: this.config.t1Avatar,
