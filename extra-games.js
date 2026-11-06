@@ -348,7 +348,7 @@ function renderActiveGame(gameId, container) {
 // =======================================================================
 
 let extraGameTimerInterval = null;
-const EXTRA_GAME_SECONDS = 10;
+const EXTRA_GAME_SECONDS = 45;
 
 let extendedGameSession = {
   gameId: null,
@@ -804,8 +804,8 @@ function handleExtendedTimeout() {
 
   const fbBox = document.getElementById('ext-feedback-box');
   if (fbBox) {
-    fbBox.className = "p-3.5 rounded-xl mt-4 text-xs font-bold text-rose-400 bg-rose-500/10 border border-rose-500/30 text-center flex items-center justify-center gap-2 animate-pulse";
-    fbBox.innerHTML = `<i class="fa-solid fa-clock text-base"></i> <span>Vaqt tugadi (10s)! ${item.hint}</span>`;
+    fbBox.className = "p-3.5 rounded-xl mt-4 text-xs font-bold text-slate-300 bg-slate-800/90 border border-slate-700 text-center flex items-center justify-center gap-2";
+    fbBox.innerHTML = `<i class="fa-solid fa-clock text-amber-400 text-base"></i> <span>Vaqt tugadi. ${item.hint}</span>`;
   }
 
   extendedGameSession.results.push({

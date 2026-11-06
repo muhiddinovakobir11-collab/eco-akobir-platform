@@ -3,7 +3,7 @@
 
 let currentAuditContainer = null;
 let auditTimerInterval = null;
-const AUDIT_QUESTION_SECONDS = 10;
+const AUDIT_QUESTION_SECONDS = 60;
 
 let auditSession = {
   activeBatch: [],
@@ -90,7 +90,7 @@ function renderAuditSimulatorUI(container) {
           <h4 class="text-2xl font-black text-white mb-2">${(window.ECO_CONFIG && window.ECO_CONFIG.auditBatchSize) || 25} ta Tasodifiy Sanoat Auditi Raundi</h4>
           <p class="text-xs text-slate-300 leading-relaxed mb-6">
             100 ta professional, o'ta murakkab va chuqur tafakkurli sanoat ekologik auditi keyslari (ISO 14001, O'zR Ekologiya qonunchiligi, PDK, emissiya va oqavalar) ichidan <strong>25 tasi random</strong> tarzda beriladi.<br/>
-            Har bir savolga <strong>${(window.ECO_CONFIG && window.ECO_CONFIG.auditTimer) || 10} soniya vaqt</strong> ajratiladi. Javob tanlashingiz bilan to'g'ri/xato ekanligi ko'rsatilib, avtomatik keyingi savolga o'tiladi!
+            Har bir savolga <strong>${(window.ECO_CONFIG && window.ECO_CONFIG.auditTimer) || 60} soniya vaqt</strong> ajratiladi. Javob tanlashingiz bilan to'g'ri/xato ekanligi ko'rsatilib, avtomatik keyingi savolga o'tiladi!
           </p>
 
           <button onclick="startNew25AuditSession()" class="px-8 py-3.5 bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black rounded-2xl shadow-xl shadow-amber-500/20 text-sm transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2.5 mx-auto cursor-pointer">
@@ -317,20 +317,15 @@ function updateAuditTimerUI(seconds, percent) {
   if (timerSec) timerSec.textContent = seconds;
   if (timerBar) {
     timerBar.style.width = `${percent}%`;
-    if (seconds <= 3) {
-      timerBar.className = "h-full bg-rose-500 transition-all duration-100 ease-linear rounded-full";
-      if (timerBadge) {
-        timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-400 border border-rose-500/40 animate-pulse";
-      }
-    } else if (seconds <= 6) {
+    if (seconds <= 5) {
       timerBar.className = "h-full bg-amber-500 transition-all duration-100 ease-linear rounded-full";
       if (timerBadge) {
         timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-400 border border-amber-500/40";
       }
     } else {
-      timerBar.className = "h-full bg-gradient-to-r from-amber-500 to-yellow-400 transition-all duration-100 ease-linear rounded-full";
+      timerBar.className = "h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-100 ease-linear rounded-full";
       if (timerBadge) {
-        timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-400 border border-amber-500/40";
+        timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-slate-800 text-slate-300 border border-slate-700";
       }
     }
   }
@@ -455,8 +450,8 @@ function handleAuditTimeout() {
   const feedbackBox = getAuditScopeEl('audit-feedback-box');
   if (feedbackBox) {
     feedbackBox.classList.remove('hidden');
-    feedbackBox.className = "p-3.5 rounded-xl mt-4 text-xs font-bold text-center bg-rose-500/20 border border-rose-500 text-rose-300 animate-pulse";
-    feedbackBox.innerHTML = `<i class="fa-solid fa-clock mr-1.5"></i> Vaqt tugadi (10s)! Auditor o'z vaqtida qaror qabul qilishi lozim.`;
+    feedbackBox.className = "p-3.5 rounded-xl mt-4 text-xs font-bold text-center bg-slate-800/90 border border-slate-700 text-slate-300";
+    feedbackBox.innerHTML = `<i class="fa-solid fa-clock mr-1.5 text-amber-400"></i> Savol tahlil vaqti yakunlandi. Keyingi bosqichga o'tilmoqda...`;
   }
 
   auditSession.results.push({

@@ -119,15 +119,15 @@
         const now = this.audioCtx.currentTime;
         const osc = this.audioCtx.createOscillator();
         const gain = this.audioCtx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(140, now);
-        osc.frequency.linearRampToValueAtTime(70, now + 0.28);
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(311.13, now);
+        osc.frequency.linearRampToValueAtTime(220, now + 0.22);
+        gain.gain.setValueAtTime(0.04, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
         osc.connect(gain);
         gain.connect(this.audioCtx.destination);
         osc.start(now);
-        osc.stop(now + 0.28);
+        osc.stop(now + 0.22);
       } catch (e) {}
     },
 

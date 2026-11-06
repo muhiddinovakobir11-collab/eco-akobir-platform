@@ -15,10 +15,10 @@ const DEFAULT_ECO_CONFIG = {
   platformSlogan: "Chiqindilarni tafakkur qilib boshqarish",
   
   // O'yin taymerlari (soniyalarda)
-  sortingTimer: 10,       // 1-Saralash o'yini
-  auditTimer: 10,         // 2-Audit Simulyatori
-  expertiseTimer: 10,     // 3-Ekspertiza Kvesti
-  extraGameTimer: 10,     // 4-13 Mini o'yinlar
+  sortingTimer: 30,       // 1-Saralash o'yini (30s)
+  auditTimer: 60,         // 2-Audit Simulyatori (60s)
+  expertiseTimer: 60,     // 3-Ekspertiza Kvesti (60s)
+  extraGameTimer: 45,     // 4-13 Mini o'yinlar (45s)     // 4-13 Mini o'yinlar
   
   // Har bir raunddagi tasodifiy savollar soni
   sortingBatchSize: 25,
@@ -37,10 +37,16 @@ const DEFAULT_ECO_CONFIG = {
 
 // Global config obyektini yuklash
 function loadEcoConfig() {
-  try {
+    try {
     const saved = localStorage.getItem('ECO_ADMIN_CONFIG');
     if (saved) {
       window.ECO_CONFIG = Object.assign({}, DEFAULT_ECO_CONFIG, JSON.parse(saved));
+      // Eski va o'ta qisqa (<=15s) avariya taymerlarini avtomatik qulay 60s/45s ga yangilash
+      if (!window.ECO_CONFIG.auditTimer || window.ECO_CONFIG.auditTimer <= 15) window.ECO_CONFIG.auditTimer = 60;
+      if (!window.ECO_CONFIG.expertiseTimer || window.ECO_CONFIG.expertiseTimer <= 15) window.ECO_CONFIG.expertiseTimer = 60;
+      if (!window.ECO_CONFIG.extraGameTimer || window.ECO_CONFIG.extraGameTimer <= 15) window.ECO_CONFIG.extraGameTimer = 45;
+      if (!window.ECO_CONFIG.sortingTimer || window.ECO_CONFIG.sortingTimer <= 15) window.ECO_CONFIG.sortingTimer = 30;
+      localStorage.setItem('ECO_ADMIN_CONFIG', JSON.stringify(window.ECO_CONFIG));
     } else {
       window.ECO_CONFIG = Object.assign({}, DEFAULT_ECO_CONFIG);
     }
@@ -409,7 +415,7 @@ function renderCurrentAdminTab(cfg) {
                 </span>
                 <span id="label-audit-timer" class="text-xs font-black text-white px-2 py-0.5 rounded bg-blue-500/20">${cfg.auditTimer} soniya</span>
               </div>
-              <input type="range" id="input-audit-timer" min="3" max="60" value="${cfg.auditTimer}"
+              <input type="range" id="input-audit-timer" min="10" max="180" step="5" value="${cfg.auditTimer}"
                 oninput="document.getElementById('label-audit-timer').textContent = this.value + ' soniya'"
                 class="w-full accent-blue-500 cursor-pointer">
               <p class="text-[11px] text-slate-400 mt-1.5">Sanoat auditi keysiga xulosa berish vaqti.</p>
@@ -423,7 +429,7 @@ function renderCurrentAdminTab(cfg) {
                 </span>
                 <span id="label-expertise-timer" class="text-xs font-black text-white px-2 py-0.5 rounded bg-purple-500/20">${cfg.expertiseTimer} soniya</span>
               </div>
-              <input type="range" id="input-expertise-timer" min="3" max="60" value="${cfg.expertiseTimer}"
+              <input type="range" id="input-expertise-timer" min="10" max="180" step="5" value="${cfg.expertiseTimer}"
                 oninput="document.getElementById('label-expertise-timer').textContent = this.value + ' soniya'"
                 class="w-full accent-purple-500 cursor-pointer">
               <p class="text-[11px] text-slate-400 mt-1.5">Davlat ekologik ekspertizasi keysi bo'yicha qaror vaqti.</p>

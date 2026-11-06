@@ -200,7 +200,7 @@
     config: {
       battleMode: 'conveyor', // 'conveyor' (4 talik Konveyer) yoki 'quiz' (Akademik Test)
       questionCount: 15, // 10, 15, 20, 25
-      timePerQuestion: 12, // soniya (0 = cheksiz)
+      timePerQuestion: 30, // soniya (0 = cheksiz)
       t1Name: "1-Jamoa (Zumrad)",
       t2Name: "2-Jamoa (Yoqut)",
       t1Avatar: "🛡️",

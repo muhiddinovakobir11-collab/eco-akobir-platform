@@ -50,8 +50,9 @@ class EcoSoundEngine {
   }
 
   playError() {
-    this.playTone(220, 'sawtooth', 0.15, 0.08);
-    setTimeout(() => this.playTone(180, 'sawtooth', 0.2, 0.08), 120);
+    // Muloyim va tabiiy xato ohangi (Qo'pol elektron arra shovqinisiz)
+    this.playTone(330, 'sine', 0.12, 0.04);
+    setTimeout(() => this.playTone(261.63, 'sine', 0.16, 0.035), 90);
   }
 
   playLevelUp() {
@@ -62,7 +63,7 @@ class EcoSoundEngine {
   }
 
   // Vaqt kamaygan sari tezlashuvchi akustik taymer ovozi (Tension Countdown Sound)
-  playTickTone(freq = 600, gainVal = 0.05, withSub = false) {
+  playTickTone(freq = 520, gainVal = 0.015, withSub = false) {
     try {
       this.init();
       if (!this.ctx) return;
@@ -72,33 +73,18 @@ class EcoSoundEngine {
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
 
-      osc.type = 'triangle';
+      osc.type = 'sine';
       osc.frequency.setValueAtTime(freq, now);
-      osc.frequency.exponentialRampToValueAtTime(Math.max(40, freq * 0.7), now + 0.04);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(40, freq * 0.7), now + 0.03);
 
       gain.gain.setValueAtTime(gainVal, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.03);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
 
       osc.start(now);
-      osc.stop(now + 0.045);
-
-      if (withSub) {
-        const subOsc = this.ctx.createOscillator();
-        const subGain = this.ctx.createGain();
-        subOsc.type = 'sine';
-        subOsc.frequency.setValueAtTime(90, now);
-        subGain.gain.setValueAtTime(gainVal * 0.7, now);
-        subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-
-        subOsc.connect(subGain);
-        subGain.connect(this.ctx.destination);
-
-        subOsc.start(now);
-        subOsc.stop(now + 0.085);
-      }
+      osc.stop(now + 0.035);
     } catch (e) {}
   }
 
@@ -109,36 +95,13 @@ class EcoSoundEngine {
     }
 
     const now = performance.now();
-    let interval = 1000;
-    let freq = 480;
-    let gain = 0.035;
-    let withSub = false;
-
-    // Vaqt kamaygan sari chastota va takrorlanish tezligi oshadi
-    if (remainingTime <= 1.5) {
-      interval = 120; // Favqulodda tez puls (120ms)
-      freq = 980;
-      gain = 0.10;
-      withSub = true;
-    } else if (remainingTime <= 3) {
-      interval = 260; // Qizil xavf hududi (260ms - Vaqt: 3s holati)
-      freq = 780;
-      gain = 0.08;
-      withSub = true;
-    } else if (remainingTime <= 5) {
-      interval = 500; // Ogohlantiruvchi o'rta tezlik (500ms)
-      freq = 620;
-      gain = 0.06;
-      withSub = false;
-    } else {
-      interval = 1000; // Standart har soniyada sokin chertish
-      freq = 480;
-      gain = 0.035;
-      withSub = false;
-    }
+    // Foydalanuvchini chalg'itmaslik uchun sokin 1 soniyalik interval
+    const interval = 1000;
+    const freq = (remainingTime <= 5) ? 580 : 480;
+    const gain = (remainingTime <= 5) ? 0.02 : 0.012;
 
     if (!this.lastTickTime || (now - this.lastTickTime >= interval)) {
-      this.playTickTone(freq, gain, withSub);
+      this.playTickTone(freq, gain, false);
       this.lastTickTime = now;
     }
   }
@@ -158,18 +121,19 @@ class EcoSoundEngine {
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
 
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(220, now);
-      osc.frequency.exponentialRampToValueAtTime(90, now + 0.35);
+      // Sokin, nozik, muloyim va tabiiy sinusoidal ohang
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(329.63, now);
+      osc.frequency.exponentialRampToValueAtTime(220, now + 0.3);
 
-      gain.gain.setValueAtTime(0.12, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+      gain.gain.setValueAtTime(0.03, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
 
       osc.start(now);
-      osc.stop(now + 0.36);
+      osc.stop(now + 0.32);
     } catch (e) {}
   }
 }

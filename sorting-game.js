@@ -1618,13 +1618,13 @@
 
   function startConveyorTimer() {
     stopConveyorQuizTimer();
-    conveyorSession.remainingSeconds = 10;
+    conveyorSession.remainingSeconds = 30;
     const bar = document.getElementById('conveyor-timer-bar');
     const sec = document.getElementById('conveyor-timer-sec');
 
     conveyorSession.timerInterval = setInterval(() => {
       conveyorSession.remainingSeconds -= 0.1;
-      if (bar) bar.style.width = `${Math.max(0, (conveyorSession.remainingSeconds / 10) * 100)}%`;
+      if (bar) bar.style.width = `${Math.max(0, (conveyorSession.remainingSeconds / 30) * 100)}%`;
       if (sec) sec.textContent = Math.max(0, Math.ceil(conveyorSession.remainingSeconds));
 
       if (conveyorSession.remainingSeconds <= 0) {

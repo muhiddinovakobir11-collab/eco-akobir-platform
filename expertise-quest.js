@@ -3,7 +3,7 @@
 
 let currentExpertiseContainer = null;
 let expertiseTimerInterval = null;
-const EXPERTISE_QUESTION_SECONDS = 10;
+const EXPERTISE_QUESTION_SECONDS = 60;
 
 let expertiseSession = {
   activeBatch: [],
@@ -90,7 +90,7 @@ function renderExpertiseQuestUI(container) {
           <h4 class="text-2xl font-black text-white mb-2">${(window.ECO_CONFIG && window.ECO_CONFIG.expertiseBatchSize) || 25} ta Tasodifiy Davlat Ekspertizasi Kvesti</h4>
           <p class="text-xs text-slate-300 leading-relaxed mb-6">
             100 ta davlat ekologik ekspertizasi va ZVOS bo'yicha chuqur tafakkurli qonuniy keyslar (SanQvaM me'yorlari, Espoo konvensiyasi, chiqindilar va ekotizimlar muhofazasi) ichidan <strong>25 tasi random</strong> tarzda beriladi.<br/>
-            Har bir bosqichga <strong>${(window.ECO_CONFIG && window.ECO_CONFIG.expertiseTimer) || 10} soniya vaqt</strong> ajratiladi. Qaror qabul qilishingiz bilan to'g'ri/xato ekanligi ko'rsatilib, avtomatik keyingi bosqichga o'tiladi!
+            Har bir bosqichga <strong>${(window.ECO_CONFIG && window.ECO_CONFIG.expertiseTimer) || 60} soniya vaqt</strong> ajratiladi. Qaror qabul qilishingiz bilan to'g'ri/xato ekanligi ko'rsatilib, avtomatik keyingi bosqichga o'tiladi!
           </p>
 
           <button onclick="startNew25ExpertiseSession()" class="px-8 py-3.5 bg-gradient-to-r from-purple-500 via-fuchsia-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white font-black rounded-2xl shadow-xl shadow-purple-500/20 text-sm transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2.5 mx-auto cursor-pointer">
@@ -324,20 +324,15 @@ function updateExpertiseTimerUI(seconds, percent) {
   if (timerSec) timerSec.textContent = seconds;
   if (timerBar) {
     timerBar.style.width = `${percent}%`;
-    if (seconds <= 3) {
-      timerBar.className = "h-full bg-rose-500 transition-all duration-100 ease-linear rounded-full";
-      if (timerBadge) {
-        timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-400 border border-rose-500/40 animate-pulse";
-      }
-    } else if (seconds <= 6) {
+    if (seconds <= 5) {
       timerBar.className = "h-full bg-amber-500 transition-all duration-100 ease-linear rounded-full";
       if (timerBadge) {
         timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-400 border border-amber-500/40";
       }
     } else {
-      timerBar.className = "h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-100 ease-linear rounded-full";
+      timerBar.className = "h-full bg-gradient-to-r from-purple-500 to-indigo-400 transition-all duration-100 ease-linear rounded-full";
       if (timerBadge) {
-        timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-purple-500/20 text-purple-400 border border-purple-500/40";
+        timerBadge.className = "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-slate-800 text-slate-300 border border-slate-700";
       }
     }
   }
