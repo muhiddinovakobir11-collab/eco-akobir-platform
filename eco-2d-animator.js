@@ -172,6 +172,32 @@ const Eco2DAnimator = {
 
   // Semantik klassifikatsiya: 200 ta keysni 20 ta boy animatsion arxetipga taqsimlash
   detectScene(item, gameId) {
+    if (!item) item = {};
+    const gId = Number(gameId || item.gameId || 0);
+
+    // O'yinlar bo'yicha maxsus arxetiplar
+    if (gId === 1) return 'sorting';
+    if (gId === 4) return 'green_belt';
+    if (gId === 5) return 'nature_reserve';
+    if (gId === 6) return 'sanitary_radar';
+    if (gId === 7) return 'wastewater_basin';
+    if (gId === 8) return 'clean_energy';
+    if (gId === 9) return 'radiation_scanner';
+    if (gId === 10) return 'medical_autoclave';
+    if (gId === 11) return 'pipeline_valve';
+    if (gId === 12) return 'dust_cyclone';
+    if (gId === 13) return 'ewaste_recycler';
+    if (gId === 14) return 'textile_ozone';
+    if (gId === 15) return 'foundry_smelter';
+    if (gId === 16) return 'chemical_electrolysis';
+    if (gId === 17) return 'landfill_membrane';
+    if (gId === 18) return 'gas_scrubber';
+    if (gId === 19) return 'pyrolysis_reactor';
+    if (gId === 20) return 'tailings_dam';
+    if (gId === 21) return 'electrostatic_filter';
+    if (gId === 22) return 'compost_biochar';
+    if (gId === 23) return 'clean_energy';
+
     const text = [
       item.sector || '',
       item.title || '',
@@ -2358,27 +2384,73 @@ const Eco2DAnimator = {
     const itemCat = (wasteItem && wasteItem.cat) || "plastik";
 
     return `
-      <div class="relative w-full rounded-2xl overflow-hidden border border-emerald-500/40 bg-slate-950 shadow-2xl p-2 select-none mb-4">
+      <div class="eco-anim-card relative w-full rounded-2xl overflow-hidden border border-emerald-500/40 bg-slate-950 shadow-2xl p-2 select-none mb-4" data-scene-type="sorting" data-id="1">
         <style>${this.getCommonStyles()}</style>
         <div class="flex items-center justify-between px-2 py-1 mb-1 border-b border-slate-800 text-[10px] font-bold">
           <div class="flex items-center gap-1.5 text-emerald-400">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            <span class="uppercase tracking-wider">Avtomatlashgan Konveyer</span>
+            <span class="uppercase tracking-wider">⚡ Avtomatlashgan Saralash Konveyeri</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[9px]">${itemCat.toUpperCase()}</span>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[9px] font-bold">${itemCat.toUpperCase()}</span>
+            <!-- 2D / 3D Switcher Toggle -->
+            <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-700/80 shadow-inner">
+              <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="eco-btn-2d active px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                2D
+              </button>
+              <button type="button" onclick="Eco2DAnimator.switchTo3D(this, 'sorting', 1)" class="eco-btn-3d px-2.5 py-0.5 rounded-lg text-[9.5px] font-black transition-all text-slate-400 hover:text-emerald-300 cursor-pointer flex items-center gap-1">
+                <span>🧊</span> 3D
+              </button>
+            </div>
+          </div>
         </div>
 
-        <svg viewBox="0 0 600 120" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800">
-          <rect x="20" y="60" width="560" height="24" rx="4" fill="#1e293b" stroke="#334155" stroke-width="2"/>
-          <g class="eco-conveyor-scroll">
-            <line x1="20" y1="72" x2="580" y2="72" stroke="#64748b" stroke-width="3" stroke-dasharray="16,8"/>
-          </g>
-          <g transform="translate(260, 25)" class="eco-float">
-            <rect x="0" y="0" width="80" height="45" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
-            <text x="40" y="28" font-size="20" text-anchor="middle">${itemIcon}</text>
-            <text x="40" y="40" font-size="7.5" fill="#a7f3d0" font-weight="bold" text-anchor="middle">${itemName}</text>
-          </g>
-        </svg>
+        <!-- 2D SVG View -->
+        <div class="eco-scene-2d-box relative w-full cursor-pointer group" onclick="Eco2DAnimator.switchTo3D(this, 'sorting', 1)" title="3D ko'rinishga o'tish uchun bosing">
+          <div class="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/90 border border-emerald-500/40 text-emerald-300 px-2 py-1 rounded-lg text-[9px] font-bold flex items-center gap-1 shadow-lg pointer-events-none">
+            <span>🔍 360° 3D Aylantirish</span>
+          </div>
+          <svg viewBox="0 0 600 120" class="w-full h-auto rounded-xl bg-slate-950 border border-slate-800">
+            <rect x="20" y="60" width="560" height="24" rx="4" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+            <g class="eco-conveyor-scroll">
+              <line x1="20" y1="72" x2="580" y2="72" stroke="#64748b" stroke-width="3" stroke-dasharray="16,8"/>
+            </g>
+            <g transform="translate(260, 25)" class="eco-float">
+              <rect x="0" y="0" width="80" height="45" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+              <text x="40" y="28" font-size="20" text-anchor="middle">${itemIcon}</text>
+              <text x="40" y="40" font-size="7.5" fill="#a7f3d0" font-weight="bold" text-anchor="middle">${itemName}</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- 3D WebGL View -->
+        <div class="eco-scene-3d-box hidden relative w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800/80">
+          <div class="eco-3d-mount w-full h-[180px] sm:h-[220px]"></div>
+          
+          <!-- Top 3D Hint Badge -->
+          <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-[9px] text-slate-300 flex items-center gap-1.5 shadow-md pointer-events-none">
+            <span class="text-amber-400">🖱️</span> Sichqoncha / barmoq bilan 360° aylantiring
+          </div>
+
+          <!-- Bottom 3D Toolbar Controls -->
+          <div class="absolute bottom-2 right-2 flex items-center gap-1.5 bg-slate-900/95 p-1 rounded-xl border border-slate-700/80 shadow-2xl">
+            <button type="button" onclick="Eco2DAnimator.toggle3DRotate(this)" class="eco-btn-autorotate px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[9px] font-bold transition-all flex items-center gap-1 cursor-pointer" title="Avtomatik aylanishni yoqish/o'chirish">
+              🔄 Avto: Yoqiq
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, -8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kattalashtirish">
+              +
+            </button>
+            <button type="button" onclick="Eco2DAnimator.zoom3D(this, 8)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-black flex items-center justify-center transition-all cursor-pointer" title="Kichraytirish">
+              −
+            </button>
+            <button type="button" onclick="Eco2DAnimator.reset3D(this)" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[9px] font-bold transition-all cursor-pointer" title="Markazga qaytarish">
+              🎯 Markaz
+            </button>
+            <button type="button" onclick="Eco2DAnimator.switchTo2D(this)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-[9px] font-black transition-all cursor-pointer">
+              🔙 2D
+            </button>
+          </div>
+        </div>
       </div>
     `;
   },
