@@ -1001,8 +1001,10 @@ function switchMainTab(tabId) {
   const mGames = document.getElementById('m-nav-games');
   const mBattle = document.getElementById('m-nav-battle');
   const mVideos = document.getElementById('m-nav-videos');
-  if (mModules && mGames) {
+  if (mModules) {
     mModules.className = `mobile-nav-btn flex flex-col items-center gap-1 transition-colors p-1 ${tabId === 'modules-tab' ? 'text-emerald-400 font-bold' : 'text-slate-400 hover:text-emerald-400'}`;
+  }
+  if (mGames) {
     mGames.className = `mobile-nav-btn flex flex-col items-center gap-1 transition-colors p-1 ${tabId === 'games-tab' ? 'text-emerald-400 font-bold' : 'text-slate-400 hover:text-emerald-400'}`;
   }
   if (mBattle) {
@@ -1088,6 +1090,7 @@ function bootApp() {
   renderLeaderboard();
   
   if (typeof renderGamesHub === 'function') renderGamesHub();
+  switchMainTab('games-tab');
   if (typeof initSortingGame === 'function') initSortingGame();
   if (typeof initAuditSimulator === 'function') initAuditSimulator();
   if (typeof initExpertiseQuest === 'function') initExpertiseQuest();
