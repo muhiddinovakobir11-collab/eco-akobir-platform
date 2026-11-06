@@ -1547,83 +1547,483 @@
   "food_chain": [
     {
       "id": "fc1",
-      "name": "Chuchuk Suv Ekotizimi",
+      "name": "Chuchuk Suv Daryosi Ekotizimi",
       "steps": [
         "Quyosh nuri (Energiya)",
-        "Fitoplankton (O'simlik)",
-        "Mayda Qisqichbaqa",
-        "Xumbosh Baliq",
-        "Oqqush / Qarqara"
+        "Yashil suv o'tlari (Produtsent)",
+        "Mayda daphniya qisqichbaqasi",
+        "Zog'ora baliq (Karp)",
+        "Suv burguti / Qoravoy"
       ],
       "traps": [
-        "Plastik qopcha",
-        "Neft dog'i"
+        "Plastik xalta",
+        "Kimyoviy oqova suv"
       ],
-      "exp": "Quyosh energiyasidan boshlanib, fitoplanktondan mayda baliqlar va suv qushlariga uzatiladi."
+      "exp": "Quyosh energiyasidan boshlanib, fitoplanktondan mayda baliqlar va suv yirtqich qushlariga uzatiladi."
     },
     {
       "id": "fc2",
-      "name": "O'rmon Ekotizimi",
+      "name": "To'qayzor Qayir O'rmoni",
       "steps": [
-        "Eman Daraxti (Urug')",
-        "O'rmon Sichqoni",
-        "Tulkicha",
-        "Bo'ri",
-        "Tuproq Bakteriyalari"
+        "Quyosh nuri",
+        "To'rang'i va Yulg'un",
+        "Yovvoyi quyon / Kemiruvchi",
+        "To'qay mushugi / Qashqir",
+        "Qora kalxat"
       ],
       "traps": [
-        "Eski batareyka",
-        "Konserva bankasi"
+        "Eski avtomobil shinasi",
+        "Sintetik kanop ipi"
       ],
-      "exp": "Yashil o'simlik fitomassasidan yirtqichlarga va nihoyat destruktor bakteriyalarga boradi."
+      "exp": "To'qay florasi birlamchi fitomassa yaratadi, kemiruvchilar orqali ikkilamchi konsumentlarga o'tadi."
     },
     {
       "id": "fc3",
-      "name": "Sahro va Cho'l Zanjiri",
+      "name": "Qizilqum Cho'l Ekotizimi",
       "steps": [
-        "Saksovul novdasi",
-        "Qum Chigirtkasi",
-        "Kaltakesak (Echkemar)",
-        "Cho'l Burguti",
-        "Qo'ng'iz qurtlari"
+        "Quyosh radiatsiyasi",
+        "Oq saksovul va shuvoq",
+        "Cho'l chigirtkasi",
+        "Qum yumaloqboshi (Kaltakesak)",
+        "Cho'l bo'z iloni"
       ],
       "traps": [
-        "Polietilen lenta",
-        "Singan shisha"
+        "Plastik butilka",
+        "Polietilen plyonka"
       ],
-      "exp": "Sahro o'simliklaridan hashorotlarga, sudralib yuruvchilardan yirtqich qushlarga o'tadi."
+      "exp": "Cho'l o'simliklari qurg'oqchilikka chidamli bo'lib, hasharot va sudralib yuruvchilar zanjirini ta'minlaydi."
     },
     {
       "id": "fc4",
-      "name": "Dengiz Oziq Zanjiri",
+      "name": "Tyan-Shan Tog' Ekotizimi",
       "steps": [
-        "Dengiz Suvo'tlari",
-        "Kril (Mayda qisqichbaqa)",
-        "Treska Balig'i",
-        "Tyulen (Itbaliq)",
-        "Qotil Kit (Orka)"
+        "Quyosh nuri",
+        "Tog' archasi va efemerlar",
+        "Tog' sug'uri (Marmot)",
+        "Tulkilar / Bo'rilar",
+        "Qor barsi (Ilvirs)"
       ],
       "traps": [
-        "Sintetik baliq to'ri",
-        "Yuvish vositasi"
+        "Konserva qutisi",
+        "Yong'in qoldig'i (Kosa)"
       ],
-      "exp": "Okean mikroskopik produtsentlaridan eng yirik dengiz yirtqichlarigacha bo'lgan to'g'ri zanjir."
+      "exp": "Tog' ekotizimida yuqori trofik pog'onani yo'qolib borayotgan qor barsi egallaydi."
     },
     {
       "id": "fc5",
-      "name": "Dala va Yaylov Ekotizimi",
+      "name": "Tuproq Gumus va Redutsentlar Zanjiri",
       "steps": [
-        "Bug'doy va O'tlar",
-        "Dala Sichqoni",
-        "Ilon (Kobra)",
-        "Yirtqich Ilonxo'r Qush",
-        "Zamburug'lar"
+        "To'kilgan xazon va barglar",
+        "Chirituvchi zamburug'lar",
+        "Yomg'ir chuvalchangi",
+        "Krot / Yerqazar kemiruvchi",
+        "Boyo'g'li (Mug'ombir qush)"
       ],
       "traps": [
-        "Pestitsid qoldig'i",
-        "Kassa cheki"
+        "Batareyka (Og'ir metall)",
+        "Lenta скотч"
       ],
-      "exp": "Produtsent o'tlardan kemiruvchilarga, sudraluvchilardan qushlarga va redutsentlarga boradi."
+      "exp": "Detrit oziq zanjiri o'lik organik moddalarni minerallarga aylantirib tuproq unumdorligini tiklaydi."
+    },
+    {
+      "id": "fc6",
+      "name": "Zarafshon Vohasi Bog'dorchilik Zanjiri",
+      "steps": [
+        "Quyosh nuri",
+        "Olma va shaftoli daraxti gullari",
+        "Asalari va changlatuvchilar",
+        "Qaldirg'och va mayna",
+        "Qiyg'ir (Yirtqich qush)"
+      ],
+      "traps": [
+        "Xlorli pestitsid",
+        "Plastik bir martalik stakan"
+      ],
+      "exp": "Agrobiotsenozda changlatuvchi hasharotlar meva hosildorligi va qushlar ozuqasi poydevoridir."
+    },
+    {
+      "id": "fc7",
+      "name": "Orolqum Cho'llashgan Mintaqa",
+      "steps": [
+        "Quyosh nuri",
+        "Qorabaroq va yantoq",
+        "Qoraqum qo'ng'izi",
+        "Dasht toshbaqasi",
+        "Qirg'iy qushi"
+      ],
+      "traps": [
+        "Zaharli tuz changlari",
+        "Tashlandiq shisha siniqlari"
+      ],
+      "exp": "Tuzga chidamli galofit o'simliklar qum ko'chishini to'xtatuvchi asosiy trofik halqadir."
+    },
+    {
+      "id": "fc8",
+      "name": "Qamishzor va Ko'l Sohili",
+      "steps": [
+        "Suv va Quyosh nuri",
+        "Qamish va rogoz",
+        "Suv shillig'i (Molyuska)",
+        "Yovvoyi o'rdak",
+        "Chiyobori (Shakal)"
+      ],
+      "traps": [
+        "Baliqchilik to'ri (Neylon)",
+        "Plastik idish"
+      ],
+      "exp": "Qamishzorlar suvni tabiiy biofiltrlab, ko'plab qushlarga oziq va boshpana beradi."
+    },
+    {
+      "id": "fc9",
+      "name": "Paxta Maydoni va Biologik Himoya",
+      "steps": [
+        "Quyosh nuri",
+        "G'o'za barglari",
+        "Paxta tunlami lichinkasi",
+        "Oltinko'z (Entomofag)",
+        "Chug'urchiq qushi"
+      ],
+      "traps": [
+        "Zaharli ximikat purkagich",
+        "Polietilen lenta"
+      ],
+      "exp": "Biologik himoyada foydali entomofaglar zararkunandalarni kimyoviy zaharsiz tabiiy cheklaydi."
+    },
+    {
+      "id": "fc10",
+      "name": "Shahar Yashil Parki Zanjiri",
+      "steps": [
+        "Quyosh nuri",
+        "Chinor va eman daraxti",
+        "Yaproqxo'r kapalagi qurtlari",
+        "Chittak (Sinitsa) qushi",
+        "Shahar qarchig'ayi"
+      ],
+      "traps": [
+        "Sigareta qoldig'i",
+        "Chipslar paketi"
+      ],
+      "exp": "Shahar dendroparklarida mayda qushlar bargxo'r zararkunandalarni yo'qotib daraxtlarni asraydi."
+    },
+    {
+      "id": "fc11",
+      "name": "Tog' Daryosi va Gulmoyi (Forel)",
+      "steps": [
+        "Quyosh nuri",
+        "Toshlarga yopishgan moxlar",
+        "Kunlik pashsha lichinkasi",
+        "Tog' gulmoyi (Amudaryo foreli)",
+        "Baliqchi qoraqush"
+      ],
+      "traps": [
+        "Kir yuvish kukuni oqovasi",
+        "Plastik probka"
+      ],
+      "exp": "Muzdek toza tog' suvlari boy kislorodga ega bo'lib, nozik gulmoyi zanjirini quvvatlaydi."
+    },
+    {
+      "id": "fc12",
+      "name": "Ko'l Tubi va Bentos Zanjiri",
+      "steps": [
+        "Cho'kkan organik qoldiqlar",
+        "Bentos bakteriyalari",
+        "Xironomid qonqurti (Motil)",
+        "Laqqa baliq",
+        "Suv ayig'i / Bo'rsiq"
+      ],
+      "traps": [
+        "Batareya elektroliti",
+        "Sanoat shlaklari"
+      ],
+      "exp": "Ko'l tubidagi bentik organizmlar organik cho'kmalarni qayta ishlab suvdagi moddalar aylanishini yopadi."
+    },
+    {
+      "id": "fc13",
+      "name": "Dasht Yaylovi va Tuyoqlilar",
+      "steps": [
+        "Quyosh nuri",
+        "Dasht bug'doyig'i va betaga",
+        "Sayg'oq / Jayron",
+        "Dasht bo'risi",
+        "Qora jo'rchi (O'limtikxo'r)"
+      ],
+      "traps": [
+        "Zanglagan tikanli sim",
+        "Yelim xalta"
+      ],
+      "exp": "Yovvoyi tuyoqlilar yaylov o'tlarini mo'tadil iste'mol qilib dasht unumdorligini saqlaydi."
+    },
+    {
+      "id": "fc14",
+      "name": "Yong'oqzor va Sincap Zanjiri",
+      "steps": [
+        "Quyosh nuri",
+        "Yovvoyi yong'oqzor va do'lana",
+        "Tog' sincabi / Yemushan",
+        "Suvsar (Kunitsa)",
+        "Burgut"
+      ],
+      "traps": [
+        "Buzilgan akkumulyator",
+        "Penoplast bo'lagi"
+      ],
+      "exp": "Sincaplar yong'oq va mevalarni yerga ko'mib yangi ko'chatlar unib chiqishiga sabab bo'ladi."
+    },
+    {
+      "id": "fc15",
+      "name": "Biogaz Qurilmasi Sun'iy Zanjiri",
+      "steps": [
+        "Chorvachilik go'ngi va qoldiqlari",
+        "Gidrolitik bakteriyalar",
+        "Atsetogen mikroblar",
+        "Metanogen arxeyalar",
+        "Biogaz va Bioo'g'it"
+      ],
+      "traps": [
+        "Antibiotikli dori qoldig'i",
+        "Plastik shприц"
+      ],
+      "exp": "Anaerob achish zanjirida mikroorganizmlar organik chiqindini toza metan energiyasiga aylantiradi."
+    },
+    {
+      "id": "fc16",
+      "name": "Arktika Muzlik Ekotizimi",
+      "steps": [
+        "Qutb nuri",
+        "Muz osti mikrosuv o'tlari",
+        "Kril (Mayda qisqichbaqa)",
+        "Treska balig'i va Nerpa tyuleni",
+        "Oq ayiq"
+      ],
+      "traps": [
+        "Dengizdagi plastik chiqindilar",
+        "Neft plyonkasi"
+      ],
+      "exp": "Dengiz muzlarining erishi kril massasini kamaytirib butun qutb oziq piramidasiga zarba beradi."
+    },
+    {
+      "id": "fc17",
+      "name": "Tropik Marjon Rifi Ekotizimi",
+      "steps": [
+        "Quyosh nuri",
+        "Zooksantella bir hujayrali suvo'ti",
+        "Marjon polipi koloniyasi",
+        "To'ti-baliq (Parrotfish)",
+        "Rif akulasi"
+      ],
+      "traps": [
+        "Sintetik kiyim mikrotolalari",
+        "Oqartiruvchi kimyoviy moddalar"
+      ],
+      "exp": "Marjonlar va suv o'tlari simbiozi okean biologik xilma-xilligining chorak qismini ta'minlaydi."
+    },
+    {
+      "id": "fc18",
+      "name": "Kompostlash va Vermiferma Zanjiri",
+      "steps": [
+        "Oshxona sabzavot po'choqlari",
+        "Aerob chirish bakteriyalari",
+        "Kaliforniya qizil chuvalchangi",
+        "Biochirindi (Biogumus)",
+        "Organik poliz ekinlari"
+      ],
+      "traps": [
+        "Plastik yorliqlar",
+        "Batareya kislotasi"
+      ],
+      "exp": "Vermikompostlash organik chiqindilarni 100% ekologik sof mineral-gumusli o'g'itga aylantiradi."
+    },
+    {
+      "id": "fc19",
+      "name": "G'or (Speleo) Qorong'u Ekotizimi",
+      "steps": [
+        "Ko'rshapalaklar axlati (Guano)",
+        "G'or zamburug'lari va mog'or",
+        "So'qir qisqichbaqa va o'rgimchak",
+        "G'or salamandrasi",
+        "Katta g'or ko'rshapalagi"
+      ],
+      "traps": [
+        "Sayyohlar tashlagan folga",
+        "Plastik baklashka"
+      ],
+      "exp": "Yorug'lik tushmaydigan g'orlarda oziq zanjiri tashqaridan keltirilgan organik guano hisobiga yashaydi."
+    },
+    {
+      "id": "fc20",
+      "name": "Mangra Qirg'oq O'rmonlari",
+      "steps": [
+        "Quyosh nuri",
+        "Mangra daraxti xazonlari",
+        "Qisqichbaqasimon qisqichlar",
+        "Balg'amxo'r baliq (Mudskipper)",
+        "Dengiz burguti"
+      ],
+      "traps": [
+        "Plastik qoplar",
+        "Mazut to'kilmasi"
+      ],
+      "exp": "Mangra chakalakzorlari qirg'oqlarni sunamidan asrab minglab yosh dengiz jonivorlarining beshigi hisoblanadi."
+    },
+    {
+      "id": "fc21",
+      "name": "Savanna O'txo'rlar va Yirtqichlar",
+      "steps": [
+        "Quyosh nuri",
+        "Savanna qalin o'tlari",
+        "Zebra va antilopa",
+        "Sher va gepard",
+        "Giyena va tasqara"
+      ],
+      "traps": [
+        "Brakonyerlik tuzog'i",
+        "Plastik shisha"
+      ],
+      "exp": "Yirik o'txo'rlar o'tlarni cheklab, yirtqichlar esa kasal hayvonlarni saralab tabiiy muvozanatni saqlaydi."
+    },
+    {
+      "id": "fc22",
+      "name": "Orol Dengizi Qayta Tiklanish Zanjiri",
+      "steps": [
+        "Quyosh nuri",
+        "Sho'rga chidamli Artemiya qisqichbaqasi",
+        "Qizilg'oz (Flamingo)",
+        "Yirtqich qirg'iy",
+        "Dasht chiyoborisi"
+      ],
+      "traps": [
+        "Pestitsid qoldiqlari",
+        "Polietilen paket"
+      ],
+      "exp": "O'ta sho'r Orol suvlarida yashovchi Artemiya flamingolar uchun bebaho ozuqa hisoblanadi."
+    },
+    {
+      "id": "fc23",
+      "name": "Issiqxona Entomofaglar Tizimi",
+      "steps": [
+        "Quyosh nuri va CO2",
+        "Bodring va pomidor ko'chati",
+        "Oq qanot (Belokrylka) zararkunandasi",
+        "Enkarziya parazit arisi",
+        "Xonqizi (Ladybug)"
+      ],
+      "traps": [
+        "Kimyoviy insektitsid gazi",
+        "Yelimli qopqon"
+      ],
+      "exp": "Enkarziya va xonqizi orqali oq qanot yo'qotilib, kimyoviy zaharsiz toza mahsulot yetishtiriladi."
+    },
+    {
+      "id": "fc24",
+      "name": "Tog' Archazori va Mayda Qushlar",
+      "steps": [
+        "Quyosh nuri",
+        "Zarafshon archasi mevalari",
+        "Archa qarg'asi (Kedrovka)",
+        "Qirg'ovul va keklik",
+        "Tog' burguti"
+      ],
+      "traps": [
+        "Sayyohlar gulxani",
+        "Plastik o'ram"
+      ],
+      "exp": "Kedrovka archa urug'larini qoyalarga berkitib, tog' yonbag'irlarida tabiiy o'rmon tiklanishini ta'minlaydi."
+    },
+    {
+      "id": "fc25",
+      "name": "Chuchuk Suv Hovuzi va Baqa Zanjiri",
+      "steps": [
+        "Quyosh nuri",
+        "Buloq suvo'tlari",
+        "Chivin va ninachi lichinkalari",
+        "Ko'l baqasi",
+        "Suv iloni (Uj) / Laylak"
+      ],
+      "traps": [
+        "Yuvish vositalari ko'pigi",
+        "Plastik idish"
+      ],
+      "exp": "Baqalar qonxo'r chivinlarni yo'qotib, o'zlari laylak va suv qushlari uchun to'yimli oziq bo'ladi."
+    },
+    {
+      "id": "fc26",
+      "name": "Agro-O'rmon Shamol Himoya Ihota Zanjiri",
+      "steps": [
+        "Quyosh nuri",
+        "Terak va qayrag'och ihota daraxtlari",
+        "Daraxt po'stloqxo'ri",
+        "Qizilishton (Dyatil)",
+        "Qarchig'ay"
+      ],
+      "traps": [
+        "Qurilish chiqindisi",
+        "Plastik bak"
+      ],
+      "exp": "Dala atrofidagi ihota daraxtlari shamol eroziyasini to'xtatadi, qushlar esa qurtlarni tozalaydi."
+    },
+    {
+      "id": "fc27",
+      "name": "Ochiq Okean Pelagial Zanjiri",
+      "steps": [
+        "Quyosh nuri",
+        "Diatom fitoplankton",
+        "Zooplankton (Kopepodalar)",
+        "Sardina va seld baliqlari",
+        "Delfin va tunes balig'i"
+      ],
+      "traps": [
+        "Mikroplastik zarrachalari",
+        "Tashlangan baliq ovlash to'ri"
+      ],
+      "exp": "Okean fitoplanktoni Yer yuzidagi jami kislorodning yarmidan ko'pini fotosintez orqali ajratadi."
+    },
+    {
+      "id": "fc28",
+      "name": "Tundra Mox va Bug'u Ekotizimi",
+      "steps": [
+        "Qutbiy quyosh nuri",
+        "Yagel (Bug'u lishaynigi)",
+        "Shimol bug'usi",
+        "Qutb bo'risi",
+        "Qutb boyo'g'lisi"
+      ],
+      "traps": [
+        "Neft burg'ulash oqovalari",
+        "Konserva bankasi"
+      ],
+      "exp": "Sekin o'suvchi yagel lishaynigi tundra tuyoqlilarining asosiy qishki hayot manbaidir."
+    },
+    {
+      "id": "fc29",
+      "name": "Tog' Etagi Bo'z Tuproq Efemerlari",
+      "steps": [
+        "Bahorgi quyosh va yomg'ir",
+        "Lola va efemer o'simliklar",
+        "Yovvoyi asalari va arilar",
+        "Kaltakesak va toshbaqa",
+        "Bo'z ilon va dasht burguti"
+      ],
+      "traps": [
+        "Tashlandiq polietilen",
+        "Plastik kassa"
+      ],
+      "exp": "Bahorgi efemerlar qisqa muddatda gullab tuproqda urug' zahirasini va jonivorlar bazasini boyitadi."
+    },
+    {
+      "id": "fc30",
+      "name": "Shahar Chiqindixona Qarg'alar va Yirtqichlar",
+      "steps": [
+        "Tashlangan organik oziq-ovqatlar",
+        "Muxor va pashsha qurtlari",
+        "Kalamush va sichqonlar",
+        "Olaqarg'a va mayna",
+        "Katta boyo'g'li"
+      ],
+      "traps": [
+        "Zaharli batareya",
+        "Polietilen paket"
+      ],
+      "exp": "Sanitariya qoidalariga rioya qilinmagan chiqindixonalar zararkunanda kemiruvchilar o'chog'iga aylanadi."
     }
   ],
   "spot_polluter": [
