@@ -202,7 +202,7 @@ function renderGamesHub() {
             ⚔️ Eko-Batl: 2 Talaba Bir Vaqtda Bellashuvi
           </h3>
           <p class="text-xs text-slate-300 mt-0.5">
-            2 jamoa nomini yozing, ekran ikkiga bo'linadi va butun platforma savollari mustaqil random tarzda beriladi!
+            2 jamoa nomini yozing, 6 ta taktil rejimda (Konveyer, Duel, Toza Arqon, Yashil Xarita, Oziq Zanjiri, Ifloslantiruvchi) bellashing!
           </p>
         </div>
       </div>

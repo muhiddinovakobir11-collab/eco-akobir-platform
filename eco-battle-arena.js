@@ -544,19 +544,16 @@
       `;
     },
 
-    setBattleMode(mode, element) {
+    setBattleMode(mode) {
+      const t1Input = document.getElementById('t1-name-input');
+      const t2Input = document.getElementById('t2-name-input');
+      if (t1Input) this.config.t1Name = t1Input.value.trim() || this.config.t1Name;
+      if (t2Input) this.config.t2Name = t2Input.value.trim() || this.config.t2Name;
       this.config.battleMode = mode;
-      document.querySelectorAll('.battle-mode-card').forEach(c => {
-        c.className = 'battle-mode-card border-2 border-slate-800 bg-slate-950/60 hover:border-slate-700 rounded-2xl p-4 cursor-pointer transition-all flex items-start gap-3.5 group shadow-lg';
-      });
-      if (element) {
-        if (mode === 'conveyor') {
-          element.className = 'battle-mode-card border-2 border-amber-400 bg-amber-950/40 ring-4 ring-amber-500/30 rounded-2xl p-4 cursor-pointer transition-all flex items-start gap-3.5 group shadow-lg';
-        } else {
-          element.className = 'battle-mode-card border-2 border-cyan-400 bg-cyan-950/40 ring-4 ring-cyan-500/30 rounded-2xl p-4 cursor-pointer transition-all flex items-start gap-3.5 group shadow-lg';
-        }
-      }
-      if (window.ecoAudio && typeof window.ecoAudio.playClick === 'function') {
+      this.renderSetup();
+      if (window.EcoBattleCoreFx) {
+        window.EcoBattleCoreFx.playClick();
+      } else if (window.ecoAudio && typeof window.ecoAudio.playClick === 'function') {
         window.ecoAudio.playClick();
       }
     },
@@ -1387,11 +1384,13 @@
 
       const winnerTeam = winner === 1 ? this.t1 : (winner === 2 ? this.t2 : null);
 
-      if (window.ecoAudio && typeof window.ecoAudio.playLevelUp === 'function') {
-        window.ecoAudio.playLevelUp();
-      }
-      if (window.EcoFxEngine && typeof window.EcoFxEngine.triggerPaqldoq === 'function') {
-        window.EcoFxEngine.triggerPaqldoq(window.innerWidth / 2, window.innerHeight / 3, 50);
+      if (window.EcoBattleCoreFx) {
+        window.EcoBattleCoreFx.playVictory();
+        window.EcoBattleCoreFx.triggerVictoryLeaves(60);
+      } else {
+        if (window.ecoAudio && typeof window.ecoAudio.playLevelUp === 'function') {
+          window.ecoAudio.playLevelUp();
+        }
       }
 
       container.innerHTML = `
