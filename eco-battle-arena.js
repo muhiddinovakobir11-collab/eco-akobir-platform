@@ -733,6 +733,19 @@
     },
 
     startBattle() {
+      // 3. Toza Arqon Rejimi maxsus moduli
+      if (this.config.battleMode === 'tug_of_war' && window.EcoBattleTugOfWarMode) {
+        window.EcoBattleTugOfWarMode.start({
+          t1Name: this.config.t1Name,
+          t2Name: this.config.t2Name,
+          t1Avatar: this.config.t1Avatar,
+          t2Avatar: this.config.t2Avatar,
+          matchTime: 60,
+          questionCount: this.config.questionCount || 25
+        });
+        return;
+      }
+
       this.active = true;
       this.paused = false;
       this.tugOfWarPercent = 50;

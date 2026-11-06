@@ -150,6 +150,31 @@
       } catch (e) {}
     },
 
+    // Boshlanish hisobi (Countdown beep)
+    playCountdown() {
+      this.initAudio();
+      if (!this.audioCtx) return;
+      try {
+        const now = this.audioCtx.currentTime;
+        const osc = this.audioCtx.createOscillator();
+        const gain = this.audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, now);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+        osc.connect(gain);
+        gain.connect(this.audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      } catch (e) {}
+    },
+
+    // Ekranni titratish (Wrong feedback)
+    shakeScreen(duration = 350) {
+      const arena = document.getElementById('eco-battle-arena-view') || document.getElementById('tug-of-war-view') || document.body;
+      if (arena) this.shake(arena);
+    },
+
     // G'alaba shukuhi (Fanfara)
     playVictory() {
       this.initAudio();
@@ -179,6 +204,23 @@
       void el.offsetWidth; // Force reflow
       el.classList.add('eco-shake');
       setTimeout(() => el.classList.remove('eco-shake'), 420);
+    },
+
+    // Taymer qizil pulsatsiyasi (Danger warning)
+    triggerTimerWarning(el) {
+      if (!el) return;
+      el.classList.add('timer-danger-thump');
+    },
+
+    stopTimerWarning(el) {
+      if (!el) return;
+      el.classList.remove('timer-danger-thump');
+    },
+
+    // Jamoa chegarasi porlashi (Border Flash)
+    flashBorder(teamId = 1) {
+      const el = document.getElementById('eco-battle-arena-view') || document.getElementById('tug-of-war-view');
+      if (el) this.flashGlow(el, teamId);
     },
 
     // To'g'ri javob porlashi (Green/Red glow)
